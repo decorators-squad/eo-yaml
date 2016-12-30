@@ -8,7 +8,7 @@ From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhyme
 
 ## Contribute
 
-Contributors are welcome.
+Contributors are [welcomed](http://www.amihaiemil.com/2016/12/30/becoming-a-contributor.html)
 
 1. Open an issue regarding an improvement you thought of, or a bug you noticed, or asked to be assigned to an existing one.
 2. If the issue is confirmed, fork the repository, do the changes on a separate branch and make a Pull Request.
