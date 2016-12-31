@@ -46,28 +46,18 @@ abstract class AbstractNode {
      * Parents of this node.
      */
     private Collection<AbstractNode> parents;
-    
-    /**
-     * Children of this node.
-     */
-    private Collection<AbstractNode> children;
 
     /**
      * Ctor.
      * @param parents Given parents
-     * @param children Given children
      */
-    AbstractNode(
-        final Collection<AbstractNode> parents,
-        final Collection<AbstractNode> children
-    ) {
+    AbstractNode(final Collection<AbstractNode> parents) {
         if(parents.isEmpty()) {
             throw new IllegalStateException(
                 "A YAML graph cannot have orphaned nodes"
             );
         }
         this.parents = parents;
-        this.children = children;
     }
     
     /**
@@ -77,13 +67,11 @@ abstract class AbstractNode {
     public Collection<AbstractNode> parents() {
         return this.parents;
     }
-    
+
     /**
      * Fetch the child nodes of this node.
      * @return Collection of {@link AbstractNode}
      */
-    public Collection<AbstractNode> children() {
-        return this.parents;
-    }
+    public abstract Collection<AbstractNode> children();
 
 }

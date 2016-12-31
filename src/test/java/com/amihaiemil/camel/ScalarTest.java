@@ -57,6 +57,21 @@ public final class ScalarTest {
             scl.value(), Matchers.equalTo(val)
         );
     }
+
+    /**
+     * A Scalar shouldn't have any child nodes.
+     */
+    @Test
+    public void hasNoChildren() {
+    	final String val = "test scalar value";
+        final Scalar<String> scl = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val
+        );
+        MatcherAssert.assertThat(
+            scl.children(), Matchers.emptyIterable()
+        );
+    }
     
     /**
      * Scalar throws ISE if no parents are specified.

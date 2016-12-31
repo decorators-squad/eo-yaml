@@ -54,7 +54,7 @@ final class Scalar<T> extends AbstractNode {
         final Collection<AbstractNode> parents,
         final T value
     ) {
-        super(parents, new LinkedList<AbstractNode>());
+        super(parents);
         this.value = value;
     }
 
@@ -64,5 +64,10 @@ final class Scalar<T> extends AbstractNode {
      */
     T value() {
         return this.value;
+    }
+
+    @Override
+    public Collection<AbstractNode> children() {
+        return new LinkedList<AbstractNode>();
     }
 }
