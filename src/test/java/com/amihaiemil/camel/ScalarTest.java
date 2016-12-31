@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link Scalar}
+ * Unit tests for {@link Scalar}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -63,7 +63,7 @@ public final class ScalarTest {
      */
     @Test
     public void hasNoChildren() {
-    	final String val = "test scalar value";
+        final String val = "test scalar value";
         final Scalar<String> scl = new Scalar<String>(
             Arrays.asList(Mockito.mock(AbstractNode.class)),
             val

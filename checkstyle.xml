@@ -36,7 +36,6 @@
     default locale which may vary between environments.
     -->
     <property name="localeLanguage" value="en"/>
-
     <!--
     Checks that property files contain the same keys.
     -->
