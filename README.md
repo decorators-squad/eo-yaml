@@ -1,6 +1,6 @@
 # camel
-[![Build Status](https://travis-ci.org/amihaiemil/camel.svg?branch=master)](https://travis-ci.org/amihaiemil/camel)
-[![Coverage Status](https://coveralls.io/repos/github/amihaiemil/camel/badge.svg?branch=master)](https://coveralls.io/github/amihaiemil/camel?branch=master)
+[![Build Status](https://travis-ci.org/decorators-squad/camel.svg?branch=master)](https://travis-ci.org/decorators-squad/camel)
+[![Coverage Status](https://coveralls.io/repos/github/decorators-squad/camel/badge.svg?branch=master)](https://coveralls.io/github/decorators-squad/camel?branch=master)
 
 YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-java-library) OOP library.
 
