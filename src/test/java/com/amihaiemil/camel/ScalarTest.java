@@ -27,12 +27,14 @@
  */
 package com.amihaiemil.camel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Unit tests for {@link Scalar}.
@@ -81,5 +83,21 @@ public final class ScalarTest {
         new Scalar<String>(
             new ArrayList<AbstractNode>(), "orphan"
         );
+    }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        final String val1 = "test scalar value #1";
+        final String val2 = "test scalar value #2";
+        final Scalar<String> x = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val1
+        );
+        final Scalar<String> y = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val2
+        );
+        Assert.assertTrue(x.equals(y) && y.equals(x));
+        Assert.assertTrue(x.hashCode() == y.hashCode());
     }
 }

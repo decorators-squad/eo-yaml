@@ -70,4 +70,20 @@ final class Scalar<T> extends AbstractNode {
     public Collection<AbstractNode> children() {
         return new LinkedList<AbstractNode>();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Scalar<T> scalar = (Scalar<T>) o;
+
+        return value.equals(scalar.value);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 }
