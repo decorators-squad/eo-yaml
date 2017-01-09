@@ -29,12 +29,13 @@ package com.amihaiemil.camel;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Unit tests for {@link Scalar}.
@@ -86,23 +87,25 @@ public final class ScalarTest {
     }
 
     /**
-     * Make sure that equals and hash code are reflexive,
-     * symmetric, and transitive.
+     * Make sure that equals and hash code are reflexive
+     * and symmetric.
      */
     @Test
-    public void testEqualsAndHashCode() {
-        final String firstValue = "test scalar value #1";
-        final String secondValue = "test scalar value #2";
+    public void equalsAndHashCode() {
+        final String val = "test scalar value";
         final Scalar<String> firstScalar = new Scalar<String>(
             Arrays.asList(Mockito.mock(AbstractNode.class)),
-            firstValue
+            val
         );
         final Scalar<String> secondScalar = new Scalar<String>(
             Arrays.asList(Mockito.mock(AbstractNode.class)),
-            secondValue
+            val
         );
-        Assert.assertTrue(firstScalar.equals(secondScalar)
-            && secondScalar.equals(firstScalar));
-        Assert.assertTrue(firstScalar.hashCode() == secondScalar.hashCode());
+
+        MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));
+        MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
+        MatcherAssert.assertThat(
+            firstScalar.hashCode() == secondScalar.hashCode(), is(true)
+        );
     }
 }
