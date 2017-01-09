@@ -111,7 +111,8 @@ public final class ScalarTest {
         MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
 
         MatcherAssert.assertThat(firstScalar, Matchers.equalTo(firstScalar));
-        MatcherAssert.assertThat(firstScalar, Matchers.notNullValue());
+        MatcherAssert.assertThat(firstScalar,
+            Matchers.not(Matchers.equalTo(null)));
 
         MatcherAssert.assertThat(
             firstScalar.hashCode() == secondScalar.hashCode(), is(true)
