@@ -85,19 +85,24 @@ public final class ScalarTest {
         );
     }
 
+    /**
+     * Make sure that equals and hash code are reflexive,
+     * symmetric, and transitive.
+     */
     @Test
     public void testEqualsAndHashCode() {
-        final String val1 = "test scalar value #1";
-        final String val2 = "test scalar value #2";
-        final Scalar<String> x = new Scalar<String>(
+        final String firstValue = "test scalar value #1";
+        final String secondValue = "test scalar value #2";
+        final Scalar<String> firstScalar = new Scalar<String>(
             Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val1
+            firstValue
         );
-        final Scalar<String> y = new Scalar<String>(
+        final Scalar<String> secondScalar = new Scalar<String>(
             Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val2
+            secondValue
         );
-        Assert.assertTrue(x.equals(y) && y.equals(x));
-        Assert.assertTrue(x.hashCode() == y.hashCode());
+        Assert.assertTrue(firstScalar.equals(secondScalar)
+            && secondScalar.equals(firstScalar));
+        Assert.assertTrue(firstScalar.hashCode() == secondScalar.hashCode());
     }
 }

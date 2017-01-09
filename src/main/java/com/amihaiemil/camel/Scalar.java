@@ -71,19 +71,32 @@ final class Scalar<T> extends AbstractNode {
         return new LinkedList<AbstractNode>();
     }
 
+    /**
+     * Equality of two objects.
+     * @param anotherObject Reference to righthand object
+     * @return True if object are equal and False if are not.
+     */
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object anotherObject) {
+        if (this == anotherObject) {
+            return true;
+        }
+        if (anotherObject == null || getClass() != anotherObject.getClass()) {
+            return false;
+        }
 
-        Scalar<T> scalar = (Scalar<T>) o;
+        final Scalar<T> scalar = (Scalar<T>) anotherObject;
 
-        return value.equals(scalar.value);
+        return this.value.equals(scalar.value);
 
     }
 
+    /**
+     * Hash Code of this scalar.
+     * @return Value of hashCode() of type int.
+     */
     @Override
     public int hashCode() {
-        return value.hashCode();
+        return this.value.hashCode();
     }
 }
