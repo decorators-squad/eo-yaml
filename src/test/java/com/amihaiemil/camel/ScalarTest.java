@@ -82,4 +82,20 @@ public final class ScalarTest {
             new ArrayList<AbstractNode>(), "orphan"
         );
     }
+
+    @Test
+    public void testEquals() {
+        final String val1 = "test scalar value 1";
+        final String val2 = "test scalar value 2";
+        final Scalar<String> x = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val1
+        );
+        final Scalar<String> y = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val2
+        );
+        Assert.assertTrue(x.equals(y) && y.equals(x));
+        Assert.assertTrue(x.hashCode() && y.hashCode());
+    }
 }
