@@ -27,12 +27,15 @@
  */
 package com.amihaiemil.camel;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Unit tests for {@link Scalar}.
@@ -80,6 +83,39 @@ public final class ScalarTest {
     public void orphanForbidden() {
         new Scalar<String>(
             new ArrayList<AbstractNode>(), "orphan"
+        );
+    }
+
+    /**
+     * Make sure that equals and hash code are reflexive
+     * and symmetric.
+     */
+    @Test
+    public void equalsAndHashCode() {
+        final String val = "test scalar value";
+        final Scalar<String> firstScalar = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val
+        );
+        final Scalar<String> secondScalar = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            val
+        );
+
+        final Scalar<String> nullScalar = new Scalar<String>(
+            Arrays.asList(Mockito.mock(AbstractNode.class)),
+            null
+        );
+
+        MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));
+        MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
+
+        MatcherAssert.assertThat(firstScalar, Matchers.equalTo(firstScalar));
+        MatcherAssert.assertThat(firstScalar,
+            Matchers.not(Matchers.equalTo(null)));
+
+        MatcherAssert.assertThat(
+            firstScalar.hashCode() == secondScalar.hashCode(), is(true)
         );
     }
 }
