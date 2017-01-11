@@ -102,11 +102,6 @@ public final class ScalarTest {
             val
         );
 
-        final Scalar<String> nullScalar = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            null
-        );
-
         MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));
         MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
 
