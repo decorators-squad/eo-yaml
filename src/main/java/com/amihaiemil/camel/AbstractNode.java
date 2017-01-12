@@ -43,29 +43,29 @@ import java.util.Collection;
 abstract class AbstractNode {
 
     /**
-     * Parents of this node.
+     * Parent of this node.
      */
-    private Collection<AbstractNode> parents;
+    private AbstractNode parent;
 
     /**
      * Ctor.
-     * @param parents Given parents
+     * @param parent Given parent
      */
-    AbstractNode(final Collection<AbstractNode> parents) {
-        if(parents.isEmpty()) {
+    AbstractNode(final AbstractNode parent) {
+        if(parent instanceof Scalar) {
             throw new IllegalStateException(
-                "A YAML graph cannot have orphaned nodes"
+                "A YAML Scalar node cannot have children nodes"
             );
         }
-        this.parents = parents;
+        this.parent = parent;
     }
-    
+
     /**
      * Fetch the parent nodes of this node.
      * @return Collection of {@link AbstractNode}
      */
-    public Collection<AbstractNode> parents() {
-        return this.parents;
+    public AbstractNode parents() {
+        return this.parent;
     }
 
     /**

@@ -27,15 +27,11 @@
  */
 package com.amihaiemil.camel;
 
+import static org.hamcrest.CoreMatchers.is;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Unit tests for {@link Scalar}.
@@ -52,13 +48,8 @@ public final class ScalarTest {
     @Test
     public void returnsValue() {
         final String val = "test scalar value";
-        final Scalar<String> scl = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
-        );
-        MatcherAssert.assertThat(
-            scl.value(), Matchers.equalTo(val)
-        );
+        final Scalar scl = new Scalar(Mockito.mock(AbstractNode.class), val);
+        MatcherAssert.assertThat(scl.value(), Matchers.equalTo(val));
     }
 
     /**
@@ -67,10 +58,7 @@ public final class ScalarTest {
     @Test
     public void hasNoChildren() {
         final String val = "test scalar value";
-        final Scalar<String> scl = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
-        );
+        final Scalar scl = new Scalar(Mockito.mock(AbstractNode.class), val);
         MatcherAssert.assertThat(
             scl.children(), Matchers.emptyIterable()
         );
@@ -81,8 +69,8 @@ public final class ScalarTest {
      */
     @Test (expected = IllegalStateException.class)
     public void orphanForbidden() {
-        new Scalar<String>(
-            new ArrayList<AbstractNode>(), "orphan"
+        new Scalar(
+            new Scalar(Mockito.mock(AbstractNode.class), "a"), "orphan"
         );
     }
 
@@ -93,13 +81,11 @@ public final class ScalarTest {
     @Test
     public void equalsAndHashCode() {
         final String val = "test scalar value";
-        final Scalar<String> firstScalar = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
+        final Scalar firstScalar = new Scalar(
+            Mockito.mock(AbstractNode.class), val
         );
-        final Scalar<String> secondScalar = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
+        final Scalar secondScalar = new Scalar(
+            Mockito.mock(AbstractNode.class), val
         );
 
         MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));

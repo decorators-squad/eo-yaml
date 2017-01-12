@@ -28,73 +28,27 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 /**
- * YAML scalar.
+ * YAML sequence.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @see http://yaml.org/spec/1.2/spec.html#sequence//
  */
-final class Scalar extends AbstractNode {
-
-    /**
-     * This scalar's value.
-     */
-    private String value;
+final class Sequence extends AbstractNode{
 
     /**
      * Ctor.
-     * @param parent Parent node
-     * @param value Given value for this scalar.
+     * @param parent The parent node of this sequence.
      */
-    Scalar(
-        final AbstractNode parent, final String value
-    ) {
+    Sequence(AbstractNode parent) {
         super(parent);
-        this.value = value;
-    }
-
-    /**
-     * Value of this scalar.
-     * @return Value of type T.
-     */
-    public String value() {
-        return this.value;
     }
 
     @Override
     public Collection<AbstractNode> children() {
-        return new LinkedList<AbstractNode>();
+        return null;
     }
 
-    /**
-     * Equality of two objects.
-     * @param anotherObject Reference to righthand object
-     * @return True if object are equal and False if are not.
-     */
-    @Override
-    public boolean equals(final Object anotherObject) {
-        if (this == anotherObject) {
-            return true;
-        }
-        if (anotherObject == null || getClass() != anotherObject.getClass()) {
-            return false;
-        }
-
-        final Scalar scalar = (Scalar) anotherObject;
-
-        return this.value.equals(scalar.value);
-
-    }
-
-    /**
-     * Hash Code of this scalar.
-     * @return Value of hashCode() of type int.
-     */
-    @Override
-    public int hashCode() {
-        return this.value.hashCode();
-    }
 }
