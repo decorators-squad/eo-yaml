@@ -40,7 +40,7 @@ import java.util.Collection;
  * @todo #7:1h/DEV Implement and unit test Mapping node.
  *  See specification: http://yaml.org/spec/1.2/spec.html#mapping//
  */
-abstract class AbstractNode {
+abstract class AbstractNode implements Comparable<AbstractNode> {
 
     /**
      * Parent of this node.
@@ -64,7 +64,7 @@ abstract class AbstractNode {
      * Fetch the parent nodes of this node.
      * @return Collection of {@link AbstractNode}
      */
-    public AbstractNode parents() {
+    public AbstractNode parent() {
         return this.parent;
     }
 

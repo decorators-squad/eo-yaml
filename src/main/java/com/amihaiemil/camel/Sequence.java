@@ -28,6 +28,9 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * YAML sequence.
@@ -39,6 +42,12 @@ import java.util.Collection;
 final class Sequence extends AbstractNode{
 
     /**
+     * Nodes in this sequence.
+     */
+    private final List<AbstractNode> nodes = 
+        new LinkedList<AbstractNode>();
+
+    /**
      * Ctor.
      * @param parent The parent node of this sequence.
      */
@@ -48,7 +57,46 @@ final class Sequence extends AbstractNode{
 
     @Override
     public Collection<AbstractNode> children() {
-        return null;
+        final List<AbstractNode> children = new LinkedList<>();
+        children.addAll(this.nodes);
+        Collections.sort(children);
+        return children;
     }
 
+    /**
+     * Compare this Sequence to another node.<br><br>
+     * 
+     * A Sequence is always considered greater than a Scalar and less than
+     * a Mapping.<br>
+     * 
+     * If o is a Sequence, their integer lengths are compared - the one with the
+     * greater length is considered greater. If the lengths are equal, then the sum
+     * of all elements' comparisons is returned.
+     * 
+     * @return
+     *  -1 if this < o <br>
+     *   0 if this == o or <br>
+     *   1 if this > o
+     */
+    @Override
+    public int compareTo(AbstractNode o) {
+        int result = 0;
+        if (o instanceof Scalar) {
+            result = 1;
+        } else if (o instanceof Mapping) {
+            result = -1;
+        } else {
+            Sequence seq = (Sequence) o;
+            if(this.nodes.size() > seq.nodes.size()) {
+                result = 1;
+            } else if (this.nodes.size() < seq.nodes.size()){
+                result = -1;
+            } else {
+                for (int i=0; i< this.nodes.size(); i++) {
+                    result += nodes.get(i).compareTo(seq.nodes.get(i));
+                }
+            }
+        }
+        return result;
+    }
 }

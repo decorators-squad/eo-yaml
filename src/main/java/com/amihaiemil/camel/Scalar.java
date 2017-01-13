@@ -97,4 +97,24 @@ final class Scalar extends AbstractNode {
     public int hashCode() {
         return this.value.hashCode();
     }
+    
+    /**
+     * Compare this Scalar to another node.<br><br>
+     * 
+     * A Scalar is always considered less than a Sequence or a Mapping.<br>
+     * If o is Scalar then their String values are compared lexicographically
+     * 
+     * @return
+     *  -1 if this < o <br>
+     *   0 if this == o or <br>
+     *   1 if this > o
+     */
+    @Override
+    public int compareTo(AbstractNode o) {
+        int result = -1;
+        if (o instanceof Scalar) {
+            result = this.value.compareTo(((Scalar) o).value);
+        }
+        return result;
+    }
 }
