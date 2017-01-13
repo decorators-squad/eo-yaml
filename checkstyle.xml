@@ -166,14 +166,10 @@
         <module name="EmptyStatement"/>
         <module name="EqualsAvoidNull"/>
         <module name="EqualsHashCode"/>
-        <module name="FinalLocalVariable"/>
         <module name="HiddenField">
             <property name="ignoreConstructorParameter" value="true"/>
         </module>
         <module name="IllegalInstantiation"/>
-        <module name="IllegalToken">
-            <property name="tokens" value="POST_INC, POST_DEC"/>
-        </module>
         <module name="IllegalTokenText" />
         <module name="InnerAssignment"/>
         <module name="MagicNumber"/>
@@ -264,7 +260,7 @@
             <property name="tokens" value="VARIABLE_DEF"/>
         </module>
         <module name="LocalVariableName">
-            <property name="format" value="^(id|[A-Za-z]{3,20})$"/>
+            <property name="format" value="^(i|j|k|id|[A-Za-z]{3,20})$"/>
         </module>
         <module name="CatchParameterName">
             <property name="format" value="^(ex|[A-Za-z]{3,20})$"/>

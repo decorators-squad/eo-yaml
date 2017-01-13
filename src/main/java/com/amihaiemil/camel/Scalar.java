@@ -49,9 +49,7 @@ final class Scalar extends AbstractNode {
      * @param parent Parent node
      * @param value Given value for this scalar.
      */
-    Scalar(
-        final AbstractNode parent, final String value
-    ) {
+    Scalar(final AbstractNode parent, final String value) {
         super(parent);
         this.value = value;
     }
@@ -97,23 +95,26 @@ final class Scalar extends AbstractNode {
     public int hashCode() {
         return this.value.hashCode();
     }
-    
+
     /**
      * Compare this Scalar to another node.<br><br>
      * 
      * A Scalar is always considered less than a Sequence or a Mapping.<br>
      * If o is Scalar then their String values are compared lexicographically
      * 
+     * @param other The other AbstractNode.
      * @return
      *  -1 if this < o <br>
      *   0 if this == o or <br>
      *   1 if this > o
      */
     @Override
-    public int compareTo(AbstractNode o) {
+    public int compareTo(final AbstractNode other) {
         int result = -1;
-        if (o instanceof Scalar) {
-            result = this.value.compareTo(((Scalar) o).value);
+        if (other == null) {
+            result = 1;
+        } else if (other instanceof Scalar) {
+            result = this.value.compareTo(((Scalar) other).value);
         }
         return result;
     }

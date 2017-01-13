@@ -99,4 +99,18 @@ public final class ScalarTest {
             firstScalar.hashCode() == secondScalar.hashCode(), is(true)
         );
     }
+
+    /**
+     * Scalar can compare itself to other Scalar. 
+     */
+    @Test
+    public void comparesToScalar() {
+        final Scalar first = new Scalar(
+            Mockito.mock(AbstractNode.class), "java"
+        );
+        final Scalar second = new Scalar(
+            Mockito.mock(AbstractNode.class), "java"
+        );
+        MatcherAssert.assertThat(first.compareTo(second), Matchers.equalTo(0));
+    }
 }

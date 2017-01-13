@@ -51,7 +51,7 @@ final class Sequence extends AbstractNode{
      * Ctor.
      * @param parent The parent node of this sequence.
      */
-    Sequence(AbstractNode parent) {
+    Sequence(final AbstractNode parent) {
         super(parent);
     }
 
@@ -69,31 +69,38 @@ final class Sequence extends AbstractNode{
      * A Sequence is always considered greater than a Scalar and less than
      * a Mapping.<br>
      * 
-     * If o is a Sequence, their integer lengths are compared - the one with the
-     * greater length is considered greater. If the lengths are equal, then the sum
-     * of all elements' comparisons is returned.
+     * If o is a Sequence, their integer lengths are compared - the one with
+     * the greater length is considered greater. If the lengths are equal,
+     * then the 2 Sequences are equal if all elements are equal. If the
+     * elements are not identical, the comparison of the first unequal
+     * elements is returned.
      * 
+     * @param other The other AbstractNode.
+     * @checkstyle NestedIfDepth (100 lines)
      * @return
      *  -1 if this < o <br>
      *   0 if this == o or <br>
      *   1 if this > o
      */
     @Override
-    public int compareTo(AbstractNode o) {
+    public int compareTo(final AbstractNode other) {
         int result = 0;
-        if (o instanceof Scalar) {
+        if (other == null || other instanceof Scalar) {
             result = 1;
-        } else if (o instanceof Mapping) {
+        } else if (other instanceof Mapping) {
             result = -1;
         } else {
-            Sequence seq = (Sequence) o;
+            Sequence seq = (Sequence) other;
             if(this.nodes.size() > seq.nodes.size()) {
                 result = 1;
-            } else if (this.nodes.size() < seq.nodes.size()){
+            } else if (this.nodes.size() < seq.nodes.size()) {
                 result = -1;
             } else {
                 for (int i=0; i< this.nodes.size(); i++) {
-                    result += nodes.get(i).compareTo(seq.nodes.get(i));
+                    result = this.nodes.get(i).compareTo(seq.nodes.get(i));
+                    if(result != 0) {
+                        break;
+                    }
                 }
             }
         }
