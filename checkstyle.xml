@@ -172,7 +172,6 @@
         <module name="IllegalInstantiation"/>
         <module name="IllegalTokenText" />
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
         <module name="ModifiedControlVariable"/>
         <module name="SimplifyBooleanExpression"/>

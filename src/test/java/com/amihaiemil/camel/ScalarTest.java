@@ -28,6 +28,10 @@
 package com.amihaiemil.camel;
 
 import static org.hamcrest.CoreMatchers.is;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -63,12 +67,13 @@ public final class ScalarTest {
             scl.children(), Matchers.emptyIterable()
         );
     }
-    
+
     /**
-     * Scalar throws ISE if no parents are specified.
+     * Scalar throws ISE because the parent cannot be a Scalar.
+     * Scalars cannot have children!
      */
     @Test (expected = IllegalStateException.class)
-    public void orphanForbidden() {
+    public void scalarParent() {
         new Scalar(
             new Scalar(Mockito.mock(AbstractNode.class), "a"), "orphan"
         );
@@ -101,16 +106,62 @@ public final class ScalarTest {
     }
 
     /**
-     * Scalar can compare itself to other Scalar. 
+     * Scalar can compare itself to another Scalar. 
      */
     @Test
     public void comparesToScalar() {
-        final Scalar first = new Scalar(
+        Scalar first = new Scalar(
             Mockito.mock(AbstractNode.class), "java"
         );
-        final Scalar second = new Scalar(
+        Scalar second = new Scalar(
             Mockito.mock(AbstractNode.class), "java"
         );
+        Scalar digits = new Scalar(
+            Mockito.mock(AbstractNode.class), "123"
+        );
+        Scalar otherDigits = new Scalar(
+            Mockito.mock(AbstractNode.class), "124"
+        );
+        MatcherAssert.assertThat(first.compareTo(first), Matchers.equalTo(0));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.equalTo(0));
+        MatcherAssert.assertThat(
+            first.compareTo(digits), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            first.compareTo(null), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            digits.compareTo(otherDigits), Matchers.lessThan(0)
+        );
+    }
+
+    /**
+     * Scalar can compare itself to a Mapping.
+     */
+    @Test
+    public void comparesToMapping() {
+        Scalar first = new Scalar(
+            Mockito.mock(AbstractNode.class), "java"
+        );
+        Mapping map = new Mapping(
+            Mockito.mock(AbstractNode.class),
+            new HashMap<AbstractNode, AbstractNode>()
+        );
+        MatcherAssert.assertThat(first.compareTo(map), Matchers.lessThan(0));
+    }
+
+    /**
+     * Scalar can compare itself to a Sequence.
+     */
+    @Test
+    public void comparesToSequence() {
+        Scalar first = new Scalar(
+            Mockito.mock(AbstractNode.class), "java"
+        );
+        Sequence seq = new Sequence(
+            Mockito.mock(AbstractNode.class),
+            new LinkedList<AbstractNode>()
+        );
+        MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }
 }

@@ -20,13 +20,28 @@ final class Mapping extends AbstractNode {
      */
     private final Map<AbstractNode, AbstractNode> mappings =
         new TreeMap<AbstractNode, AbstractNode>();
-    
+
     /**
      * Ctor.
      * @param parent The parent node of this mapping.
+     * @param entries Entries contained in this mapping.
      */
-    Mapping(final AbstractNode parent) {
+    Mapping(
+        final AbstractNode parent,
+        final Map<AbstractNode, AbstractNode> entries
+    ) {
         super(parent);
+        this.mappings.putAll(entries);
+    }
+
+    /**
+     * Fetch a value from this mapping.
+     * @param key Key of the entry.
+     * @return Corresponding node or null if there is no entry
+     *  for the specified key.
+     */
+    public AbstractNode get(final AbstractNode key) {
+        return this.mappings.get(key);
     }
 
     @Override
@@ -49,9 +64,9 @@ final class Mapping extends AbstractNode {
      * @checkstyle NestedIfDepth (100 lines)
      * @checkstyle ExecutableStatementCount (100 lines)
      * @return
-     *  -1 if this < o <br>
+     *  a value < 0 if this < o <br>
      *   0 if this == o or <br>
-     *   1 if this > o
+     *  a value > 0 if this > o
      */
     @Override
     public int compareTo(final AbstractNode other) {
@@ -60,7 +75,7 @@ final class Mapping extends AbstractNode {
             result = 1;
         } else if (other instanceof Mapping) {
             result = -1;
-        } else {
+        } else if (this != other) {
             Mapping map = (Mapping) other;
             if(this.mappings.size() > map.mappings.size()) {
                 result = 1;

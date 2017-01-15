@@ -44,22 +44,25 @@ final class Sequence extends AbstractNode{
     /**
      * Nodes in this sequence.
      */
-    private final List<AbstractNode> nodes = 
-        new LinkedList<AbstractNode>();
+    private final List<AbstractNode> nodes = new LinkedList<>();
 
     /**
      * Ctor.
      * @param parent The parent node of this sequence.
+     * @param elements Elements of this sequence.
      */
-    Sequence(final AbstractNode parent) {
+    Sequence(
+        final AbstractNode parent, final Collection<AbstractNode> elements
+    ) {
         super(parent);
+        this.nodes.addAll(elements);
+        Collections.sort(this.nodes);
     }
 
     @Override
     public Collection<AbstractNode> children() {
         final List<AbstractNode> children = new LinkedList<>();
         children.addAll(this.nodes);
-        Collections.sort(children);
         return children;
     }
 
@@ -78,9 +81,9 @@ final class Sequence extends AbstractNode{
      * @param other The other AbstractNode.
      * @checkstyle NestedIfDepth (100 lines)
      * @return
-     *  -1 if this < o <br>
+     *  a value < 0 if this < o <br>
      *   0 if this == o or <br>
-     *   1 if this > o
+     *  a value > 0 if this > o
      */
     @Override
     public int compareTo(final AbstractNode other) {
@@ -89,7 +92,7 @@ final class Sequence extends AbstractNode{
             result = 1;
         } else if (other instanceof Mapping) {
             result = -1;
-        } else {
+        } else if (this != other) {
             Sequence seq = (Sequence) other;
             if(this.nodes.size() > seq.nodes.size()) {
                 result = 1;

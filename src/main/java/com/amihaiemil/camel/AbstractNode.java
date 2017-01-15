@@ -35,10 +35,6 @@ import java.util.Collection;
  * @version $Id$
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#node//
- * @todo #7:1h/DEV Implement and unit test Sequence node.
- *  See specification: http://yaml.org/spec/1.2/spec.html#sequence//
- * @todo #7:1h/DEV Implement and unit test Mapping node.
- *  See specification: http://yaml.org/spec/1.2/spec.html#mapping//
  */
 abstract class AbstractNode implements Comparable<AbstractNode> {
 

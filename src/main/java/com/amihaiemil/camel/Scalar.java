@@ -104,18 +104,25 @@ final class Scalar extends AbstractNode {
      * 
      * @param other The other AbstractNode.
      * @return
-     *  -1 if this < o <br>
+     *  a value < 0 if this < o <br>
      *   0 if this == o or <br>
-     *   1 if this > o
+     *  a value > 0 if this > o
      */
     @Override
     public int compareTo(final AbstractNode other) {
         int result = -1;
-        if (other == null) {
+        if (this == other) {
+            result = 0;
+        } else if (other == null) {
             result = 1;
         } else if (other instanceof Scalar) {
             result = this.value.compareTo(((Scalar) other).value);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
