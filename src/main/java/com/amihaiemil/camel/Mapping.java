@@ -71,10 +71,8 @@ final class Mapping extends AbstractNode {
     @Override
     public int compareTo(final AbstractNode other) {
         int result = 0;
-        if (other == null || other instanceof Scalar) {
+        if (other == null || !(other instanceof Mapping)) {
             result = 1;
-        } else if (other instanceof Mapping) {
-            result = -1;
         } else if (this != other) {
             Mapping map = (Mapping) other;
             if(this.mappings.size() > map.mappings.size()) {
