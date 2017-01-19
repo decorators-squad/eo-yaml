@@ -32,6 +32,11 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #6:30m/DEV Implement and unit test decorator StrictYamlMapping,
+ *  which should throw YamlNodeNotFoundException if any of the
+ *  methods of the decorated YamlMapping returns null (if the given key
+ *  points to a YamlNode that is not a YamlMapping, for instance, or if
+ *  the key doesn't exist in the map).
  */
 public interface YamlMapping extends YamlNode{
 

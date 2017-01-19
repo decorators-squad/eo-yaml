@@ -5,6 +5,10 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #6:30m/DEV Implement and unit test decorator StrictYamlSequence
+ *  which should throw YamlNodeNotFoundException if any of the
+ *  methods of the decorated YamlSequence returns null (if the given index
+ *  points to a YamlNode that is not a YamlMapping, for instance).
  */
 public interface YamlSequence extends YamlNode {
 
@@ -19,19 +23,19 @@ public interface YamlSequence extends YamlNode {
      * @param index Integer index.
      * @return Yaml mapping
      */
-    YamlMapping getYamlMapping(final int index);
+    YamlMapping yamlMapping(final int index);
 
     /**
      * Get the Yaml sequence  from the given index.
      * @param index Integer index.
      * @return Yaml sequence
      */
-    YamlSequence getYamlSequence(final int index);
+    YamlSequence yamlSequence(final int index);
 
     /**
      * Get the String from the given index.
      * @param index Integer index.
      * @return String
      */
-    String getString(final int index);
+    String string(final int index);
 }

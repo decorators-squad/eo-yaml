@@ -61,10 +61,10 @@ final class RtYamlSequence implements YamlSequence {
     }
 
     @Override
-    public YamlMapping getYamlMapping(final int index) {
+    public YamlMapping yamlMapping(final int index) {
         final YamlNode value = this.nodes.get(index);
         final YamlMapping found;
-        if (value != null && value instanceof YamlMapping) {
+        if (value instanceof YamlMapping) {
             found = (YamlMapping) value;
         } else {
             found = null;
@@ -73,10 +73,10 @@ final class RtYamlSequence implements YamlSequence {
     }
 
     @Override
-    public YamlSequence getYamlSequence(final int index) {
+    public YamlSequence yamlSequence(final int index) {
         final YamlNode value = this.nodes.get(index);
         final YamlSequence found;
-        if (value != null && value instanceof YamlSequence) {
+        if (value instanceof YamlSequence) {
             found = (YamlSequence) value;
         } else {
             found = null;
@@ -85,10 +85,10 @@ final class RtYamlSequence implements YamlSequence {
     }
 
     @Override
-    public String getString(final int index) {
+    public String string(final int index) {
         final YamlNode value = this.nodes.get(index);
         final String found;
-        if (value != null && value instanceof Scalar) {
+        if (value instanceof Scalar) {
             found = ((Scalar) value).value();
         } else {
             found = null;
