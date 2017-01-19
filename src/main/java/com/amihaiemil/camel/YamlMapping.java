@@ -27,51 +27,53 @@
  */
 package com.amihaiemil.camel;
 
-import java.util.Collection;
-
 /**
- * YAML node.
+ * A Yaml mapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#node//
- * @todo #7:1h/DEV Implement and unit test Sequence node.
- *  See specification: http://yaml.org/spec/1.2/spec.html#sequence//
- * @todo #7:1h/DEV Implement and unit test Mapping node.
- *  See specification: http://yaml.org/spec/1.2/spec.html#mapping//
  */
-abstract class AbstractNode {
+public interface YamlMapping extends YamlNode{
 
     /**
-     * Parents of this node.
+     * Get the Yaml mapping associated with the given key.
+     * @param key String key
+     * @return Yaml mapping
      */
-    private Collection<AbstractNode> parents;
+    YamlMapping yamlMapping(final String key);
 
     /**
-     * Ctor.
-     * @param parents Given parents
+     * Get the Yaml mapping associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return Yaml mapping
      */
-    AbstractNode(final Collection<AbstractNode> parents) {
-        if(parents.isEmpty()) {
-            throw new IllegalStateException(
-                "A YAML graph cannot have orphaned nodes"
-            );
-        }
-        this.parents = parents;
-    }
-    
-    /**
-     * Fetch the parent nodes of this node.
-     * @return Collection of {@link AbstractNode}
-     */
-    public Collection<AbstractNode> parents() {
-        return this.parents;
-    }
+    YamlMapping yamlMapping(final YamlNode key);
 
     /**
-     * Fetch the child nodes of this node.
-     * @return Collection of {@link AbstractNode}
+     * Get the Yaml sequence associated with the given key.
+     * @param key String key
+     * @return Yaml sequence
      */
-    public abstract Collection<AbstractNode> children();
+    YamlSequence yamlSequence(final String key);
 
+    /**
+     * Get the Yaml sequence associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return Yaml sequence
+     */
+    YamlSequence yamlSequence(final YamlNode key);
+
+    /**
+     * Get the String associated with the given key.
+     * @param key String key
+     * @return String
+     */
+    String string(final String key);
+
+    /**
+     * Get the String associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return String
+     */
+    String string(final YamlNode key);
 }

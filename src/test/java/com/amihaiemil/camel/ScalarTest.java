@@ -27,15 +27,14 @@
  */
 package com.amihaiemil.camel;
 
+import static org.hamcrest.CoreMatchers.is;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.hamcrest.CoreMatchers.is;
 
 /**
  * Unit tests for {@link Scalar}.
@@ -52,13 +51,8 @@ public final class ScalarTest {
     @Test
     public void returnsValue() {
         final String val = "test scalar value";
-        final Scalar<String> scl = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
-        );
-        MatcherAssert.assertThat(
-            scl.value(), Matchers.equalTo(val)
-        );
+        final Scalar scl = new Scalar(val);
+        MatcherAssert.assertThat(scl.value(), Matchers.equalTo(val));
     }
 
     /**
@@ -67,22 +61,9 @@ public final class ScalarTest {
     @Test
     public void hasNoChildren() {
         final String val = "test scalar value";
-        final Scalar<String> scl = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
-        );
+        final Scalar scl = new Scalar(val);
         MatcherAssert.assertThat(
             scl.children(), Matchers.emptyIterable()
-        );
-    }
-    
-    /**
-     * Scalar throws ISE if no parents are specified.
-     */
-    @Test (expected = IllegalStateException.class)
-    public void orphanForbidden() {
-        new Scalar<String>(
-            new ArrayList<AbstractNode>(), "orphan"
         );
     }
 
@@ -93,14 +74,8 @@ public final class ScalarTest {
     @Test
     public void equalsAndHashCode() {
         final String val = "test scalar value";
-        final Scalar<String> firstScalar = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
-        );
-        final Scalar<String> secondScalar = new Scalar<String>(
-            Arrays.asList(Mockito.mock(AbstractNode.class)),
-            val
-        );
+        final Scalar firstScalar = new Scalar(val);
+        final Scalar secondScalar = new Scalar(val);
 
         MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));
         MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
@@ -112,5 +87,49 @@ public final class ScalarTest {
         MatcherAssert.assertThat(
             firstScalar.hashCode() == secondScalar.hashCode(), is(true)
         );
+    }
+
+    /**
+     * Scalar can compare itself to another Scalar. 
+     */
+    @Test
+    public void comparesToScalar() {
+        Scalar first = new Scalar("java");
+        Scalar second = new Scalar("java");
+        Scalar digits = new Scalar("123");
+        Scalar otherDigits = new Scalar("124");
+        MatcherAssert.assertThat(first.compareTo(first), Matchers.equalTo(0));
+        MatcherAssert.assertThat(first.compareTo(second), Matchers.equalTo(0));
+        MatcherAssert.assertThat(
+            first.compareTo(digits), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            first.compareTo(null), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            digits.compareTo(otherDigits), Matchers.lessThan(0)
+        );
+    }
+
+    /**
+     * Scalar can compare itself to a Mapping.
+     */
+    @Test
+    public void comparesToMapping() {
+        Scalar first = new Scalar("java");
+        RtYamlMapping map = new RtYamlMapping(
+            new HashMap<YamlNode, YamlNode>()
+        );
+        MatcherAssert.assertThat(first.compareTo(map), Matchers.lessThan(0));
+    }
+
+    /**
+     * Scalar can compare itself to a Sequence.
+     */
+    @Test
+    public void comparesToSequence() {
+        Scalar first = new Scalar("java");
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
+        MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }
 }

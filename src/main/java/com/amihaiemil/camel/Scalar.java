@@ -36,25 +36,19 @@ import java.util.LinkedList;
  * @version $Id$
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#scalar//
- * @param <T> Type of the scalar.
  */
-final class Scalar<T> extends AbstractNode {
+final class Scalar implements YamlNode {
 
     /**
      * This scalar's value.
      */
-    private T value;
+    private String value;
 
     /**
      * Ctor.
-     * @param parents Parent nodes
      * @param value Given value for this scalar.
      */
-    Scalar(
-        final Collection<AbstractNode> parents,
-        final T value
-    ) {
-        super(parents);
+    Scalar(final String value) {
         this.value = value;
     }
 
@@ -62,13 +56,13 @@ final class Scalar<T> extends AbstractNode {
      * Value of this scalar.
      * @return Value of type T.
      */
-    T value() {
+    public String value() {
         return this.value;
     }
 
     @Override
-    public Collection<AbstractNode> children() {
-        return new LinkedList<AbstractNode>();
+    public Collection<YamlNode> children() {
+        return new LinkedList<YamlNode>();
     }
 
     /**
@@ -85,7 +79,7 @@ final class Scalar<T> extends AbstractNode {
             return false;
         }
 
-        final Scalar<T> scalar = (Scalar<T>) anotherObject;
+        final Scalar scalar = (Scalar) anotherObject;
 
         return this.value.equals(scalar.value);
 
@@ -99,4 +93,35 @@ final class Scalar<T> extends AbstractNode {
     public int hashCode() {
         return this.value.hashCode();
     }
+
+    /**
+     * Compare this Scalar to another node.<br><br>
+     * 
+     * A Scalar is always considered less than a Sequence or a Mapping.<br>
+     * If o is Scalar then their String values are compared lexicographically
+     * 
+     * @param other The other AbstractNode.
+     * @return
+     *  a value < 0 if this < o <br>
+     *   0 if this == o or <br>
+     *  a value > 0 if this > o
+     */
+    @Override
+    public int compareTo(final YamlNode other) {
+        int result = -1;
+        if (this == other) {
+            result = 0;
+        } else if (other == null) {
+            result = 1;
+        } else if (other instanceof Scalar) {
+            result = this.value.compareTo(((Scalar) other).value);
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
+    }
+
 }

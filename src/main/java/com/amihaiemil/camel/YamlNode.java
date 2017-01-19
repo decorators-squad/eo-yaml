@@ -27,12 +27,21 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.Collection;
+
 /**
- * A Yaml structure.
+ * YAML node.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @see http://yaml.org/spec/1.2/spec.html#node//
  */
-public interface Yaml {
+public interface YamlNode extends Comparable<YamlNode> {
+
+    /**
+     * Fetch the child nodes of this node.
+     * @return Collection of {@link YamlNode}
+     */
+    Collection<YamlNode> children();
 
 }
