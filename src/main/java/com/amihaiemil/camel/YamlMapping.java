@@ -27,47 +27,53 @@
  */
 package com.amihaiemil.camel;
 
-import java.util.Collection;
-
 /**
- * YAML node.
+ * A Yaml mapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#node//
  */
-abstract class AbstractNode implements Comparable<AbstractNode> {
+public interface YamlMapping extends YamlNode{
 
     /**
-     * Parent of this node.
+     * Get the Yaml mapping associated with the given key.
+     * @param key String key
+     * @return Yaml mapping
      */
-    private AbstractNode parent;
+    YamlMapping yamlMapping(final String key);
 
     /**
-     * Ctor.
-     * @param parent Given parent
+     * Get the Yaml mapping associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return Yaml mapping
      */
-    AbstractNode(final AbstractNode parent) {
-        if(parent instanceof Scalar) {
-            throw new IllegalStateException(
-                "A YAML Scalar node cannot have children nodes"
-            );
-        }
-        this.parent = parent;
-    }
+    YamlMapping yamlMapping(final YamlNode key);
 
     /**
-     * Fetch the parent nodes of this node.
-     * @return Collection of {@link AbstractNode}
+     * Get the Yaml sequence associated with the given key.
+     * @param key String key
+     * @return Yaml sequence
      */
-    public AbstractNode parent() {
-        return this.parent;
-    }
+    YamlSequence yamlSequence(final String key);
 
     /**
-     * Fetch the child nodes of this node.
-     * @return Collection of {@link AbstractNode}
+     * Get the Yaml sequence associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return Yaml sequence
      */
-    public abstract Collection<AbstractNode> children();
+    YamlSequence yamlSequence(final YamlNode key);
 
+    /**
+     * Get the String associated with the given key.
+     * @param key String key
+     * @return String
+     */
+    String string(final String key);
+
+    /**
+     * Get the String associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return String
+     */
+    String string(final YamlNode key);
 }

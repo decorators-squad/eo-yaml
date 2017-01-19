@@ -38,33 +38,24 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link Mapping}.
+ * Unit tests for {@link RtYamlMapping}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @ince 1.0.0
  *
  */
-public final class MappingTest {
+public final class RtYamlMappingTest {
 
     /**
      * Mapping can fetch its children.
      */
     @Test
     public void fetchesChildren() {
-        Map<AbstractNode, AbstractNode> mappings = new HashMap<>();
-        mappings.put(
-            new Scalar(Mockito.mock(AbstractNode.class), "key1"),
-            Mockito.mock(AbstractNode.class)
-        );
-        mappings.put(
-            new Scalar(Mockito.mock(AbstractNode.class), "key2"),
-            Mockito.mock(AbstractNode.class)
-        );
-        mappings.put(
-            new Scalar(Mockito.mock(AbstractNode.class), "key3"),
-            Mockito.mock(AbstractNode.class)
-        );
-        Mapping map = new Mapping(Mockito.mock(AbstractNode.class), mappings);
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
         MatcherAssert.assertThat(
             map.children(), Matchers.not(Matchers.emptyIterable())
         );
@@ -76,22 +67,16 @@ public final class MappingTest {
      */
     @Test
     public void orderedKeys() {
-        Map<AbstractNode, AbstractNode> mappings = new HashMap<>();
-        Scalar one = new Scalar(Mockito.mock(AbstractNode.class), "value1");
-        Scalar two = new Scalar(Mockito.mock(AbstractNode.class), "value1");
-        Scalar three = new Scalar(Mockito.mock(AbstractNode.class), "value1");
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Scalar one = new Scalar("value1");
+        Scalar two = new Scalar("value1");
+        Scalar three = new Scalar("value1");
 
-        mappings.put(
-            new Scalar(Mockito.mock(AbstractNode.class), "key3"), one
-        );
-        mappings.put(
-            new Scalar(Mockito.mock(AbstractNode.class), "key2"), two
-        );
-        mappings.put(
-            new Scalar(Mockito.mock(AbstractNode.class), "key1"), three
-        );
-        Mapping map = new Mapping(Mockito.mock(AbstractNode.class), mappings);
-        Iterator<AbstractNode> children = map.children().iterator();
+        mappings.put(new Scalar("key3"), one);
+        mappings.put(new Scalar("key2"), two);
+        mappings.put(new Scalar("key1"), three);
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        Iterator<YamlNode> children = map.children().iterator();
         MatcherAssert.assertThat(
             (Scalar) children.next(), Matchers.equalTo(three)
         );
@@ -108,13 +93,10 @@ public final class MappingTest {
      */
     @Test
     public void comparesToScalar() {
-        Mapping map = new Mapping(
-            Mockito.mock(AbstractNode.class),
-            new HashMap<AbstractNode, AbstractNode>()
+        RtYamlMapping map = new RtYamlMapping(
+            new HashMap<YamlNode, YamlNode>()
         );
-        Scalar scalar = new Scalar(
-            Mockito.mock(AbstractNode.class), "java"
-        );
+        Scalar scalar = new Scalar("java");
         MatcherAssert.assertThat(
             map.compareTo(scalar),
             Matchers.greaterThan(0)
@@ -126,14 +108,10 @@ public final class MappingTest {
      */
     @Test
     public void comparesToSequence() {
-        Mapping map = new Mapping(
-            Mockito.mock(AbstractNode.class),
-            new HashMap<AbstractNode, AbstractNode>()
+        RtYamlMapping map = new RtYamlMapping(
+            new HashMap<YamlNode, YamlNode>()
         );
-        Sequence seq = new Sequence(
-            Mockito.mock(AbstractNode.class),
-            new LinkedList<AbstractNode>()
-        );
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(
             map.compareTo(seq),
             Matchers.greaterThan(0)

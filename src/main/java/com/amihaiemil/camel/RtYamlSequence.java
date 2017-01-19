@@ -33,35 +33,72 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * YAML sequence.
+ * YAML sequence implementation (rt means runtime).
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#sequence//
  */
-final class Sequence extends AbstractNode{
+final class RtYamlSequence implements YamlSequence {
 
     /**
      * Nodes in this sequence.
      */
-    private final List<AbstractNode> nodes = new LinkedList<>();
+    private final List<YamlNode> nodes = new LinkedList<>();
 
     /**
      * Ctor.
-     * @param parent The parent node of this sequence.
      * @param elements Elements of this sequence.
      */
-    Sequence(
-        final AbstractNode parent, final Collection<AbstractNode> elements
-    ) {
-        super(parent);
+    RtYamlSequence(final Collection<YamlNode> elements) {
         this.nodes.addAll(elements);
         Collections.sort(this.nodes);
     }
 
     @Override
-    public Collection<AbstractNode> children() {
-        final List<AbstractNode> children = new LinkedList<>();
+    public int size() {
+        return this.nodes.size();
+    }
+
+    @Override
+    public YamlMapping getYamlMapping(final int index) {
+        final YamlNode value = this.nodes.get(index);
+        final YamlMapping found;
+        if (value != null && value instanceof YamlMapping) {
+            found = (YamlMapping) value;
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public YamlSequence getYamlSequence(final int index) {
+        final YamlNode value = this.nodes.get(index);
+        final YamlSequence found;
+        if (value != null && value instanceof YamlSequence) {
+            found = (YamlSequence) value;
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public String getString(final int index) {
+        final YamlNode value = this.nodes.get(index);
+        final String found;
+        if (value != null && value instanceof Scalar) {
+            found = ((Scalar) value).value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public Collection<YamlNode> children() {
+        final List<YamlNode> children = new LinkedList<>();
         children.addAll(this.nodes);
         return children;
     }
@@ -86,14 +123,14 @@ final class Sequence extends AbstractNode{
      *  a value > 0 if this > o
      */
     @Override
-    public int compareTo(final AbstractNode other) {
+    public int compareTo(final YamlNode other) {
         int result = 0;
         if (other == null || other instanceof Scalar) {
             result = 1;
-        } else if (other instanceof Mapping) {
+        } else if (other instanceof RtYamlMapping) {
             result = -1;
         } else if (this != other) {
-            Sequence seq = (Sequence) other;
+            RtYamlSequence seq = (RtYamlSequence) other;
             if(this.nodes.size() > seq.nodes.size()) {
                 result = 1;
             } else if (this.nodes.size() < seq.nodes.size()) {

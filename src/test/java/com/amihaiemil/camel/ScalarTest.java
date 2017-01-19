@@ -35,7 +35,6 @@ import java.util.LinkedList;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link Scalar}.
@@ -52,7 +51,7 @@ public final class ScalarTest {
     @Test
     public void returnsValue() {
         final String val = "test scalar value";
-        final Scalar scl = new Scalar(Mockito.mock(AbstractNode.class), val);
+        final Scalar scl = new Scalar(val);
         MatcherAssert.assertThat(scl.value(), Matchers.equalTo(val));
     }
 
@@ -62,20 +61,9 @@ public final class ScalarTest {
     @Test
     public void hasNoChildren() {
         final String val = "test scalar value";
-        final Scalar scl = new Scalar(Mockito.mock(AbstractNode.class), val);
+        final Scalar scl = new Scalar(val);
         MatcherAssert.assertThat(
             scl.children(), Matchers.emptyIterable()
-        );
-    }
-
-    /**
-     * Scalar throws ISE because the parent cannot be a Scalar.
-     * Scalars cannot have children!
-     */
-    @Test (expected = IllegalStateException.class)
-    public void scalarParent() {
-        new Scalar(
-            new Scalar(Mockito.mock(AbstractNode.class), "a"), "orphan"
         );
     }
 
@@ -86,12 +74,8 @@ public final class ScalarTest {
     @Test
     public void equalsAndHashCode() {
         final String val = "test scalar value";
-        final Scalar firstScalar = new Scalar(
-            Mockito.mock(AbstractNode.class), val
-        );
-        final Scalar secondScalar = new Scalar(
-            Mockito.mock(AbstractNode.class), val
-        );
+        final Scalar firstScalar = new Scalar(val);
+        final Scalar secondScalar = new Scalar(val);
 
         MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));
         MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
@@ -110,18 +94,10 @@ public final class ScalarTest {
      */
     @Test
     public void comparesToScalar() {
-        Scalar first = new Scalar(
-            Mockito.mock(AbstractNode.class), "java"
-        );
-        Scalar second = new Scalar(
-            Mockito.mock(AbstractNode.class), "java"
-        );
-        Scalar digits = new Scalar(
-            Mockito.mock(AbstractNode.class), "123"
-        );
-        Scalar otherDigits = new Scalar(
-            Mockito.mock(AbstractNode.class), "124"
-        );
+        Scalar first = new Scalar("java");
+        Scalar second = new Scalar("java");
+        Scalar digits = new Scalar("123");
+        Scalar otherDigits = new Scalar("124");
         MatcherAssert.assertThat(first.compareTo(first), Matchers.equalTo(0));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.equalTo(0));
         MatcherAssert.assertThat(
@@ -140,12 +116,9 @@ public final class ScalarTest {
      */
     @Test
     public void comparesToMapping() {
-        Scalar first = new Scalar(
-            Mockito.mock(AbstractNode.class), "java"
-        );
-        Mapping map = new Mapping(
-            Mockito.mock(AbstractNode.class),
-            new HashMap<AbstractNode, AbstractNode>()
+        Scalar first = new Scalar("java");
+        RtYamlMapping map = new RtYamlMapping(
+            new HashMap<YamlNode, YamlNode>()
         );
         MatcherAssert.assertThat(first.compareTo(map), Matchers.lessThan(0));
     }
@@ -155,13 +128,8 @@ public final class ScalarTest {
      */
     @Test
     public void comparesToSequence() {
-        Scalar first = new Scalar(
-            Mockito.mock(AbstractNode.class), "java"
-        );
-        Sequence seq = new Sequence(
-            Mockito.mock(AbstractNode.class),
-            new LinkedList<AbstractNode>()
-        );
+        Scalar first = new Scalar("java");
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }
 }

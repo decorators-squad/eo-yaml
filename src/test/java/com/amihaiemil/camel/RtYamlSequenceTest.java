@@ -38,35 +38,23 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link Sequence}.
+ * Unit tests for {@link RtYamlSequence}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-public final class SequenceTest {
-
-    /**
-     * Sequence throws ISE because the parent cannot be a Scalar.
-     * Scalars cannot have children!
-     */
-    @Test (expected = IllegalStateException.class)
-    public void scalarParent() {
-        new Sequence(
-            new Scalar(Mockito.mock(AbstractNode.class), "a"),
-            new LinkedList<AbstractNode>()
-        );
-    }
+public final class RtYamlSequenceTest {
 
     /**
      * Sequence can fetch its children.
      */
     @Test
     public void fetchesChildren() {
-        List<AbstractNode> nodes = new LinkedList<>();
-        nodes.add(Mockito.mock(AbstractNode.class));
-        nodes.add(Mockito.mock(AbstractNode.class));
-        nodes.add(Mockito.mock(AbstractNode.class));
-        Sequence seq = new Sequence(Mockito.mock(AbstractNode.class), nodes);
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(Mockito.mock(YamlNode.class));
+        nodes.add(Mockito.mock(YamlNode.class));
+        nodes.add(Mockito.mock(YamlNode.class));
+        RtYamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
             seq.children(), Matchers.not(Matchers.emptyIterable())
         );
@@ -78,17 +66,17 @@ public final class SequenceTest {
      */
     @Test
     public void sequenceIsOrdered() {
-        List<AbstractNode> nodes = new LinkedList<>();
-        Scalar first = new Scalar(Mockito.mock(AbstractNode.class), "test");
-        Scalar sec = new Scalar(Mockito.mock(AbstractNode.class), "mihai");
-        Scalar third = new Scalar(Mockito.mock(AbstractNode.class), "amber");
-        Scalar fourth = new Scalar(Mockito.mock(AbstractNode.class), "5433");
+        List<YamlNode> nodes = new LinkedList<>();
+        Scalar first = new Scalar("test");
+        Scalar sec = new Scalar("mihai");
+        Scalar third = new Scalar("amber");
+        Scalar fourth = new Scalar("5433");
         nodes.add(first);
         nodes.add(sec);
         nodes.add(third);
         nodes.add(fourth);
-        Sequence seq = new Sequence(Mockito.mock(AbstractNode.class), nodes);
-        Iterator<AbstractNode> ordered = seq.children().iterator();
+        RtYamlSequence seq = new RtYamlSequence(nodes);
+        Iterator<YamlNode> ordered = seq.children().iterator();
         MatcherAssert.assertThat(
             (Scalar) ordered.next(), Matchers.equalTo(fourth)
         );
@@ -108,13 +96,8 @@ public final class SequenceTest {
      */
     @Test
     public void comparesToScalar() {
-        Sequence seq = new Sequence(
-            Mockito.mock(AbstractNode.class),
-            new LinkedList<AbstractNode>()
-        );
-        Scalar scalar = new Scalar(
-            Mockito.mock(AbstractNode.class), "java"
-        );
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
+        Scalar scalar = new Scalar("java");
         MatcherAssert.assertThat(
             seq.compareTo(scalar),
             Matchers.greaterThan(0)
@@ -126,13 +109,9 @@ public final class SequenceTest {
      */
     @Test
     public void comparesToMapping() {
-        Sequence seq = new Sequence(
-            Mockito.mock(AbstractNode.class),
-            new LinkedList<AbstractNode>()
-        );
-        Mapping map = new Mapping(
-            Mockito.mock(AbstractNode.class),
-            new HashMap<AbstractNode, AbstractNode>()
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
+        RtYamlMapping map = new RtYamlMapping(
+            new HashMap<YamlNode, YamlNode>()
         );
         MatcherAssert.assertThat(seq.compareTo(map), Matchers.lessThan(0));
     }
@@ -143,28 +122,24 @@ public final class SequenceTest {
      */
     @Test
     public void comparesToSequence() {
-        List<AbstractNode> nodes = new LinkedList<>();
-        Scalar first = new Scalar(Mockito.mock(AbstractNode.class), "test");
-        Scalar sec = new Scalar(Mockito.mock(AbstractNode.class), "mihai");
-        Scalar third = new Scalar(Mockito.mock(AbstractNode.class), "amber");
-        Scalar fourth = new Scalar(Mockito.mock(AbstractNode.class), "5433");
+        List<YamlNode> nodes = new LinkedList<>();
+        Scalar first = new Scalar("test");
+        Scalar sec = new Scalar("mihai");
+        Scalar third = new Scalar("amber");
+        Scalar fourth = new Scalar("5433");
         nodes.add(first);
         nodes.add(sec);
         nodes.add(third);
         nodes.add(fourth);
-        Sequence seq = new Sequence(Mockito.mock(AbstractNode.class), nodes);
-        Sequence other = new Sequence(Mockito.mock(AbstractNode.class), nodes);
+        RtYamlSequence seq = new RtYamlSequence(nodes);
+        RtYamlSequence other = new RtYamlSequence(nodes);
         
         nodes.remove(0);
-        Sequence another = new Sequence(
-            Mockito.mock(AbstractNode.class), nodes
-        );
+        RtYamlSequence another = new RtYamlSequence(nodes);
         
         nodes.remove(0);
-        nodes.add(0, new Scalar(Mockito.mock(AbstractNode.class), "yaml"));
-        Sequence sameSize = new Sequence(
-            Mockito.mock(AbstractNode.class), nodes
-        );
+        nodes.add(0, new Scalar("yaml"));
+        RtYamlSequence sameSize = new RtYamlSequence(nodes);
 
         MatcherAssert.assertThat(seq.compareTo(seq), Matchers.equalTo(0));
         MatcherAssert.assertThat(seq.compareTo(null), Matchers.greaterThan(0));
