@@ -47,7 +47,7 @@ import org.mockito.Mockito;
 public final class RtYamlMappingTest {
 
     /**
-     * Mapping can fetch its children.
+     * RtYamlMapping can fetch its children.
      */
     @Test
     public void fetchesChildren() {
@@ -63,14 +63,14 @@ public final class RtYamlMappingTest {
     }
 
     /**
-     * Mapping is ordered by keys.
+     * RtYamlMapping is ordered by keys.
      */
     @Test
     public void orderedKeys() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
         Scalar one = new Scalar("value1");
-        Scalar two = new Scalar("value1");
-        Scalar three = new Scalar("value1");
+        Scalar two = new Scalar("value2");
+        Scalar three = new Scalar("value3");
 
         mappings.put(new Scalar("key3"), one);
         mappings.put(new Scalar("key2"), two);
@@ -87,9 +87,79 @@ public final class RtYamlMappingTest {
             (Scalar) children.next(), Matchers.equalTo(one)
         );
     }
+
+    /**
+     * RtYamlMapping can return a Scalar as a string.
+     */
+    @Test
+    public void returnsYamlScalarAsString() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        String value = "value2";
+        Scalar key = new Scalar("key2");
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(key, new Scalar(value));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        
+        MatcherAssert.assertThat(
+            map.string("key2"), Matchers.equalTo(value)
+        );
+        MatcherAssert.assertThat(
+            map.string(key), Matchers.equalTo(value)
+        );
+    }
+
+    /**
+     * RtYamlMapping can return a YamlMapping.
+     */
+    @Test
+    public void returnsYamlMapping() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        
+        MatcherAssert.assertThat(
+            map.yamlMapping("key1"), Matchers.notNullValue()
+        );
+    }
+
+    /**
+     * RtYamlMapping can return a YamlSequence.
+     */
+    @Test
+    public void returnsYamlSequence() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        MatcherAssert.assertThat(
+            map.yamlSequence("key3"), Matchers.notNullValue()
+        );
+    }
+
+    /**
+     * RtYamlMapping can return null if the specified key is missig.
+     */
+    @Test
+    public void returnsNullOnMissingKey() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        MatcherAssert.assertThat(
+            map.yamlSequence("key4"), Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.yamlMapping("key4"), Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.string("key4"), Matchers.nullValue()
+        );
+    }
     
     /**
-     * Mapping can compare itself to a Scalar. 
+     * RtYamlMapping can compare itself to a Scalar. 
      */
     @Test
     public void comparesToScalar() {
@@ -104,7 +174,7 @@ public final class RtYamlMappingTest {
     }
 
     /**
-     * Mapping can compare itself to a Sequence.
+     * RtYamlMapping can compare itself to a Sequence.
      */
     @Test
     public void comparesToSequence() {
@@ -119,7 +189,7 @@ public final class RtYamlMappingTest {
     }
     
     /**
-     * Scalar can compare itself to a Mapping.
+     * RtYamlMapping can compare itself to a Mapping.
      */
     @Test
     public void comparesToMapping() {
