@@ -42,6 +42,14 @@ public final class YamlNodeNotFoundException extends RuntimeException {
 
     /**
      * Ctor. 
+     * @param msg Message
+     */
+    public YamlNodeNotFoundException(final String msg) {
+        super(msg);
+    }
+    
+    /**
+     * Ctor. 
      * @param init Initial exception
      */
     public YamlNodeNotFoundException(final Throwable init) {

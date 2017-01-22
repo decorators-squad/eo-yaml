@@ -43,42 +43,54 @@ public interface YamlMapping extends YamlNode{
     /**
      * Get the Yaml mapping associated with the given key.
      * @param key String key
-     * @return Yaml mapping
+     * @return Yaml mapping or null if the key is missing, or not pointing
+     *  to a mapping.
+     * @see {@link StrictYamlMapping}
      */
     YamlMapping yamlMapping(final String key);
 
     /**
      * Get the Yaml mapping associated with the given key.
      * @param key Yaml node (mapping or sequence) key
-     * @return Yaml mapping
+     * @return Yaml mapping or null if the key is missing, or not pointing
+     *  to a mapping.
+     * @see {@link StrictYamlMapping}
      */
     YamlMapping yamlMapping(final YamlNode key);
 
     /**
      * Get the Yaml sequence associated with the given key.
      * @param key String key
-     * @return Yaml sequence
+     * @return Yaml sequence or null if the key is missing, or not pointing
+     *  to a sequence.
+     * @see {@link StrictYamlMapping}
      */
     YamlSequence yamlSequence(final String key);
 
     /**
      * Get the Yaml sequence associated with the given key.
      * @param key Yaml node (mapping or sequence) key
-     * @return Yaml sequence
+     * @return Yaml sequence or null if the key is missing, or not pointing
+     *  to a sequence
+     * @see {@link StrictYamlMapping}
      */
     YamlSequence yamlSequence(final YamlNode key);
 
     /**
      * Get the String associated with the given key.
      * @param key String key
-     * @return String
+     * @return String or null if the key is missing, or not pointing
+     *  to a scalar.
+     * @see {@link StrictYamlMapping}
      */
     String string(final String key);
 
     /**
      * Get the String associated with the given key.
      * @param key Yaml node (mapping or sequence) key
-     * @return String
+     * @return String or null if the key is missing, or not pointing
+     *  to a scalar.
+     * @see {@link StrictYamlMapping}
      */
     String string(final YamlNode key);
 }
