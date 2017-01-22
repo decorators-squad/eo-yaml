@@ -92,6 +92,60 @@ public final class RtYamlSequenceTest {
     }
     
     /**
+     * RtYamlSequence can return a Scalar as a string.
+     */
+    @Test
+    public void returnsYamlScalarAsString() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new Scalar("test"));
+        nodes.add(new Scalar("amber"));
+        nodes.add(new Scalar("mihai"));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(
+            seq.string(1), Matchers.equalTo("mihai")
+        );
+        MatcherAssert.assertThat(
+            seq.yamlMapping(1), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * RtYamlSequence can return a YamlMapping.
+     */
+    @Test
+    public void returnsYamlMapping() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new Scalar("test"));
+        nodes.add(Mockito.mock(YamlMapping.class));
+        nodes.add(new Scalar("mihai"));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(
+            seq.yamlMapping(2), Matchers.notNullValue()
+        );
+        MatcherAssert.assertThat(
+            seq.yamlMapping(1), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * RtYamlSequence can return a YamlSequence.
+     */
+    @Test
+    public void returnsYamlSequence() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new Scalar("test"));
+        nodes.add(Mockito.mock(YamlMapping.class));
+        nodes.add(Mockito.mock(YamlSequence.class));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(
+            seq.yamlSequence(2), Matchers.notNullValue()
+        );
+        MatcherAssert.assertThat(
+            seq.yamlSequence(1), Matchers.nullValue()
+        );
+    }
+
+    /**
      * Scalar can compare itself to another Scalar. 
      */
     @Test

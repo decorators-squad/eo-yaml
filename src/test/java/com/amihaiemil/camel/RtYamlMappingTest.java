@@ -156,6 +156,9 @@ public final class RtYamlMappingTest {
         MatcherAssert.assertThat(
             map.string("key4"), Matchers.nullValue()
         );
+        MatcherAssert.assertThat(
+            map.yamlSequence("key1"), Matchers.nullValue()
+        );
     }
     
     /**
@@ -193,7 +196,45 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void comparesToMapping() {
-        //....
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), new Scalar("value1"));
+        mappings.put(new Scalar("key2"), new Scalar("value2"));
+        mappings.put(new Scalar("key1"), new Scalar("value3"));
+        YamlMapping firstmap = new RtYamlMapping(mappings);
+        YamlMapping secondmap = new RtYamlMapping(mappings);
+        mappings.put(new Scalar("key4"), new Scalar("value4"));
+        YamlMapping thirdmap = new RtYamlMapping(mappings);
+
+        Map<YamlNode, YamlNode> othermappings = new HashMap<>();
+        othermappings.put(
+            new Scalar("architect"),
+            Mockito.mock(YamlSequence.class)
+        );
+        othermappings.put(new Scalar("dev"), firstmap);
+        othermappings.put(new Scalar("tester"), secondmap);
+        YamlMapping fourthmap = new RtYamlMapping(othermappings);
+        
+        MatcherAssert.assertThat(
+            firstmap.compareTo(firstmap), Matchers.equalTo(0)
+        );
+        MatcherAssert.assertThat(
+            firstmap.compareTo(secondmap), Matchers.equalTo(0)
+        );
+        MatcherAssert.assertThat(
+            firstmap.compareTo(null), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            firstmap.compareTo(thirdmap), Matchers.lessThan(0)
+        );
+        MatcherAssert.assertThat(
+            thirdmap.compareTo(firstmap), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            firstmap.compareTo(fourthmap), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            fourthmap.compareTo(firstmap), Matchers.lessThan(0)
+        );
     }
 
 }
