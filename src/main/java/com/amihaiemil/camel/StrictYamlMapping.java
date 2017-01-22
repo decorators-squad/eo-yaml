@@ -67,13 +67,7 @@ public final class StrictYamlMapping implements YamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final String key) {
-        YamlMapping found = this.decorated.yamlMapping(key);
-        if (found == null) {
-            throw new YamlNodeNotFoundException(
-                "No YamlMapping found for key " + key
-            );
-        }
-        return found;
+        return this.yamlMapping(new Scalar(key));
     }
 
     @Override
@@ -89,13 +83,7 @@ public final class StrictYamlMapping implements YamlMapping {
 
     @Override
     public YamlSequence yamlSequence(final String key) {
-        YamlSequence found = this.decorated.yamlSequence(key);
-        if (found == null) {
-            throw new YamlNodeNotFoundException(
-                "No YamlSequence found for key " + key
-            );
-        }
-        return found;
+        return this.yamlSequence(new Scalar(key));
     }
 
     @Override
@@ -111,13 +99,7 @@ public final class StrictYamlMapping implements YamlMapping {
 
     @Override
     public String string(final String key) {
-        String found = this.decorated.string(key);
-        if (found == null) {
-            throw new YamlNodeNotFoundException(
-                "No String found for key " + key
-            );
-        }
-        return found;
+        return this.string(new Scalar(key));
     }
 
     @Override

@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -40,6 +43,22 @@ import org.mockito.Mockito;
  */
 public final class StrictYamlMappingTest {
 
+    /**
+     * StrictYamlMapping can fetch its children.
+     */
+    @Test
+    public void fetchesChildren() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
+        YamlMapping map = new StrictYamlMapping(new RtYamlMapping(mappings));
+        MatcherAssert.assertThat(
+            map.children(), Matchers.not(Matchers.emptyIterable())
+        );
+        MatcherAssert.assertThat(map.children().size(), Matchers.equalTo(3));
+    }
+    
     /**
      * StringYamlMapping can throw YamlNodeNotFoundException
      * when the demanded YamlMapping is not found.
@@ -83,7 +102,8 @@ public final class StrictYamlMappingTest {
     public void returnsMapping() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlMapping found = Mockito.mock(YamlMapping.class);
-        Mockito.when(origin.yamlMapping("key")).thenReturn(found);
+        YamlNode key = new Scalar("key");
+        Mockito.when(origin.yamlMapping(key)).thenReturn(found);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.yamlMapping("key"), Matchers.equalTo(found)
@@ -97,7 +117,8 @@ public final class StrictYamlMappingTest {
     public void returnsSequence() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlSequence found = Mockito.mock(YamlSequence.class);
-        Mockito.when(origin.yamlSequence("key")).thenReturn(found);
+        YamlNode key = new Scalar("key");
+        Mockito.when(origin.yamlSequence(key)).thenReturn(found);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.yamlSequence("key"), Matchers.equalTo(found)
@@ -110,7 +131,8 @@ public final class StrictYamlMappingTest {
     @Test
     public void returnsString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
-        Mockito.when(origin.string("key")).thenReturn("found");
+        YamlNode key = new Scalar("key");
+        Mockito.when(origin.string(key)).thenReturn("found");
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.string("key"), Matchers.equalTo("found")
