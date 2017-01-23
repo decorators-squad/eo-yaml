@@ -37,7 +37,12 @@ package com.amihaiemil.camel;
 public final class Yaml {
 
     /**
-     * Create a {@link YamlMappingBuilder}
+     * Hidden ctor.
+     */
+    private Yaml(){}
+
+    /**
+     * Create a {@link YamlMappingBuilder}.
      * @return Builder of YamlMapping.
      */
     public static YamlMappingBuilder createYamlMappingBuilder() {
