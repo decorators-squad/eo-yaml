@@ -53,30 +53,30 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     }
 
     /**
-     * Constructor.
+     * Çtor;
      * @param pairs Pairs used in building the YamlMapping.
      */
-    RtYamlMappingBuilder(final Map<YamlNode, YamlNode> pairs) {
+    RtYamlMappingBuilder (final Map<YamlNode, YamlNode> pairs) {
         this.pairs = pairs;
     }
 
     @Override
-    public YamlMappingBuilder add(final String key, final String value) {
+    public YamlMappingBuilder add(String key, String value) {
         return this.add(new Scalar(key), new Scalar(value));
     }
 
     @Override
-    public YamlMappingBuilder add(final YamlNode key, final String value) {
+    public YamlMappingBuilder add(YamlNode key, String value) {
         return this.add(key, new Scalar(value));
     }
 
     @Override
-    public YamlMappingBuilder add(final String key, final YamlNode value) {
+    public YamlMappingBuilder add(String key, YamlNode value) {
         return this.add(new Scalar(key), value);
     }
 
     @Override
-    public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
+    public YamlMappingBuilder add(YamlNode key, YamlNode value) {
         final Map<YamlNode, YamlNode> withAddedPair = new HashMap<>();
         withAddedPair.putAll(this.pairs);
         withAddedPair.put(key, value);

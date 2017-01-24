@@ -32,42 +32,40 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #24:30m/DEV Following the example of this builder, implement
- *  and unit-test RtYamlSequenceBuilder (implements YamlSequenceBuilder).
- *  The implementation should be immutable (same as RtYamlMappingBuilder).
+ *
  */
 public interface YamlMappingBuilder {
 
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value String
-     * @return This builder
-     */
+	/**
+	 * Add a pair to the mapping.
+	 * @param key String
+	 * @param value String
+	 * @return This builder
+	 */
     YamlMappingBuilder add(final String key, final String value);
 
     /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value String
-     * @return This builder
-     */
+	 * Add a pair to the mapping.
+	 * @param key YamlNode (sequence or mapping)
+	 * @param value String
+	 * @return This builder
+	 */
     YamlMappingBuilder add(final YamlNode key, final String value);
 
     /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
+	 * Add a pair to the mapping.
+	 * @param key YamlNode (sequence or mapping)
+	 * @param value YamlNode (sequence or mapping)
+	 * @return This builder
+	 */
     YamlMappingBuilder add(final YamlNode key, final YamlNode value);
 
     /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
+	 * Add a pair to the mapping.
+	 * @param key String
+	 * @param value YamlNode (sequence or mapping)
+	 * @return This builder
+	 */
     YamlMappingBuilder add(final String key, final YamlNode value);
 
     /**
