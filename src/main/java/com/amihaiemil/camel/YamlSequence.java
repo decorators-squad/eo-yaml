@@ -5,10 +5,6 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #6:30m/DEV Implement and unit test decorator StrictYamlSequence
- *  which should throw YamlNodeNotFoundException if any of the
- *  methods of the decorated YamlSequence returns null (if the given index
- *  points to a YamlNode that is not a YamlMapping, for instance).
  */
 public interface YamlSequence extends YamlNode {
 
