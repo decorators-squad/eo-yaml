@@ -7,7 +7,6 @@ import java.util.Collection;
  *  if any of the methods of the decorated YamlSequence returns null
  *  (if the given index points to a YamlNode that is not a YamlMapping, for instance).
  *  @author Salavat.Yalalov
- *  @version
  *  @since 1.0.0
  */
 public final class StrictYamlSequence implements YamlSequence {
