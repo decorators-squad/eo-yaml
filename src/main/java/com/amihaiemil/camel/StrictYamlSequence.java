@@ -50,7 +50,13 @@ public final class StrictYamlSequence implements YamlSequence {
      */
     @Override
     public YamlMapping yamlMapping(final int index) {
-        return this.decorated.yamlMapping(index);
+        YamlMapping found = this.decorated.yamlMapping(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No YamlMapping found for index" + index
+            );
+        }
+        return found;
     }
 
     /**
@@ -60,7 +66,13 @@ public final class StrictYamlSequence implements YamlSequence {
      */
     @Override
     public YamlSequence yamlSequence(final int index) {
-        return this.decorated.yamlSequence(index);
+        YamlSequence found = this.decorated.yamlSequence(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No YamlSequence found for index" + index
+            );
+        }
+        return found;
     }
 
     /**
