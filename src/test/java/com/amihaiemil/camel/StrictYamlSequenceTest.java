@@ -116,7 +116,7 @@ public final class StrictYamlSequenceTest {
     }
 
     /**
-     * StringYamlSequence can fetch a YamlMapping based in its key.
+     * StringYamlSequence can fetch a YamlMapping based in its index.
      */
     @Test
     public void returnsMapping() {
@@ -130,7 +130,7 @@ public final class StrictYamlSequenceTest {
     }
 
     /**
-     * StringYamlSequence can fetch a YamlSequence based in its key.
+     * StringYamlSequence can fetch a YamlSequence based in its index.
      */
     @Test
     public void returnsSequence() {
@@ -142,4 +142,18 @@ public final class StrictYamlSequenceTest {
             strict.yamlSequence(1), Matchers.equalTo(found)
         );
     }
+
+    /**
+     * StringYamlSequence can fetch a String based in its index.
+     */
+    @Test
+    public void returnsString() {
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        Mockito.when(origin.string(1)).thenReturn("found");
+        YamlSequence strict = new StrictYamlSequence(origin);
+        MatcherAssert.assertThat(
+                strict.string(1), Matchers.equalTo("found")
+        );
+    }
+
 }
