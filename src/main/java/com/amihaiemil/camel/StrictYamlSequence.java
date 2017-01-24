@@ -3,11 +3,11 @@ package com.amihaiemil.camel;
 import java.util.Collection;
 
 /**
- * Decorator for a YamlSequence which throws YamlNodeNotFoundException
- *  if any of the methods of the decorated YamlSequence returns null
- *  (if the given index points to a YamlNode that is not a YamlMapping, for instance).
- *  @author Salavat.Yalalov
- *  @since 1.0.0
+ * Decorator for a {@link YamlSequence} which throws YamlNodeNotFoundException
+ * if any of the methods of the decorated YamlSequence returns null
+ * (if the given index points to a YamlNode that is not a YamlMapping, for instance).
+ * @author Salavat.Yalalov
+ * @since 1.0.0
  */
 public final class StrictYamlSequence implements YamlSequence {
     /**
@@ -81,6 +81,12 @@ public final class StrictYamlSequence implements YamlSequence {
      */
     @Override
     public String string(final int index) {
-        return this.decorated.string(index);
+        String found = this.decorated.string(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No String found for index" + index
+            );
+        }
+        return found;
     }
 }
