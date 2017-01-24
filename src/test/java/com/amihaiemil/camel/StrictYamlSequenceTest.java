@@ -26,33 +26,34 @@ public final class StrictYamlSequenceTest {
         MatcherAssert.assertThat(sequence.children().size(), Matchers.equalTo(3));
     }
 
-    @Test
-    public void returnsString() {
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullMapping() {
+    }
 
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullSequence() {
     }
 
     @Test
     public void returnsSize() {
+        List<YamlNode> elements = new LinkedList<>();
+        elements.add(new Scalar("key1"));
+        elements.add(new Scalar("key2"));
+        YamlSequence sequence = new StrictYamlSequence(new RtYamlSequence(elements));
 
+        MatcherAssert.assertThat(sequence.children().size(), Matchers.equalTo(2));
+    }
+
+    @Test
+    public void returnsString() {
     }
 
     @Test
     public void returnsSequence() {
-
     }
 
     @Test
     public void returnsMapping() {
-
     }
 
-    @Test
-    public void exceptionOnNullSequence() {
-
-    }
-
-    @Test
-    public void exceptionOnNullMapping() {
-
-    }
 }
