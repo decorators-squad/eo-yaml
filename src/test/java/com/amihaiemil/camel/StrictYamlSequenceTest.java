@@ -79,16 +79,40 @@ public final class StrictYamlSequenceTest {
         MatcherAssert.assertThat(sequence.children().size(), Matchers.equalTo(2));
     }
 
+    /**
+     * StringYamlSequence can fetch a YamlMapping based in its key.
+     */
+    @Test
+    public void returnsMapping() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        YamlMapping found = Mockito.mock(YamlMapping.class);
+        YamlNode key = new Scalar("key");
+        Mockito.when(origin.yamlMapping(key)).thenReturn(found);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        MatcherAssert.assertThat(
+            strict.yamlMapping("key"), Matchers.equalTo(found)
+        );
+    }
+
+    /**
+     * StringYamlSequence can fetch a YamlSequence based in its key.
+     */
+    @Test
+    public void returnsSequence() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        YamlSequence found = Mockito.mock(YamlSequence.class);
+        YamlNode key = new Scalar("key");
+        Mockito.when(origin.yamlSequence(key)).thenReturn(found);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        MatcherAssert.assertThat(
+            strict.yamlSequence("key"), Matchers.equalTo(found)
+        );
+    }
+
+
 //    @Test
 //    public void returnsString() {
 //    }
 //
-//    @Test
-//    public void returnsSequence() {
-//    }
-//
-//    @Test
-//    public void returnsMapping() {
-//    }
 
 }
