@@ -7,7 +7,6 @@ import java.util.Map;
  * A Yaml serializer.
  * @author sherif
  * @version $Id$
- * @param <YamlNode>
  * @since 1.0.0
  */
 public interface YamlSerializer {
