@@ -10,7 +10,7 @@ import java.util.Map;
  * @param <YamlNode>
  * @since 1.0.0
  */
-public interface YamlSerializer<YamlNode> {
+public interface YamlSerializer {
     
     /**
      * Serialize a Map<Object, Object> to YamlNode.
