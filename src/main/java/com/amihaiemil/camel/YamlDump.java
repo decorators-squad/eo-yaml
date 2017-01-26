@@ -28,34 +28,32 @@
 package com.amihaiemil.camel;
 
 /**
- * A Yaml serializer.
+ * A Yaml representer.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
  * 
  * @todo #30:30m/DEV This interface should have 3 implementor classes:
- * YamlObjectSerializer, YamlMapSerializer and YamlCollectionSerializer.
+ * YamlObjectDump, YamlMapDump and YamlCollectionDump.
  * Each of these classes will encapsulate and serialize the
  * mentioned types (i.e. Object, Map<Object, Object> and Collection<Object>).
- * The return type or method ``serialize()`` should be overridden with the 
- * proper subtype (e.g. YamlObjectSerializer will have the method
- * ``YamlMapping serialize() {...}``
+ * The return type or method ``represent()`` should be overridden with the 
+ * proper subtype (e.g. YamlObjectDump will have the method
+ * ``YamlMapping represent() {...}``
  * 
- * @todo #30:30m/TEST This interface should be tested by 3 unit tests: 
- * objectYamlSerialize(), mapYamlSerialize() and collectionYamlSerialize(). 
- * The tests should check that the returned YamlNode is the proper subtype
- * of YamlNode (e.g. YamlObjectSerializer in objectYamlSerialize() test should
- * return a proper YamlMapping)
+ * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
+ * and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
+ * it and return the Yaml node as a Yaml tree. 
  * 
- * @todo #30:30m/DEV New interface which is YamlPresenter should be implemented
- * to convert Yaml node to Presentation Stream. 
+ * @todo #30:30m/Dev Add method ``present()`` in YamlNode interface or 
+ * ``toString()`` method could do its job.  
  * 
  */
-public interface YamlSerializer {
+public interface YamlDump {
     
     /**
-     * Serialize one of Map<Object, Object>, Object or Collection<Object>.
+     * Represent one of Map<Object, Object>, Object or Collection<Object>.
      * @return Yaml node
      */
-    YamlNode serialize();
+    YamlNode represent();
 }
