@@ -27,52 +27,53 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.Map;
+import java.util.Set;
+
+
 /**
- * Builder of YamlMapping. Implementations should be immutable and thread-safe.
- * @author Mihai Andronache (amihaiemil@gmail.com)
+ * A Map represented as YamlNode.
+ * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #24:30m/DEV Following the example of this builder, implement
- *  and unit-test RtYamlSequenceBuilder (implements YamlSequenceBuilder).
- *  The implementation should be immutable (same as RtYamlMappingBuilder).
+ *
  */
-public interface YamlMappingBuilder {
+public final class YamlMapDump extends AbstractYamlDump {
+
+	/**
+     * Object to dump.
+     */
+    private Map<Object, Object> map;
+	
+	/**
+	 * Ctor
+	 * @param map Map<Object, Object> to dump
+	 */
+    public YamlMapDump(final Map<Object, Object> map) {
+        this.map = map;
+    }
     
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value String
-     * @return This builder
-     */
-    YamlMappingBuilder add(final String key, final String value);
+	@Override
+    YamlMapping represent() {
+		YamlMappingBuilder builder = new RtYamlMappingBuilder();
+        Set<Map.Entry<Object, Object>> entries = map.entrySet();
+        for (final Map.Entry<Object, Object> entry : entries) {
+            Object key = entry.getKey();
+            Object value = entry.getValue();
+            if(this.leafProperty(key) && this.leafProperty(value)) {
+            	builder = builder.add(key.toString(), value.toString());
+            }
+            else if(this.leafProperty(key)) {
+            	builder = builder.add(key.toString(), new YamlObjectDump(value).represent());
+            }
+            else if(this.leafProperty(value)) {
+            	builder = builder.add(new YamlObjectDump(key).represent(), value.toString());
+            }
+            else {
+            	builder = builder.add(new YamlObjectDump(key).represent(), new YamlObjectDump(value).represent());
+            }
+        }
+        return builder.build();
+    }
 
-    /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value String
-     * @return This builder
-     */
-    YamlMappingBuilder add(final YamlNode key, final String value);
-
-    /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
-    YamlMappingBuilder add(final YamlNode key, final YamlNode value);
-
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
-    YamlMappingBuilder add(final String key, final YamlNode value);
-
-    /**
-     * Build the YamlMapping.
-     * @return Built YamlMapping.
-     */
-    YamlMapping build();
 }

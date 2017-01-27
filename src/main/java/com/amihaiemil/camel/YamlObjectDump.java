@@ -40,7 +40,7 @@ import org.apache.commons.beanutils.BeanMap;
  * @since 1.0.0
  *
  */
-public final class YamlObjectDump implements YamlDump {
+public final class YamlObjectDump extends AbstractYamlDump {
 
     /**
      * Object to dump.
@@ -76,32 +76,6 @@ public final class YamlObjectDump implements YamlDump {
         return builder.build();
     }
 
-    /**
-     * Check if the given property is a 'leaf'. For instance, a String is
-     * considered a leaf, we don't need to go deeper to check for its
-     * properties, we can directly print it.
-     * @param property Tested property
-     * @return Boolean
-     */
-    private boolean leafProperty(final Object property) {
-        boolean leaf = false;
-        Class<?> clazz = property.getClass();
-        try {
-            if(clazz.getName().startsWith("java.lang.")
-                || clazz.getName().startsWith("java.util.")){
-                if(clazz.getMethod("toString").getDeclaringClass()
-                        .equals(clazz)
-                ) {
-                    leaf = true;
-                }
-            }
-        } catch (final NoSuchMethodException nsme) {
-            nsme.printStackTrace();
-        } catch (final SecurityException ex) {
-            ex.printStackTrace();
-        }
-        return leaf;
-    }
 
     /**
      * Convert a complex property to a Yaml node.
