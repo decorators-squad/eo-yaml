@@ -40,37 +40,40 @@ import java.util.Set;
  */
 public final class YamlMapDump extends AbstractYamlDump {
 
-	/**
+    /**
      * Object to dump.
      */
     private Map<Object, Object> map;
-	
-	/**
-	 * Ctor
-	 * @param map Map<Object, Object> to dump
-	 */
+    
+    /**
+     * Ctor.
+     * @param map Map<Object, Object> to dump
+     */
     public YamlMapDump(final Map<Object, Object> map) {
         this.map = map;
     }
     
-	@Override
+    @Override
     YamlMapping represent() {
-		YamlMappingBuilder builder = new RtYamlMappingBuilder();
-        Set<Map.Entry<Object, Object>> entries = map.entrySet();
+        YamlMappingBuilder builder = new RtYamlMappingBuilder();
+        Set<Map.Entry<Object, Object>> entries = this.map.entrySet();
         for (final Map.Entry<Object, Object> entry : entries) {
             Object key = entry.getKey();
             Object value = entry.getValue();
-            if(this.leafProperty(key) && this.leafProperty(value)) {
-            	builder = builder.add(key.toString(), value.toString());
-            }
-            else if(this.leafProperty(key)) {
-            	builder = builder.add(key.toString(), new YamlObjectDump(value).represent());
-            }
-            else if(this.leafProperty(value)) {
-            	builder = builder.add(new YamlObjectDump(key).represent(), value.toString());
-            }
-            else {
-            	builder = builder.add(new YamlObjectDump(key).represent(), new YamlObjectDump(value).represent());
+            if (this.leafProperty(key) && this.leafProperty(value)) {
+                builder = builder.add(key.toString(), value.toString());
+            } else if (this.leafProperty(key)) {
+                builder = builder.add(key.toString(),
+                    new YamlObjectDump(value).represent()
+                );
+            } else if (this.leafProperty(value)) {
+                builder = builder.add(new YamlObjectDump(key).represent(),
+                    value.toString()
+                );
+            } else {
+                builder = builder.add(new YamlObjectDump(key).represent(),
+                    new YamlObjectDump(value).represent()
+                );
             }
         }
         return builder.build();
