@@ -32,27 +32,22 @@ package com.amihaiemil.camel;
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * 
- * @todo #30:30m/DEV This interface should have 3 implementor classes:
- *  YamlObjectDump, YamlMapDump and YamlCollectionDump.
- *  Each of these classes will encapsulate and serialize the
- *  mentioned types (i.e. Object, Map<Object, Object> and Collection<Object>).
- *  The return type or method ``represent()`` should be overridden with the 
- *  proper subtype (e.g. YamlObjectDump will have the method
- *  ``YamlMapping represent() {...}``
- * 
+ * @todo #34:30m/DEV This interface should have 2 more implementor classes:
+ *  YamlMapDump and YamlCollectionDump. Each of these classes will encapsulate
+ *  and serialize the mentioned types (i.e. Map<Object, Object> and
+ *  Collection<Object>). The return type or method ``represent()`` should be
+ *  overridden with the proper subtype (e.g. YamlMapDump will have the
+ *  method ``YamlMapping represent() {...}``
  * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
  *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
  *  it and return the Yaml node as a Yaml tree. 
- * 
  * @todo #30:30m/Dev Add method ``present()`` in YamlNode interface or 
  *  ``toString()`` method could do its job.  
- * 
  */
 public interface YamlDump {
-    
+
     /**
-     * Represent one of Map<Object, Object>, Object or Collection<Object>.
+     * Turn it into Yaml.
      * @return Yaml node
      */
     YamlNode represent();

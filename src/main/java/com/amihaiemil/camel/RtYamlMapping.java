@@ -167,4 +167,18 @@ final class RtYamlMapping implements YamlMapping {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder print = new StringBuilder();
+        for(final Map.Entry<YamlNode, YamlNode> entry
+            : this.mappings.entrySet()
+        ) {
+            print.append(entry.getKey().toString())
+                .append(": ")
+                .append(entry.getValue().toString()).append("\n");
+             
+        }
+        return print.toString().trim();
+    }
 }
