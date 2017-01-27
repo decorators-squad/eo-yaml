@@ -60,13 +60,13 @@ public final class YamlMapDump extends AbstractYamlDump {
         for (final Map.Entry<Object, Object> entry : entries) {
             Object key = entry.getKey();
             Object value = entry.getValue();
-            if (this.leafProperty(key) && this.leafProperty(value)) {
+            if (super.leafProperty(key) && super.leafProperty(value)) {
                 builder = builder.add(key.toString(), value.toString());
-            } else if (this.leafProperty(key)) {
+            } else if (super.leafProperty(key)) {
                 builder = builder.add(key.toString(),
                     new YamlObjectDump(value).represent()
                 );
-            } else if (this.leafProperty(value)) {
+            } else if (super.leafProperty(value)) {
                 builder = builder.add(new YamlObjectDump(key).represent(),
                     value.toString()
                 );

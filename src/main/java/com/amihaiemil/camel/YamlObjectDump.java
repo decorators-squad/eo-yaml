@@ -64,7 +64,7 @@ public final class YamlObjectDump extends AbstractYamlDump {
             String key = (String) entry.getKey();
             if(!"class".equals(key)) {
                 Object value = entry.getValue();
-                if(this.leafProperty(value)) {
+                if(super.leafProperty(value)) {
                     builder = builder
                         .add((String) entry.getKey(), value.toString());
                 } else {
