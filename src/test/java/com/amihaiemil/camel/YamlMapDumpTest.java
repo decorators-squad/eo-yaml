@@ -27,8 +27,9 @@
  */
 package com.amihaiemil.camel;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.hamcrest.MatcherAssert;
@@ -48,7 +49,6 @@ public final class YamlMapDumpTest {
     
     /**
      * YamlMapDump can represent a Map of a simple pojo.
-     * @todo #38:30m/DEV Complete unit test for YamlMapDump class.
      */
     @Test
     public void representsSimpleDojo() {
@@ -67,7 +67,31 @@ public final class YamlMapDumpTest {
         
         YamlMapping yaml = 
             new YamlMapDump(map).represent();
-        Collection<YamlNode> children = yaml.children();
+        List<YamlNode> children = new ArrayList<YamlNode>(yaml.children());
         MatcherAssert.assertThat(children.size(), Matchers.equalTo(2));
+        
+        MatcherAssert.assertThat(
+            this.yamlEqualsStudent((YamlMapping) children.get(0), studentB)
+            && this.yamlEqualsStudent((YamlMapping) children.get(1), studentD),
+            Matchers.is(true)
+        );
+        System.out.println(children);
+    }
+    
+    /**
+     * Method to check equality between a YamlMapping and a simple pojo.
+     * @param yaml YamlMapping
+     * @param student StudentSimplePojo
+     * @return Returns true if parameters are equal, false otherwise
+     */
+    private boolean yamlEqualsStudent(final YamlMapping yaml,
+        final StudentSimplePojo student) {
+        return 
+            yaml.string("firstName").equals(student.getFirstName()) 
+            && yaml.string("lastName").equals(student.getLastName())
+            && yaml.string("age")
+                .equals(((Integer) student.getAge()).toString())
+            && yaml.string("gpa")
+                .equals(((Double) student.getGpa()).toString());
     }
 }
