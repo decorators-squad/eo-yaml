@@ -27,54 +27,47 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+import com.amihaiemil.camel.YamlObjectDumpTest.StudentSimplePojo;
+
 /**
- * A Yaml representer.
+ * Unit tests for {@link YamlMapDump}.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #34:30m/DEV This interface should have 1 more implementor class:
- *  YamlCollectionDump. This classes will encapsulate
- *  and serialize the mentioned type (i.e. Collection<Object>).
- *  The return type or method ``represent()`` should be
- *  overridden with the proper subtype. 
- * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
- *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
- *  it and return the Yaml node as a Yaml tree. 
- * @todo #30:30m/DEV Add method ``present()`` in YamlNode interface or 
- *  ``toString()`` method could do its job.  
+ *
  */
-public abstract class AbstractYamlDump {
-
-    /**
-     * Turn it into Yaml.
-     * @return Yaml node
-     */
-    abstract YamlNode represent();
+public final class YamlMapDumpTest {
     
     /**
-     * Check if the given property is a 'leaf'. For instance, a String is
-     * considered a leaf, we don't need to go deeper to check for its
-     * properties, we can directly print it.
-     * @param property Tested property
-     * @return Boolean
+     * YamlMapDump can represent a Map of a simple pojo.
+     * @todo #38:30m/DEV Complete unit test for YamlMapDump class.
      */
-    protected final boolean leafProperty(final Object property) {
-        boolean leaf = false;
-        Class<?> clazz = property.getClass();
-        try {
-            if(clazz.getName().startsWith("java.lang.")
-                || clazz.getName().startsWith("java.util.")){
-                if(clazz.getMethod("toString").getDeclaringClass()
-                        .equals(clazz)
-                ) {
-                    leaf = true;
-                }
-            }
-        } catch (final NoSuchMethodException nsme) {
-            nsme.printStackTrace();
-        } catch (final SecurityException ex) {
-            ex.printStackTrace();
-        }
-        return leaf;
+    @Test
+    public void representsSimpleDojo() {
+        StudentSimplePojo studentA =
+            new StudentSimplePojo("John", "Doe", 21, 3.7);
+        StudentSimplePojo studentB = 
+            new StudentSimplePojo("Albert", "Einestien", 25, 4);
+        StudentSimplePojo studentC =
+            new StudentSimplePojo("John", "Doe", 23, 3.7);
+        StudentSimplePojo studentD = 
+            new StudentSimplePojo("Albert", "Einestien", 30, 4);
+        
+        Map<Object, Object> map = new HashMap<>();
+        map.put(studentA, studentB);
+        map.put(studentC, studentD);
+        
+        YamlMapping yaml = 
+            new YamlMapDump(map).represent();
+        Collection<YamlNode> children = yaml.children();
+        MatcherAssert.assertThat(children.size(), Matchers.equalTo(2));
     }
 }

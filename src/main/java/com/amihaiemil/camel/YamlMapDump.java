@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+a2el  * Copyright (c) 2016-2017, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,24 +53,30 @@ public final class YamlMapDump extends AbstractYamlDump {
     }
     
     @Override
-    YamlMapping represent() {
+    public YamlMapping represent() {
         YamlMappingBuilder mapBuilder = new RtYamlMappingBuilder();
         Set<Map.Entry<Object, Object>> entries = this.map.entrySet();
         for (final Map.Entry<Object, Object> entry : entries) {
             Object key = entry.getKey();
             Object value = entry.getValue();
             if (super.leafProperty(key) && super.leafProperty(value)) {
-                mapBuilder = mapBuilder.add(key.toString(), value.toString());
+                mapBuilder = mapBuilder.add(
+                    key.toString(),
+                    value.toString()
+                );
             } else if (super.leafProperty(key)) {
-                mapBuilder = mapBuilder.add(key.toString(),
+                mapBuilder = mapBuilder.add(
+                    key.toString(),
                     new YamlObjectDump(value).represent()
                 );
             } else if (super.leafProperty(value)) {
-                mapBuilder = mapBuilder.add(new YamlObjectDump(key).represent(),
+                mapBuilder = mapBuilder.add(
+                    new YamlObjectDump(key).represent(),
                     value.toString()
                 );
             } else {
-                mapBuilder = mapBuilder.add(new YamlObjectDump(key).represent(),
+                mapBuilder = mapBuilder.add(
+                    new YamlObjectDump(key).represent(),
                     new YamlObjectDump(value).represent()
                 );
             }
