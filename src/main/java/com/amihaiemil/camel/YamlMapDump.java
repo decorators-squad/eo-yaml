@@ -30,7 +30,6 @@ package com.amihaiemil.camel;
 import java.util.Map;
 import java.util.Set;
 
-
 /**
  * A Map represented as YamlNode.
  * @author Sherif Waly (sherifwaly95@gmail.com)
@@ -41,7 +40,7 @@ import java.util.Set;
 public final class YamlMapDump extends AbstractYamlDump {
 
     /**
-     * Object to dump.
+     * Map<Object, Object> to dump.
      */
     private Map<Object, Object> map;
     
@@ -55,28 +54,28 @@ public final class YamlMapDump extends AbstractYamlDump {
     
     @Override
     YamlMapping represent() {
-        YamlMappingBuilder builder = new RtYamlMappingBuilder();
+        YamlMappingBuilder mapBuilder = new RtYamlMappingBuilder();
         Set<Map.Entry<Object, Object>> entries = this.map.entrySet();
         for (final Map.Entry<Object, Object> entry : entries) {
             Object key = entry.getKey();
             Object value = entry.getValue();
             if (super.leafProperty(key) && super.leafProperty(value)) {
-                builder = builder.add(key.toString(), value.toString());
+                mapBuilder = mapBuilder.add(key.toString(), value.toString());
             } else if (super.leafProperty(key)) {
-                builder = builder.add(key.toString(),
+                mapBuilder = mapBuilder.add(key.toString(),
                     new YamlObjectDump(value).represent()
                 );
             } else if (super.leafProperty(value)) {
-                builder = builder.add(new YamlObjectDump(key).represent(),
+                mapBuilder = mapBuilder.add(new YamlObjectDump(key).represent(),
                     value.toString()
                 );
             } else {
-                builder = builder.add(new YamlObjectDump(key).represent(),
+                mapBuilder = mapBuilder.add(new YamlObjectDump(key).represent(),
                     new YamlObjectDump(value).represent()
                 );
             }
         }
-        return builder.build();
+        return mapBuilder.build();
     }
 
 }
