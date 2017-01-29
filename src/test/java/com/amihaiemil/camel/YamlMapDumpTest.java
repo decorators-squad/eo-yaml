@@ -49,9 +49,10 @@ public final class YamlMapDumpTest {
     
     /**
      * YamlMapDump can represent a Map of a simple pojo.
+     * @todo #38:30m/TEST Add more unit tests for YamlMapDump
      */
     @Test
-    public void representsSimpleDojo() {
+    public void representsMapOfSimpleDojo() {
         StudentSimplePojo studentA =
             new StudentSimplePojo("John", "Doe", 21, 3.7);
         StudentSimplePojo studentB = 
