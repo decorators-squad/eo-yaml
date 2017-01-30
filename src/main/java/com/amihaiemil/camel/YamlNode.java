@@ -43,5 +43,12 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @return Collection of {@link YamlNode}
      */
     Collection<YamlNode> children();
+    
+    /**
+     * Print this node with a specified indentation.
+     * @param indentation Number of preciding spaces of each line.
+     * @return String
+     */
+    public String indent(final int indentation);
 
 }

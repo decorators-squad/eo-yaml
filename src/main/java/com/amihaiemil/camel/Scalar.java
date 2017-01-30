@@ -124,4 +124,15 @@ final class Scalar implements YamlNode {
         return this.value;
     }
 
+    @Override
+    public String indent(final int indentation) {
+        int spaces = indentation;
+        StringBuilder printed = new StringBuilder();
+        while (spaces > 0) {
+            printed.append(" ");
+            spaces --;
+        }
+        return printed.append(this.toString()).toString();
+    }
+
 }

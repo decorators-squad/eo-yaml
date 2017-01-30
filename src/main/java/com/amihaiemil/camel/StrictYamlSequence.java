@@ -118,4 +118,9 @@ public final class StrictYamlSequence implements YamlSequence {
         }
         return found;
     }
+
+	@Override
+	public String indent(int indentation) {
+		return this.decorated.indent(indentation);
+	}
 }
