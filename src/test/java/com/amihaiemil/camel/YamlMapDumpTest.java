@@ -49,10 +49,9 @@ public final class YamlMapDumpTest {
     
     /**
      * YamlMapDump can represent a Map of a simple pojo.
-     * @todo #38:30m/TEST Add more unit tests for YamlMapDump
      */
     @Test
-    public void representsMapOfSimpleDojo() {
+    public void representsMapOfSimplePojos() {
         StudentSimplePojo studentA =
             new StudentSimplePojo("John", "Doe", 21, 3.7);
         StudentSimplePojo studentB = 
@@ -65,7 +64,7 @@ public final class YamlMapDumpTest {
         Map<Object, Object> map = new HashMap<>();
         map.put(studentA, studentB);
         map.put(studentC, studentD);
-        
+
         YamlMapping yaml = 
             new YamlMapDump(map).represent();
         List<YamlNode> children = new ArrayList<YamlNode>(yaml.children());
@@ -76,7 +75,51 @@ public final class YamlMapDumpTest {
             && this.yamlEqualsStudent((YamlMapping) children.get(1), studentD),
             Matchers.is(true)
         );
-        System.out.println(children);
+    }
+
+    /**
+     * YamlMapDump can represent a Map of a simple pojo, with String keys.
+     */
+    @Test
+    public void representsMapOfStringsAndSimplePojos() {
+        StudentSimplePojo studentA = 
+            new StudentSimplePojo("John", "Doe", 25, 4);
+        StudentSimplePojo studentB = 
+            new StudentSimplePojo("Albert", "Einestien", 30, 4);
+        Map<Object, Object> map = new HashMap<>();
+        map.put("key1", studentA);
+        map.put("key2", studentB);
+        
+        YamlMapping yaml = new YamlMapDump(map).represent();
+        MatcherAssert.assertThat(
+            this.yamlEqualsStudent(yaml.yamlMapping("key1"), studentA),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            this.yamlEqualsStudent(yaml.yamlMapping("key2"), studentB),
+            Matchers.is(true)
+        );
+        System.out.println(yaml);
+    }
+
+    /**
+     * YamlMapDump can represent a Map of Strings and Integers..
+     */
+    @Test
+    public void representsMapOfStringsAndInteers() {
+        Map<Object, Object> map = new HashMap<>();
+        map.put("key1", 12);
+        map.put("key2", 13);
+        
+        YamlMapping yaml = new YamlMapDump(map).represent();
+        MatcherAssert.assertThat(
+            yaml.string("key1").equals("12"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            yaml.string("key2").equals("13"),
+            Matchers.is(true)
+        );
     }
     
     /**

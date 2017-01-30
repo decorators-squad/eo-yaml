@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -60,7 +63,16 @@ public final class YamlObjectDumpTest {
         MatcherAssert.assertThat(
             yaml.string("gpa"), Matchers.equalTo("3.7")
         );
-        System.out.println(yaml);
+        YamlMapping grades = yaml.yamlMapping("grades");
+        MatcherAssert.assertThat(
+            grades.children().size(), Matchers.equalTo(2)
+        );
+        MatcherAssert.assertThat(
+            grades.string("Math"), Matchers.equalTo("9")
+        );
+        MatcherAssert.assertThat(
+            grades.string("CS"), Matchers.equalTo("10")
+        );
     }
 
     /**
@@ -77,6 +89,8 @@ public final class YamlObjectDumpTest {
         private String lastName;
         private int age;
         private double gpa;
+        private Map<String, Integer> grades = new HashMap<>();
+        
         public StudentSimplePojo(
             String firstName, String lastName, int age, double gpa
         ) {
@@ -84,6 +98,8 @@ public final class YamlObjectDumpTest {
             this.lastName = lastName;
             this.age = age;
             this.gpa = gpa;
+            this.grades.put("Math", 9);
+            this.grades.put("CS", 10);
         }
         
         public String getFirstName() {
@@ -109,6 +125,14 @@ public final class YamlObjectDumpTest {
         }
         public void setGpa(double gpa) {
             this.gpa = gpa;
+        }
+
+        public Map<String, Integer> getGrades() {
+            return this.grades;
+        }
+
+        public void setGrades(Map<String, Integer> grades) {
+            this.grades = grades;
         }
 
     }

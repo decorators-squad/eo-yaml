@@ -87,7 +87,7 @@ public final class YamlObjectDump extends AbstractYamlDump {
     private YamlNode yamlNode(final Object property) {
         YamlNode node;
         if (property instanceof Map) {
-            node = new Scalar("...yaml mapping...");
+            node = new YamlMapDump((Map) property).represent();
         } else if (property instanceof Collection<?>) {
             node = new Scalar("...yaml sequence...");
         } else {

@@ -48,4 +48,14 @@ public final class YamlTest {
             Yaml.createYamlMappingBuilder(), Matchers.notNullValue()
         );
     }
+    
+    /**
+     * Yaml can create a YamlSequenceBuilder.
+     */
+    @Test
+    public void createsYamlSequenceBuilder() {
+        MatcherAssert.assertThat(
+            Yaml.createYamlSequenceBuilder(), Matchers.notNullValue()
+        );
+    }
 }

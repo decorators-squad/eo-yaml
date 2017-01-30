@@ -49,4 +49,12 @@ public final class Yaml {
         return new RtYamlMappingBuilder();
     }
 
+    /**
+     * Create a {@link YamlSequenceBuilder}.
+     * @return Builder of YamlMapping.
+     */
+    public static YamlSequenceBuilder createYamlSequenceBuilder() {
+        return new RtYamlSequenceBuilder();
+    }
+
 }
