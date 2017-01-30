@@ -34,7 +34,6 @@ package com.amihaiemil.camel;
  * @since 1.0.0
  * @todo #24:30m/DEV Following the example of this builder, implement
  *  and unit-test RtYamlSequenceBuilder (implements YamlSequenceBuilder).
- *  The implementation should be immutable (same as RtYamlMappingBuilder).
  */
 public interface YamlMappingBuilder {
     
