@@ -32,8 +32,6 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #24:30m/DEV Following the example of this builder, implement
- *  and unit-test RtYamlSequenceBuilder (implements YamlSequenceBuilder).
  */
 public interface YamlMappingBuilder {
     
