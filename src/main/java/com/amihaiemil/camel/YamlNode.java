@@ -49,6 +49,6 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @param indentation Number of preciding spaces of each line.
      * @return String
      */
-    public String indent(final int indentation);
+    String indent(final int indentation);
 
 }

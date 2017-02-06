@@ -113,9 +113,13 @@ public final class StrictYamlMapping implements YamlMapping {
         return found;
     }
 
-	@Override
-	public String indent(int indentation) {
-		return this.decorated.indent(indentation);
-	}
+    @Override
+    public String toString() {
+        return this.decorated.toString();
+    }
 
+    @Override
+    public String indent(final int indentation) {
+        return this.decorated.indent(indentation);
+    }
 }

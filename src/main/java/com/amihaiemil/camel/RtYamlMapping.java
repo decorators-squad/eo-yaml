@@ -170,26 +170,17 @@ final class RtYamlMapping implements YamlMapping {
 
     @Override
     public String toString() {
-        StringBuilder print = new StringBuilder();
-        for(final Map.Entry<YamlNode, YamlNode> entry
-            : this.mappings.entrySet()
-        ) {
-            print.append(entry.getKey().toString())
-                .append(": ")
-                .append(entry.getValue().toString()).append("\n");
-             
-        }
-        return print.toString().trim();
+        return this.indent(0);
     }
 
     @Override
-    public String indent(int indentation) {
+    public String indent(final int indentation) {
         StringBuilder print = new StringBuilder();
         int spaces = indentation;
         StringBuilder indent = new StringBuilder();
         while (spaces > 0) {
             indent.append(" ");
-            spaces --;
+            spaces--;
         }
         for(final Map.Entry<YamlNode, YamlNode> entry
             : this.mappings.entrySet()
@@ -198,19 +189,19 @@ final class RtYamlMapping implements YamlMapping {
             YamlNode key = entry.getKey();
             YamlNode value = entry.getValue();
             if(key instanceof Scalar) {
-            	print.append(key.toString()).append(": ");
-            	if (value instanceof Scalar) {
+                print.append(key.toString()).append(": ");
+                if (value instanceof Scalar) {
                     print.append(value.toString()).append("\n");
                 } else  {
-                	print
-                	.append("\n")    
-                	.append(value.indent(indentation + 2))
+                    print
+                    .append("\n")    
+                    .append(value.indent(indentation + 2))
                         .append("\n");
                 }
             } else {
-            	print.append("?\n").append(key.indent(indentation + 2))
-            	    .append("\n").append(indent).append(":\n")
-                	.append(value.indent(indentation + 2))
+                print.append("?\n").append(key.indent(indentation + 2))
+                    .append("\n").append(indent).append(":\n")
+                    .append(value.indent(indentation + 2))
                     .append("\n");
             }
         }

@@ -147,17 +147,22 @@ final class RtYamlSequence implements YamlSequence {
         return result;
     }
 
-	@Override
-	public String indent(int indentation) {
-		StringBuilder print = new StringBuilder();
+    @Override
+    public String toString() {
+        return this.indent(0);
+    }
+    
+    @Override
+    public String indent(final int indentation) {
+        StringBuilder print = new StringBuilder();
         int spaces = indentation;
         StringBuilder indent = new StringBuilder();
         while (spaces > 0) {
             indent.append(" ");
-            spaces --;
+            spaces--;
         }
-        for (YamlNode node : nodes) {
-        	print.append(indent)
+        for (final YamlNode node : this.nodes) {
+            print.append(indent)
                 .append("- ");
             if (node instanceof Scalar) {
                 print.append(node.toString()).append("\n");
@@ -169,5 +174,5 @@ final class RtYamlSequence implements YamlSequence {
         String printed = print.toString();
         printed = printed.substring(0, printed.length() - 1);
         return printed;
-	}
+    }
 }

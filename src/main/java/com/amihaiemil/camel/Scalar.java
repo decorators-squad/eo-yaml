@@ -121,7 +121,7 @@ final class Scalar implements YamlNode {
 
     @Override
     public String toString() {
-        return this.value;
+        return this.indent(0);
     }
 
     @Override
@@ -130,9 +130,9 @@ final class Scalar implements YamlNode {
         StringBuilder printed = new StringBuilder();
         while (spaces > 0) {
             printed.append(" ");
-            spaces --;
+            spaces--;
         }
-        return printed.append(this.toString()).toString();
+        return printed.append(this.value).toString();
     }
 
 }

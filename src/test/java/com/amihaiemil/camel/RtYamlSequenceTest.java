@@ -27,11 +27,16 @@
  */
 package com.amihaiemil.camel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -206,5 +211,66 @@ public final class RtYamlSequenceTest {
         );
     }
 
+    /**
+     * A simple YamlSequecne can be pretty printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void prettyPrintsSimpleYamlSequence() throws Exception {
+        YamlSequence seq = Yaml.createYamlSequenceBuilder()
+            .add("amihaiemil")
+            .add("sherif")
+            .add("salikjan")
+            .add("rultor")
+            .build();
+        String expected = this.readTestResource("simpleSequence.yml");
+        MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
+    }
+
+    /**
+     * A complex YamlSequecne can be pretty printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void prettyPrintsComplexYamlSequence() throws Exception {
+        YamlSequence seq = Yaml.createYamlSequenceBuilder()
+            .add("amihaiemil")
+            .add(
+                Yaml
+                    .createYamlMappingBuilder()
+                    .add("rule1", "test")
+                    .add("rule2", "test2")
+                    .add("rule3", "test3")
+                    .build()
+            )
+            .add("salikjan")
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("element1")
+                    .add("element2")
+                    .add("element3")
+                    .build()
+            )
+            .build();
+        String expected = this.readTestResource("complexSequence.yml");
+        MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
+    }
     
+    /**
+     * Read a test resource file's contents.
+     * @param fileName File to read.
+     * @return File's contents as String.
+     * @throws FileNotFoundException If somethig is wrong.
+     * @throws IOException If somethig is wrong.
+     */
+    private String readTestResource(final String fileName)
+        throws FileNotFoundException, IOException {
+        return new String(
+            IOUtils.toByteArray(
+                new FileInputStream(
+                    new File("src/test/resources/" + fileName)
+                )    
+            )
+        );
+    }
 }

@@ -27,11 +27,16 @@
  */
 package com.amihaiemil.camel;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -234,6 +239,76 @@ public final class RtYamlMappingTest {
         );
         MatcherAssert.assertThat(
             fourthmap.compareTo(firstmap), Matchers.lessThan(0)
+        );
+    }
+
+    /**
+     * A simple YamlMapping can be pretty printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void prettyPrintsSimpleYaml() throws Exception {
+        YamlMapping yaml = Yaml.createYamlMappingBuilder()
+            .add("name", "camel")
+            .add("architect", "mihai")
+            .add("developers",
+                Yaml.createYamlSequenceBuilder()
+                    .add("rultor")
+                    .add("sherif")
+                    .add("salikjan")
+                    .build()
+            ).build();
+        String expected = this.readTestResource("simpleMapping.yml");
+        MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
+    }
+    
+    /**
+     * A complex YamlMapping can be pretty printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void prettyPrintsComplexYaml() throws Exception {
+        YamlMapping yaml = Yaml.createYamlMappingBuilder()
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("Detroit Tigers")
+                    .add("Chicago cubs")
+                    .build(),
+                Yaml.createYamlSequenceBuilder()
+                    .add("2001-07-23")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("New York Yankees")
+                    .add("Atlanta Braves")
+                    .build(),
+                Yaml.createYamlSequenceBuilder()
+                    .add("2001-07-02")
+                    .add("2001-08-12")
+                    .add("2001-08-14")
+                    .build()
+            )
+            .build();
+        String expected = this.readTestResource("complexMapping.yml");
+        MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
+    }
+
+    /**
+     * Read a test resource file's contents.
+     * @param fileName File to read.
+     * @return File's contents as String.
+     * @throws FileNotFoundException If somethig is wrong.
+     * @throws IOException If somethig is wrong.
+     */
+    private String readTestResource(final String fileName)
+        throws FileNotFoundException, IOException {
+        return new String(
+            IOUtils.toByteArray(
+                new FileInputStream(
+                    new File("src/test/resources/" + fileName)
+                )    
+            )
         );
     }
 
