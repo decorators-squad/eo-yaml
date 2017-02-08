@@ -27,49 +27,55 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+import com.amihaiemil.camel.YamlObjectDumpTest.StudentSimplePojo;
+
 /**
- * A Yaml representer.
+ * Unit tests for {@link YamlCollectionDump}.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
- *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
- *  it and return the Yaml node as a Yaml tree. 
- * @todo #30:30m/DEV Add method ``present()`` in YamlNode interface or 
- *  ``toString()`` method could do its job.  
+ * 
  */
-public abstract class AbstractYamlDump {
-
-    /**
-     * Turn it into Yaml.
-     * @return Yaml node
-     */
-    abstract YamlNode represent();
+public final class YamlCollectionDumpTest {
     
     /**
-     * Check if the given property is a 'leaf'. For instance, a String is
-     * considered a leaf, we don't need to go deeper to check for its
-     * properties, we can directly print it.
-     * @param property Tested property
-     * @return Boolean
+     * YamlCollectionDump can represent Collection of strings and simple pojos.
      */
-    protected final boolean leafProperty(final Object property) {
-        boolean leaf = false;
-        Class<?> clazz = property.getClass();
-        try {
-            if(clazz.getName().startsWith("java.lang.")
-                || clazz.getName().startsWith("java.util.")){
-                if(clazz.getMethod("toString").getDeclaringClass()
-                        .equals(clazz)
-                ) {
-                    leaf = true;
-                }
-            }
-        } catch (final NoSuchMethodException nsme) {
-            nsme.printStackTrace();
-        } catch (final SecurityException ex) {
-            ex.printStackTrace();
-        }
-        return leaf;
+    @Test
+    public void representsCollectionOfStringsAndSimplePojos() {
+        StudentSimplePojo studentA = 
+            new StudentSimplePojo("John", "Doe", 25, 4);
+        List<Object> collection = new ArrayList<Object>();
+        collection.add(studentA);
+        collection.add("objectA");
+        
+        YamlSequence yaml = new YamlCollectionDump(collection).represent();
+        MatcherAssert.assertThat(yaml.size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(yaml.string(0), Matchers.equalTo("objectA"));
+        
+        YamlMapping yamlMapping = yaml.yamlMapping(1);
+        MatcherAssert.assertThat(
+            yamlMapping.string("firstName"),
+            Matchers.equalTo("John")
+        );
+        MatcherAssert.assertThat(
+            yamlMapping.string("lastName"),
+            Matchers.equalTo("Doe")
+        );
+        MatcherAssert.assertThat(
+            yamlMapping.string("age"),
+            Matchers.equalTo("25")
+        );
+        MatcherAssert.assertThat(
+            yamlMapping.string("gpa"),
+            Matchers.equalTo("4.0")
+        );
     }
 }
