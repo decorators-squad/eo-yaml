@@ -35,8 +35,6 @@ package com.amihaiemil.camel;
  * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
  *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
  *  it and return the Yaml node as a Yaml tree. 
- * @todo #30:30m/DEV Add method ``present()`` in YamlNode interface or 
- *  ``toString()`` method could do its job.  
  */
 public abstract class AbstractYamlDump {
 
