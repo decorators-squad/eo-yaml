@@ -27,75 +27,24 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
-
 /**
- * Unit tests for {@link Yaml}.
+ * Yaml input.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-public final class YamlTest {
+public interface YamlInput {
 
     /**
-     * Yaml can create a YamlMappingBuilder.
+     * Read the given input as a Yaml mapping.
+     * @return Read YamlMapping.
      */
-    @Test
-    public void createsYamlMappingBuilder() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlMappingBuilder(), Matchers.notNullValue()
-        );
-    }
-    
-    /**
-     * Yaml can create a YamlSequenceBuilder.
-     */
-    @Test
-    public void createsYamlSequenceBuilder() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlSequenceBuilder(), Matchers.notNullValue()
-        );
-    }
-    
-    /**
-     * Yaml can create a YamlInput from a File.
-     * @throws Exception if something goes wrong
-     */
-    @Test
-    public void createsYamlInputFromFile() throws Exception {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput(
-                new File("src/test/resources/simpleMapping.yml")
-            ),
-            Matchers.notNullValue()
-        );
-    }
+    YamlMapping readYamlMapping();
 
     /**
-     * Yaml can create a YamlInput from an InputStream.
+     * Read the given input as a Yaml sequence.
+     * @return Read YamlSequence.
      */
-    @Test
-    public void createsYamlInputFromInputStream() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput(
-                new ByteArrayInputStream("yaml: test".getBytes())
-            ),
-            Matchers.notNullValue()
-        );
-    }
-    
-    /**
-     * Yaml can create a YamlInput from a String.
-     */
-    @Test
-    public void createsYamlInputFromString() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput("yaml: test"), Matchers.notNullValue()
-        );
-    }
+    YamlSequence readYamlSequence();
+
 }

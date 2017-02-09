@@ -27,6 +27,12 @@
  */
 package com.amihaiemil.camel;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 /**
  * Yaml.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -55,6 +61,37 @@ public final class Yaml {
      */
     public static YamlSequenceBuilder createYamlSequenceBuilder() {
         return new RtYamlSequenceBuilder();
+    }
+
+    /**
+     * Create a {@link YamlInput} from a File.
+     * @return YamlInput, reader of Yaml.
+     * @param input File to read from.
+     * @throws FileNotFoundException If the file is not found.
+     */
+    public static YamlInput createYamlInput(final File input)
+        throws FileNotFoundException {
+        return Yaml.createYamlInput(new FileInputStream(input));
+    }
+
+    /**
+     * Create a {@link YamlInput} from a String.
+     * @param input String to read from.
+     * @return YamlInput, reader of Yaml.
+     */
+    public static YamlInput createYamlInput(final String input) {
+        return Yaml.createYamlInput(
+            new ByteArrayInputStream(input.getBytes())
+        );
+    }
+
+    /**
+     * Create a {@link YamlInput} from an InputStream.
+     * @param input InputStream to read from.
+     * @return YamlInput, reader of Yaml.
+     */
+    public static YamlInput createYamlInput(final InputStream input) {
+        return new RtYamlInput(input);
     }
 
 }

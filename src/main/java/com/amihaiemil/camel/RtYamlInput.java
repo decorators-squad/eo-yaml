@@ -27,75 +27,35 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
- * Unit tests for {@link Yaml}.
+ * Implementation for {@link YamlInput}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #46:30m Finish implementing this class using a finite automata.
+ *  Short idea: using an InputStreamReader, read each char from the stream,
+ *  see if the automata accepts it. If it's accepted, build the yaml.
  */
-public final class YamlTest {
+final class RtYamlInput implements YamlInput {
 
     /**
-     * Yaml can create a YamlMappingBuilder.
+     * Ctor.
+     * @param source Given source.
      */
-    @Test
-    public void createsYamlMappingBuilder() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlMappingBuilder(), Matchers.notNullValue()
-        );
-    }
-    
-    /**
-     * Yaml can create a YamlSequenceBuilder.
-     */
-    @Test
-    public void createsYamlSequenceBuilder() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlSequenceBuilder(), Matchers.notNullValue()
-        );
-    }
-    
-    /**
-     * Yaml can create a YamlInput from a File.
-     * @throws Exception if something goes wrong
-     */
-    @Test
-    public void createsYamlInputFromFile() throws Exception {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput(
-                new File("src/test/resources/simpleMapping.yml")
-            ),
-            Matchers.notNullValue()
-        );
+    RtYamlInput(final InputStream source) {
+        new InputStreamReader(source);
     }
 
-    /**
-     * Yaml can create a YamlInput from an InputStream.
-     */
-    @Test
-    public void createsYamlInputFromInputStream() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput(
-                new ByteArrayInputStream("yaml: test".getBytes())
-            ),
-            Matchers.notNullValue()
-        );
+    @Override
+    public YamlMapping readYamlMapping() {
+        return null;
     }
-    
-    /**
-     * Yaml can create a YamlInput from a String.
-     */
-    @Test
-    public void createsYamlInputFromString() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput("yaml: test"), Matchers.notNullValue()
-        );
+
+    @Override
+    public YamlSequence readYamlSequence() {
+        return null;
     }
 }
