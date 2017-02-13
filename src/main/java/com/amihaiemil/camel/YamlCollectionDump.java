@@ -32,7 +32,7 @@ import java.util.Collection;
 /**
  * A collection represented as YamlNode.
  * @author Sherif Waly (sherifwaly95@gmail.com)
- * @version $Id$
+ * @version $Id: ac1f3566f98933a87aff867750f8d05085b7413b $
  * @since 1.0.0
  *
  */

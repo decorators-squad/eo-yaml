@@ -37,7 +37,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link Yaml}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 3fc0123fca7f93c82259b0ed4ff44e1aeb62cce3 $
  * @since 1.0.0
  */
 public final class YamlTest {

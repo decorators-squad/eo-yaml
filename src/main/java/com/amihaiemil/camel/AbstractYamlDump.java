@@ -30,7 +30,7 @@ package com.amihaiemil.camel;
 /**
  * A Yaml representer.
  * @author Sherif Waly (sherifwaly95@gmail.com)
- * @version $Id$
+ * @version $Id: 9462c12998b765f33544b366fd26e56ab814a666 $
  * @since 1.0.0
  * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
  *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize

@@ -30,7 +30,7 @@ package com.amihaiemil.camel;
 /**
  * A line of yaml.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: c9b36d88dc8309d091e121548439fa7b6ba989a2 $
  * @since 1.0.0
  *
  */

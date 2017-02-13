@@ -39,7 +39,7 @@ import com.amihaiemil.camel.YamlObjectDumpTest.StudentSimplePojo;
 /**
  * Unit tests for {@link YamlCollectionDump}.
  * @author Sherif Waly (sherifwaly95@gmail.com)
- * @version $Id$
+ * @version $Id: a29bf5e43c279d0f8c1cef6432605c53d23f673c $
  * @since 1.0.0
  * 
  */

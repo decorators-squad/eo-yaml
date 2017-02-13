@@ -36,7 +36,7 @@ import org.apache.commons.beanutils.BeanMap;
 /**
  * An Object represented as a YamlMapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 77c032ae9a2bdd3e295718cd4e2e130eed2515f9 $
  * @since 1.0.0
  *
  */

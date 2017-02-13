@@ -36,7 +36,7 @@ import java.io.InputStream;
 /**
  * Yaml.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 4b4c91f48f105c2eef22b5d997edb5883feca71a $
  * @sicne 1.0.0
  *
  */
