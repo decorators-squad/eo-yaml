@@ -28,13 +28,15 @@
 package com.amihaiemil.camel;
 
 /**
- * Decorator for YamlLine.
+ * Decorator for YamlLine to check if the line is well indented relative to the
+ * previous one.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #55:30m/TEST Implement WellIndentedLineTest to unit test this class
  *
  */
-public final class WellIndentedLine implements YamlLine {
+final class WellIndentedLine implements YamlLine {
 
     /**
      * Content line.
@@ -51,7 +53,7 @@ public final class WellIndentedLine implements YamlLine {
      * @param line YamlLine
      * @param previousLine YamlLine
      */
-    public WellIndentedLine(final YamlLine line, final YamlLine previousLine) {
+    WellIndentedLine(final YamlLine line, final YamlLine previousLine) {
         this.line = line;
         this.previousLine = previousLine;
     }
@@ -68,15 +70,28 @@ public final class WellIndentedLine implements YamlLine {
 
     @Override
     public int indentation() {
-        int lineIndent = this.line.indentation();
-        int previousLineIndent = this.previousLine.indentation();
-        if(lineIndent == previousLineIndent) {
-            return lineIndent;
+        final int lineIndent = this.line.indentation();
+        final int previousLineIndent = this.previousLine.indentation();
+        
+        final String specialCharacters = ":>|-";
+        final CharSequence prevLinelastChar = 
+            this.previousLine.trimmed()
+            .substring(this.previousLine.trimmed().length()-1);
+        
+        if(specialCharacters.contains(prevLinelastChar)) {
+            if(lineIndent != previousLineIndent+2) {
+                throw new IllegalStateException(
+                    "Line indentation not shifted by 2"
+                );
+            }
         } else {
-            throw new IllegalStateException(
-                "Indentation of line isn't equal indentation of previous line."
-            );
+            if(lineIndent > previousLineIndent) {
+                throw new IllegalStateException(
+                    "Line indendation is more than the previous line"
+                );
+            }
         }
+        return lineIndent;
     }
     
 }
