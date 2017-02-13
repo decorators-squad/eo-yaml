@@ -27,63 +27,34 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
- * Implementation for {@link YamlInput}.
+ * Iterable yaml lines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #52:1h Implement and unit test this interface. It should
+ *  be named RtYamlLines and be a default-accessible class.
  */
-final class RtYamlInput implements YamlInput {
+interface YamlLines extends Iterable<YamlLine> {
 
     /**
-     * Source of the input.
-     */
-    private InputStream source;
-
-    /**
-     * Ctor.
-     * @param source Given source.
-     */
-    RtYamlInput(final InputStream source) {
-        this.source = source;
-    }
-
-    @Override
-    public YamlMapping readYamlMapping() {
-        return null;
-    }
-
-    @Override
-    public YamlSequence readYamlSequence() {
-        return null;
-    }
-
-    /**
-     * Read the input's lines.
+     * Lines which are contained within the current YamlLine (lines which are 
+     * <br> indented by 2 or more spaces beneath it).
      * @return YamlLines
-     * @throws IOException If something goes wrong while reading the input.
      */
-    private YamlLines readInput() throws IOException {
-        Queue<YamlLine> lines = new ConcurrentLinkedQueue<>();
-        try (
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(this.source)
-            )
-        ) {
-            String line;
-            int number = 0;
-            while ((line = reader.readLine()) != null) {
-                lines.add(new RtYamlLine(line, number));
-                number++;
-            }
-        }
-        return null;
-    }
+    YamlLines contained();
+
+    /**
+     * Turn these lines into a Yaml mapping.
+     * @return YamlMapping.
+     */
+    YamlMapping toYamlMapping();
+
+    /**
+     * Turn these lines into a Yaml sequence.
+     * @return YamlSequence.
+     */
+    YamlSequence toYamlSequence();
+    
+    
 }

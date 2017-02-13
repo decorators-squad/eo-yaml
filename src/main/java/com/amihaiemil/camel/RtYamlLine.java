@@ -27,70 +27,70 @@
  */
 package com.amihaiemil.camel;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.beanutils.BeanMap;
-
 /**
- * An Object represented as a YamlMapping.
+ * Default implementation of {@link YamlLine}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- *
+ * @todo #52:30min Right now, at every call of trimmed() and indentation()
+ *  the values are calculated. This isn't efficient, so we need a decorator
+ *  to cache these values. Let's name it CachedYamlLine. It should be used
+ *  like this: YamlLine line = new CachedYamlLine(new RtYamlLine(...));
+ * @todo #52:30min Method indentation() also checks that the value is multiple
+ *  of 2. We should extract this in a decorator called WellIndentedLine which
+ *  will also check if the intendetaion is correct relative to the previous
+ *  line. It would be used like this: <br>
+ *  YamlLine line = new WellINdentedLine(line, previousLine).
  */
-public final class YamlObjectDump extends AbstractYamlDump {
+final class RtYamlLine implements YamlLine {
 
     /**
-     * Object to dump.
+     * Content.
      */
-    private Object obj;
+    private String value;
+
+    /**
+     * Line nr.
+     */
+    private int number;
 
     /**
      * Ctor.
-     * @param obj Object to dump.
+     * @param value Contents of this line.
+     * @param number Number of the line.
      */
-    public YamlObjectDump(final Object obj) {
-        this.obj = obj;
+    RtYamlLine(final String value, final int number) {
+        this.value = value;
+        this.number = number;
     }
 
     @Override
-    public YamlMapping represent() {
-        YamlMappingBuilder builder = new RtYamlMappingBuilder();
-        Set<Map.Entry<Object, Object>> entries = new BeanMap(this.obj)
-            .entrySet();
-        for (final Map.Entry<Object, Object> entry : entries) {
-            String key = (String) entry.getKey();
-            if(!"class".equals(key)) {
-                Object value = entry.getValue();
-                if(super.leafProperty(value)) {
-                    builder = builder
-                        .add((String) entry.getKey(), value.toString());
-                } else {
-                    builder = builder
-                        .add((String) entry.getKey(), this.yamlNode(value));
-                }
+    public String trimmed() {
+        return this.value.trim();
+    }
+
+    @Override
+    public int number() {
+        return this.number;
+    }
+
+    @Override
+    public int indentation() {
+        int indentation = 0;
+        int index = 0;
+        while (index < this.value.length()) {
+            if (this.value.charAt(index) == ' ') {
+                indentation++;
             }
+            index++;
         }
-        return builder.build();
+        if (indentation % 2 != 0) {
+            throw new IllegalStateException(
+                "Indentation of line " + this.number + " is not correct. "
+                + "It is " + indentation + " and it should be a multiple of 2!"
+            );
+        }
+        return indentation;
     }
 
-
-    /**
-     * Convert a complex property to a Yaml node.
-     * @param property The property to represent as a YamlNode
-     * @return YamlNode representation of
-     */
-    private YamlNode yamlNode(final Object property) {
-        YamlNode node;
-        if (property instanceof Map) {
-            node = new YamlMapDump((Map) property).represent();
-        } else if (property instanceof Collection<?>) {
-            node = new YamlCollectionDump((Collection) property).represent();
-        } else {
-            node = new YamlObjectDump(property).represent();
-        }
-        return node;
-    }
 }

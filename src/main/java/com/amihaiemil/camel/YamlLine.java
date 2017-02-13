@@ -27,63 +27,32 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 /**
- * Implementation for {@link YamlInput}.
+ * A line of yaml.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ *
  */
-final class RtYamlInput implements YamlInput {
+interface YamlLine {
 
     /**
-     * Source of the input.
+     * The line's trimmed contents.
+     * @return String contents.
      */
-    private InputStream source;
+    String trimmed();
 
     /**
-     * Ctor.
-     * @param source Given source.
+     * Number of the line (count start from 0).
+     * @return Integer.
      */
-    RtYamlInput(final InputStream source) {
-        this.source = source;
-    }
-
-    @Override
-    public YamlMapping readYamlMapping() {
-        return null;
-    }
-
-    @Override
-    public YamlSequence readYamlSequence() {
-        return null;
-    }
+    int number();
 
     /**
-     * Read the input's lines.
-     * @return YamlLines
-     * @throws IOException If something goes wrong while reading the input.
+     * This line's indentation (number of spaces at the beginning of it).>br>
+     * Should be a multiple of 2! If not, IllegalStateException is thrown.
+     * @return Integer.
+     * @throws IllegalStateException if the indentation is not multiple of 2.
      */
-    private YamlLines readInput() throws IOException {
-        Queue<YamlLine> lines = new ConcurrentLinkedQueue<>();
-        try (
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(this.source)
-            )
-        ) {
-            String line;
-            int number = 0;
-            while ((line = reader.readLine()) != null) {
-                lines.add(new RtYamlLine(line, number));
-                number++;
-            }
-        }
-        return null;
-    }
+    int indentation();
 }
