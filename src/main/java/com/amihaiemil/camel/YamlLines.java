@@ -30,7 +30,7 @@ package com.amihaiemil.camel;
 /**
  * Iterable yaml lines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 347c9a14f6bf5d3cf6c6c6e8d76a80ee062373f8 $
  * @since 1.0.0
  * @todo #52:1h Implement and unit test this interface. It should
  *  be named RtYamlLines and be a default-accessible class.

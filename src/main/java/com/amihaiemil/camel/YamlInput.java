@@ -30,7 +30,7 @@ package com.amihaiemil.camel;
 /**
  * Yaml input.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 9d323c53ca226c2a491036fbc2dab54e9f0edae8 $
  * @since 1.0.0
  */
 public interface YamlInput {

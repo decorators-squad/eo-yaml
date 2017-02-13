@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * Implementation for {@link YamlInput}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: d6cbc8b7d1ddd6d77ed825ebaa9e79fa223ff65f $
  * @since 1.0.0
  */
 final class RtYamlInput implements YamlInput {

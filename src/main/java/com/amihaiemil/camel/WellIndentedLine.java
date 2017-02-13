@@ -28,64 +28,55 @@
 package com.amihaiemil.camel;
 
 /**
- * Default implementation of {@link YamlLine}.
- * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: 726f1c2a779c6fcde8794939fcd87131b5196cc7 $
+ * Decorator for YamlLine.
+ * @author Sherif Waly (sherifwaly95@gmail.com)
+ * @version $Id$
  * @since 1.0.0
- * @todo #52:30min Right now, at every call of trimmed() and indentation()
- *  the values are calculated. This isn't efficient, so we need a decorator
- *  to cache these values. Let's name it CachedYamlLine. It should be used
- *  like this: YamlLine line = new CachedYamlLine(new RtYamlLine(...));
+ *
  */
-final class RtYamlLine implements YamlLine {
+public final class WellIndentedLine implements YamlLine {
 
     /**
-     * Content.
+     * Content line.
      */
-    private String value;
-
+    private YamlLine line;
+    
     /**
-     * Line nr.
+     * Previous line.
      */
-    private int number;
-
+    private YamlLine previousLine;
+    
     /**
      * Ctor.
-     * @param value Contents of this line.
-     * @param number Number of the line.
+     * @param line YamlLine
+     * @param previousLine YamlLine
      */
-    RtYamlLine(final String value, final int number) {
-        this.value = value;
-        this.number = number;
+    public WellIndentedLine(final YamlLine line, final YamlLine previousLine) {
+        this.line = line;
+        this.previousLine = previousLine;
     }
-
+    
     @Override
     public String trimmed() {
-        return this.value.trim();
+        return this.line.trimmed();
     }
-
+    
     @Override
     public int number() {
-        return this.number;
+        return this.line.number();
     }
 
     @Override
     public int indentation() {
-        int indentation = 0;
-        int index = 0;
-        while (index < this.value.length()) {
-            if (this.value.charAt(index) == ' ') {
-                indentation++;
-            }
-            index++;
-        }
-        if (indentation % 2 != 0) {
+        int lineIndent = this.line.indentation();
+        int previousLineIndent = this.previousLine.indentation();
+        if(lineIndent == previousLineIndent) {
+            return lineIndent;
+        } else {
             throw new IllegalStateException(
-                "Indentation of line " + this.number + " is not correct. "
-                + "It is " + indentation + " and it should be a multiple of 2!"
+                "Indentation of line isn't equal indentation of previous line."
             );
         }
-        return indentation;
     }
-
+    
 }
