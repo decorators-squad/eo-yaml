@@ -27,55 +27,72 @@
  */
 package com.amihaiemil.camel;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
 /**
- * Default implementation of {@link YamlLine}.
+ * Unit tests for {@link EvenlyIndentedLine}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #52:30min Right now, at every call of trimmed() and indentation()
- *  the values are calculated. This isn't efficient, so we need a decorator
- *  to cache these values. Let's name it CachedYamlLine. It should be used
- *  like this: YamlLine line = new CachedYamlLine(new RtYamlLine(...));
+ *
  */
-final class RtYamlLine implements YamlLine {
+public final class EvenlyIndentedLineTest {
 
     /**
-     * Content.
+     * EvenlyIndentedLine knows its number.
      */
-    private String value;
+    @Test
+    public void knowsNumber() {
+        YamlLine line = new EvenlyIndentedLine(
+            new RtYamlLine("this line", 12)
+        );
+        MatcherAssert.assertThat(line.number(), Matchers.is(12));
+    }
 
     /**
-     * Line nr.
+     * EvenlyIndentedLine can trim itself.
      */
-    private int number;
+    @Test
+    public void trimmsItself() {
+        YamlLine line = new EvenlyIndentedLine(
+            new RtYamlLine("   this: line   ", 10)
+        );
+        MatcherAssert.assertThat(
+            line.trimmed(), Matchers.equalTo("this: line")
+        );
+    }
 
     /**
-     * Ctor.
-     * @param value Contents of this line.
-     * @param number Number of the line.
+     * EvenlyIndentedLine returns its, indentation if it's right.
      */
-    RtYamlLine(final String value, final int number) {
-        this.value = value;
-        this.number = number;
+    @Test
+    public void isWellIndented() {
+        YamlLine byZero = new EvenlyIndentedLine(
+            new RtYamlLine("this: line", 5)
+        );
+        MatcherAssert.assertThat(
+            byZero.indentation(), Matchers.is(0)
+        );
+        YamlLine byFour = new EvenlyIndentedLine(
+                new RtYamlLine("    this: line", 10)
+        );
+        MatcherAssert.assertThat(
+            byFour.indentation(), Matchers.is(4)
+        );
     }
 
-    @Override
-    public String trimmed() {
-        return this.value.trim();
-    }
-
-    @Override
-    public int number() {
-        return this.number;
-    }
-
-    @Override
-    public int indentation() {
-        int index = 0;
-        while (this.value.charAt(index) == ' ') {
-            index++;
-        }
-        return index;
+    /**
+     * EvenlyIndentedLine throws an exception when the line
+     * has an odd indentation.
+     */
+    @Test (expected = IllegalStateException.class)
+    public void isBadlyIndented() {
+        YamlLine line = new EvenlyIndentedLine(
+            new RtYamlLine("   odd: indent", 8)
+        );
+        line.indentation();
     }
 
 }

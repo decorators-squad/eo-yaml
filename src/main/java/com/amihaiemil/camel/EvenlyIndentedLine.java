@@ -28,33 +28,25 @@
 package com.amihaiemil.camel;
 
 /**
- * Decorator for YamlLine to check if the line is well indented relative to the
- * previous one.
- * @author Sherif Waly (sherifwaly95@gmail.com)
+ * Any Yaml line should have an even indentation (multiple of 2).
+ * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  *
  */
-final class WellIndentedLine implements YamlLine {
+final class EvenlyIndentedLine implements YamlLine {
 
     /**
-     * Content line.
+     * Original line.
      */
     private YamlLine line;
     
     /**
-     * Previous line.
-     */
-    private YamlLine previousLine;
-    
-    /**
      * Ctor.
-     * @param previous YamlLine
-     * @param current YamlLine
+     * @param line Original YamlLine
      */
-    WellIndentedLine(final YamlLine previous, final YamlLine current) {
-        this.previousLine = previous;
-        this.line = current;
+    EvenlyIndentedLine(final YamlLine line) {
+        this.line = line;
     }
     
     @Override
@@ -69,28 +61,15 @@ final class WellIndentedLine implements YamlLine {
 
     @Override
     public int indentation() {
-        final int lineIndent = this.line.indentation();
-        final int previousLineIndent = this.previousLine.indentation();
-        final String specialCharacters = ":>|-";
-        final CharSequence prevLineLastChar = 
-            this.previousLine.trimmed()
-            .substring(this.previousLine.trimmed().length()-1);
-        if(specialCharacters.contains(prevLineLastChar)) {
-            if(lineIndent != previousLineIndent+2) {
-                throw new IllegalStateException(
-                    "Indentation of line " + this.line.number() + " isn't ok. "
-                     + " It should be greater than the previous line's by 2"
-                );
-            }
-        } else {
-            if(lineIndent > previousLineIndent) {
-                throw new IllegalStateException(
-                    "Indentation of line " + this.line.number() + " is "
-                    + "greater than the previous one's"
-                );
-            }
+        final int indentation = this.line.indentation();
+        if (indentation % 2 != 0) {
+            throw new IllegalStateException(
+                "Indentation of line " + this.line.number() + " is incorrect. "
+                + "It is " + indentation + " and it should be a multiple of 2!"
+            );
         }
-        return lineIndent;
+        
+        return indentation;
     }
-    
+
 }
