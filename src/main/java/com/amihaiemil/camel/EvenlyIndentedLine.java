@@ -72,4 +72,8 @@ final class EvenlyIndentedLine implements YamlLine {
         return indentation;
     }
 
+    @Override
+    public String toString() {
+    	return this.line.toString();
+    }
 }

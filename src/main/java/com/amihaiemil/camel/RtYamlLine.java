@@ -78,4 +78,8 @@ final class RtYamlLine implements YamlLine {
         return index;
     }
 
+    @Override
+    public String toString() {
+    	return this.value;
+    }
 }

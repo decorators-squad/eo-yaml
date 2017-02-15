@@ -92,5 +92,9 @@ final class WellIndentedLine implements YamlLine {
         }
         return lineIndent;
     }
-    
+
+    @Override
+    public String toString() {
+    	return this.line.toString();
+    }
 }

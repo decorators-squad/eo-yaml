@@ -27,68 +27,44 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 /**
- * Implementation for {@link YamlInput}.
+ * Unit tests for {@link RtYamlLine}
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-final class RtYamlInput implements YamlInput {
-
+public final class RtYamlLineTest {
+    
     /**
-     * Source of the input.
+     * RtYamlLine knows its number.
      */
-    private InputStream source;
-
-    /**
-     * Ctor.
-     * @param source Given source.
-     */
-    RtYamlInput(final InputStream source) {
-        this.source = source;
-    }
-
-    @Override
-    public YamlMapping readYamlMapping() throws IOException {
-    	return this.readInput().toYamlMapping();
-    }
-
-    @Override
-    public YamlSequence readYamlSequence() throws IOException {
-        return this.readInput().toYamlSequence();
+    @Test
+    public void knowsNumber() {
+        YamlLine line = new RtYamlLine("this line", 12);
+        MatcherAssert.assertThat(line.number(), Matchers.is(12));
     }
 
     /**
-     * Read the input's lines.
-     * @return YamlLines
-     * @throws IOException If something goes wrong while reading the input.
+     * RtYamlLine can trim itself.
      */
-    private YamlLines readInput() throws IOException {
-        List<YamlLine> lines = new ArrayList<>();
-        try (
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(this.source)
-            )
-        ) {
-        	String line;
-            int number = 0;
-            YamlLine previous = new YamlLine.NullYamlLine();
-            while ((line = reader.readLine()) != null) {
-            	final YamlLine current = new RtYamlLine(line, number);
-                lines.add(
-                    new WellIndentedLine(previous, current)
-                );
-                number++;
-                previous = current;
-            }
-        }
-        return new RtYamlLines(lines);
+    @Test
+    public void trimmsItself() {
+        YamlLine line = new RtYamlLine("   this: line   ", 10);
+        MatcherAssert.assertThat(
+            line.trimmed(), Matchers.equalTo("this: line")
+        );
+    }
+
+    /**
+     * RtYamlLine returns indentation.
+     */
+    @Test
+    public void knowsIndentation() {
+        YamlLine line = new RtYamlLine("this: line", 5);
+        MatcherAssert.assertThat(line.indentation(), Matchers.is(0));
     }
 }

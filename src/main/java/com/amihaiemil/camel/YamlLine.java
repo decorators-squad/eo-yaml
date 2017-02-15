@@ -55,4 +55,26 @@ interface YamlLine {
      * @throws IllegalStateException if the indentation is not multiple of 2.
      */
     int indentation();
+    
+    /**
+     * YamlLine null object.
+     */
+    static class NullYamlLine implements YamlLine {
+
+        @Override
+        public String trimmed() {
+            return "";
+        }
+
+        @Override
+        public int number() {
+            return -1;
+        }
+
+        @Override
+        public int indentation() {
+            return 0;    
+        }
+        
+    }
 }

@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.camel;
 
+import java.io.IOException;
+
 /**
  * Yaml input.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -38,13 +40,15 @@ public interface YamlInput {
     /**
      * Read the given input as a Yaml mapping.
      * @return Read YamlMapping.
+     * @throws IOException if the input cannot be read for some reason
      */
-    YamlMapping readYamlMapping();
+    YamlMapping readYamlMapping() throws IOException;
 
     /**
      * Read the given input as a Yaml sequence.
      * @return Read YamlSequence.
+     * @throws IOException if the input cannot be read for some reason
      */
-    YamlSequence readYamlSequence();
+    YamlSequence readYamlSequence() throws IOException;
 
 }
