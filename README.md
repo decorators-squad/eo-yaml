@@ -8,7 +8,7 @@ YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhymes with “camel”) is a human-friendly, cross language, Unicode based data serialization language.
 
-**First release is comming soon!**
+**First release is coming soon!**
 
 ## Usage
 
@@ -19,7 +19,8 @@ The API of this library is clean, intuitive and generally close to the ``javax.j
 ```java
 YamlMapping yaml = Yaml.createYamlMappingBuilder()
     .add("architect", "amihaiemil")
-    .add("devops",
+    .add(
+        "devops",
         Yaml.createYamlSequenceBuilder()
             .add("rultor")
         	.add("0pdd")
