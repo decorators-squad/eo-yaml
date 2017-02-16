@@ -62,7 +62,31 @@ YamlSequence yamlSequence = Yaml.createYamlInput(new File("sequence.yml"))
     .readYamlSequence();
 ```
 
-More examples to follow...
+## Parsing a Pojo:
+
+Pojos can be parsed ("dumped") into Yaml as follows (attributes need to have getters and setters): 
+
+```java
+Map<String, Integer> grades = new HashMap<>();
+grades.put("Math", 9);
+grades.put("CS", 10);
+YamlMapping studentYaml = new YamlObjectDump(
+    new Student ("John", "Doe", 20, grades)
+).represent();
+```
+
+``studentYaml.toString()`` will print:
+
+```yaml
+age: 20
+firstName: John
+grades: 
+  CS: 10
+  Math: 9
+lastName: Doe
+```
+
+You can also parse maps (``Map<Object, Object>``) and collections (``Collection<Object>``) using ``YamlMapDump`` and ``YamlCollectionDump`` respecitvely
 
 ## Contribute
 
