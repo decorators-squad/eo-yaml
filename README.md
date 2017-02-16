@@ -12,7 +12,7 @@ From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhyme
 
 The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to:
 
-# Building and printing Yaml:
+## Building and printing Yaml:
 
 ```java
 YamlMapping yaml = Yaml.createYamlMappingBuilder()
@@ -32,7 +32,7 @@ YamlMapping yaml = Yaml.createYamlMappingBuilder()
     ).build();
 ```
 
-``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print:
+``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print (notice that the elements are ordered, according to the Yaml specification):
 
 ```yaml
 architect: amihaiemil
@@ -45,7 +45,7 @@ devops:
   - rultor
 ```
 
-# Reading:
+## Reading:
 
 Reading a Yaml input is very straight-forward, as outlined bellow. There is one **important** aspect, though: the input has to be
 a well-indented Yaml (pretty), otherwise you will get an exception when trying to work with the read object!
