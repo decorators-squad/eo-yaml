@@ -8,6 +8,59 @@ YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhymes with “camel”) is a human-friendly, cross language, Unicode based data serialization language.
 
+## Usage
+
+The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to:
+
+# Building and printing Yaml:
+
+```java
+YamlMapping yaml = Yaml.createYamlMappingBuilder()
+    .add("architect", "amihaiemil")
+    .add("devops",
+        Yaml.createYamlSequenceBuilder()
+            .add("rultor")
+        	.add("0pdd")
+        	.build()
+    ).add(
+        "developers",
+        Yaml.createYamlSequenceBuilder()
+            .add("amihaiemil")
+        	.add("salikjan")
+            .add("SherifWally")
+        	.build()
+    ).build();
+```
+
+``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print:
+
+```yaml
+architect: amihaiemil
+developers: 
+  - SherifWally
+  - amihaiemil
+  - salikjan
+devops: 
+  - 0pdd
+  - rultor
+```
+
+# Reading:
+
+Reading a Yaml input is very straight-forward, as outlined bellow. There is one **important** aspect, though: the input has to be
+a well-indented Yaml (pretty), otherwise you will get an exception when trying to work with the read object!
+
+```java
+//createYamlInput is overloaded to accept also String InputStream
+YamlMapping yamlMapping = Yaml.createYamlInput(new File("mapping.yml"))
+    .readYamlMapping();
+
+YamlSequence yamlSequence = Yaml.createYamlInput(new File("sequence.yml"))
+    .readYamlSequence();
+```
+
+More examples to follow...
+
 ## Contribute
 
 Contributors are [welcomed](http://www.amihaiemil.com/2016/12/30/becoming-a-contributor.html)
