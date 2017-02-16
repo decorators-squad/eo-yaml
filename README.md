@@ -8,6 +8,8 @@ YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhymes with “camel”) is a human-friendly, cross language, Unicode based data serialization language.
 
+**First release is comming soon!**
+
 ## Usage
 
 The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to:
