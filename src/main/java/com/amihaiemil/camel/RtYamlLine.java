@@ -80,6 +80,6 @@ final class RtYamlLine implements YamlLine {
 
     @Override
     public String toString() {
-    	return this.value;
+        return this.value;
     }
 }

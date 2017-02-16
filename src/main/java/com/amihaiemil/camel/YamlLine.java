@@ -59,7 +59,7 @@ interface YamlLine {
     /**
      * YamlLine null object.
      */
-    static class NullYamlLine implements YamlLine {
+    class NullYamlLine implements YamlLine {
 
         @Override
         public String trimmed() {

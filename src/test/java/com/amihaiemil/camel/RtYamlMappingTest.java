@@ -27,7 +27,6 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -293,8 +292,6 @@ public final class RtYamlMappingTest {
             .build();
         String expected = this.readTestResource("complexMapping.yml");
         MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
-        YamlInput input = new RtYamlInput(new ByteArrayInputStream(expected.getBytes()));
-        input.readYamlMapping();
     }
 
     /**

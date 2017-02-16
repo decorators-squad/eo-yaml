@@ -32,29 +32,15 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #52:1h Implement and unit test this interface. It should
- *  be named RtYamlLines and be a default-accessible class.
  */
 interface YamlLines extends Iterable<YamlLine> {
 
     /**
-     * Lines which are contained within the current YamlLine (lines which are 
+     * Lines which are nested after the given YamlLine (lines which are 
      * <br> indented by 2 or more spaces beneath it).
+     * @param after Number of a YamlLine
      * @return YamlLines
      */
-    YamlLines contained();
-
-    /**
-     * Turn these lines into a Yaml mapping.
-     * @return YamlMapping.
-     */
-    YamlMapping toYamlMapping();
-
-    /**
-     * Turn these lines into a Yaml sequence.
-     * @return YamlSequence.
-     */
-    YamlSequence toYamlSequence();
-    
+    YamlLines nested(final int after);
     
 }

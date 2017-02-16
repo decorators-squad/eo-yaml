@@ -27,68 +27,39 @@
  */
 package com.amihaiemil.camel;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
 /**
- * Implementation for {@link YamlInput}.
+ * Unit tests for {@link RtYamlLines}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @sinve 1.0.0
  */
-final class RtYamlInput implements YamlInput {
+public final class RtYamlLinesTest {
 
     /**
-     * Source of the input.
+     * RtYamlLines can iterate over the lines properly.
+     * It should iterate only over the lines which are at the
+     * same indentation level.
      */
-    private InputStream source;
-
-    /**
-     * Ctor.
-     * @param source Given source.
-     */
-    RtYamlInput(final InputStream source) {
-        this.source = source;
-    }
-
-    @Override
-    public YamlMapping readYamlMapping() throws IOException {
-        return null;
-    }
-
-    @Override
-    public YamlSequence readYamlSequence() throws IOException {
-        return null;
-    }
-
-    /**
-     * Read the input's lines.
-     * @return YamlLines
-     * @throws IOException If something goes wrong while reading the input.
-     */
-    private YamlLines readInput() throws IOException {
-        List<YamlLine> lines = new ArrayList<>();
-        try (
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(this.source)
-            )
-        ) {
-            String line;
-            int number = 0;
-            YamlLine previous = new YamlLine.NullYamlLine();
-            while ((line = reader.readLine()) != null) {
-                final YamlLine current = new RtYamlLine(line, number);
-                lines.add(
-                    new WellIndentedLine(previous, current)
-                );
-                number++;
-                previous = current;
-            }
-        }
-        return new RtYamlLines(lines);
+    @Test
+    public void iteratesRight() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: ", 0));
+        lines.add(new RtYamlLine("  - fourth", 1));
+        lines.add(new RtYamlLine("  - fifth", 2));
+        lines.add(new RtYamlLine("second: something", 3));
+        lines.add(new RtYamlLine("third: somethingElse", 4));
+        final Iterator<YamlLine> iterator = new RtYamlLines(lines).iterator();
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
+        MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
     }
 }

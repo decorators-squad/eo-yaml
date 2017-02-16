@@ -71,7 +71,7 @@ public final class WellIndentedLineTest {
      */
     @Test
     public void isWellIndented() {
-    	YamlLine line = new WellIndentedLine(
+        YamlLine line = new WellIndentedLine(
             new RtYamlLine("previusline: ", 9),
             new RtYamlLine("  this: line", 10)
         );
