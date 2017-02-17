@@ -10,8 +10,6 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id: aa086c8b637f198e26bc2ab0550fff6763e30016 $
  * @since 1.0.0
- * @todo #59:30min/DEV Implement and unit test method nested(...), as specified
- *  in its javadoc.
  */
 final class RtYamlLines implements YamlLines {
 
