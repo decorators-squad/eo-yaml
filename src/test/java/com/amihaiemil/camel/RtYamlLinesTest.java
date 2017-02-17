@@ -38,7 +38,7 @@ import org.junit.Test;
 /**
  * Unit tests for {@link RtYamlLines}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: 9009d046234339ba4ef3974ddf83b83c8134c3ad $
+ * @version $Id$
  * @sinve 1.0.0
  */
 public final class RtYamlLinesTest {

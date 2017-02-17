@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * YamlLines default implementation.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: aa086c8b637f198e26bc2ab0550fff6763e30016 $
+ * @version $Id$
  * @since 1.0.0
  */
 final class RtYamlLines implements YamlLines {
@@ -54,19 +54,17 @@ final class RtYamlLines implements YamlLines {
     public YamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
-        int index = 0;
         for(final YamlLine line: this.lines) {
-            if(index == after) {
+            if(line.number() == after) {
                 start = line;
             }
-            if(index > after) {
+            if(line.number() > after) {
                 if(line.indentation() > start.indentation()) {
                     nestedLines.add(line);   
                 } else {
                     break;
                 }
             }
-            index++;
         }
         return new RtYamlLines(nestedLines);
     }
