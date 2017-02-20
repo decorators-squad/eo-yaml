@@ -32,9 +32,6 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #59:30min/DEV We should implement class ReadYamlMapping, which
- *  should implement this interface. The class will encapsulate and
- *  work with YamlLines.
  */
 public interface YamlMapping extends YamlNode{
 

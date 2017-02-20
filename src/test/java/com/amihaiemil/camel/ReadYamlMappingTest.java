@@ -27,27 +27,50 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
 /**
- * Iterable yaml lines.
+ * Unit tests for {@link ReadYamlMapping}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ *
  */
-interface YamlLines extends Iterable<YamlLine> {
+public final class ReadYamlMappingTest {
 
     /**
-     * Lines which are nested after the given YamlLine (lines which are 
-     * <br> indented by 2 or more spaces beneath it).
-     * @param after Number of a YamlLine
-     * @return YamlLines
+     * ReadYamlMapping can return the YamlMapping mapped to a 
+     * String key.
      */
-    YamlLines nested(final int after);
-    
-    
+    @Test
+    public void returnsYamlMappingWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  fourth: some", 2));
+        lines.add(new RtYamlLine("  fifth: values", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        MatcherAssert.assertThat(
+            map.yamlMapping("second"), Matchers.notNullValue()
+        );
+    }
+
     /**
-     * Turn these lines into a YamlNode.
-     * @return YamlNode
+     * ReadYamlMapping can throw an ISE when the mapping is not correct.
      */
-    YamlNode toYamlNode();
-    
+    @Test (expected = IllegalStateException.class)
+    public void throwsExceptionWhenBadMapping(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("missingcolon", 1));
+        lines.add(new RtYamlLine("  fourth: some", 2));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        map.yamlMapping("missingcolon");
+    }
 }
