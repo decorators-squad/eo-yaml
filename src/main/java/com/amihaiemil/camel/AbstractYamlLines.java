@@ -33,7 +33,7 @@ package com.amihaiemil.camel;
  * @version $Id$
  * @since 1.0.0
  */
-interface YamlLines extends Iterable<YamlLine> {
+abstract class AbstractYamlLines implements Iterable<YamlLine> {
 
     /**
      * Lines which are nested after the given YamlLine (lines which are 
@@ -41,13 +41,22 @@ interface YamlLines extends Iterable<YamlLine> {
      * @param after Number of a YamlLine
      * @return YamlLines
      */
-    YamlLines nested(final int after);
-    
-    
+    abstract AbstractYamlLines nested(final int after);
+
     /**
      * Turn these lines into a YamlNode.
      * @return YamlNode
      */
-    YamlNode toYamlNode();
+    YamlNode toYamlNode() {
+    	final YamlNode node;
+        boolean sequence = this.iterator()
+            .next().trimmed().startsWith("-");
+        if(sequence) {
+            node = new ReadYamlSequence(this);
+        } else {
+            node = new ReadYamlMapping(this);
+        }
+        return node;
+    }
     
 }

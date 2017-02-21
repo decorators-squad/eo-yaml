@@ -10,10 +10,8 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #63:30min/DEV After ticket #64 is resolved, make sure method
- *  toYamlNode from this class is completed. (ReadYamlSequence instead of null)
  */
-final class RtYamlLines implements YamlLines {
+final class RtYamlLines extends AbstractYamlLines {
 
     /**
      * Yaml lines.
@@ -53,7 +51,7 @@ final class RtYamlLines implements YamlLines {
     }
 
     @Override
-    public YamlLines nested(final int after) {
+    public AbstractYamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
         for(final YamlLine line: this.lines) {
@@ -80,29 +78,5 @@ final class RtYamlLines implements YamlLines {
         return builder.toString();
     }
 
-    @Override
-    public YamlNode toYamlNode() {
-        final YamlNode node;
-        boolean sequence = false;
-        for (final YamlLine line : this) {
-            if (line.trimmed().startsWith("-")) {
-                sequence = true;
-            } else {
-                if(sequence) {
-                    throw new IllegalStateException(
-                        "Line " + line.number() + " should start with '-', "
-                        + "as it is part of a sequence"
-                    );
-                }
-                break;
-            }
-        }
-        if(sequence) {
-            node = null;
-        } else {
-            node = new ReadYamlMapping(this);
-        }
-        return node;
-    }
 
 }

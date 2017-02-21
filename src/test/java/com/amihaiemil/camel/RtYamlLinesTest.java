@@ -75,7 +75,7 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("second: something", 3));
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
-        YamlLines yamlLines = new RtYamlLines(lines);
+        AbstractYamlLines yamlLines = new RtYamlLines(lines);
         
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));

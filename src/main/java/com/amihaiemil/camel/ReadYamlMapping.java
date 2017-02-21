@@ -45,13 +45,13 @@ final class ReadYamlMapping implements YamlMapping {
     /**
      * Lines read.
      */
-    private YamlLines lines;
+    private AbstractYamlLines lines;
 
     /**
      * Ctor.
      * @param lines Given lines.
      */
-    ReadYamlMapping(final YamlLines lines) {
+    ReadYamlMapping(final AbstractYamlLines lines) {
         this.lines = lines;
     }
 

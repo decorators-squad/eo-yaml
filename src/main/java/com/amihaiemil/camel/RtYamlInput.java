@@ -70,7 +70,7 @@ final class RtYamlInput implements YamlInput {
      * @return YamlLines
      * @throws IOException If something goes wrong while reading the input.
      */
-    private YamlLines readInput() throws IOException {
+    private AbstractYamlLines readInput() throws IOException {
         List<YamlLine> lines = new ArrayList<>();
         try (
             BufferedReader reader = new BufferedReader(
