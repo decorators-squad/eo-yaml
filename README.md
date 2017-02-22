@@ -50,8 +50,8 @@ devops:
 
 ## Reading:
 
-Reading a Yaml input is very straight-forward, as outlined bellow. There is one **important** aspect, though: the input has to be
-a well-indented Yaml (pretty), otherwise you will get an exception when trying to work with the read object!
+Reading a Yaml input is very straight-forward, as outlined bellow. There is one **important** aspect: the input has to be
+a valid (well-indented) Yaml, otherwise you will get an exception, at some point, when trying to work with the read object!
 
 ```java
 //createYamlInput is overloaded to accept also String InputStream
