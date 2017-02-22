@@ -7,8 +7,8 @@ import java.util.Collection;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #64:30min/DEV Continue implementing and unit testing the methods 
- *  from this class one by one.
+ * @todo #64:30min/DEV Continue implementing and unit testing this class, 
+ *  one method at a time.
  */
 final class ReadYamlSequence implements YamlSequence {
 
