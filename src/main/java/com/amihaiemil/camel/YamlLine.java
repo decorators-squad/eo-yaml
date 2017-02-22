@@ -32,13 +32,8 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #64:30min/DEV This interface should extend Comparable, since we
- *  want YamlLines to be ordered after they are read from file.
- *  Lines should be compared by their String values (similar to
- *  Scalar.compareTo). YamlLines.iterator() will return the iterator
- *  containing the lines in order.
  */
-interface YamlLine {
+interface YamlLine extends Comparable<YamlLine> {
 
     /**
      * The line's trimmed contents.
@@ -78,6 +73,19 @@ interface YamlLine {
         @Override
         public int indentation() {
             return 0;    
+        }
+        
+        @Override
+        public int compareTo(final YamlLine other) {    
+            int result = -1;
+            if (this == other) {
+                result = 0;
+            } else if (other == null) {
+                result = 1;
+            } else {
+                result = this.toString().compareTo(other.toString());
+            }
+            return result;
         }
         
     }
