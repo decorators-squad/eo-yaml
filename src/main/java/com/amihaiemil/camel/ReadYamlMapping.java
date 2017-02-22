@@ -37,7 +37,7 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #63:30min/DEV Continue implementing and unit testing the methods 
+ * @todo #67:30min/DEV Continue to implement and unit-test the methods 
  *  from this class one by one.
  */
 final class ReadYamlMapping implements YamlMapping {
