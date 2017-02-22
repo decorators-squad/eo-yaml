@@ -217,7 +217,9 @@
 
         <!-- Metrics. -->
         <module name="BooleanExpressionComplexity"/>
-        <module name="ClassDataAbstractionCoupling"/>
+        <module name="ClassDataAbstractionCoupling">
+            <property name="max" value="20"/>
+        </module>
         <module name="ClassFanOutComplexity">
             <!--
             Total number of classes that a particular class

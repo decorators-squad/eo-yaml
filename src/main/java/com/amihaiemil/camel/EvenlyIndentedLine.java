@@ -68,7 +68,6 @@ final class EvenlyIndentedLine implements YamlLine {
                 + "It is " + indentation + " and it should be a multiple of 2!"
             );
         }
-        
         return indentation;
     }
 

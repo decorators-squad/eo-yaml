@@ -48,7 +48,7 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
      * @return YamlNode
      */
     YamlNode toYamlNode() {
-    	final YamlNode node;
+        final YamlNode node;
         boolean sequence = this.iterator()
             .next().trimmed().startsWith("-");
         if(sequence) {

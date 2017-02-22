@@ -57,12 +57,12 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return null;
+        return new ReadYamlMapping(this.readInput());
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return null;
+        return new ReadYamlSequence(this.readInput());
     }
 
     /**
@@ -71,7 +71,7 @@ final class RtYamlInput implements YamlInput {
      * @throws IOException If something goes wrong while reading the input.
      */
     private AbstractYamlLines readInput() throws IOException {
-        List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         try (
             BufferedReader reader = new BufferedReader(
                 new InputStreamReader(this.source)
@@ -83,7 +83,10 @@ final class RtYamlInput implements YamlInput {
             while ((line = reader.readLine()) != null) {
                 final YamlLine current = new RtYamlLine(line, number);
                 lines.add(
-                    new WellIndentedLine(previous, current)
+                    new WellIndentedLine(
+                        previous,
+                        new EvenlyIndentedLine(current)
+                    )
                 );
                 number++;
                 previous = current;

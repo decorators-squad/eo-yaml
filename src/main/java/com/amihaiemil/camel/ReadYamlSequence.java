@@ -31,12 +31,12 @@ final class ReadYamlSequence implements YamlSequence {
     }
 
     @Override
-    public String indent(int indentation) {
+    public String indent(final int indentation) {
         return null;
     }
 
     @Override
-    public int compareTo(YamlNode o) {
+    public int compareTo(final YamlNode other) {
         return 0;
     }
 
@@ -46,17 +46,17 @@ final class ReadYamlSequence implements YamlSequence {
     }
 
     @Override
-    public YamlMapping yamlMapping(int index) {
+    public YamlMapping yamlMapping(final int index) {
         return null;
     }
 
     @Override
-    public YamlSequence yamlSequence(int index) {
+    public YamlSequence yamlSequence(final int index) {
         return null;
     }
 
     @Override
-    public String string(int index) {
+    public String string(final int index) {
         return null;
     }
 
