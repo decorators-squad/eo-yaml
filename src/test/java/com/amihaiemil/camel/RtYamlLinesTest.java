@@ -95,11 +95,11 @@ public final class RtYamlLinesTest {
     }
     
     /**
-     * Test to check YamlLines are sorted correctly
+     * Test to check YamlLines are sorted correctly.
      */
     @Test
     public void isSortedYamlLines() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("5", 0));
         lines.add(new RtYamlLine("  2", 1));
         lines.add(new RtYamlLine("3", 2));
