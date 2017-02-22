@@ -28,6 +28,7 @@
 package com.amihaiemil.camel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,6 +90,30 @@ public final class RtYamlLinesTest {
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
         
         iterator = yamlLines.nested(4).iterator();
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
+        MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
+    }
+    
+    /**
+     * Test to check YamlLines are sorted correctly
+     */
+    @Test
+    public void isSortedYamlLines() {
+    	final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("5", 0));
+        lines.add(new RtYamlLine("  2", 1));
+        lines.add(new RtYamlLine("3", 2));
+        lines.add(new RtYamlLine("    4", 3));
+        lines.add(new RtYamlLine("1", 4));
+        lines.add(new RtYamlLine("6", 5));
+        Collections.sort(lines);
+        
+        Iterator<YamlLine> iterator = lines.iterator();
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(2));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
     }

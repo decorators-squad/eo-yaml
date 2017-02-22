@@ -100,14 +100,6 @@ final class WellIndentedLine implements YamlLine {
 
     @Override
     public int compareTo(final YamlLine other) {    
-        int result = -1;
-        if (this == other) {
-            result = 0;
-        } else if (other == null) {
-            result = 1;
-        } else {
-            result = this.toString().compareTo(other.toString());
-        }
-        return result;
+        return this.line.compareTo(other);
     }
 }

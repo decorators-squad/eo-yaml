@@ -91,7 +91,7 @@ final class RtYamlLine implements YamlLine {
         } else if (other == null) {
             result = 1;
         } else {
-            result = this.toString().compareTo(other.toString());
+            result = this.trimmed().compareTo(other.trimmed());
         }
         return result;
     }
