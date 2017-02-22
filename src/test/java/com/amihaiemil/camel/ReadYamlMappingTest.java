@@ -56,21 +56,32 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  fifth: values", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping second = map.yamlMapping("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            map.yamlMapping("second"), Matchers.notNullValue()
+            second, Matchers.instanceOf(YamlMapping.class)
         );
     }
-
+    
     /**
-     * ReadYamlMapping can throw an ISE when the mapping is not correct.
+     * ReadYamlMapping can return the YamlSequence mapped to a 
+     * String key.
      */
-    @Test (expected = IllegalStateException.class)
-    public void throwsExceptionWhenBadMapping(){
+    @Test
+    public void returnsYamlSequenceWithStringKey(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
-        lines.add(new RtYamlLine("missingcolon", 1));
-        lines.add(new RtYamlLine("  fourth: some", 2));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
-        map.yamlMapping("missingcolon");
+        final YamlSequence second = map.yamlSequence("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+
     }
+
 }

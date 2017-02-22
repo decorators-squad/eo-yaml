@@ -89,22 +89,7 @@ final class ReadYamlMapping implements YamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final String key) {
-        YamlMapping value = null;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if(trimmed.startsWith(key)) {
-                if(trimmed.endsWith(":")) {
-                    value = new ReadYamlMapping(
-                        this.lines.nested(line.number())
-                    );
-                } else {
-                    throw new IllegalStateException(
-                        "Line " + line.number() + " should end with ':'"
-                    );
-                }
-            }
-        }
-        return value;
+        return (YamlMapping) this.nodeValue(key, true);
     }
 
     @Override
@@ -114,7 +99,7 @@ final class ReadYamlMapping implements YamlMapping {
 
     @Override
     public YamlSequence yamlSequence(final String key) {
-        return null;
+        return (YamlSequence) this.nodeValue(key, false);
     }
 
     @Override
@@ -145,5 +130,30 @@ final class ReadYamlMapping implements YamlMapping {
     @Override
     public int compareTo(final YamlNode other) {
         return 0;
+    }
+
+    /**
+     * The YamlNode value associated with a String key.
+     * @param key String key.
+     * @param map Is the value a map or a sequence?
+     * @return YamlNode.
+     */
+    private YamlNode nodeValue(final String key, final boolean map) {
+        YamlNode value = null;
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if(trimmed.startsWith(key + ":")) {
+                if (map) {
+                    value = new ReadYamlMapping(
+                        this.lines.nested(line.number())
+                    );
+                } else {
+                    value = new ReadYamlSequence(
+                        this.lines.nested(line.number())
+                    );
+                }
+            }
+        }
+        return value;
     }
 }
