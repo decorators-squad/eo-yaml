@@ -98,14 +98,14 @@ public final class RtYamlLinesTest {
      * Test to check YamlLines are sorted correctly.
      */
     @Test
-    public void isSortedYamlLines() {
+    public void yamlLinesAreOrdered() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("5", 0));
-        lines.add(new RtYamlLine("  2", 1));
-        lines.add(new RtYamlLine("3", 2));
-        lines.add(new RtYamlLine("    4", 3));
-        lines.add(new RtYamlLine("1", 4));
-        lines.add(new RtYamlLine("6", 5));
+        lines.add(new RtYamlLine("Einestien", 0));
+        lines.add(new RtYamlLine("  Ben", 1));
+        lines.add(new RtYamlLine("Charles", 2));
+        lines.add(new RtYamlLine("    Denise", 3));
+        lines.add(new RtYamlLine("      Albert", 4));
+        lines.add(new RtYamlLine("Sherif", 5));
         Collections.sort(lines);
         
         Iterator<YamlLine> iterator = lines.iterator();
