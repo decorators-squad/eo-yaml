@@ -109,7 +109,14 @@ final class ReadYamlMapping implements YamlMapping {
 
     @Override
     public String string(final String key) {
-        return this.string(new Scalar(key));
+    	String value = null;
+    	for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if(trimmed.startsWith(key + ":")) {
+            	value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+            }
+        }
+    	return value;
     }
 
     @Override
