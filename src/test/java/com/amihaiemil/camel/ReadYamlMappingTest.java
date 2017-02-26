@@ -44,7 +44,7 @@ import org.junit.Test;
 public final class ReadYamlMappingTest {
 
     /**
-     * ReadYamlMapping can return the YamlMapping mapped to a 
+     * ReadYamlMapping can return the YamlMapping mapped to a
      * String key.
      */
     @Test
@@ -62,9 +62,9 @@ public final class ReadYamlMappingTest {
             second, Matchers.instanceOf(YamlMapping.class)
         );
     }
-    
+
     /**
-     * ReadYamlMapping can return the YamlSequence mapped to a 
+     * ReadYamlMapping can return the YamlSequence mapped to a
      * String key.
      */
     @Test
@@ -81,7 +81,25 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlSequence.class)
         );
-
     }
 
+    /**
+     * ReadYamlMapping can return the String mapped to a
+     * String key.
+     */
+    @Test
+    public void returnsStringWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final String third = map.string("third");
+        MatcherAssert.assertThat(third, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            third, Matchers.equalTo("something")
+        );
+    }
 }

@@ -37,7 +37,7 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #67:30min/DEV Continue to implement and unit-test the methods 
+ * @todo #73:30min/DEV Continue implementing and unit-testing the methods
  *  from this class one by one.
  */
 final class ReadYamlMapping implements YamlMapping {
@@ -109,14 +109,14 @@ final class ReadYamlMapping implements YamlMapping {
 
     @Override
     public String string(final String key) {
-    	String value = null;
-    	for (final YamlLine line : this.lines) {
+        String value = null;
+        for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(key + ":")) {
-            	value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
             }
         }
-    	return value;
+        return value;
     }
 
     @Override
