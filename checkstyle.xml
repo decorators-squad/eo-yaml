@@ -178,7 +178,9 @@
         <module name="SimplifyBooleanReturn"/>
         <module name="StringLiteralEquality"/>
         <module name="NestedForDepth"/>
-        <module name="NestedIfDepth"/>
+        <module name="NestedIfDepth">
+            <property name="max" value="3"/>
+        </module>
         <module name="NestedTryDepth"/>
         <module name="NoClone"/>
         <module name="NoFinalizer"/>

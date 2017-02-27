@@ -61,6 +61,36 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlMapping.class)
         );
+        MatcherAssert.assertThat(
+            second.string("fifth"), Matchers.equalTo("values")
+        );
+    }
+    
+    /**
+     * ReadYamlMapping can return the YamlMapping mapped to a
+     * YamlMapping key.
+     */
+    @Test
+    public void returnsYamlMappingWithYamlMappingKey(){
+        final YamlMapping key = new RtYamlMappingBuilder()
+            .add("complex1", "mapping1").add("complex2", "mapping2").build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(": ", 4));
+        lines.add(new RtYamlLine("  map: value", 5));
+        lines.add(new RtYamlLine("second: something", 6));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping value = map.yamlMapping(key);
+        MatcherAssert.assertThat(value, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            value, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(
+            value.string("map"), Matchers.equalTo("value")
+        );
     }
 
     /**
@@ -82,7 +112,28 @@ public final class ReadYamlMappingTest {
             second, Matchers.instanceOf(YamlSequence.class)
         );
     }
-
+    
+    /**
+     * ReadYamlMapping can return the YamlMapping mapped to a
+     * YamlMapping key.
+     */
+    @Test
+    public void returnsStringWithYamlMappingKey(){
+        final YamlMapping key = new RtYamlMappingBuilder()
+            .add("complex1", "mapping1").add("complex2", "mapping2").build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(": value", 4));
+        lines.add(new RtYamlLine("second: something", 6));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final String value = map.string(key);
+        MatcherAssert.assertThat(value, Matchers.notNullValue());
+        MatcherAssert.assertThat(value, Matchers.equalTo("value"));
+    }
+    
     /**
      * ReadYamlMapping can return the String mapped to a
      * String key.

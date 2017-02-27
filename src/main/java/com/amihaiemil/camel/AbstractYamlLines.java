@@ -44,6 +44,12 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
     abstract AbstractYamlLines nested(final int after);
 
     /**
+     * Number of lines.
+     * @return Integer.
+     */
+    abstract int count();
+
+    /**
      * Turn these lines into a YamlNode.
      * @return YamlNode
      */

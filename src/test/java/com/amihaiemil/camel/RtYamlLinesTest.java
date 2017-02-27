@@ -79,8 +79,8 @@ public final class RtYamlLinesTest {
         AbstractYamlLines yamlLines = new RtYamlLines(lines);
         
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
-        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(2));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
         
         iterator = yamlLines.nested(1).iterator();

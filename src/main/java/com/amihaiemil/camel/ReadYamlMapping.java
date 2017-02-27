@@ -28,7 +28,7 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -61,7 +61,7 @@ final class ReadYamlMapping extends AbstractYamlMapping {
         final List<YamlNode> kids = new LinkedList<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
-            if("?".equals(trimmed)) {
+            if("?".equals(trimmed) || ":".equals(trimmed)) {
                 continue;
             } else {
                 if(trimmed.endsWith(":")) {
@@ -84,7 +84,6 @@ final class ReadYamlMapping extends AbstractYamlMapping {
                 }
             }
         }
-        Collections.sort(kids);
         return kids;
     }
 
@@ -95,7 +94,7 @@ final class ReadYamlMapping extends AbstractYamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final YamlNode key) {
-        return null;
+        return (YamlMapping) this.nodeValue(key, true);
     }
 
     @Override
@@ -105,7 +104,7 @@ final class ReadYamlMapping extends AbstractYamlMapping {
 
     @Override
     public YamlSequence yamlSequence(final YamlNode key) {
-        return null;
+        return (YamlSequence) this.nodeValue(key, false);
     }
 
     @Override
@@ -122,7 +121,24 @@ final class ReadYamlMapping extends AbstractYamlMapping {
 
     @Override
     public String string(final YamlNode key) {
-        return null;
+        String value = null;
+        boolean found = false;
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if("?".equals(trimmed)) {
+                YamlNode keyNode = this.lines.nested(line.number())
+                    .toYamlNode();
+                if(keyNode.equals(key)) {
+                    found = true;
+                    continue;
+                }
+            }
+            if(found && trimmed.startsWith(":")) {
+                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+                break;
+            }
+        }
+        return value;
     }
 
     @Override
@@ -160,9 +176,60 @@ final class ReadYamlMapping extends AbstractYamlMapping {
         return value;
     }
 
+    /**
+     * The YamlNode value associated with a String key.
+     * @param key YamlNode key.
+     * @param map Is the value a map or a sequence?
+     * @return YamlNode.
+     */
+    private YamlNode nodeValue(final YamlNode key, final boolean map) {
+        YamlNode value = null;
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if("?".equals(trimmed)) {
+                AbstractYamlLines keyLines = this.lines.nested(line.number());
+                YamlNode keyNode = keyLines.toYamlNode();
+                if(keyNode.equals(key)) {
+                    int colonLine = line.number() + keyLines.count() + 1;
+                    if (map) {
+                        value = new ReadYamlMapping(
+                            this.lines.nested(colonLine)
+                        );
+                    } else {
+                        value = new ReadYamlSequence(
+                            this.lines.nested(colonLine)
+                        );
+                    }    
+                }
+            }
+        }
+        return value;
+    }
+    
     @Override
     Set<YamlNode> keys() {
-        // TODO Auto-generated method stub
-        return null;
+        final Set<YamlNode> keys = new HashSet<>();
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if(":".equals(trimmed)) {
+                continue;
+            } else if ("?".equals(trimmed)) {
+                keys.add(this.lines.nested(line.number()).toYamlNode());
+            } else {
+                final String[] parts = trimmed.split(":");
+                if(parts.length < 2) {
+                    throw new IllegalStateException(
+                        "Expected ':' on line " + line.number()
+                    );
+                } else {
+                    keys.add(
+                        new Scalar(
+                            trimmed.substring(0, trimmed.indexOf(":")).trim()
+                        )
+                    );
+                }
+            }
+        }
+        return keys;
     }
 }
