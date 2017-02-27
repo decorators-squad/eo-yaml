@@ -38,7 +38,8 @@ import java.util.Collection;
  * @version $Id$
  * @since 1.0.0
  */
-public final class StrictYamlSequence implements YamlSequence {
+public final class StrictYamlSequence extends AbstractYamlSequence {
+
     /**
      * Original YamlSequence.
      */
@@ -55,20 +56,6 @@ public final class StrictYamlSequence implements YamlSequence {
     @Override
     public Collection<YamlNode> children() {
         return this.decorated.children();
-    }
-
-    @Override
-    public int compareTo(final YamlNode other) {
-        return this.decorated.compareTo(other);
-    }
-
-    /**
-     * Returns the number of elements in this Yaml sequence.
-     * @return Integer size >= 0
-     */
-    @Override
-    public int size() {
-        return this.decorated.size();
     }
 
     /**

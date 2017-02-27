@@ -57,7 +57,7 @@ public final class YamlCollectionDumpTest {
         collection.add("objectA");
         
         YamlSequence yaml = new YamlCollectionDump(collection).represent();
-        MatcherAssert.assertThat(yaml.size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(yaml.children().size(), Matchers.equalTo(2));
         MatcherAssert.assertThat(yaml.string(0), Matchers.equalTo("objectA"));
         
         YamlMapping yamlMapping = yaml.yamlMapping(1);

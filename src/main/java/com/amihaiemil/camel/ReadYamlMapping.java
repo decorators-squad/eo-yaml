@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * YamlMapping read from somewhere.
@@ -40,7 +41,7 @@ import java.util.List;
  * @todo #73:30min/DEV Continue implementing and unit-testing the methods
  *  from this class one by one.
  */
-final class ReadYamlMapping implements YamlMapping {
+final class ReadYamlMapping extends AbstractYamlMapping {
 
     /**
      * Lines read.
@@ -134,11 +135,6 @@ final class ReadYamlMapping implements YamlMapping {
         return null;
     }
 
-    @Override
-    public int compareTo(final YamlNode other) {
-        return 0;
-    }
-
     /**
      * The YamlNode value associated with a String key.
      * @param key String key.
@@ -162,5 +158,11 @@ final class ReadYamlMapping implements YamlMapping {
             }
         }
         return value;
+    }
+
+    @Override
+    Set<YamlNode> keys() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

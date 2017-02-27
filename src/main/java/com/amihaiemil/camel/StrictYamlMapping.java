@@ -28,6 +28,7 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Decorator for a {@link YamlMapping} which throws
@@ -40,29 +41,24 @@ import java.util.Collection;
  * @version $Id$
  * @since 1.0.0
  */
-public final class StrictYamlMapping implements YamlMapping {
+public final class StrictYamlMapping extends AbstractYamlMapping {
 
     /**
      * Original YamlMapping.
      */
-    private YamlMapping decorated;
+    private AbstractYamlMapping decorated;
 
     /**
      * Ctor.
      * @param decorated Original YamlMapping
      */
-    public StrictYamlMapping(final YamlMapping decorated) {
+    public StrictYamlMapping(final AbstractYamlMapping decorated) {
         this.decorated = decorated;
     }
 
     @Override
     public Collection<YamlNode> children() {
         return this.decorated.children();
-    }
-
-    @Override
-    public int compareTo(final YamlNode other) {
-        return this.decorated.compareTo(other);
     }
 
     @Override
@@ -121,5 +117,10 @@ public final class StrictYamlMapping implements YamlMapping {
     @Override
     public String indent(final int indentation) {
         return this.decorated.indent(indentation);
+    }
+
+    @Override
+    Set<YamlNode> keys() {
+        return this.decorated.keys();
     }
 }

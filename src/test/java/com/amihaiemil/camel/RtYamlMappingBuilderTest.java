@@ -28,7 +28,10 @@
 package com.amihaiemil.camel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -52,6 +55,10 @@ public final class RtYamlMappingBuilderTest {
         MatcherAssert.assertThat(
             mappingBuilder, Matchers.not(Matchers.is(withAdded))
         );
+        Map<String, String> test = new HashMap<>();
+        test.put("1", "2");
+        test.put("2", "5");
+        test.put("3", "6");
     }
 
     /**
@@ -117,7 +124,7 @@ public final class RtYamlMappingBuilderTest {
             mapping.string("architect"), Matchers.equalTo("amihaiemil")
         );
         MatcherAssert.assertThat(
-            mapping.yamlSequence("developers").size(),
+            mapping.yamlSequence("developers").children().size(),
             Matchers.equalTo(2)
         );
     }

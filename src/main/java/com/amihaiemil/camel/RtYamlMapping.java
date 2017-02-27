@@ -28,9 +28,9 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -40,7 +40,7 @@ import java.util.TreeMap;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#mapping//
  */
-final class RtYamlMapping implements YamlMapping {
+final class RtYamlMapping extends AbstractYamlMapping {
 
     /**
      * Key:value tree map (ordered keys).
@@ -112,62 +112,6 @@ final class RtYamlMapping implements YamlMapping {
         return this.mappings.values();
     }
 
-    /**
-     * Compare this Mapping to another node.<br><br>
-     * 
-     * A Mapping is always considered greater than a Scalar or a Sequence.<br>
-     * 
-     * If o is a Mapping, their integer lengths are compared - the one with
-     * the greater length is considered greater. If the lengths are equal,
-     * then the 2 Mappings are equal if all elements are equal (K==K and V==V).
-     * If the elements are not identical, the comparison of the first unequal
-     * elements is returned.
-     * 
-     * @param other The other AbstractNode.
-     * @checkstyle NestedIfDepth (100 lines)
-     * @checkstyle ExecutableStatementCount (100 lines)
-     * @return
-     *  a value < 0 if this < o <br>
-     *   0 if this == o or <br>
-     *  a value > 0 if this > o
-     */
-    @Override
-    public int compareTo(final YamlNode other) {
-        int result = 0;
-        if (other == null || !(other instanceof RtYamlMapping)) {
-            result = 1;
-        } else if (this != other) {
-            RtYamlMapping map = (RtYamlMapping) other;
-            if(this.mappings.size() > map.mappings.size()) {
-                result = 1;
-            } else if (this.mappings.size() < map.mappings.size()) {
-                result = -1;
-            } else {
-                Iterator<Entry<YamlNode, YamlNode>> entries =
-                    this.mappings.entrySet().iterator();
-                Iterator<Entry<YamlNode, YamlNode>> others =
-                    map.mappings.entrySet().iterator();
-                int keys;
-                int values;
-                while(entries.hasNext()) {
-                    Entry<YamlNode, YamlNode> entry = entries.next();
-                    Entry<YamlNode, YamlNode> oEntry = others.next();
-                    keys = entry.getKey().compareTo(oEntry.getKey());
-                    values = entry.getValue().compareTo(oEntry.getValue());
-                    if(keys != 0) {
-                        result = keys;
-                        break;
-                    }
-                    if(values != 0) {
-                        result = values;
-                        break;
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     @Override
     public String toString() {
         return this.indent(0);
@@ -209,5 +153,12 @@ final class RtYamlMapping implements YamlMapping {
         String printed = print.toString();
         printed = printed.substring(0, printed.length() - 1);
         return printed;
+    }
+
+    @Override
+    Set<YamlNode> keys() {
+        final Set<YamlNode> keys = new HashSet<>();
+        keys.addAll(this.mappings.keySet());
+        return keys;
     }
 }

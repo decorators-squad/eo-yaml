@@ -33,7 +33,7 @@ package com.amihaiemil.camel;
  * @version $Id$
  * @since 1.0.0
  */
-public interface YamlMapping extends YamlNode{
+public interface YamlMapping extends YamlNode {
 
     /**
      * Get the Yaml mapping associated with the given key.

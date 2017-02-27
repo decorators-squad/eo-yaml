@@ -9,12 +9,6 @@ package com.amihaiemil.camel;
 public interface YamlSequence extends YamlNode {
 
     /**
-     * Returns the number of elements in this Yaml sequence.
-     * @return Integer size >= 0
-     */
-    int size();
-
-    /**
      * Get the Yaml mapping  from the given index.
      * @param index Integer index.
      * @return Yaml mapping

@@ -10,7 +10,7 @@ import java.util.Collection;
  * @todo #64:30min/DEV Continue implementing and unit testing this class, 
  *  one method at a time.
  */
-final class ReadYamlSequence implements YamlSequence {
+final class ReadYamlSequence extends AbstractYamlSequence {
 
     /**
      * Lines read.
@@ -33,16 +33,6 @@ final class ReadYamlSequence implements YamlSequence {
     @Override
     public String indent(final int indentation) {
         return null;
-    }
-
-    @Override
-    public int compareTo(final YamlNode other) {
-        return 0;
-    }
-
-    @Override
-    public int size() {
-        return 0;
     }
 
     @Override

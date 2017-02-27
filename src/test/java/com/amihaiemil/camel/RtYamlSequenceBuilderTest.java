@@ -88,7 +88,7 @@ public final class RtYamlSequenceBuilderTest {
         );
 
         MatcherAssert.assertThat(
-            sequence.yamlSequence(1).size(),
+            sequence.yamlSequence(1).children().size(),
             Matchers.equalTo(2)
         );
     }
