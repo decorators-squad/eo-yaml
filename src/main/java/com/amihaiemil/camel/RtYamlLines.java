@@ -2,7 +2,6 @@ package com.amihaiemil.camel;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,7 +45,6 @@ final class RtYamlLines extends AbstractYamlLines {
                     sameIndentation.add(current);
                 }
             }
-            Collections.sort(sameIndentation);
             iterator = sameIndentation.iterator();
         }
         return iterator;
@@ -56,7 +54,7 @@ final class RtYamlLines extends AbstractYamlLines {
     AbstractYamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
-        for(final YamlLine line: this.lines) {
+        for(final YamlLine line : this.lines) {
             if(line.number() == after) {
                 start = line;
             }

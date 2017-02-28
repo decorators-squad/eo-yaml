@@ -59,13 +59,14 @@ final class ReadYamlMapping extends AbstractYamlMapping {
     @Override
     public Collection<YamlNode> children() {
         final List<YamlNode> kids = new LinkedList<>();
-        for (final YamlLine line : this.lines) {
+        final OrderedYamlLines ordered = new OrderedYamlLines(this.lines);
+        for (final YamlLine line : ordered) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed) || ":".equals(trimmed)) {
                 continue;
             } else {
                 if(trimmed.endsWith(":")) {
-                    kids.add(this.lines.nested(line.number()).toYamlNode());
+                    kids.add(ordered.nested(line.number()).toYamlNode());
                 } else {
                     final String[] parts = trimmed.split(":");
                     if(parts.length < 2) {

@@ -28,6 +28,7 @@
 package com.amihaiemil.camel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,15 +37,15 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link RtYamlLines}.
+ * Unit tests for {@link OrderedYamlLines}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @sinve 1.0.0
+ * @since 1.0.0
  */
-public final class RtYamlLinesTest {
+public final class OrderedYamlLinesTest {
 
     /**
-     * RtYamlLines can iterate over the lines properly.
+     * OrderedYamlLines can iterate over the ordered lines properly.
      * It should iterate only over the lines which are at the
      * same indentation level.
      */
@@ -54,24 +55,27 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("first: ", 0));
         lines.add(new RtYamlLine("  - fourth", 1));
         lines.add(new RtYamlLine("  - fifth", 2));
-        lines.add(new RtYamlLine("second: something", 3));
-        lines.add(new RtYamlLine("third: somethingElse", 4));
-        final Iterator<YamlLine> iterator = new RtYamlLines(lines).iterator();
-        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
-        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
+        lines.add(new RtYamlLine("bay: something", 3));
+        lines.add(new RtYamlLine("alba: somethingElse", 4));
+        final Iterator<YamlLine> iterator = new OrderedYamlLines(
+            new RtYamlLines(lines)
+        ).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
     }
     
     /**
-     * RtYamlLines can return nested lines for a given line.
+     * OrderedYamlLines can return nested lines (in initial order) for a given
+     * line.
      */
     @Test
     public void returnsNestedLinesRight() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: ", 0));
-        lines.add(new RtYamlLine("  - fourth", 1));
-        lines.add(new RtYamlLine("  - fifth", 2));
+        lines.add(new RtYamlLine("  - bay", 1));
+        lines.add(new RtYamlLine("  - alba", 2));
         lines.add(new RtYamlLine("second: something", 3));
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
@@ -93,4 +97,27 @@ public final class RtYamlLinesTest {
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
     }
 
+    /**
+     * Test to check that YamlLine.compareTo(...) works fine.
+     */
+    @Test
+    public void yamlLinesAreOrdered() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("Einestien", 0));
+        lines.add(new RtYamlLine("  Ben", 1));
+        lines.add(new RtYamlLine("Charles", 2));
+        lines.add(new RtYamlLine("    Denise", 3));
+        lines.add(new RtYamlLine("      Albert", 4));
+        lines.add(new RtYamlLine("Sherif", 5));
+        Collections.sort(lines);
+        
+        Iterator<YamlLine> iterator = lines.iterator();
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(2));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
+        MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
+    }
 }
