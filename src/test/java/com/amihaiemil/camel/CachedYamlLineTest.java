@@ -27,65 +27,57 @@
  */
 package com.amihaiemil.camel;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
 /**
- * Decorator class to cache values of trimmed() and indentation() method for 
- * a YamlLine.
+ * Unit Tests for {@link CachedYamlLine}.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- *
+ * 
  */
-final class CashedYamlLine implements YamlLine {
+public final class CachedYamlLineTest {
     
     /**
-     * Content line.
+     * CachedIndentedLine knows its number.
      */
-    private YamlLine line;
-    
-    /**
-     * Cached trimmed line.
-     */
-    private String trimmed;
-    
-    /**
-     * Cached indentation.
-     */
-    private int indentation;
-    
-    /**
-     * Ctor.
-     * @param line YamlLine
-     */
-    CashedYamlLine(final YamlLine line) {
-        this.line = line;
-        this.trimmed = null;
-        this.indentation = -1;
+    @Test
+    public void knowsNumber() {
+        YamlLine line = new CachedYamlLine(
+            new RtYamlLine("this line", 12)
+        );
+        MatcherAssert.assertThat(line.number(), Matchers.is(12));
     }
     
-    @Override
-    public int compareTo(final YamlLine other) {
-        return this.line.compareTo(other);
+    /**
+     * CachedIndentedLine caches trimmed String and returns same object.
+     */
+    @Test
+    public void cachesTrimmedValue() {
+        YamlLine line = new CachedYamlLine(
+            new RtYamlLine("    this line    ", 12)
+        );
+        String cached = line.trimmed();
+        MatcherAssert.assertThat(cached, Matchers.is("this line"));
+        
+        //Same String object is returned.
+        MatcherAssert.assertThat(cached == line.trimmed(), Matchers.is(true));
     }
-
-    @Override
-    public String trimmed() {
-        if(this.trimmed == null) {
-            this.trimmed = this.line.trimmed();
+    
+    /**
+     * CachedIndentedLine caches indentation value and doesn't recalculate it.
+     */
+    @Test
+    public void cachesIndentationValue() {
+        YamlLine line = new CachedYamlLine(
+            new RtYamlLine("            this line", 12)
+        );
+        
+        //Fast performance for large number of calls.
+        for(int i = 0; i < 1000000; i++) {
+            MatcherAssert.assertThat(line.indentation(), Matchers.is(12));
         }
-        return this.trimmed;
     }
-
-    @Override
-    public int number() {
-        return this.line.number();
-    }
-
-    @Override
-    public int indentation() {
-        if(this.indentation == -1) {
-            this.indentation = this.line.indentation();
-        }
-        return this.indentation;
-    }
-
 }
