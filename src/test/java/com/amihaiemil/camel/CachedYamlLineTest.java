@@ -74,10 +74,6 @@ public final class CachedYamlLineTest {
         YamlLine line = new CachedYamlLine(
             new RtYamlLine("            this line", 12)
         );
-        
-        //Fast performance for large number of calls.
-        for(int i = 0; i < 1000000; i++) {
-            MatcherAssert.assertThat(line.indentation(), Matchers.is(12));
-        }
+        MatcherAssert.assertThat(line.indentation(), Matchers.is(12));
     }
 }

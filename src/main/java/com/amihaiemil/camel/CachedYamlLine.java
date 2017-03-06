@@ -50,7 +50,7 @@ final class CachedYamlLine implements YamlLine {
     /**
      * Cached indentation.
      */
-    private int indentation;
+    private int indentation = -1;
     
     /**
      * Ctor.
@@ -58,8 +58,6 @@ final class CachedYamlLine implements YamlLine {
      */
     CachedYamlLine(final YamlLine line) {
         this.line = line;
-        this.trimmed = null;
-        this.indentation = -1;
     }
     
     @Override
