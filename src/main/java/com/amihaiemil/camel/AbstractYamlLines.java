@@ -54,7 +54,7 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
      * @param indentation Spaces to precede each line.
      * @return String with the pretty-printed, indented lines.
      */
-    abstract String indent (int indentation);
+    abstract String indent(int indentation);
     
     /**
      * Turn these lines into a YamlNode.

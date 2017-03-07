@@ -75,7 +75,12 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("  second: something", 3));
         lines.add(new RtYamlLine("  third: somethingElse", 4));
         final AbstractYamlLines yaml = new RtYamlLines(lines);
-        System.out.println(yaml.indent(0));
+        String expected = "first:\n"
+            + "  - fourth\n"
+            + "  - fifth\n"
+            + "second: something\n"
+            + "third: somethingElse\n";
+        MatcherAssert.assertThat(yaml.indent(0), Matchers.equalTo(expected));
     }
     
     /**

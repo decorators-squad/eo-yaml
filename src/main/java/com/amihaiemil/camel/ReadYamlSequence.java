@@ -30,9 +30,13 @@ final class ReadYamlSequence extends AbstractYamlSequence {
         return null;
     }
 
+    @Override public String toString() {
+        return this.indent(0);
+    }
+
     @Override
     public String indent(final int indentation) {
-        return null;
+        return this.lines.indent(indentation);
     }
 
     @Override

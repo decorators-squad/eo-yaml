@@ -94,12 +94,12 @@ final class RtYamlLines extends AbstractYamlLines {
                 indented.append(linesIt.next().toString()).append("\n");
             }
         } else {
-        	final int offset = indentation - first.indentation();
-            for (YamlLine line : lines) {
-            	int correct = line.indentation() + offset;
+            final int offset = indentation - first.indentation();
+            for (final YamlLine line : this.lines) {
+                int correct = line.indentation() + offset;
                 while (correct > 0) {
-                	indented.append(" ");
-                	correct--;
+                    indented.append(" ");
+                    correct--;
                 }
                 indented.append(line.trimmed()).append("\n");
             }

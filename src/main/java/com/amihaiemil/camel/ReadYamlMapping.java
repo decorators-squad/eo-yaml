@@ -38,8 +38,6 @@ import java.util.Set;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #73:30min/DEV Continue implementing and unit-testing the methods
- *  from this class one by one.
  */
 final class ReadYamlMapping extends AbstractYamlMapping {
 
@@ -149,7 +147,7 @@ final class ReadYamlMapping extends AbstractYamlMapping {
 
     @Override
     public String indent(final int indentation) {
-        return null;
+        return this.lines.indent(indentation);
     }
 
     /**

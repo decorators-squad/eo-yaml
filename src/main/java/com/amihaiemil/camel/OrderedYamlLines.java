@@ -33,7 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Ordered YamlLines.
+ * Ordered YamlLines. Use this decorator only punctually, when it the
+ * AbstractYamlLines you're working with need to be ordered.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -87,10 +88,42 @@ final class OrderedYamlLines extends AbstractYamlLines {
         return this.unordered.count();
     }
 
-	@Override
-	String indent(int indentation) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    String indent(final int indentation) {
+        final StringBuilder indented = new StringBuilder();
+        final Iterator<YamlLine> linesIt = this.iterator();
+        final YamlLine first = linesIt.next();
+        final int offset = indentation - first.indentation();
+        indented.append(this.indentLine(first, offset));
+        while(linesIt.hasNext()) {
+            indented.append(
+                this.indentLine(linesIt.next(), offset)
+            );
+        }
+        return indented.toString();
+    }
 
+    /**
+     * Indent the given line (and its possible nested nodes) with the given
+     * offset.
+     * @param line YamlLine to indent.
+     * @param offset Offset added to its already existing indentation.
+     * @return String indented result.
+     */
+    private String indentLine(final YamlLine line, final int offset){
+        final StringBuilder indented = new StringBuilder();
+        int indentation = line.indentation() + offset;
+        while (indentation > 0) {
+            indented.append(" ");
+            indentation--;
+        }
+        indented.append(line.toString()).append("\n");
+        if (line.hasNestedNode()) {
+            final OrderedYamlLines nested = new OrderedYamlLines(
+                this.unordered.nested(line.number())
+            );
+            indented.append(nested.indent(indentation + offset));
+        }
+        return indented.toString();
+    }
 }

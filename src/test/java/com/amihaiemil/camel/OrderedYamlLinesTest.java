@@ -67,6 +67,28 @@ public final class OrderedYamlLinesTest {
     }
     
     /**
+     * OrderedYamlLines can indent the ordered lines properly.
+     */
+    @Test
+    public void indentsRight() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("fish: ", 0));
+        lines.add(new RtYamlLine("  - beta", 1));
+        lines.add(new RtYamlLine("  - alfa", 2));
+        lines.add(new RtYamlLine("bear: something", 3));
+        lines.add(new RtYamlLine("fox: somethingElse", 4));
+        final AbstractYamlLines yaml = new OrderedYamlLines(
+            new RtYamlLines(lines)
+        );
+        String expected = "bear: something\n"
+            + "fish: \n"
+            + "  - alfa\n"
+            + "  - beta\n"
+            + "fox: somethingElse\n";
+        MatcherAssert.assertThat(yaml.indent(0), Matchers.equalTo(expected));
+    }
+    
+    /**
      * OrderedYamlLines can return nested lines (in initial order) for a given
      * line.
      */
