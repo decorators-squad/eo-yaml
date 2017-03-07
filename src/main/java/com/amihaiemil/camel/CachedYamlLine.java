@@ -53,6 +53,11 @@ final class CachedYamlLine implements YamlLine {
     private int indentation = -1;
     
     /**
+     * Cached value.
+     */
+    private Boolean hasNestedNode;
+    
+    /**
      * Ctor.
      * @param line YamlLine
      */
@@ -84,6 +89,14 @@ final class CachedYamlLine implements YamlLine {
             this.indentation = this.line.indentation();
         }
         return this.indentation;
+    }
+
+    @Override
+    public boolean hasNestedNode() {
+        if (this.hasNestedNode == null) {
+            this.hasNestedNode = this.line.hasNestedNode();
+        }
+        return this.hasNestedNode;
     }
 
 }

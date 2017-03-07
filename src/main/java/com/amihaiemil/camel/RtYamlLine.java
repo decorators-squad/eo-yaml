@@ -32,10 +32,6 @@ package com.amihaiemil.camel;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #52:30min Right now, at every call of trimmed() and indentation()
- *  the values are calculated. This isn't efficient, so we need a decorator
- *  to cache these values. Let's name it CachedYamlLine. It should be used
- *  like this: YamlLine line = new CachedYamlLine(new RtYamlLine(...));
  */
 final class RtYamlLine implements YamlLine {
 
@@ -92,6 +88,20 @@ final class RtYamlLine implements YamlLine {
             result = 1;
         } else {
             result = this.trimmed().compareTo(other.trimmed());
+        }
+        return result;
+    }
+
+    @Override
+    public boolean hasNestedNode() {
+        final boolean result;
+        final String specialCharacters = ":>|-";
+        final CharSequence prevLineLastChar = 
+            this.trimmed().substring(this.trimmed().length()-1);
+        if(specialCharacters.contains(prevLineLastChar)) {
+            result = true;
+        } else {
+            result = false;
         }
         return result;
     }

@@ -71,11 +71,7 @@ final class WellIndentedLine implements YamlLine {
     public int indentation() {
         final int lineIndent = this.line.indentation();
         final int previousLineIndent = this.previousLine.indentation();
-        final String specialCharacters = ":>|-";
-        final CharSequence prevLineLastChar = 
-            this.previousLine.trimmed()
-            .substring(this.previousLine.trimmed().length()-1);
-        if(specialCharacters.contains(prevLineLastChar)) {
+        if(this.previousLine.hasNestedNode()) {
             if(lineIndent != previousLineIndent+2) {
                 throw new IllegalStateException(
                     "Indentation of line " + this.line.number() + " isn't ok. "
@@ -101,5 +97,10 @@ final class WellIndentedLine implements YamlLine {
     @Override
     public int compareTo(final YamlLine other) {    
         return this.line.compareTo(other);
+    }
+
+    @Override
+    public boolean hasNestedNode() {
+        return this.line.hasNestedNode();
     }
 }

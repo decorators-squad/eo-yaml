@@ -56,6 +56,11 @@ interface YamlLine extends Comparable<YamlLine> {
     int indentation();
     
     /**
+     * Does this line precede a nested node?
+     * @return True or false
+     */
+    boolean hasNestedNode();
+    /**
      * YamlLine null object.
      */
     class NullYamlLine implements YamlLine {
@@ -78,6 +83,11 @@ interface YamlLine extends Comparable<YamlLine> {
         @Override
         public int compareTo(final YamlLine other) {    
             return -1;
+        }
+
+        @Override
+        public boolean hasNestedNode() {
+            return false;
         }
         
     }

@@ -38,7 +38,7 @@ import org.junit.Test;
  * @since 1.0.0
  */
 public final class RtYamlLineTest {
-    
+
     /**
      * RtYamlLine knows its number.
      */
@@ -48,6 +48,29 @@ public final class RtYamlLineTest {
         MatcherAssert.assertThat(line.number(), Matchers.is(12));
     }
 
+    /**
+     * RtYamlLine knows if it has a nested YamlNode after it.
+     */
+    @Test
+    public void precedesYamlNode() {
+        MatcherAssert.assertThat(
+            new RtYamlLine("this:", 12).hasNestedNode(),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            new RtYamlLine("this: |> ", 12).hasNestedNode(),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            new RtYamlLine("this: |- ", 12).hasNestedNode(),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            new RtYamlLine("this: value", 12).hasNestedNode(),
+            Matchers.is(false)
+        );
+    }
+    
     /**
      * RtYamlLine can trim itself.
      */

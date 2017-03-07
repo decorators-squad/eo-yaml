@@ -83,9 +83,11 @@ final class RtYamlInput implements YamlInput {
             while ((line = reader.readLine()) != null) {
                 final YamlLine current = new RtYamlLine(line, number);
                 lines.add(
-                    new WellIndentedLine(
-                        previous,
-                        new EvenlyIndentedLine(current)
+                    new CachedYamlLine(
+                        new WellIndentedLine(
+                            previous,
+                            new EvenlyIndentedLine(current)
+                        )
                     )
                 );
                 number++;
