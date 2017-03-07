@@ -87,4 +87,10 @@ final class OrderedYamlLines extends AbstractYamlLines {
         return this.unordered.count();
     }
 
+	@Override
+	String indent(int indentation) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

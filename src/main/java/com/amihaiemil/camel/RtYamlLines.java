@@ -83,5 +83,29 @@ final class RtYamlLines extends AbstractYamlLines {
         return this.lines.size();
     }
 
+    @Override
+    String indent(final int indentation) {
+        final StringBuilder indented = new StringBuilder();
+        final Iterator<YamlLine> linesIt = this.lines.iterator();
+        final YamlLine first = linesIt.next();
+        if (first.indentation() == indentation) {
+            indented.append(first.toString()).append("\n");
+            while (linesIt.hasNext()) {
+                indented.append(linesIt.next().toString()).append("\n");
+            }
+        } else {
+        	final int offset = indentation - first.indentation();
+            for (YamlLine line : lines) {
+            	int correct = line.indentation() + offset;
+                while (correct > 0) {
+                	indented.append(" ");
+                	correct--;
+                }
+                indented.append(line.trimmed()).append("\n");
+            }
+        }
+        return indented.toString();
+    }
+
 
 }

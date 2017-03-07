@@ -64,6 +64,21 @@ public final class RtYamlLinesTest {
     }
     
     /**
+     * RtYamlLines can indent the lines properly.
+     */
+    @Test
+    public void indentsRight() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("  first: ", 0));
+        lines.add(new RtYamlLine("    - fourth", 1));
+        lines.add(new RtYamlLine("    - fifth", 2));
+        lines.add(new RtYamlLine("  second: something", 3));
+        lines.add(new RtYamlLine("  third: somethingElse", 4));
+        final AbstractYamlLines yaml = new RtYamlLines(lines);
+        System.out.println(yaml.indent(0));
+    }
+    
+    /**
      * RtYamlLines can return nested lines for a given line.
      */
     @Test
