@@ -80,4 +80,9 @@ final class EvenlyIndentedLine implements YamlLine {
     public int compareTo(final YamlLine other) {    
         return this.line.compareTo(other);
     }
+
+    @Override
+    public boolean hasNestedNode() {
+        return this.line.hasNestedNode();
+    }
 }
