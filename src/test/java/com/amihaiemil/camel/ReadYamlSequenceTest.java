@@ -27,6 +27,13 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
 /**
  * Unit tests for {@link ReadYamlSequence}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -36,4 +43,29 @@ package com.amihaiemil.camel;
  */
 public final class ReadYamlSequenceTest {
 
+    /**
+     * ReadYamlSequence can return the YamlMapping from a given index.
+     * Note that a YamlSequence is ordered, so the index might differ from
+     * the original found at read time.
+     */
+    @Test
+    public void returnsYamlMappingFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  beta: somethingElse", 1));
+        lines.add(new RtYamlLine("- scalar", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  alfa: ", 4));
+        lines.add(new RtYamlLine("    fourth: some", 5));
+        lines.add(new RtYamlLine("    key: value", 6));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new RtYamlLines(lines)
+        );
+        final YamlMapping alfa = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(alfa, Matchers.notNullValue());
+        MatcherAssert.assertThat(alfa, Matchers.instanceOf(YamlMapping.class));
+        MatcherAssert.assertThat(
+            alfa.yamlMapping("alfa").string("key"), Matchers.equalTo("value")
+        );
+    }
 }

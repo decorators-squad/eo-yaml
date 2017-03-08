@@ -147,7 +147,7 @@ final class ReadYamlMapping extends AbstractYamlMapping {
 
     @Override
     public String indent(final int indentation) {
-        return this.lines.indent(indentation);
+        return new OrderedYamlLines(this.lines).indent(indentation);
     }
 
     /**
@@ -216,7 +216,7 @@ final class ReadYamlMapping extends AbstractYamlMapping {
                 keys.add(this.lines.nested(line.number()).toYamlNode());
             } else {
                 final String[] parts = trimmed.split(":");
-                if(parts.length < 2) {
+                if(parts.length < 2 && !trimmed.endsWith(":")) {
                     throw new IllegalStateException(
                         "Expected ':' on line " + line.number()
                     );

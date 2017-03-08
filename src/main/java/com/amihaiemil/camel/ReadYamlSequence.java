@@ -7,8 +7,8 @@ import java.util.Collection;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #64:30min/DEV Continue implementing and unit testing this class, 
- *  one method at a time.
+ * @todo #70:30min/DEV Continue to implement and unit test methods from this 
+ *  class, one by one.
  */
 final class ReadYamlSequence extends AbstractYamlSequence {
 
@@ -36,7 +36,7 @@ final class ReadYamlSequence extends AbstractYamlSequence {
 
     @Override
     public String indent(final int indentation) {
-        return this.lines.indent(indentation);
+        return new OrderedYamlLines(this.lines).indent(indentation);
     }
 
     @Override
@@ -57,6 +57,7 @@ final class ReadYamlSequence extends AbstractYamlSequence {
                     );
                 }
             }
+            current = current + 1;
         }
         if(mapping == null) {
             throw new IllegalStateException(
