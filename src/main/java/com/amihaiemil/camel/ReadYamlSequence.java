@@ -41,7 +41,29 @@ final class ReadYamlSequence extends AbstractYamlSequence {
 
     @Override
     public YamlMapping yamlMapping(final int index) {
-        return null;
+        YamlMapping mapping = null;
+        int current = 0;
+        final AbstractYamlLines ordered = new OrderedYamlLines(this.lines);
+        for (final YamlLine line : ordered) {
+            if(current == index) {
+                if (line.hasNestedNode()) {
+                    mapping = new ReadYamlMapping(
+                        this.lines.nested(line.number())
+                    );
+                } else {
+                    throw new IllegalStateException(
+                        "YamlSequence: a mapping should be nested "
+                        + "(+2 indent) after line " + line.number()
+                    );
+                }
+            }
+        }
+        if(mapping == null) {
+            throw new IllegalStateException(
+                "YamlSequence: no mapping found at index:" + index
+            );
+        }
+        return mapping;
     }
 
     @Override

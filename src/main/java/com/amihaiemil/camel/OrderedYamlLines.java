@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Ordered YamlLines. Use this decorator only punctually, when it the
@@ -56,17 +58,37 @@ final class OrderedYamlLines extends AbstractYamlLines {
 
     /**
      * Iterates over the lines with the same indentation. The lines
-     * are ordered.
+     * are ordered. <br><br> This method is a little more complex - we're not
+     * simply sorting the lines. We have to also cover the case when these
+     * lines are a sequence; then a line might be just a simple dash,
+     * so we have to order these "dash" lines by the node that is nested under
+     * them.
      * @return Iterator over the ordered lines.
      */
     @Override
     public Iterator<YamlLine> iterator() {
         final Iterator<YamlLine> lines = this.unordered.iterator();
         final List<YamlLine> ordered = new LinkedList<>();
+        final List<YamlLine> dashes = new LinkedList<>();
+        final Map<YamlNode, Integer> nodesInSequence = new TreeMap<>();
+        int index = 0;
         while (lines.hasNext()) {
-            ordered.add(lines.next());
+            final YamlLine line = lines.next();
+            if("-".equals(line.trimmed())) {
+                nodesInSequence.put(
+                    this.nested(line.number()).toYamlNode(),
+                    index
+                );
+                dashes.add(line);
+                index = index + 1;
+            } else {
+                ordered.add(line);
+            }
         }
         Collections.sort(ordered);
+        for (final Integer idx : nodesInSequence.values()) {
+            ordered.add(dashes.get(idx));
+        }
         return ordered.iterator();
     }
 

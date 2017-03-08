@@ -45,12 +45,12 @@ import org.junit.Test;
 public final class OrderedYamlLinesTest {
 
     /**
-     * OrderedYamlLines can iterate over the ordered lines properly.
-     * It should iterate only over the lines which are at the
-     * same indentation level.
+     * OrderedYamlLines can iterate over the ordered a mapping's
+     * lines properly. It should iterate only over the lines which
+     * are at the same indentation level.
      */
     @Test
-    public void iteratesRight() {
+    public void iteratesRightOverMap() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: ", 0));
         lines.add(new RtYamlLine("  - fourth", 1));
@@ -64,6 +64,32 @@ public final class OrderedYamlLinesTest {
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
+    }
+
+    /**
+     * OrderedYamlLines can iterate over the ordered a sequence's
+     * lines properly. It should iterate only over the lines which
+     * are at the same indentation level. Also, dashes lines should
+     * be ordered according to their nested value nodes.
+     */
+    @Test
+    public void iteratesRightOverSequence() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - alfa", 1));
+        lines.add(new RtYamlLine("  - beta", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  key: value", 4));
+        lines.add(new RtYamlLine("- scalar", 5));
+        final AbstractYamlLines yaml = new OrderedYamlLines(
+            new RtYamlLines(lines)
+        );
+        final Iterator<YamlLine> iterator = yaml.iterator();
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
+        MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
+        
     }
     
     /**
