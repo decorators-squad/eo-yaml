@@ -1,14 +1,14 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * YamlSequence read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #70:30min/DEV Continue to implement and unit test methods from this 
- *  class, one by one.
  */
 final class ReadYamlSequence extends AbstractYamlSequence {
 
@@ -27,7 +27,19 @@ final class ReadYamlSequence extends AbstractYamlSequence {
 
     @Override
     public Collection<YamlNode> children() {
-        return null;
+        final List<YamlNode> kids = new LinkedList<>();
+        final AbstractYamlLines ordered = new OrderedYamlLines(this.lines);
+        for(final YamlLine line : ordered) {
+            if("-".equals(line.trimmed())) {
+                kids.add(this.lines.nested(line.number()).toYamlNode());
+            } else {
+                final String trimmed = line.trimmed();
+                kids.add(
+                    new Scalar(trimmed.substring(trimmed.indexOf('-')+1).trim())
+                );
+            }
+        }
+        return kids;
     }
 
     @Override public String toString() {
@@ -42,42 +54,44 @@ final class ReadYamlSequence extends AbstractYamlSequence {
     @Override
     public YamlMapping yamlMapping(final int index) {
         YamlMapping mapping = null;
-        int current = 0;
-        final AbstractYamlLines ordered = new OrderedYamlLines(this.lines);
-        for (final YamlLine line : ordered) {
-            if(current == index) {
-                if (line.hasNestedNode()) {
-                    mapping = new ReadYamlMapping(
-                        this.lines.nested(line.number())
-                    );
-                } else {
-                    throw new IllegalStateException(
-                        "YamlSequence: a mapping should be nested "
-                        + "(+2 indent) after line " + line.number()
-                    );
-                }
+        int count = 0;
+        for (final YamlNode node : this.children()) {
+            if (count == index && node instanceof YamlMapping) {
+                mapping = (YamlMapping) node;
             }
-            current = current + 1;
-        }
-        if(mapping == null) {
-            throw new IllegalStateException(
-                "YamlSequence: no mapping found at index:" + index
-            );
+            count = count + 1;
         }
         return mapping;
     }
 
     @Override
     public YamlSequence yamlSequence(final int index) {
-        return null;
+        YamlSequence sequence = null;
+        int count = 0;
+        for (final YamlNode node : this.children()) {
+            if (count == index && node instanceof YamlSequence) {
+                sequence = (YamlSequence) node;
+            }
+            count = count + 1;
+        }
+        return sequence;
     }
 
     @Override
     public String string(final int index) {
-        return null;
+        String scalar = null;
+        int count = 0;
+        for (final YamlNode node : this.children()) {
+            if (count == index && node instanceof Scalar) {
+                scalar = ((Scalar) node).value();
+            }
+            count = count + 1;
+        }
+        return scalar;
     }
 
     @Override
+    @SuppressWarnings("unused")
     public int size() {
         int size = 0;
         for(final YamlLine line : this.lines) {

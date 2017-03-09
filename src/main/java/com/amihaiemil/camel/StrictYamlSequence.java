@@ -68,7 +68,7 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
         YamlMapping found = this.decorated.yamlMapping(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
-                "No YamlMapping found for index" + index
+                "No YamlMapping found at index " + index
             );
         }
         return found;
@@ -84,7 +84,7 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
         YamlSequence found = this.decorated.yamlSequence(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
-                "No YamlSequence found for index" + index
+                "No YamlSequence found at index " + index
             );
         }
         return found;
@@ -100,7 +100,7 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
         String found = this.decorated.string(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
-                "No String found for index" + index
+                "No String found for index " + index
             );
         }
         return found;

@@ -70,6 +70,47 @@ public final class ReadYamlSequenceTest {
     }
     
     /**
+     * ReadYamlSequence can return the YamlSequence from a given index.
+     * Note that a YamlSequence is ordered, so the index might differ from
+     * the original found at read time.
+     */
+    @Test
+    public void returnsYamlSequenceFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("- scalar", 3));
+        lines.add(new RtYamlLine("- otherScalar", 4));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new RtYamlLines(lines)
+        );
+        final YamlSequence devops = sequence.yamlSequence(2);
+        MatcherAssert.assertThat(devops, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            devops, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(devops.size(), Matchers.equalTo(2));
+    }
+    
+    /**
+     * ReadYamlSequence can return the YamlMapping from a given index.
+     * Note that a YamlSequence is ordered, so the index might differ from
+     * the original found at read time.
+     */
+    @Test
+    public void returnsStringFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- rultor", 0));
+        lines.add(new RtYamlLine("- 0pdd", 1));
+        final YamlSequence devops = new ReadYamlSequence(
+            new RtYamlLines(lines)
+        );
+        MatcherAssert.assertThat(devops.string(0), Matchers.equalTo("0pdd"));
+        MatcherAssert.assertThat(devops.string(1), Matchers.equalTo("rultor"));
+    }
+    
+    /**
      * ReadYamlSequence can return its size.
      */
     @Test
