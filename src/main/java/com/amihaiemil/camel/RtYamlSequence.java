@@ -126,4 +126,9 @@ final class RtYamlSequence extends AbstractYamlSequence {
         printed = printed.substring(0, printed.length() - 1);
         return printed;
     }
+
+    @Override
+    public int size() {
+        return this.nodes.size();
+    }
 }

@@ -77,4 +77,13 @@ final class ReadYamlSequence extends AbstractYamlSequence {
         return null;
     }
 
+    @Override
+    public int size() {
+        int size = 0;
+        for(final YamlLine line : this.lines) {
+            size = size + 1;
+        }
+        return size;
+    }
+
 }

@@ -115,4 +115,9 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
     public String indent(final int indentation) {
         return this.decorated.indent(indentation);
     }
+
+    @Override
+    public int size() {
+        return this.decorated.size();
+    }
 }

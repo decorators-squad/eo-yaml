@@ -257,6 +257,19 @@ public final class RtYamlSequenceTest {
     }
     
     /**
+     * RtYamlSequence can return its size.
+     */
+    @Test
+    public void returnsSize(){
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new Scalar("test"));
+        nodes.add(Mockito.mock(YamlMapping.class));
+        nodes.add(new Scalar("mihai"));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(seq.size(), Matchers.is(3));
+    }
+    
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

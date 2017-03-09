@@ -110,7 +110,7 @@ public final class StrictYamlSequenceTest {
         );
 
         MatcherAssert.assertThat(
-            sequence.children().size(),
+            sequence.size(),
             Matchers.equalTo(2)
         );
     }
