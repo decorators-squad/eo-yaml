@@ -30,6 +30,7 @@ package com.amihaiemil.camel;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Unit Tests for {@link CachedYamlLine}.
@@ -56,14 +57,13 @@ public final class CachedYamlLineTest {
      */
     @Test
     public void cachesTrimmedValue() {
-        YamlLine line = new CachedYamlLine(
-            new RtYamlLine("    this line    ", 12)
-        );
-        String cached = line.trimmed();
-        MatcherAssert.assertThat(cached, Matchers.is("this line"));
-        
-        //Same String object is returned.
-        MatcherAssert.assertThat(cached == line.trimmed(), Matchers.is(true));
+        YamlLine mock = Mockito.mock(YamlLine.class);
+        Mockito.when(mock.trimmed())
+            .thenReturn("this line")
+            .thenThrow(new RuntimeException());
+        YamlLine line = new CachedYamlLine(mock);
+        MatcherAssert.assertThat(line.trimmed(), Matchers.is("this line"));
+        MatcherAssert.assertThat(line.trimmed(), Matchers.is("this line"));
     }
     
     /**
@@ -71,9 +71,12 @@ public final class CachedYamlLineTest {
      */
     @Test
     public void cachesIndentationValue() {
-        YamlLine line = new CachedYamlLine(
-            new RtYamlLine("            this line", 12)
-        );
-        MatcherAssert.assertThat(line.indentation(), Matchers.is(12));
+        YamlLine mock = Mockito.mock(YamlLine.class);
+        Mockito.when(mock.indentation())
+            .thenReturn(12)
+            .thenThrow(new RuntimeException());
+        YamlLine cachedLine = new CachedYamlLine(mock);
+        MatcherAssert.assertThat(cachedLine.indentation(), Matchers.is(12));
+        MatcherAssert.assertThat(cachedLine.indentation(), Matchers.is(12));
     }
 }
