@@ -56,7 +56,7 @@ public final class YamlObjectDump extends AbstractYamlDump {
     }
 
     @Override
-    public YamlMapping represent() {
+    public AbstractYamlMapping represent() {
         YamlMappingBuilder builder = new RtYamlMappingBuilder();
         Set<Map.Entry<Object, Object>> entries = new BeanMap(this.obj)
             .entrySet();
@@ -82,8 +82,8 @@ public final class YamlObjectDump extends AbstractYamlDump {
      * @param property The property to represent as a YamlNode
      * @return YamlNode representation of
      */
-    private YamlNode yamlNode(final Object property) {
-        YamlNode node;
+    private AbstractYamlNode yamlNode(final Object property) {
+        AbstractYamlNode node;
         if (property instanceof Map) {
             node = new YamlMapDump((Map) property).represent();
         } else if (property instanceof Collection<?>) {

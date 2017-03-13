@@ -44,23 +44,23 @@ final class RtYamlSequence extends AbstractYamlSequence {
     /**
      * Nodes in this sequence.
      */
-    private final List<YamlNode> nodes = new LinkedList<>();
+    private final List<AbstractYamlNode> nodes = new LinkedList<>();
 
     /**
      * Ctor.
      * @param elements Elements of this sequence.
      */
-    RtYamlSequence(final Collection<YamlNode> elements) {
+    RtYamlSequence(final Collection<AbstractYamlNode> elements) {
         this.nodes.addAll(elements);
         Collections.sort(this.nodes);
     }
 
     @Override
-    public YamlMapping yamlMapping(final int index) {
-        final YamlNode value = this.nodes.get(index);
-        final YamlMapping found;
-        if (value instanceof YamlMapping) {
-            found = (YamlMapping) value;
+    public AbstractYamlMapping yamlMapping(final int index) {
+        final AbstractYamlNode value = this.nodes.get(index);
+        final AbstractYamlMapping found;
+        if (value instanceof AbstractYamlMapping) {
+            found = (AbstractYamlMapping) value;
         } else {
             found = null;
         }
@@ -68,11 +68,11 @@ final class RtYamlSequence extends AbstractYamlSequence {
     }
 
     @Override
-    public YamlSequence yamlSequence(final int index) {
-        final YamlNode value = this.nodes.get(index);
-        final YamlSequence found;
-        if (value instanceof YamlSequence) {
-            found = (YamlSequence) value;
+    public AbstractYamlSequence yamlSequence(final int index) {
+        final AbstractYamlNode value = this.nodes.get(index);
+        final AbstractYamlSequence found;
+        if (value instanceof AbstractYamlSequence) {
+            found = (AbstractYamlSequence) value;
         } else {
             found = null;
         }
@@ -81,7 +81,7 @@ final class RtYamlSequence extends AbstractYamlSequence {
 
     @Override
     public String string(final int index) {
-        final YamlNode value = this.nodes.get(index);
+        final AbstractYamlNode value = this.nodes.get(index);
         final String found;
         if (value instanceof Scalar) {
             found = ((Scalar) value).value();
@@ -92,8 +92,8 @@ final class RtYamlSequence extends AbstractYamlSequence {
     }
 
     @Override
-    public Collection<YamlNode> children() {
-        final List<YamlNode> children = new LinkedList<>();
+    public Collection<AbstractYamlNode> children() {
+        final List<AbstractYamlNode> children = new LinkedList<>();
         children.addAll(this.nodes);
         return children;
     }
@@ -112,7 +112,7 @@ final class RtYamlSequence extends AbstractYamlSequence {
             indent.append(" ");
             spaces--;
         }
-        for (final YamlNode node : this.nodes) {
+        for (final AbstractYamlNode node : this.nodes) {
             print.append(indent)
                 .append("- ");
             if (node instanceof Scalar) {

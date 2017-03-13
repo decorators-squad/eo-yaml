@@ -55,8 +55,8 @@ final class ReadYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> children() {
-        final List<YamlNode> kids = new LinkedList<>();
+    public Collection<AbstractYamlNode> children() {
+        final List<AbstractYamlNode> kids = new LinkedList<>();
         final OrderedYamlLines ordered = new OrderedYamlLines(this.lines);
         for (final YamlLine line : ordered) {
             final String trimmed = line.trimmed();
@@ -87,23 +87,23 @@ final class ReadYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public YamlMapping yamlMapping(final String key) {
-        return (YamlMapping) this.nodeValue(key, true);
+    public AbstractYamlMapping yamlMapping(final String key) {
+        return (AbstractYamlMapping) this.nodeValue(key, true);
     }
 
     @Override
-    public YamlMapping yamlMapping(final YamlNode key) {
-        return (YamlMapping) this.nodeValue(key, true);
+    public AbstractYamlMapping yamlMapping(final AbstractYamlNode key) {
+        return (AbstractYamlMapping) this.nodeValue(key, true);
     }
 
     @Override
-    public YamlSequence yamlSequence(final String key) {
-        return (YamlSequence) this.nodeValue(key, false);
+    public AbstractYamlSequence yamlSequence(final String key) {
+        return (AbstractYamlSequence) this.nodeValue(key, false);
     }
 
     @Override
-    public YamlSequence yamlSequence(final YamlNode key) {
-        return (YamlSequence) this.nodeValue(key, false);
+    public AbstractYamlSequence yamlSequence(final AbstractYamlNode key) {
+        return (AbstractYamlSequence) this.nodeValue(key, false);
     }
 
     @Override
@@ -119,13 +119,13 @@ final class ReadYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public String string(final YamlNode key) {
+    public String string(final AbstractYamlNode key) {
         String value = null;
         boolean found = false;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                YamlNode keyNode = this.lines.nested(line.number())
+                AbstractYamlNode keyNode = this.lines.nested(line.number())
                     .toYamlNode();
                 if(keyNode.equals(key)) {
                     found = true;
@@ -156,8 +156,8 @@ final class ReadYamlMapping extends AbstractYamlMapping {
      * @param map Is the value a map or a sequence?
      * @return YamlNode.
      */
-    private YamlNode nodeValue(final String key, final boolean map) {
-        YamlNode value = null;
+    private AbstractYamlNode nodeValue(final String key, final boolean map) {
+        AbstractYamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(key + ":")) {
@@ -181,13 +181,14 @@ final class ReadYamlMapping extends AbstractYamlMapping {
      * @param map Is the value a map or a sequence?
      * @return YamlNode.
      */
-    private YamlNode nodeValue(final YamlNode key, final boolean map) {
-        YamlNode value = null;
+    private AbstractYamlNode nodeValue(
+        final AbstractYamlNode key, final boolean map) {
+        AbstractYamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
                 AbstractYamlLines keyLines = this.lines.nested(line.number());
-                YamlNode keyNode = keyLines.toYamlNode();
+                AbstractYamlNode keyNode = keyLines.toYamlNode();
                 if(keyNode.equals(key)) {
                     int colonLine = line.number() + keyLines.count() + 1;
                     if (map) {
@@ -206,8 +207,8 @@ final class ReadYamlMapping extends AbstractYamlMapping {
     }
     
     @Override
-    Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new HashSet<>();
+    Set<AbstractYamlNode> keys() {
+        final Set<AbstractYamlNode> keys = new HashSet<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if(":".equals(trimmed)) {

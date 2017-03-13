@@ -65,14 +65,17 @@ public final class YamlMapDumpTest {
         map.put(studentA, studentB);
         map.put(studentC, studentD);
 
-        YamlMapping yaml = 
+        AbstractYamlMapping yaml = 
             new YamlMapDump(map).represent();
-        List<YamlNode> children = new ArrayList<YamlNode>(yaml.children());
+        List<AbstractYamlNode> children = 
+            new ArrayList<AbstractYamlNode>(yaml.children());
         MatcherAssert.assertThat(children.size(), Matchers.equalTo(2));
         
         MatcherAssert.assertThat(
-            this.yamlEqualsStudent((YamlMapping) children.get(0), studentB)
-            && this.yamlEqualsStudent((YamlMapping) children.get(1), studentD),
+            this.yamlEqualsStudent(
+                (AbstractYamlMapping) children.get(0), studentB)
+            && this.yamlEqualsStudent(
+                (AbstractYamlMapping) children.get(1), studentD),
             Matchers.is(true)
         );
     }
@@ -90,7 +93,7 @@ public final class YamlMapDumpTest {
         map.put("key1", studentA);
         map.put("key2", studentB);
         
-        YamlMapping yaml = new YamlMapDump(map).represent();
+        AbstractYamlMapping yaml = new YamlMapDump(map).represent();
         MatcherAssert.assertThat(
             this.yamlEqualsStudent(yaml.yamlMapping("key1"), studentA),
             Matchers.is(true)
@@ -111,7 +114,7 @@ public final class YamlMapDumpTest {
         map.put("key1", 12);
         map.put("key2", 13);
         
-        YamlMapping yaml = new YamlMapDump(map).represent();
+        AbstractYamlMapping yaml = new YamlMapDump(map).represent();
         MatcherAssert.assertThat(
             yaml.string("key1").equals("12"),
             Matchers.is(true)
@@ -128,7 +131,7 @@ public final class YamlMapDumpTest {
      * @param student StudentSimplePojo
      * @return Returns true if parameters are equal, false otherwise
      */
-    private boolean yamlEqualsStudent(final YamlMapping yaml,
+    private boolean yamlEqualsStudent(final AbstractYamlMapping yaml,
         final StudentSimplePojo student) {
         return 
             yaml.string("firstName").equals(student.getFirstName()) 

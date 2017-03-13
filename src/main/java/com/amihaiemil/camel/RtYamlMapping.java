@@ -45,28 +45,28 @@ final class RtYamlMapping extends AbstractYamlMapping {
     /**
      * Key:value tree map (ordered keys).
      */
-    private final Map<YamlNode, YamlNode> mappings =
-        new TreeMap<YamlNode, YamlNode>();
+    private final Map<AbstractYamlNode, AbstractYamlNode> mappings =
+        new TreeMap<AbstractYamlNode, AbstractYamlNode>();
 
     /**
      * Ctor.
      * @param entries Entries contained in this mapping.
      */
-    RtYamlMapping(final Map<YamlNode, YamlNode> entries) {
+    RtYamlMapping(final Map<AbstractYamlNode, AbstractYamlNode> entries) {
         this.mappings.putAll(entries);
     }
 
     @Override
-    public YamlMapping yamlMapping(final String key) {
+    public AbstractYamlMapping yamlMapping(final String key) {
         return this.yamlMapping(new Scalar(key));
     }
 
     @Override
-    public YamlMapping yamlMapping(final YamlNode key) {
-        final YamlNode value = this.mappings.get(key);
-        final YamlMapping found;
-        if (value != null && value instanceof YamlMapping) {
-            found = (YamlMapping) value;
+    public AbstractYamlMapping yamlMapping(final AbstractYamlNode key) {
+        final AbstractYamlNode value = this.mappings.get(key);
+        final AbstractYamlMapping found;
+        if (value != null && value instanceof AbstractYamlMapping) {
+            found = (AbstractYamlMapping) value;
         } else {
             found = null;
         }
@@ -74,16 +74,16 @@ final class RtYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public YamlSequence yamlSequence(final String key) {
+    public AbstractYamlSequence yamlSequence(final String key) {
         return this.yamlSequence(new Scalar(key));
     }
 
     @Override
-    public YamlSequence yamlSequence(final YamlNode key) {
-        final YamlNode value = this.mappings.get(key);
-        final YamlSequence found;
-        if (value != null && value instanceof YamlSequence) {
-            found =  (YamlSequence) value;
+    public AbstractYamlSequence yamlSequence(final AbstractYamlNode key) {
+        final AbstractYamlNode value = this.mappings.get(key);
+        final AbstractYamlSequence found;
+        if (value != null && value instanceof AbstractYamlSequence) {
+            found =  (AbstractYamlSequence) value;
         } else {
             found = null;
         }
@@ -96,8 +96,8 @@ final class RtYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public String string(final YamlNode key) {
-        final YamlNode value = this.mappings.get(key);
+    public String string(final AbstractYamlNode key) {
+        final AbstractYamlNode value = this.mappings.get(key);
         final String found;
         if (value != null && value instanceof Scalar) {
             found = ((Scalar) value).value();
@@ -108,7 +108,7 @@ final class RtYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> children() {
+    public Collection<AbstractYamlNode> children() {
         return this.mappings.values();
     }
 
@@ -126,12 +126,12 @@ final class RtYamlMapping extends AbstractYamlMapping {
             indent.append(" ");
             spaces--;
         }
-        for(final Map.Entry<YamlNode, YamlNode> entry
+        for(final Map.Entry<AbstractYamlNode, AbstractYamlNode> entry
             : this.mappings.entrySet()
         ) {
             print.append(indent);
-            YamlNode key = entry.getKey();
-            YamlNode value = entry.getValue();
+            AbstractYamlNode key = entry.getKey();
+            AbstractYamlNode value = entry.getValue();
             if(key instanceof Scalar) {
                 print.append(key.toString()).append(": ");
                 if (value instanceof Scalar) {
@@ -156,8 +156,8 @@ final class RtYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new HashSet<>();
+    Set<AbstractYamlNode> keys() {
+        final Set<AbstractYamlNode> keys = new HashSet<>();
         keys.addAll(this.mappings.keySet());
         return keys;
     }

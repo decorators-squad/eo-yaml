@@ -48,7 +48,7 @@ public final class YamlObjectDumpTest {
      */
     @Test
     public void representsSimplePojo() {
-        YamlMapping yaml = new YamlObjectDump(
+        AbstractYamlMapping yaml = new YamlObjectDump(
             new StudentSimplePojo("John", "Doe", 21, 3.7)
         ).represent();
         MatcherAssert.assertThat(
@@ -63,7 +63,7 @@ public final class YamlObjectDumpTest {
         MatcherAssert.assertThat(
             yaml.string("gpa"), Matchers.equalTo("3.7")
         );
-        YamlMapping grades = yaml.yamlMapping("grades");
+        AbstractYamlMapping grades = yaml.yamlMapping("grades");
         MatcherAssert.assertThat(
             grades.children().size(), Matchers.equalTo(2)
         );

@@ -43,20 +43,20 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     /**
      * Added pairs.
      */
-    private final Map<YamlNode, YamlNode> pairs;
+    private final Map<AbstractYamlNode, AbstractYamlNode> pairs;
 
     /**
      * Default ctor.
      */
     RtYamlMappingBuilder() {
-        this(new HashMap<YamlNode, YamlNode>());
+        this(new HashMap<AbstractYamlNode, AbstractYamlNode>());
     }
 
     /**
      * Constructor.
      * @param pairs Pairs used in building the YamlMapping.
      */
-    RtYamlMappingBuilder(final Map<YamlNode, YamlNode> pairs) {
+    RtYamlMappingBuilder(final Map<AbstractYamlNode, AbstractYamlNode> pairs) {
         this.pairs = pairs;
     }
 
@@ -66,25 +66,29 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     }
 
     @Override
-    public YamlMappingBuilder add(final YamlNode key, final String value) {
+    public YamlMappingBuilder add(
+        final AbstractYamlNode key, final String value) {
         return this.add(key, new Scalar(value));
     }
 
     @Override
-    public YamlMappingBuilder add(final String key, final YamlNode value) {
+    public YamlMappingBuilder add(
+        final String key, final AbstractYamlNode value) {
         return this.add(new Scalar(key), value);
     }
 
     @Override
-    public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
-        final Map<YamlNode, YamlNode> withAddedPair = new HashMap<>();
+    public YamlMappingBuilder add(
+        final AbstractYamlNode key, final AbstractYamlNode value) {
+        final Map<AbstractYamlNode, AbstractYamlNode> withAddedPair = 
+            new HashMap<>();
         withAddedPair.putAll(this.pairs);
         withAddedPair.put(key, value);
         return new RtYamlMappingBuilder(withAddedPair);
     }
 
     @Override
-    public YamlMapping build() {
+    public AbstractYamlMapping build() {
         return new RtYamlMapping(this.pairs);
     }
 

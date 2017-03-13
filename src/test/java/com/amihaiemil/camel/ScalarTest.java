@@ -118,7 +118,7 @@ public final class ScalarTest {
     public void comparesToMapping() {
         Scalar first = new Scalar("java");
         RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
+            new HashMap<AbstractYamlNode, AbstractYamlNode>()
         );
         MatcherAssert.assertThat(first.compareTo(map), Matchers.lessThan(0));
     }
@@ -129,7 +129,8 @@ public final class ScalarTest {
     @Test
     public void comparesToSequence() {
         Scalar first = new Scalar("java");
-        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
+        RtYamlSequence seq = 
+            new RtYamlSequence(new LinkedList<AbstractYamlNode>());
         MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }
 }

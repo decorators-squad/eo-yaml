@@ -56,12 +56,12 @@ final class RtYamlInput implements YamlInput {
     }
 
     @Override
-    public YamlMapping readYamlMapping() throws IOException {
+    public AbstractYamlMapping readYamlMapping() throws IOException {
         return new ReadYamlMapping(this.readInput());
     }
 
     @Override
-    public YamlSequence readYamlSequence() throws IOException {
+    public AbstractYamlSequence readYamlSequence() throws IOException {
         return new ReadYamlSequence(this.readInput());
     }
 

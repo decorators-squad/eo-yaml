@@ -51,7 +51,7 @@ public final class YamlCollectionDump extends AbstractYamlDump {
     }
     
     @Override
-    public YamlSequence represent() {
+    public AbstractYamlSequence represent() {
         YamlSequenceBuilder builder = new RtYamlSequenceBuilder();
         for(final Object element: this.collection) {
             if(super.leafProperty(element)) {

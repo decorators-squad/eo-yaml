@@ -36,19 +36,19 @@ import java.util.Collection;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#node//
  */
-public interface YamlNode extends Comparable<YamlNode> {
+public abstract class AbstractYamlNode implements Comparable<AbstractYamlNode> {
 
     /**
      * Fetch the child nodes of this node.
      * @return Collection of {@link YamlNode}
      */
-    Collection<YamlNode> children();
+    abstract Collection<AbstractYamlNode> children();
     
     /**
      * Print this node with a specified indentation.
      * @param indentation Number of preciding spaces of each line.
      * @return String
      */
-    String indent(final int indentation);
+    abstract String indent(final int indentation);
 
 }
