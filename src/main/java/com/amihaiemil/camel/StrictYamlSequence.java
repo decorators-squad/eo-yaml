@@ -43,18 +43,18 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
     /**
      * Original YamlSequence.
      */
-    private AbstractYamlSequence decorated;
+    private YamlSequence decorated;
 
     /**
      * Ctor.
      * @param decorated Original YamlSequence
      */
-    public StrictYamlSequence(final AbstractYamlSequence decorated) {
+    public StrictYamlSequence(final YamlSequence decorated) {
         this.decorated = decorated;
     }
 
     @Override
-    public Collection<AbstractYamlNode> children() {
+    public Collection<YamlNode> children() {
         return this.decorated.children();
     }
 
@@ -64,8 +64,8 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
      * @return Yaml mapping
      */
     @Override
-    public AbstractYamlMapping yamlMapping(final int index) {
-        AbstractYamlMapping found = this.decorated.yamlMapping(index);
+    public YamlMapping yamlMapping(final int index) {
+        YamlMapping found = this.decorated.yamlMapping(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
                 "No YamlMapping found at index " + index
@@ -80,8 +80,8 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
      * @return Yaml sequence
      */
     @Override
-    public AbstractYamlSequence yamlSequence(final int index) {
-        AbstractYamlSequence found = this.decorated.yamlSequence(index);
+    public YamlSequence yamlSequence(final int index) {
+        YamlSequence found = this.decorated.yamlSequence(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
                 "No YamlSequence found at index " + index

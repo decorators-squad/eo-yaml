@@ -37,74 +37,21 @@ import java.util.Set;
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlMapping extends AbstractYamlNode{
-    
-    /**
-     * Get the Yaml mapping associated with the given key.
-     * @param key String key
-     * @return Yaml mapping or null if the key is missing, or not pointing
-     *  to a mapping.
-     * @see {@link StrictYamlMapping}
-     */
-    abstract AbstractYamlMapping yamlMapping(final String key);
+abstract class AbstractYamlMapping implements YamlMapping{
 
-    /**
-     * Get the Yaml mapping associated with the given key.
-     * @param key Yaml node (mapping or sequence) key
-     * @return Yaml mapping or null if the key is missing, or not pointing
-     *  to a mapping.
-     * @see {@link StrictYamlMapping}
-     */
-    abstract AbstractYamlMapping yamlMapping(final AbstractYamlNode key);
-
-    /**
-     * Get the Yaml sequence associated with the given key.
-     * @param key String key
-     * @return Yaml sequence or null if the key is missing, or not pointing
-     *  to a sequence.
-     * @see {@link StrictYamlMapping}
-     */
-    abstract AbstractYamlSequence yamlSequence(final String key);
-
-    /**
-     * Get the Yaml sequence associated with the given key.
-     * @param key Yaml node (mapping or sequence) key
-     * @return Yaml sequence or null if the key is missing, or not pointing
-     *  to a sequence
-     * @see {@link StrictYamlMapping}
-     */
-    abstract AbstractYamlSequence yamlSequence(final AbstractYamlNode key);
-
-    /**
-     * Get the String associated with the given key.
-     * @param key String key
-     * @return String or null if the key is missing, or not pointing
-     *  to a scalar.
-     * @see {@link StrictYamlMapping}
-     */
-    abstract String string(final String key);
-
-    /**
-     * Get the String associated with the given key.
-     * @param key Yaml node (mapping or sequence) key
-     * @return String or null if the key is missing, or not pointing
-     *  to a scalar.
-     * @see {@link StrictYamlMapping}
-     */
-    abstract String string(final AbstractYamlNode key);
     /**
      * Return the keys' set of this mapping.
-     * @return Set of AbstractYamlNode keys.
+     * @return Set of YamlNode keys.
      */
-    abstract Set<AbstractYamlNode> keys();
+    abstract Set<YamlNode> keys();
 
     @Override
     public int hashCode() {
         int hash = 0;
-        for(final AbstractYamlNode key : this.keys()) {
+        for(final YamlNode key : this.keys()) {
             hash += key.hashCode();
         }
-        for(final AbstractYamlNode value : this.children()) {
+        for(final YamlNode value : this.children()) {
             hash += value.hashCode();
         }
         return hash;
@@ -119,12 +66,12 @@ abstract class AbstractYamlMapping extends AbstractYamlNode{
     @Override
     public boolean equals(final Object other) {
         final boolean result;
-        if (other == null || !(other instanceof AbstractYamlMapping)) {
+        if (other == null || !(other instanceof YamlMapping)) {
             result = false;
         } else if (this == other) {
             result = true;
         } else {
-            result = this.compareTo((AbstractYamlMapping) other) == 0;
+            result = this.compareTo((YamlMapping) other) == 0;
         }
         return result;
     }
@@ -149,26 +96,23 @@ abstract class AbstractYamlMapping extends AbstractYamlNode{
      *  a value > 0 if this > o
      */
     @Override
-    public int compareTo(final AbstractYamlNode other) {
+    public int compareTo(final YamlNode other) {
         int result = 0;
-        if (other == null || !(other instanceof AbstractYamlMapping)) {
+        if (other == null || !(other instanceof YamlMapping)) {
             result = 1;
         } else if (this != other) {
             final AbstractYamlMapping map = (AbstractYamlMapping) other;
-            final Set<AbstractYamlNode> keys = this.keys();
-            final Set<AbstractYamlNode> otherKeys = map.keys();
+            final Set<YamlNode> keys = this.keys();
+            final Set<YamlNode> otherKeys = map.keys();
             if(keys.size() > otherKeys.size()) {
                 result = 1;
             } else if (keys.size() < otherKeys.size()) {
                 result = -1;
             } else {
-                final Iterator<AbstractYamlNode> keysIt = keys.iterator();
-                final Iterator<AbstractYamlNode> otherKeysIt =
-                    otherKeys.iterator();
-                final Iterator<AbstractYamlNode> values =
-                    this.children().iterator();
-                final Iterator<AbstractYamlNode> otherVals =
-                    map.children().iterator();
+                final Iterator<YamlNode> keysIt = keys.iterator();
+                final Iterator<YamlNode> otherKeysIt = otherKeys.iterator();
+                final Iterator<YamlNode> values = this.children().iterator();
+                final Iterator<YamlNode> otherVals = map.children().iterator();
                 int keysComparison;
                 int valuesComparison;
                 while(values.hasNext()) {

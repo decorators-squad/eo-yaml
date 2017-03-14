@@ -47,11 +47,11 @@ public final class StrictYamlSequenceTest {
      */
     @Test
     public void fetchesChildren() {
-        List<AbstractYamlNode> elements = new LinkedList<>();
+        List<YamlNode> elements = new LinkedList<>();
         elements.add(new Scalar("key1"));
         elements.add(new Scalar("key2"));
         elements.add(new Scalar("key3"));
-        AbstractYamlSequence sequence = new StrictYamlSequence(
+        YamlSequence sequence = new StrictYamlSequence(
             new RtYamlSequence(elements)
         );
 
@@ -67,9 +67,9 @@ public final class StrictYamlSequenceTest {
      */
     @Test (expected = YamlNodeNotFoundException.class)
     public void exceptionOnNullMapping() {
-        AbstractYamlSequence origin = Mockito.mock(AbstractYamlSequence.class);
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
         Mockito.when(origin.yamlMapping(1)).thenReturn(null);
-        AbstractYamlSequence strict = new StrictYamlSequence(origin);
+        YamlSequence strict = new StrictYamlSequence(origin);
         strict.yamlMapping(1);
     }
 
@@ -79,9 +79,9 @@ public final class StrictYamlSequenceTest {
      */
     @Test (expected = YamlNodeNotFoundException.class)
     public void exceptionOnNullSequence() {
-        AbstractYamlSequence origin = Mockito.mock(AbstractYamlSequence.class);
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
         Mockito.when(origin.yamlSequence(1)).thenReturn(null);
-        AbstractYamlSequence strict = new StrictYamlSequence(origin);
+        YamlSequence strict = new StrictYamlSequence(origin);
         strict.yamlSequence(1);
     }
 
@@ -91,9 +91,9 @@ public final class StrictYamlSequenceTest {
      */
     @Test (expected = YamlNodeNotFoundException.class)
     public void exceptionOnNullString() {
-        AbstractYamlSequence origin = Mockito.mock(AbstractYamlSequence.class);
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
         Mockito.when(origin.string(1)).thenReturn(null);
-        AbstractYamlSequence strict = new StrictYamlSequence(origin);
+        YamlSequence strict = new StrictYamlSequence(origin);
         strict.string(1);
     }
 
@@ -102,10 +102,10 @@ public final class StrictYamlSequenceTest {
      */
     @Test
     public void returnsSize() {
-        List<AbstractYamlNode> elements = new LinkedList<>();
+        List<YamlNode> elements = new LinkedList<>();
         elements.add(new Scalar("key1"));
         elements.add(new Scalar("key2"));
-        AbstractYamlSequence sequence = new StrictYamlSequence(
+        YamlSequence sequence = new StrictYamlSequence(
             new RtYamlSequence(elements)
         );
 
@@ -120,10 +120,10 @@ public final class StrictYamlSequenceTest {
      */
     @Test
     public void returnsMapping() {
-        AbstractYamlSequence origin = Mockito.mock(AbstractYamlSequence.class);
-        AbstractYamlMapping found = Mockito.mock(AbstractYamlMapping.class);
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        YamlMapping found = Mockito.mock(YamlMapping.class);
         Mockito.when(origin.yamlMapping(1)).thenReturn(found);
-        AbstractYamlSequence strict = new StrictYamlSequence(origin);
+        YamlSequence strict = new StrictYamlSequence(origin);
         MatcherAssert.assertThat(
             strict.yamlMapping(1), Matchers.equalTo(found)
         );
@@ -134,10 +134,10 @@ public final class StrictYamlSequenceTest {
      */
     @Test
     public void returnsSequence() {
-        AbstractYamlSequence origin = Mockito.mock(AbstractYamlSequence.class);
-        AbstractYamlSequence found = Mockito.mock(AbstractYamlSequence.class);
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        YamlSequence found = Mockito.mock(YamlSequence.class);
         Mockito.when(origin.yamlSequence(1)).thenReturn(found);
-        AbstractYamlSequence strict = new StrictYamlSequence(origin);
+        YamlSequence strict = new StrictYamlSequence(origin);
         MatcherAssert.assertThat(
             strict.yamlSequence(1), Matchers.equalTo(found)
         );
@@ -148,9 +148,9 @@ public final class StrictYamlSequenceTest {
      */
     @Test
     public void returnsString() {
-        AbstractYamlSequence origin = Mockito.mock(AbstractYamlSequence.class);
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
         Mockito.when(origin.string(1)).thenReturn("found");
-        AbstractYamlSequence strict = new StrictYamlSequence(origin);
+        YamlSequence strict = new StrictYamlSequence(origin);
         MatcherAssert.assertThat(
                 strict.string(1), Matchers.equalTo("found")
         );

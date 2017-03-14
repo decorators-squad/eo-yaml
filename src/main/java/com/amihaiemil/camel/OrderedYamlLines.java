@@ -70,7 +70,7 @@ final class OrderedYamlLines extends AbstractYamlLines {
         final Iterator<YamlLine> lines = this.unordered.iterator();
         final List<YamlLine> ordered = new LinkedList<>();
         final List<YamlLine> dashes = new LinkedList<>();
-        final Map<AbstractYamlNode, Integer> nodesInSequence = new TreeMap<>();
+        final Map<YamlNode, Integer> nodesInSequence = new TreeMap<>();
         int index = 0;
         while (lines.hasNext()) {
             final YamlLine line = lines.next();

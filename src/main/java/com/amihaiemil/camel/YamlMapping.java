@@ -28,48 +28,64 @@
 package com.amihaiemil.camel;
 
 /**
- * Iterable yaml lines.
+ * A Yaml mapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlLines implements Iterable<YamlLine> {
+public interface YamlMapping extends YamlNode {
 
     /**
-     * Lines which are nested after the given YamlLine (lines which are 
-     * <br> indented by 2 or more spaces beneath it).
-     * @param after Number of a YamlLine
-     * @return YamlLines
+     * Get the Yaml mapping associated with the given key.
+     * @param key String key
+     * @return Yaml mapping or null if the key is missing, or not pointing
+     *  to a mapping.
+     * @see {@link StrictYamlMapping}
      */
-    abstract AbstractYamlLines nested(final int after);
+    YamlMapping yamlMapping(final String key);
 
     /**
-     * Number of lines.
-     * @return Integer.
+     * Get the Yaml mapping associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return Yaml mapping or null if the key is missing, or not pointing
+     *  to a mapping.
+     * @see {@link StrictYamlMapping}
      */
-    abstract int count();
+    YamlMapping yamlMapping(final YamlNode key);
 
     /**
-     * Indent these lines.
-     * @param indentation Spaces to precede each line.
-     * @return String with the pretty-printed, indented lines.
+     * Get the Yaml sequence associated with the given key.
+     * @param key String key
+     * @return Yaml sequence or null if the key is missing, or not pointing
+     *  to a sequence.
+     * @see {@link StrictYamlMapping}
      */
-    abstract String indent(int indentation);
-    
-    /**
-     * Turn these lines into a YamlNode.
-     * @return YamlNode
-     */
-    YamlNode toYamlNode() {
-        final YamlNode node;
-        boolean sequence = this.iterator()
-            .next().trimmed().startsWith("-");
-        if(sequence) {
-            node = new ReadYamlSequence(this);
-        } else {
-            node = new ReadYamlMapping(this);
-        }
-        return node;
-    }
+    YamlSequence yamlSequence(final String key);
 
+    /**
+     * Get the Yaml sequence associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return Yaml sequence or null if the key is missing, or not pointing
+     *  to a sequence
+     * @see {@link StrictYamlMapping}
+     */
+    YamlSequence yamlSequence(final YamlNode key);
+
+    /**
+     * Get the String associated with the given key.
+     * @param key String key
+     * @return String or null if the key is missing, or not pointing
+     *  to a scalar.
+     * @see {@link StrictYamlMapping}
+     */
+    String string(final String key);
+
+    /**
+     * Get the String associated with the given key.
+     * @param key Yaml node (mapping or sequence) key
+     * @return String or null if the key is missing, or not pointing
+     *  to a scalar.
+     * @see {@link StrictYamlMapping}
+     */
+    String string(final YamlNode key);
 }

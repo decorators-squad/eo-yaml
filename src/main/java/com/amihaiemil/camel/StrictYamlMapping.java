@@ -57,18 +57,18 @@ public final class StrictYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public Collection<AbstractYamlNode> children() {
+    public Collection<YamlNode> children() {
         return this.decorated.children();
     }
 
     @Override
-    public AbstractYamlMapping yamlMapping(final String key) {
+    public YamlMapping yamlMapping(final String key) {
         return this.yamlMapping(new Scalar(key));
     }
 
     @Override
-    public AbstractYamlMapping yamlMapping(final AbstractYamlNode key) {
-        AbstractYamlMapping found = this.decorated.yamlMapping(key);
+    public YamlMapping yamlMapping(final YamlNode key) {
+        YamlMapping found = this.decorated.yamlMapping(key);
         if (found == null) {
             throw new YamlNodeNotFoundException(
                 "No YamlMapping found for key " + key
@@ -78,13 +78,13 @@ public final class StrictYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public AbstractYamlSequence yamlSequence(final String key) {
+    public YamlSequence yamlSequence(final String key) {
         return this.yamlSequence(new Scalar(key));
     }
 
     @Override
-    public AbstractYamlSequence yamlSequence(final AbstractYamlNode key) {
-        AbstractYamlSequence found = this.decorated.yamlSequence(key);
+    public YamlSequence yamlSequence(final YamlNode key) {
+        YamlSequence found = this.decorated.yamlSequence(key);
         if (found == null) {
             throw new YamlNodeNotFoundException(
                 "No YamlSequence found for key " + key
@@ -99,7 +99,7 @@ public final class StrictYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    public String string(final AbstractYamlNode key) {
+    public String string(final YamlNode key) {
         String found = this.decorated.string(key);
         if (found == null) {
             throw new YamlNodeNotFoundException(
@@ -120,7 +120,7 @@ public final class StrictYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    Set<AbstractYamlNode> keys() {
+    Set<YamlNode> keys() {
         return this.decorated.keys();
     }
 }

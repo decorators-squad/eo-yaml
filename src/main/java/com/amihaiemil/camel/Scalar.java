@@ -37,7 +37,7 @@ import java.util.LinkedList;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#scalar//
  */
-final class Scalar extends AbstractYamlNode {
+final class Scalar implements YamlNode {
 
     /**
      * This scalar's value.
@@ -61,8 +61,8 @@ final class Scalar extends AbstractYamlNode {
     }
 
     @Override
-    public Collection<AbstractYamlNode> children() {
-        return new LinkedList<AbstractYamlNode>();
+    public Collection<YamlNode> children() {
+        return new LinkedList<YamlNode>();
     }
 
     /**
@@ -107,7 +107,7 @@ final class Scalar extends AbstractYamlNode {
      *  a value > 0 if this > o
      */
     @Override
-    public int compareTo(final AbstractYamlNode other) {
+    public int compareTo(final YamlNode other) {
         int result = -1;
         if (this == other) {
             result = 0;

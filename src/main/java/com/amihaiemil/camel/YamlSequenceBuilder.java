@@ -46,11 +46,11 @@ public interface YamlSequenceBuilder {
      * @param node YamlNode
      * @return This builder
      */
-    YamlSequenceBuilder add(final AbstractYamlNode node);
+    YamlSequenceBuilder add(final YamlNode node);
 
     /**
      * Build the YamlSequence.
      * @return Built YamlSequence
      */
-    AbstractYamlSequence build();
+    YamlSequence build();
 }

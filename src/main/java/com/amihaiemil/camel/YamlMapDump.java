@@ -53,7 +53,7 @@ public final class YamlMapDump extends AbstractYamlDump {
     }
     
     @Override
-    public AbstractYamlMapping represent() {
+    public YamlMapping represent() {
         YamlMappingBuilder mapBuilder = new RtYamlMappingBuilder();
         Set<Map.Entry<Object, Object>> entries = this.map.entrySet();
         for (final Map.Entry<Object, Object> entry : entries) {

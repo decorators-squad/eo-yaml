@@ -27,49 +27,28 @@
  */
 package com.amihaiemil.camel;
 
+import java.util.Collection;
+
 /**
- * Iterable yaml lines.
+ * YAML node.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @see http://yaml.org/spec/1.2/spec.html#node//
  */
-abstract class AbstractYamlLines implements Iterable<YamlLine> {
+public interface YamlNode extends Comparable<YamlNode> {
 
     /**
-     * Lines which are nested after the given YamlLine (lines which are 
-     * <br> indented by 2 or more spaces beneath it).
-     * @param after Number of a YamlLine
-     * @return YamlLines
+     * Fetch the child nodes of this node.
+     * @return Collection of {@link YamlNode}
      */
-    abstract AbstractYamlLines nested(final int after);
-
-    /**
-     * Number of lines.
-     * @return Integer.
-     */
-    abstract int count();
-
-    /**
-     * Indent these lines.
-     * @param indentation Spaces to precede each line.
-     * @return String with the pretty-printed, indented lines.
-     */
-    abstract String indent(int indentation);
+    Collection<YamlNode> children();
     
     /**
-     * Turn these lines into a YamlNode.
-     * @return YamlNode
+     * Print this node with a specified indentation.
+     * @param indentation Number of preciding spaces of each line.
+     * @return String
      */
-    YamlNode toYamlNode() {
-        final YamlNode node;
-        boolean sequence = this.iterator()
-            .next().trimmed().startsWith("-");
-        if(sequence) {
-            node = new ReadYamlSequence(this);
-        } else {
-            node = new ReadYamlMapping(this);
-        }
-        return node;
-    }
+    String indent(final int indentation);
 
 }

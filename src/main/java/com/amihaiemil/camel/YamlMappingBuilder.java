@@ -49,7 +49,7 @@ public interface YamlMappingBuilder {
      * @param value String
      * @return This builder
      */
-    YamlMappingBuilder add(final AbstractYamlNode key, final String value);
+    YamlMappingBuilder add(final YamlNode key, final String value);
 
     /**
      * Add a pair to the mapping.
@@ -57,9 +57,7 @@ public interface YamlMappingBuilder {
      * @param value YamlNode (sequence or mapping)
      * @return This builder
      */
-    YamlMappingBuilder add(
-        final AbstractYamlNode key, final AbstractYamlNode value
-    );
+    YamlMappingBuilder add(final YamlNode key, final YamlNode value);
 
     /**
      * Add a pair to the mapping.
@@ -67,11 +65,11 @@ public interface YamlMappingBuilder {
      * @param value YamlNode (sequence or mapping)
      * @return This builder
      */
-    YamlMappingBuilder add(final String key, final AbstractYamlNode value);
+    YamlMappingBuilder add(final String key, final YamlNode value);
 
     /**
      * Build the YamlMapping.
      * @return Built YamlMapping.
      */
-    AbstractYamlMapping build();
+    YamlMapping build();
 }

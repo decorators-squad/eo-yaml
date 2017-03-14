@@ -55,12 +55,11 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  fourth: some", 2));
         lines.add(new RtYamlLine("  fifth: values", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final AbstractYamlMapping map =
-            new ReadYamlMapping(new RtYamlLines(lines));
-        final AbstractYamlMapping second = map.yamlMapping("second");
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping second = map.yamlMapping("second");
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            second, Matchers.instanceOf(AbstractYamlMapping.class)
+            second, Matchers.instanceOf(YamlMapping.class)
         );
         MatcherAssert.assertThat(
             second.string("fifth"), Matchers.equalTo("values")
@@ -73,7 +72,7 @@ public final class ReadYamlMappingTest {
      */
     @Test
     public void returnsYamlMappingWithYamlMappingKey(){
-        final AbstractYamlMapping key = new RtYamlMappingBuilder()
+        final YamlMapping key = new RtYamlMappingBuilder()
             .add("complex1", "mapping1").add("complex2", "mapping2").build();
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: something", 0));
@@ -83,12 +82,11 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": ", 4));
         lines.add(new RtYamlLine("  map: value", 5));
         lines.add(new RtYamlLine("second: something", 6));
-        final AbstractYamlMapping map =
-            new ReadYamlMapping(new RtYamlLines(lines));
-        final AbstractYamlMapping value = map.yamlMapping(key);
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping value = map.yamlMapping(key);
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            value, Matchers.instanceOf(AbstractYamlMapping.class)
+            value, Matchers.instanceOf(YamlMapping.class)
         );
         MatcherAssert.assertThat(
             value.string("map"), Matchers.equalTo("value")
@@ -107,12 +105,11 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - some", 2));
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final AbstractYamlMapping map =
-            new ReadYamlMapping(new RtYamlLines(lines));
-        final AbstractYamlSequence second = map.yamlSequence("second");
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlSequence second = map.yamlSequence("second");
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            second, Matchers.instanceOf(AbstractYamlSequence.class)
+            second, Matchers.instanceOf(YamlSequence.class)
         );
     }
     
@@ -122,7 +119,7 @@ public final class ReadYamlMappingTest {
      */
     @Test
     public void returnsStringWithYamlMappingKey(){
-        final AbstractYamlMapping key = new RtYamlMappingBuilder()
+        final YamlMapping key = new RtYamlMappingBuilder()
             .add("complex1", "mapping1").add("complex2", "mapping2").build();
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: something", 0));
@@ -131,8 +128,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  complex2: mapping2", 3));
         lines.add(new RtYamlLine(": value", 4));
         lines.add(new RtYamlLine("second: something", 6));
-        final AbstractYamlMapping map =
-            new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
         final String value = map.string(key);
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(value, Matchers.equalTo("value"));
@@ -150,8 +146,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - some", 2));
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final AbstractYamlMapping map =
-            new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
         final String third = map.string("third");
         MatcherAssert.assertThat(third, Matchers.notNullValue());
         MatcherAssert.assertThat(

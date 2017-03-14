@@ -42,13 +42,13 @@ public interface YamlInput {
      * @return Read YamlMapping.
      * @throws IOException if the input cannot be read for some reason
      */
-    AbstractYamlMapping readYamlMapping() throws IOException;
+    YamlMapping readYamlMapping() throws IOException;
 
     /**
      * Read the given input as a Yaml sequence.
      * @return Read YamlSequence.
      * @throws IOException if the input cannot be read for some reason
      */
-    AbstractYamlSequence readYamlSequence() throws IOException;
+    YamlSequence readYamlSequence() throws IOException;
 
 }

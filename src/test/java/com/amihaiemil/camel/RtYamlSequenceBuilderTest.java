@@ -74,10 +74,10 @@ public final class RtYamlSequenceBuilderTest {
     @Test
     public void buildsYamlSequence() {
         YamlSequenceBuilder sequenceBuilder = new RtYamlSequenceBuilder();
-        List<AbstractYamlNode> devs = new LinkedList<>();
+        List<YamlNode> devs = new LinkedList<>();
         devs.add(new Scalar("amihaiemil"));
         devs.add(new Scalar("salikjan"));
-        AbstractYamlSequence sequence = sequenceBuilder
+        YamlSequence sequence = sequenceBuilder
             .add("amihaiemil")
             .add(new RtYamlSequence(devs))
             .build();

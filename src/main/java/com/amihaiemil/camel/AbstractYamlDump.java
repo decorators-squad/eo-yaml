@@ -42,7 +42,7 @@ public abstract class AbstractYamlDump {
      * Turn it into Yaml.
      * @return Yaml node
      */
-    abstract AbstractYamlNode represent();
+    abstract YamlNode represent();
     
     /**
      * Check if the given property is a 'leaf'. For instance, a String is
