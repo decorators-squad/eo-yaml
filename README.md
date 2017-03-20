@@ -8,7 +8,18 @@ YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhymes with “camel”) is a human-friendly, cross language, Unicode based data serialization language.
 
-**First release is coming soon!**
+To get the latest release, simply add the following to your ``pom.xml``: 
+
+```
+<dependency>
+    <groupId>com.amihaiemil.web</groupId>
+    <artifactId>camel</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/camel/1.0.0/camel-1.0.0-jar-with-dependencies.jar">fat</a> jar.
+
 
 ## Usage
 
