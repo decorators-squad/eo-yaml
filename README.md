@@ -34,15 +34,15 @@ YamlMapping yaml = Yaml.createYamlMappingBuilder()
         "devops",
         Yaml.createYamlSequenceBuilder()
             .add("rultor")
-        	.add("0pdd")
-        	.build()
+            .add("0pdd")
+            .build()
     ).add(
         "developers",
         Yaml.createYamlSequenceBuilder()
             .add("amihaiemil")
-        	.add("salikjan")
+            .add("salikjan")
             .add("SherifWally")
-        	.build()
+            .build()
     ).build();
 ```
 
