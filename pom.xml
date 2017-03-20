@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.amihaiemil.web</groupId>
 	<artifactId>camel</artifactId>
-	<version>1.0.0-SNAPSHOT</version><!--rrv-sed-flag-->
+	<version>1.0.1-SNAPSHOT</version><!--rrv-sed-flag-->
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
