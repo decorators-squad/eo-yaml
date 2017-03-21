@@ -94,10 +94,24 @@ public final class NoCommentsYamlLineTest {
     }
     
     /**
-     * NoCommentsYamlLine removes only comments and leaves original string.
+     * NoCommentsYamlLine removes only comments and leave original string.
      */
     @Test
-    public void trimsCommentsAtEndOfLine() {
+    public void trimsCommentsAtEndOfLineWithoutQuotes() {
+        YamlLine noComments = new NoCommentsYamlLine(
+            new RtYamlLine("  this isn't comment   #here is the comment", 1)
+        );
+        MatcherAssert.assertThat(
+            noComments.trimmed(), Matchers.is("this isn't comment")
+        );
+    }
+    
+    /**
+     * NoCommentsYamlLine removes only comments and leaves original string.
+     * Original string has quotes.
+     */
+    @Test
+    public void trimsCommentsAtEndOfLineWithQuotes() {
         YamlLine noComments = new NoCommentsYamlLine(
             new RtYamlLine("  \"this isn't comment\"   #here is the comment", 1)
         );
