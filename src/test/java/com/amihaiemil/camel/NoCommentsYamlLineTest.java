@@ -32,13 +32,13 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit test for {@link NoCommentsYamlLine}
+ * Unit test for {@link NoCommentsYamlLine}.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-public class NoCommentsYamlLineTest {
-	/**
+public final class NoCommentsYamlLineTest {
+    /**
      * NoCommentsYamlLine knows its number.
      */
     @Test
@@ -77,7 +77,7 @@ public class NoCommentsYamlLineTest {
         YamlLine normalLine = new RtYamlLine("  no", 2);
         MatcherAssert.assertThat(
             noComments.compareTo(normalLine) < 0, Matchers.is(true)
-       );
+        );
     }
     
     /**
@@ -86,7 +86,7 @@ public class NoCommentsYamlLineTest {
     @Test
     public void trimsCommentsLine() {
         YamlLine noComments = new NoCommentsYamlLine(
-            new RtYamlLine("   #this is a comment line", 1)	
+            new RtYamlLine("   #this is a comment line", 1)
         );
         MatcherAssert.assertThat(
             noComments.trimmed(), Matchers.is("")
