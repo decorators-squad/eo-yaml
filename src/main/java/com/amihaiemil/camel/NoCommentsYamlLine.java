@@ -56,22 +56,21 @@ final class NoCommentsYamlLine implements YamlLine {
 
     @Override
     public String trimmed() {
-        String string = this.line.trimmed();
+        String trimmed = this.line.trimmed();
         int i = 0;
-        while(i < string.length()) {
-            if(string.charAt(i) == '#') {
-                string = string.substring(0, i);
+        while(i < trimmed.length()) {
+            if(trimmed.charAt(i) == '#') {
+                trimmed = trimmed.substring(0, i);
                 break;
-            } else if(string.charAt(i) == '"') {
+            } else if(trimmed.charAt(i) == '"') {
                 i++;
-                while(i < string.length() && string.charAt(i) != '"') {
+                while(i < trimmed.length() && trimmed.charAt(i) != '"') {
                     i++;
                 }
-            } else {
-                i++;
             }
+            i++;
         }
-        return string.trim();
+        return trimmed.trim();
     }
 
     @Override

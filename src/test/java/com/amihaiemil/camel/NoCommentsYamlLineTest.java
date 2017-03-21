@@ -99,18 +99,18 @@ public final class NoCommentsYamlLineTest {
     @Test
     public void trimsCommentsAtEndOfLine() {
         YamlLine noComments = new NoCommentsYamlLine(
-            new RtYamlLine("  this isn't comment   #here is the comment", 1)
+            new RtYamlLine("  \"this isn't comment\"   #here is the comment", 1)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("this isn't comment")
+            noComments.trimmed(), Matchers.is("\"this isn't comment\"")
         );
     }
     
     /**
-     * NoCommentsYamlLine doesn't remove # escaped in a string.
+     * NoCommentsYamlLine doesn't remove escaped # in a string.
      */
     @Test
-    public void doesnotTrimsEscapedHash() {
+    public void doesNotTrimsEscapedHash() {
         YamlLine noComments = new NoCommentsYamlLine(
             new RtYamlLine(" \"value = #5\" ", 2)
         );
