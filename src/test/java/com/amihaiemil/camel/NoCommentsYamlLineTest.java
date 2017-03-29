@@ -89,7 +89,7 @@ public final class NoCommentsYamlLineTest {
             new RtYamlLine("   #this is a comment line", 1)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("")
+            noComments.trimmed(), Matchers.is("   ")
         );
     }
     
@@ -102,7 +102,7 @@ public final class NoCommentsYamlLineTest {
             new RtYamlLine("  this isn't comment   #here is the comment", 1)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("this isn't comment")
+            noComments.trimmed(), Matchers.is("  this isn't comment   ")
         );
     }
     
@@ -116,7 +116,7 @@ public final class NoCommentsYamlLineTest {
             new RtYamlLine("  \"this isn't comment\"   #here is the comment", 1)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("\"this isn't comment\"")
+            noComments.trimmed(), Matchers.is("  \"this isn't comment\"   ")
         );
     }
     
@@ -129,7 +129,7 @@ public final class NoCommentsYamlLineTest {
             new RtYamlLine(" \"value = #5\" ", 2)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("\"value = #5\"")
+            noComments.trimmed(), Matchers.is(" \"value = #5\" ")
         );
     }
 }

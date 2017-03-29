@@ -54,9 +54,13 @@ final class NoCommentsYamlLine implements YamlLine {
         return this.line.compareTo(other);
     }
 
+    /**
+     * Trim the comments off.
+     * @return String
+     */
     @Override
     public String trimmed() {
-        String trimmed = this.line.trimmed();
+        String trimmed = this.line.toString();
         int i = 0;
         while(i < trimmed.length()) {
             if(trimmed.charAt(i) == '#') {
@@ -70,7 +74,7 @@ final class NoCommentsYamlLine implements YamlLine {
             }
             i++;
         }
-        return trimmed.trim();
+        return trimmed;
     }
 
     @Override
@@ -85,7 +89,11 @@ final class NoCommentsYamlLine implements YamlLine {
 
     @Override
     public boolean hasNestedNode() {
-        return this.line.hasNestedNode();
+        return new RtYamlLine(this.trimmed(), 0).hasNestedNode();
     }
 
+    @Override
+    public String toString() {
+        return this.trimmed().toString();
+    }
 }

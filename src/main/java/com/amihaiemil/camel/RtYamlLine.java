@@ -55,6 +55,10 @@ final class RtYamlLine implements YamlLine {
         this.number = number;
     }
 
+    /**
+     * Trim the spaces off.
+     * @return String
+     */
     @Override
     public String trimmed() {
         return this.value.trim();
@@ -96,6 +100,7 @@ final class RtYamlLine implements YamlLine {
     public boolean hasNestedNode() {
         final boolean result;
         final String specialCharacters = ":>|-";
+ 
         final CharSequence prevLineLastChar = 
             this.trimmed().substring(this.trimmed().length()-1);
         if(specialCharacters.contains(prevLineLastChar)) {

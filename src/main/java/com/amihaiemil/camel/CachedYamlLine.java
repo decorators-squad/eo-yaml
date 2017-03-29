@@ -98,5 +98,10 @@ final class CachedYamlLine implements YamlLine {
         }
         return this.hasNestedNode;
     }
+    
+    @Override
+    public String toString() {
+        return this.line.toString();
+    }
 
 }
