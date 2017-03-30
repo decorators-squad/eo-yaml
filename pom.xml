@@ -10,7 +10,7 @@
 	</properties>
 	<name>Camel</name>
 	<description>YAML for Java. User-friendly OOP library.</description>
-	<url>http://amihaiemil.github.io/eva</url>
+	<url>https://www.github.com/decorators-squad/camel</url>
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause Licence</name>
@@ -23,6 +23,12 @@
 			<email>amihaiemil@gmail.com</email>
 			<url>https://github.com/amihaiemil</url>
 			<id>amihaiemil</id>
+		</developer>
+		<developer>
+			<name>Sherif Waly</name>
+			<email>sherifwaly95@gmail.com</email>
+			<url>https://github.com/SherifWaly</url>
+			<id>SherifWaly</id>
 		</developer>
 		<developer>
 			<name>Salavat Yalalov</name>
