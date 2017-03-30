@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -20,13 +19,8 @@ public final class RtYamlInputTest {
     /**
      * YamlMapping can be read without its comments.
      * @throws Exception If something goes wrong
-     * @todo #98:30m/DEV There is a bug in ReadYamlMapping.children(), the
-     *  maps' values are not returned properly. Because of that,
-     *  YamlMapping.equals does not work fine. Fix the bug and activate this
-     *  unit test.
      */
     @Test
-    @Ignore
     public void readsMappingWithoutComments() throws Exception {
         YamlMapping expected = Yaml.createYamlMappingBuilder()
             .add("name", "camel")
@@ -67,6 +61,7 @@ public final class RtYamlInputTest {
             read.yamlSequence("developers").string(2),
             Matchers.equalTo(expected.yamlSequence("developers").string(2))
         );
+        System.out.println(read);
         MatcherAssert.assertThat(
             read, Matchers.equalTo(expected)
         );

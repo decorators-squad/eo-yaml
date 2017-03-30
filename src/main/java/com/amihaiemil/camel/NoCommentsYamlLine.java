@@ -60,7 +60,7 @@ final class NoCommentsYamlLine implements YamlLine {
      */
     @Override
     public String trimmed() {
-        String trimmed = this.line.toString();
+        String trimmed = this.line.trimmed();
         int i = 0;
         while(i < trimmed.length()) {
             if(trimmed.charAt(i) == '#') {
@@ -74,7 +74,7 @@ final class NoCommentsYamlLine implements YamlLine {
             }
             i++;
         }
-        return trimmed;
+        return trimmed.trim();
     }
 
     @Override
@@ -94,6 +94,6 @@ final class NoCommentsYamlLine implements YamlLine {
 
     @Override
     public String toString() {
-        return this.trimmed().toString();
+        return this.line.toString();
     }
 }
