@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/decorators-squad/camel.svg?branch=master)](https://travis-ci.org/decorators-squad/camel)
 [![Coverage Status](https://coveralls.io/repos/github/decorators-squad/camel/badge.svg?branch=master)](https://coveralls.io/github/decorators-squad/camel?branch=master)
 
-YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-java-library) OOP library. Based on [spec 1.2](yaml.org/spec/1.2/spec.html).
+YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-java-library) OOP library. Based on [spec 1.2](www.yaml.org/spec/1.2/spec.html).
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** (rhymes with “camel”) is a human-friendly, cross language, Unicode based data serialization language.
 
