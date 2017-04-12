@@ -43,13 +43,13 @@ import org.junit.Test;
  * @since 1.0.2
  */
 public final class ReadPipeScalarTest {
-	
-	/**
-	 * ReadPipeScalar shouldn't have children.
-	 */
+    
+    /**
+     * ReadPipeScalar should not have children.
+     */
     @Test
     public void hasNoChildren() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
@@ -82,7 +82,7 @@ public final class ReadPipeScalarTest {
      */
     @Test
     public void comparesToMapping() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
@@ -99,7 +99,7 @@ public final class ReadPipeScalarTest {
      */
     @Test
     public void comparesToSequence() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
@@ -114,7 +114,7 @@ public final class ReadPipeScalarTest {
      */
     @Test
     public void comparesToScalar() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
         final ReadPipeScalar pipeScalar = 
             new ReadPipeScalar(new RtYamlLines(lines));
@@ -127,7 +127,7 @@ public final class ReadPipeScalarTest {
      */
     @Test
     public void comparesToReadPipeScalar() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
         final ReadPipeScalar first = 
             new ReadPipeScalar(new RtYamlLines(lines));
@@ -141,7 +141,7 @@ public final class ReadPipeScalarTest {
      */
     @Test
     public void indentsValue() {
-    	final List<YamlLine> lines = new ArrayList<>();
+        final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));

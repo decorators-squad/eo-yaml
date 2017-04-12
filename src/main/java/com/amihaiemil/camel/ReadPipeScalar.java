@@ -48,19 +48,19 @@ final class ReadPipeScalar implements YamlNode {
      * Ctor.
      * @param lines Given lines to represent.
      */
-    ReadPipeScalar(AbstractYamlLines lines) {
-    	StringBuilder builder = new StringBuilder();
-        for(YamlLine line: lines) {
-        	builder.append(line.trimmed());
-        	builder.append('\n');
+    ReadPipeScalar(final AbstractYamlLines lines) {
+        StringBuilder builder = new StringBuilder();
+        for(final YamlLine line: lines) {
+            builder.append(line.trimmed());
+            builder.append('\n');
         }
         builder.delete(builder.length()-1, builder.length());
-        value = builder.toString();
+        this.value = builder.toString();
     }
    
     @Override
     public int compareTo(final YamlNode other) {
-    	int result = -1;
+        int result = -1;
         if (this == other) {
             result = 0;
         } else if (other == null) {
@@ -68,7 +68,7 @@ final class ReadPipeScalar implements YamlNode {
         } else if (other instanceof Scalar) {
             result = this.value.compareTo(((Scalar) other).value());
         } else if (other instanceof ReadPipeScalar) {
-            result = this.value.compareTo(((ReadPipeScalar)other).value);
+            result = this.value.compareTo(((ReadPipeScalar) other).value);
         }
         return result;
     }
