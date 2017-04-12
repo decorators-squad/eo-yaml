@@ -149,7 +149,7 @@ public final class ReadPipeScalarTest {
             new ReadPipeScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
-            Matchers.is("    First Line.\nSecond Line.\nThird Line.")
+            Matchers.is("    First Line.\n    Second Line.\n    Third Line.")
         );
     }
 }

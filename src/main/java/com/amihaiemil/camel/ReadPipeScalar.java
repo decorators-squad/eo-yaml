@@ -40,22 +40,16 @@ import java.util.LinkedList;
 final class ReadPipeScalar implements YamlNode {
 
     /**
-     * Value of the wrapped scalar.
+     * Lines to be represented as a wrapped scalar.
      */
-    private String value;
+    private AbstractYamlLines lines;
     
     /**
      * Ctor.
      * @param lines Given lines to represent.
      */
     ReadPipeScalar(final AbstractYamlLines lines) {
-        StringBuilder builder = new StringBuilder();
-        for(final YamlLine line: lines) {
-            builder.append(line.trimmed());
-            builder.append('\n');
-        }
-        builder.delete(builder.length()-1, builder.length());
-        this.value = builder.toString();
+        this.lines = lines;
     }
    
     @Override
@@ -66,9 +60,9 @@ final class ReadPipeScalar implements YamlNode {
         } else if (other == null) {
             result = 1;
         } else if (other instanceof Scalar) {
-            result = this.value.compareTo(((Scalar) other).value());
+            result = this.value().compareTo(((Scalar) other).value());
         } else if (other instanceof ReadPipeScalar) {
-            result = this.value.compareTo(((ReadPipeScalar) other).value);
+            result = this.value().compareTo(((ReadPipeScalar) other).value());
         }
         return result;
     }
@@ -80,13 +74,18 @@ final class ReadPipeScalar implements YamlNode {
 
     @Override
     public String indent(final int indentation) {
-        int spaces = indentation;
         StringBuilder printed = new StringBuilder();
-        while (spaces > 0) {
-            printed.append(" ");
-            spaces--;
+        for(final YamlLine line: this.lines) {
+            int spaces = indentation;
+            while (spaces > 0) {
+                printed.append(" ");
+                spaces--;
+            }
+            printed.append(line.trimmed());
+            printed.append('\n');
         }
-        return printed.append(this.value).toString();
+        printed.delete(printed.length()-1, printed.length());
+        return printed.toString();
     }
     
     /**
@@ -94,7 +93,18 @@ final class ReadPipeScalar implements YamlNode {
      * @return String
      */
     public String value() {
-        return this.value;
+        StringBuilder builder = new StringBuilder();
+        for(final YamlLine line: this.lines) {
+            builder.append(line.trimmed());
+            builder.append('\n');
+        }
+        builder.delete(builder.length()-1, builder.length());
+        return builder.toString();
+    }
+    
+    @Override
+    public String toString() {
+        return this.indent(0);
     }
 
 }
