@@ -72,7 +72,7 @@ final class RtYamlLine implements YamlLine {
     @Override
     public int indentation() {
         int index = 0;
-        while (this.value.charAt(index) == ' ') {
+        while (index < this.value.length() && this.value.charAt(index) == ' '){
             index++;
         }
         return index;
