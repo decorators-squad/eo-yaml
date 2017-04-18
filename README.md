@@ -2,6 +2,7 @@
 <img alt="camel" src="http://www.amihaiemil.com/images/camila2.png" width="120" height="70"/>
 
 [![DevOps By Rultor.com](http://www.rultor.com/b/decorators-squad/camel)](http://www.rultor.com/p/decorators-squad/camel)
+[![PDD status](http://www.0pdd.com/svg?name=decorators-squad/camel)](http://www.0pdd.com/p?name=decorators-squad/camel)
 [![Build Status](https://travis-ci.org/decorators-squad/camel.svg?branch=master)](https://travis-ci.org/decorators-squad/camel)
 [![Coverage Status](https://coveralls.io/repos/github/decorators-squad/camel/badge.svg?branch=master)](https://coveralls.io/github/decorators-squad/camel?branch=master)
 
