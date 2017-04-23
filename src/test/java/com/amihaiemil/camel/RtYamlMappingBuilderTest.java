@@ -112,10 +112,10 @@ public final class RtYamlMappingBuilderTest {
     @Test
     public void buildsYamlMapping() {
         YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
-        List<YamlNode> devs = new ArrayList<>();
+        List<AbstractYamlNode> devs = new ArrayList<>();
         devs.add(new Scalar("amihaiemil"));
         devs.add(new Scalar("salikjan"));
-        YamlMapping mapping = mappingBuilder
+        AbstractYamlMapping mapping = mappingBuilder
             .add("architect", "amihaiemil")
             .add("developers", new RtYamlSequence(devs))
             .build();

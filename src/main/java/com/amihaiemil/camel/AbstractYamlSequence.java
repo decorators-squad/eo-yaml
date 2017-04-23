@@ -37,12 +37,40 @@ import java.util.Iterator;
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlSequence implements YamlSequence {
+abstract class AbstractYamlSequence extends AbstractYamlNode {
+    
+    /**
+     * The number of Yaml elements (scalars, mappings and sequences) found in
+     * this sequence.
+     * @return Integer.
+     */
+    abstract int size();
+
+    /**
+     * Get the Yaml mapping  from the given index.
+     * @param index Integer index.
+     * @return Yaml mapping
+     */
+    abstract AbstractYamlMapping yamlMapping(final int index);
+
+    /**
+     * Get the Yaml sequence  from the given index.
+     * @param index Integer index.
+     * @return Yaml sequence
+     */
+    abstract AbstractYamlSequence yamlSequence(final int index);
+
+    /**
+     * Get the String from the given index.
+     * @param index Integer index.
+     * @return String
+     */
+    abstract String string(final int index);
     
     @Override
     public int hashCode() {
         int hash = 0;
-        for(final YamlNode node : this.children()) {
+        for(final AbstractYamlNode node : this.children()) {
             hash += node.hashCode();
         }
         return hash;
@@ -57,12 +85,12 @@ abstract class AbstractYamlSequence implements YamlSequence {
     @Override
     public boolean equals(final Object other) {
         final boolean result;
-        if (other == null || !(other instanceof YamlSequence)) {
+        if (other == null || !(other instanceof AbstractYamlSequence)) {
             result = false;
         } else if (this == other) {
             result = true;
         } else {
-            result = this.compareTo((YamlSequence) other) == 0;
+            result = this.compareTo((AbstractYamlSequence) other) == 0;
         }
         return result;
     }
@@ -87,23 +115,23 @@ abstract class AbstractYamlSequence implements YamlSequence {
      *  a value > 0 if this > o
      */
     @Override
-    public int compareTo(final YamlNode other) {
+    public int compareTo(final AbstractYamlNode other) {
         int result = 0;
         if (other == null || other instanceof Scalar) {
             result = 1;
-        } else if (other instanceof YamlMapping) {
+        } else if (other instanceof AbstractYamlMapping) {
             result = -1;
         } else if (this != other) {
-            final Collection<YamlNode> nodes = this.children();
+            final Collection<AbstractYamlNode> nodes = this.children();
             nodes.hashCode();
-            final Collection<YamlNode> others = other.children();
+            final Collection<AbstractYamlNode> others = other.children();
             if(nodes.size() > others.size()) {
                 result = 1;
             } else if (nodes.size() < others.size()) {
                 result = -1;
             } else {
-                final Iterator<YamlNode> ietrator = others.iterator();
-                final Iterator<YamlNode> here = nodes.iterator();
+                final Iterator<AbstractYamlNode> ietrator = others.iterator();
+                final Iterator<AbstractYamlNode> here = nodes.iterator();
                 while(ietrator.hasNext()) {
                     result = here.next().compareTo(ietrator.next());
                     if(result != 0) {

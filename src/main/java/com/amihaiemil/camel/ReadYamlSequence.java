@@ -26,8 +26,8 @@ final class ReadYamlSequence extends AbstractYamlSequence {
     }
 
     @Override
-    public Collection<YamlNode> children() {
-        final List<YamlNode> kids = new LinkedList<>();
+    public Collection<AbstractYamlNode> children() {
+        final List<AbstractYamlNode> kids = new LinkedList<>();
         final AbstractYamlLines ordered = new OrderedYamlLines(this.lines);
         for(final YamlLine line : ordered) {
             if("-".equals(line.trimmed())) {
@@ -52,12 +52,12 @@ final class ReadYamlSequence extends AbstractYamlSequence {
     }
 
     @Override
-    public YamlMapping yamlMapping(final int index) {
-        YamlMapping mapping = null;
+    public AbstractYamlMapping yamlMapping(final int index) {
+        AbstractYamlMapping mapping = null;
         int count = 0;
-        for (final YamlNode node : this.children()) {
-            if (count == index && node instanceof YamlMapping) {
-                mapping = (YamlMapping) node;
+        for (final AbstractYamlNode node : this.children()) {
+            if (count == index && node instanceof AbstractYamlMapping) {
+                mapping = (AbstractYamlMapping) node;
             }
             count = count + 1;
         }
@@ -65,12 +65,12 @@ final class ReadYamlSequence extends AbstractYamlSequence {
     }
 
     @Override
-    public YamlSequence yamlSequence(final int index) {
-        YamlSequence sequence = null;
+    public AbstractYamlSequence yamlSequence(final int index) {
+        AbstractYamlSequence sequence = null;
         int count = 0;
-        for (final YamlNode node : this.children()) {
-            if (count == index && node instanceof YamlSequence) {
-                sequence = (YamlSequence) node;
+        for (final AbstractYamlNode node : this.children()) {
+            if (count == index && node instanceof AbstractYamlSequence) {
+                sequence = (AbstractYamlSequence) node;
             }
             count = count + 1;
         }
@@ -81,7 +81,7 @@ final class ReadYamlSequence extends AbstractYamlSequence {
     public String string(final int index) {
         String scalar = null;
         int count = 0;
-        for (final YamlNode node : this.children()) {
+        for (final AbstractYamlNode node : this.children()) {
             if (count == index && node instanceof Scalar) {
                 scalar = ((Scalar) node).value();
             }

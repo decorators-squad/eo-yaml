@@ -41,20 +41,20 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     /**
      * Added nodes.
      */
-    private final List<YamlNode> nodes;
+    private final List<AbstractYamlNode> nodes;
 
     /**
      * Default ctor.
      */
     RtYamlSequenceBuilder() {
-        this(new LinkedList<YamlNode>());
+        this(new LinkedList<AbstractYamlNode>());
     }
 
     /**
      * Constructor.
      * @param nodes Nodes used in building the YamlSequence
      */
-    RtYamlSequenceBuilder(final List<YamlNode> nodes) {
+    RtYamlSequenceBuilder(final List<AbstractYamlNode> nodes) {
         this.nodes = nodes;
     }
 
@@ -64,15 +64,15 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     }
 
     @Override
-    public YamlSequenceBuilder add(final YamlNode node) {
-        final List<YamlNode> list = new LinkedList<>();
+    public YamlSequenceBuilder add(final AbstractYamlNode node) {
+        final List<AbstractYamlNode> list = new LinkedList<>();
         list.addAll(this.nodes);
         list.add(node);
         return new RtYamlSequenceBuilder(list);
     }
 
     @Override
-    public YamlSequence build() {
+    public AbstractYamlSequence build() {
         return new RtYamlSequence(this.nodes);
     }
 }
