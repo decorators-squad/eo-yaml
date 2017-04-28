@@ -70,7 +70,7 @@ final class NestedReadYamlNode implements YamlNode {
     /**
      * Turn the given lines into an appropriate YamlNode, based
      * on the last character(s) of the previous line.
-     * @todo #105:30m/DEV This method needs to be implemented. It will be
+     * @todo #107:30m/DEV This method needs to be implemented. It will be
      *  similar to former AbstractYamlLines.toYamlNode(), but it will also
      *  cover the wrapper sequence/scalar cases. When this method is ready,
      *  the tests from {@link NestedReadYamlNodeTest} should be enabled.
@@ -81,7 +81,44 @@ final class NestedReadYamlNode implements YamlNode {
     private static YamlNode linesToNode(
         final YamlLine prev, final AbstractYamlLines lines
     ) {
-        return null;
+        final String trimmed = prev.trimmed();
+        final String last = trimmed.substring(trimmed.length()-1);
+        final YamlNode node;
+        switch (last) {
+            case Nested.YAML:
+                final boolean sequence = lines.iterator()
+                    .next().trimmed().startsWith("-");
+                if(sequence) {
+                    node = new ReadYamlSequence(lines);
+                } else {
+                    node = new ReadYamlMapping(lines);
+                }
+                break;
+            case Nested.KEY_YAML:
+                final boolean sequenceKey = lines.iterator()
+                    .next().trimmed().startsWith("-");
+                if(sequenceKey) {
+                    node = new ReadYamlSequence(lines);
+                } else {
+                    node = new ReadYamlMapping(lines);
+                }
+                break;
+            case Nested.WRAPPED_SEQUENCE:
+                node = new ReadYamlSequence(lines);
+                break;
+            case Nested.PIPED_SCALAR:
+                node = new ReadPipeScalar(lines);
+                break;
+            case Nested.POINTED_SCALAR:
+                node = new ReadPointedScalar(lines);
+                break;
+            default:
+                throw new IllegalStateException(
+                    "No nested Yaml node after line " + prev.number() + 
+                    " which has [" + last + "] character at the end"
+                );
+        }
+        return node;
     }
 
 }

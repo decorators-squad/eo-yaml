@@ -64,7 +64,11 @@ final class ReadYamlMapping extends AbstractYamlMapping {
                 continue;
             } else {
                 if(trimmed.endsWith(":")) {
-                    kids.add(ordered.nested(line.number()).toYamlNode());
+                    kids.add(
+                        new NestedReadYamlNode(
+                            line, this.lines.nested(line.number())
+                        )
+                    );
                 } else {
                     final String[] parts = trimmed.split(":");
                     if(parts.length < 2) {
@@ -125,8 +129,9 @@ final class ReadYamlMapping extends AbstractYamlMapping {
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                YamlNode keyNode = this.lines.nested(line.number())
-                    .toYamlNode();
+                final YamlNode keyNode =  new NestedReadYamlNode(
+                    line, this.lines.nested(line.number())
+                );
                 if(keyNode.equals(key)) {
                     found = true;
                     continue;
@@ -186,8 +191,8 @@ final class ReadYamlMapping extends AbstractYamlMapping {
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                AbstractYamlLines keyLines = this.lines.nested(line.number());
-                YamlNode keyNode = keyLines.toYamlNode();
+                final AbstractYamlLines keyLines = this.lines.nested(line.number());
+                final YamlNode keyNode = new NestedReadYamlNode(line, keyLines);
                 if(keyNode.equals(key)) {
                     int colonLine = line.number() + keyLines.count() + 1;
                     if (map) {
@@ -213,7 +218,11 @@ final class ReadYamlMapping extends AbstractYamlMapping {
             if(":".equals(trimmed)) {
                 continue;
             } else if ("?".equals(trimmed)) {
-                keys.add(this.lines.nested(line.number()).toYamlNode());
+                keys.add(
+                    new NestedReadYamlNode(
+                       line, this.lines.nested(line.number())
+                    )
+                );
             } else {
                 final String[] parts = trimmed.split(":");
                 if(parts.length < 2 && !trimmed.endsWith(":")) {

@@ -76,7 +76,9 @@ final class OrderedYamlLines extends AbstractYamlLines {
             final YamlLine line = lines.next();
             if("-".equals(line.trimmed())) {
                 nodesInSequence.put(
-                    this.nested(line.number()).toYamlNode(),
+                    new NestedReadYamlNode(
+                        line, this.nested(line.number())
+                    ),
                     index
                 );
                 dashes.add(line);
