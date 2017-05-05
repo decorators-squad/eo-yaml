@@ -33,10 +33,44 @@ package com.amihaiemil.camel;
  * @version $Id$
  * @since 1.0.2
  */
-class Nested {
+final class Nested {
+    
+    /**
+     * Hidden ctor.
+     */
+    private Nested() {}
+
+    /**
+     * If this is the last char on a line, it means a Yaml
+     * node should be nested bellow.
+     */
     static final String YAML = ":";
-    static final String WRAPPED_SEQUENCE = "-";
+    
+    /**
+     * If this is the last char on a line, it means that 
+     * 1) a Yaml sequence should be wrapped bellow (looks the same as a normal
+     *    one, but the char '-' is ommitted from the beginning of its lines).
+     * or 
+     * 2) a Yaml node is bellow it (an element from the current sequence).
+     */
+    static final String SEQUENCE = "-";
+    
+    /**
+     * If this is the last char on a line, it means a pointed wrapped scalar
+     * should be nested bellow (see Example 2.15 from YAML spec 1.2).
+     */
     static final String POINTED_SCALAR = ">";
+    
+    /**
+     * If this is the last char on a line, it means a piped wrapped scalar
+     * should be nested bellow (all newlines are significant, and
+     * taken into account).
+     */
     static final String PIPED_SCALAR = "|";
+    
+    /**
+     * If this is the last char on a line, it means a complex key
+     * (mapping or sequence) should be nested bellow.
+     */
     static final String KEY_YAML = "?";
 }

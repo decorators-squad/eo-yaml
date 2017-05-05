@@ -31,11 +31,7 @@ final class ReadYamlSequence extends AbstractYamlSequence {
         final AbstractYamlLines ordered = new OrderedYamlLines(this.lines);
         for(final YamlLine line : ordered) {
             if("-".equals(line.trimmed())) {
-                kids.add(
-                    new NestedReadYamlNode(
-                        line, this.lines.nested(line.number())
-                    )
-                );
+                kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
                 final String trimmed = line.trimmed();
                 kids.add(
@@ -46,7 +42,8 @@ final class ReadYamlSequence extends AbstractYamlSequence {
         return kids;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return this.indent(0);
     }
 
