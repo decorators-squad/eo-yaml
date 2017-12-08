@@ -123,7 +123,9 @@ final class RtYamlSequence extends AbstractYamlSequence {
             }
         }
         String printed = print.toString();
-        printed = printed.substring(0, printed.length() - 1);
+        if(printed.length() > 0) {
+            printed = printed.substring(0, printed.length() - 1);
+        }
         return printed;
     }
 

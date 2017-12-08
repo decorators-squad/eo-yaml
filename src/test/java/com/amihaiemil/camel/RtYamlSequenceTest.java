@@ -226,6 +226,16 @@ public final class RtYamlSequenceTest {
         String expected = this.readTestResource("simpleSequence.yml");
         MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
     }
+    
+    /**
+     * An empty YamlSequecne can be printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void printsEmptyYamlSequence() throws Exception {
+        YamlSequence seq = Yaml.createYamlSequenceBuilder().build();
+        MatcherAssert.assertThat(seq.toString(), Matchers.isEmptyString());
+    }
 
     /**
      * A complex YamlSequecne can be pretty printed.

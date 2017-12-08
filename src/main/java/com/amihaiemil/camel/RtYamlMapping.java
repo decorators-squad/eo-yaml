@@ -149,9 +149,10 @@ final class RtYamlMapping extends AbstractYamlMapping {
                     .append("\n");
             }
         }
-        
         String printed = print.toString();
-        printed = printed.substring(0, printed.length() - 1);
+        if(printed.length() > 0) {
+            printed = printed.substring(0, printed.length() - 1);
+        }
         return printed;
     }
 

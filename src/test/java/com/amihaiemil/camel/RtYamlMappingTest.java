@@ -295,6 +295,16 @@ public final class RtYamlMappingTest {
     }
 
     /**
+     * An empty RtYamlMapping can be printed..
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void printsEmptyYaml() throws Exception {        
+        YamlMapping yaml = Yaml.createYamlMappingBuilder().build();
+        MatcherAssert.assertThat(yaml.toString(), Matchers.isEmptyString());
+    }
+    
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
