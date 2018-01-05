@@ -114,13 +114,15 @@ final class OrderedYamlLines extends AbstractYamlLines {
     String indent(final int indentation) {
         final StringBuilder indented = new StringBuilder();
         final Iterator<YamlLine> linesIt = this.iterator();
-        final YamlLine first = linesIt.next();
-        final int offset = indentation - first.indentation();
-        indented.append(this.indentLine(first, offset));
-        while(linesIt.hasNext()) {
-            indented.append(
-                this.indentLine(linesIt.next(), offset)
-            );
+        if(linesIt.hasNext()) {
+            final YamlLine first = linesIt.next();
+            final int offset = indentation - first.indentation();
+            indented.append(this.indentLine(first, offset));
+            while(linesIt.hasNext()) {
+                indented.append(
+                    this.indentLine(linesIt.next(), offset)
+                );
+            }
         }
         return indented.toString();
     }

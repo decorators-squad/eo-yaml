@@ -128,4 +128,16 @@ public final class ReadYamlSequenceTest {
         );
         MatcherAssert.assertThat(sequence.size(), Matchers.is(3));
     }
+    
+    /**
+     * An empty ReadYamlSequence can be printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void printsEmptyYaml() throws Exception {
+        final YamlSequence sequence = new ReadYamlSequence(
+            new RtYamlLines(new ArrayList<YamlLine>())
+        );
+        MatcherAssert.assertThat(sequence.toString(), Matchers.isEmptyString());
+    }
 }

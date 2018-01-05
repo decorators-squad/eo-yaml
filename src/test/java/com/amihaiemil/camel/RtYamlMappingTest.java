@@ -295,7 +295,7 @@ public final class RtYamlMappingTest {
     }
 
     /**
-     * An empty RtYamlMapping can be printed..
+     * An empty RtYamlMapping can be printed.
      * @throws Exception if something goes wrong
      */
     @Test

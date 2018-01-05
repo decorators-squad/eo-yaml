@@ -153,4 +153,16 @@ public final class ReadYamlMappingTest {
             third, Matchers.equalTo("something")
         );
     }
+    
+    /**
+     * An empty ReadYamlMapping can be printed.
+     * @throws Exception if something goes wrong
+     */
+    @Test
+    public void printsEmptyYaml() throws Exception {
+        final YamlMapping map = new ReadYamlMapping(
+            new RtYamlLines(new ArrayList<YamlLine>())
+        );
+        MatcherAssert.assertThat(map.toString(), Matchers.isEmptyString());
+    }
 }
