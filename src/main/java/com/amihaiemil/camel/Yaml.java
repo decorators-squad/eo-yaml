@@ -37,7 +37,7 @@ import java.io.InputStream;
  * Yaml.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @sicne 1.0.0
+ * @since 1.0.0
  *
  */
 public final class Yaml {

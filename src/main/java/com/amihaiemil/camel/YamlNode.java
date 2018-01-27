@@ -34,7 +34,7 @@ import java.util.Collection;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#node//
+ * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
  */
 public interface YamlNode extends Comparable<YamlNode> {
 

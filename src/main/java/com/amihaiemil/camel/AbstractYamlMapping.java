@@ -91,9 +91,9 @@ abstract class AbstractYamlMapping implements YamlMapping{
      * @checkstyle NestedIfDepth (100 lines)
      * @checkstyle ExecutableStatementCount (100 lines)
      * @return
-     *  a value < 0 if this < o <br>
+     *   a value &lt; 0 if this &lt; o <br>
      *   0 if this == o or <br>
-     *  a value > 0 if this > o
+     *   a value &gt; 0 if this &gt; o
      */
     @Override
     public int compareTo(final YamlNode other) {

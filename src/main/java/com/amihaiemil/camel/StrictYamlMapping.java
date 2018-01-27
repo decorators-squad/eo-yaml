@@ -32,7 +32,7 @@ import java.util.Set;
 
 /**
  * Decorator for a {@link YamlMapping} which throws
- * {@link YamlNodenotFoundException}, instead of returning null,
+ * YamlNodenotFoundException, instead of returning null,
  * if a given key doesn't exist in the mapping, or if it points
  * to a different type of node than the demanded one.<br><br>
  * It is based on the fail-fast and null-is-bad idea <br>

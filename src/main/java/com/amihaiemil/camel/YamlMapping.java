@@ -40,7 +40,6 @@ public interface YamlMapping extends YamlNode {
      * @param key String key
      * @return Yaml mapping or null if the key is missing, or not pointing
      *  to a mapping.
-     * @see {@link StrictYamlMapping}
      */
     YamlMapping yamlMapping(final String key);
 
@@ -49,7 +48,6 @@ public interface YamlMapping extends YamlNode {
      * @param key Yaml node (mapping or sequence) key
      * @return Yaml mapping or null if the key is missing, or not pointing
      *  to a mapping.
-     * @see {@link StrictYamlMapping}
      */
     YamlMapping yamlMapping(final YamlNode key);
 
@@ -58,7 +56,6 @@ public interface YamlMapping extends YamlNode {
      * @param key String key
      * @return Yaml sequence or null if the key is missing, or not pointing
      *  to a sequence.
-     * @see {@link StrictYamlMapping}
      */
     YamlSequence yamlSequence(final String key);
 
@@ -67,7 +64,6 @@ public interface YamlMapping extends YamlNode {
      * @param key Yaml node (mapping or sequence) key
      * @return Yaml sequence or null if the key is missing, or not pointing
      *  to a sequence
-     * @see {@link StrictYamlMapping}
      */
     YamlSequence yamlSequence(final YamlNode key);
 
@@ -76,7 +72,6 @@ public interface YamlMapping extends YamlNode {
      * @param key String key
      * @return String or null if the key is missing, or not pointing
      *  to a scalar.
-     * @see {@link StrictYamlMapping}
      */
     String string(final String key);
 
@@ -85,7 +80,6 @@ public interface YamlMapping extends YamlNode {
      * @param key Yaml node (mapping or sequence) key
      * @return String or null if the key is missing, or not pointing
      *  to a scalar.
-     * @see {@link StrictYamlMapping}
      */
     String string(final YamlNode key);
 }

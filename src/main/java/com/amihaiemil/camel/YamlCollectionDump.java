@@ -44,7 +44,7 @@ public final class YamlCollectionDump extends AbstractYamlDump {
     
     /**
      * Ctor.
-     * @param collection Collection<Object> to dump
+     * @param collection Collection to dump
      */
     public YamlCollectionDump(final Collection<Object> collection) {
         this.collection = collection;

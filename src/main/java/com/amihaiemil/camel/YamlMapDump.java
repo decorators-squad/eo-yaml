@@ -46,7 +46,7 @@ public final class YamlMapDump extends AbstractYamlDump {
     
     /**
      * Ctor.
-     * @param map Map<Object, Object> to dump
+     * @param map Map to dump
      */
     public YamlMapDump(final Map<Object, Object> map) {
         this.map = map;
