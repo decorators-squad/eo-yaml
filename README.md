@@ -18,11 +18,11 @@ To get the latest release, simply add the following to your ``pom.xml``:
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>camel</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
-or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/camel/1.0.1/camel-1.0.1-jar-with-dependencies.jar">fat</a> jar.
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/camel/1.0.2/camel-1.0.2-jar-with-dependencies.jar">fat</a> jar.
 
 
 ## Usage
