@@ -27,12 +27,16 @@
  */
 package com.amihaiemil.camel;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import jdk.internal.util.xml.impl.Input;
 
 /**
  * Unit tests for {@link ReadYamlSequence}.
@@ -128,7 +132,29 @@ public final class ReadYamlSequenceTest {
         );
         MatcherAssert.assertThat(sequence.size(), Matchers.is(3));
     }
-    
+
+    @Test
+    public void createRecursiveList() throws IOException {
+        YamlSequence yamlSequence = Yaml.createYamlInput("&id001\n" +
+                "- *id001")
+                .readYamlSequence();
+        //how to create the list which has e reference to itself ?
+    }
+
+    @Test
+    public void createListFromFlowStyle() throws IOException {
+        YamlSequence yamlSequence = Yaml.createYamlInput("---\n[1, 2]")
+                .readYamlSequence();
+        //how to create the parsedList from yamlSequence ?
+        List<Integer> parsedList = new ArrayList<>();
+        parsedList.add(1);
+        parsedList.add(2);
+        //
+        MatcherAssert.assertThat(parsedList.size(), Matchers.is(2));
+
+    }
+
+
     /**
      * An empty ReadYamlSequence can be printed.
      * @throws Exception if something goes wrong
