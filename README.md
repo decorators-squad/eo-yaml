@@ -50,7 +50,8 @@ YamlMapping yaml = Yaml.createYamlMappingBuilder()
     ).build();
 ```
 
-``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print (notice that the elements are ordered, according to the Yaml specification):
+``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print (notice that the elements are sorted alphabetically, 
+even though it is not required by the YAML specification):
 
 ```yaml
 architect: amihaiemil
