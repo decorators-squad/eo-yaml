@@ -102,10 +102,10 @@ abstract class AbstractYamlSequence implements YamlSequence {
             } else if (nodes.size() < others.size()) {
                 result = -1;
             } else {
-                final Iterator<YamlNode> ietrator = others.iterator();
+                final Iterator<YamlNode> iterator = others.iterator();
                 final Iterator<YamlNode> here = nodes.iterator();
-                while(ietrator.hasNext()) {
-                    result = here.next().compareTo(ietrator.next());
+                while(iterator.hasNext()) {
+                    result = here.next().compareTo(iterator.next());
                     if(result != 0) {
                         break;
                     }

@@ -1,5 +1,6 @@
 package com.amihaiemil.camel;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -65,6 +66,27 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             read, Matchers.equalTo(expected)
         );
+    }
+    
+    /**
+     * A YamlSequence in block style can be read.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsBlockSequence() throws Exception {
+        YamlSequence expected = Yaml.createYamlSequenceBuilder()
+            .add("apples")
+            .add("pears")
+            .add("peaches")
+            .build();
+        
+        YamlSequence read = new RtYamlInput(
+            new ByteArrayInputStream(
+                "- apples\n- pears\n- peaches".getBytes()
+            )
+        ).readYamlSequence();
+
+        MatcherAssert.assertThat(read, Matchers.equalTo(expected));
     }
     
 }

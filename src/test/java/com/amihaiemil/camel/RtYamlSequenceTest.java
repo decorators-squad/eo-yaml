@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -63,7 +62,10 @@ public final class RtYamlSequenceTest {
         MatcherAssert.assertThat(
             seq.children(), Matchers.not(Matchers.emptyIterable())
         );
-        MatcherAssert.assertThat(seq.children().size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(
+            seq.children().size(),
+            Matchers.equalTo(3)
+        );        
     }
     
     /**
