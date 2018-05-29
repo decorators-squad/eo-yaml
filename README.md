@@ -31,7 +31,7 @@ The API of this library is clean, intuitive and generally close to the ``javax.j
 
 ## Features
 
-Since the library is quite young, it doesn't support all the features of YAML yet. For now, it only supports creating/parsing **block** YAML, so use it if you have to read/create configuration files and such stuff. It doesn't yet implement features such as **flow** or **recursive** representation or document streams (more YAMLs separated by ``---``).
+Since the library is quite young, it doesn't support all the features of YAML yet. For now, it only supports creating/parsing [Block Style](http://yaml.org/spec/1.2/spec.html#Block) YAML, so use it if you have to read/create configuration files and such stuff. It doesn't yet implement features such as **flow** or **recursive** representation, **aliases & anchors** or document streams (more YAMLs separated by ``---``).
 
 However, keep in mind that the library is based on interfaces and OOP best practices, so you can probably extend/decorate the objects in order to create the functionality you need! 
 
