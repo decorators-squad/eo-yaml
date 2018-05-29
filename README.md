@@ -71,7 +71,7 @@ devops:
   - rultor
 ```
 
-Note that the elements of both sequences and mappings are ordered, even though the specification asks it explicitely only for sequences (see section **3.2.1.1 Nodes** from [the spec](http://yaml.org/spec/1.2/spec.html)).
+Note that the elements of both mappings and sequences are sorted alphabetically, even though this is not explicitly required by the YAML specification.
 
 ## Reading:
 
