@@ -58,7 +58,7 @@ YamlMapping yaml = Yaml.createYamlMappingBuilder()
     ).build();
 ```
 
-``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print (also, notice that the elements are ordered, according to the Yaml specification):
+``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print:
 
 ```yaml
 architect: amihaiemil
@@ -70,6 +70,8 @@ devops:
   - 0pdd
   - rultor
 ```
+
+Note that the elements of both sequences and mappings are ordered, even though the specification asks it explicitely only for sequences (see section **3.2.1.1 Nodes** from [the spec](http://yaml.org/spec/1.2/spec.html)).
 
 ## Reading:
 
