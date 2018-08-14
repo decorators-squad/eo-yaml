@@ -58,9 +58,8 @@ public final class YamlCollectionDumpTest {
         
         YamlSequence yaml = new YamlCollectionDump(collection).represent();
         MatcherAssert.assertThat(yaml.children().size(), Matchers.equalTo(2));
-        MatcherAssert.assertThat(yaml.string(0), Matchers.equalTo("objectA"));
-        
-        YamlMapping yamlMapping = yaml.yamlMapping(1);
+
+        YamlMapping yamlMapping = yaml.yamlMapping(0);
         MatcherAssert.assertThat(
             yamlMapping.string("firstName"),
             Matchers.equalTo("John")
@@ -77,5 +76,6 @@ public final class YamlCollectionDumpTest {
             yamlMapping.string("gpa"),
             Matchers.equalTo("4.0")
         );
+        MatcherAssert.assertThat(yaml.string(1), Matchers.equalTo("objectA"));
     }
 }

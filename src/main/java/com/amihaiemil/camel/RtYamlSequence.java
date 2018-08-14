@@ -28,7 +28,6 @@
 package com.amihaiemil.camel;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,7 +51,6 @@ final class RtYamlSequence extends AbstractYamlSequence {
      */
     RtYamlSequence(final Collection<YamlNode> elements) {
         this.nodes.addAll(elements);
-        Collections.sort(this.nodes);
     }
 
     @Override

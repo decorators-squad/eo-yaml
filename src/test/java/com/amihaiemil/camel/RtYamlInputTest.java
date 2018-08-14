@@ -29,8 +29,8 @@ public final class RtYamlInputTest {
             .add("developers",
                 Yaml.createYamlSequenceBuilder()
                     .add("rultor")
-                    .add("sherif")
                     .add("salikjan")
+                    .add("sherif")
                     .build()
             ).build();
         YamlMapping read = new RtYamlInput(
@@ -62,7 +62,6 @@ public final class RtYamlInputTest {
             read.yamlSequence("developers").string(2),
             Matchers.equalTo(expected.yamlSequence("developers").string(2))
         );
-        System.out.println(read);
         MatcherAssert.assertThat(
             read, Matchers.equalTo(expected)
         );

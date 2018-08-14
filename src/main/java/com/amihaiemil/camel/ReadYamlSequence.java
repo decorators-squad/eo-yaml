@@ -28,8 +28,7 @@ final class ReadYamlSequence extends AbstractYamlSequence {
     @Override
     public Collection<YamlNode> children() {
         final List<YamlNode> kids = new LinkedList<>();
-        final AbstractYamlLines ordered = new OrderedYamlLines(this.lines);
-        for(final YamlLine line : ordered) {
+        for(final YamlLine line : this.lines) {
             if("-".equals(line.trimmed())) {
                 kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
@@ -49,7 +48,7 @@ final class ReadYamlSequence extends AbstractYamlSequence {
 
     @Override
     public String indent(final int indentation) {
-        return new OrderedYamlLines(this.lines).indent(indentation);
+        return this.lines.indent(indentation);
     }
 
     @Override

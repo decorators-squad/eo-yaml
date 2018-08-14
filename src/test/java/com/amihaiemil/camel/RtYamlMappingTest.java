@@ -254,8 +254,8 @@ public final class RtYamlMappingTest {
             .add("developers",
                 Yaml.createYamlSequenceBuilder()
                     .add("rultor")
-                    .add("sherif")
                     .add("salikjan")
+                    .add("sherif")
                     .build()
             ).build();
         String expected = this.readTestResource("simpleMapping.yml");
@@ -271,8 +271,8 @@ public final class RtYamlMappingTest {
         YamlMapping yaml = Yaml.createYamlMappingBuilder()
             .add(
                 Yaml.createYamlSequenceBuilder()
-                    .add("Detroit Tigers")
                     .add("Chicago cubs")
+                    .add("Detroit Tigers")
                     .build(),
                 Yaml.createYamlSequenceBuilder()
                     .add("2001-07-23")
@@ -280,8 +280,8 @@ public final class RtYamlMappingTest {
             )
             .add(
                 Yaml.createYamlSequenceBuilder()
-                    .add("New York Yankees")
                     .add("Atlanta Braves")
+                    .add("New York Yankees")
                     .build(),
                 Yaml.createYamlSequenceBuilder()
                     .add("2001-07-02")

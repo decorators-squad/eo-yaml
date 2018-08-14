@@ -69,10 +69,10 @@ public final class RtYamlSequenceTest {
     }
     
     /**
-     * A Sequence is ordered.
+     * A Sequence maintains its order of reading.
      */
     @Test
-    public void sequenceIsOrdered() {
+    public void sequenceKeepsOrder() {
         List<YamlNode> nodes = new LinkedList<>();
         Scalar first = new Scalar("test");
         Scalar sec = new Scalar("mihai");
@@ -85,16 +85,16 @@ public final class RtYamlSequenceTest {
         RtYamlSequence seq = new RtYamlSequence(nodes);
         Iterator<YamlNode> ordered = seq.children().iterator();
         MatcherAssert.assertThat(
-            (Scalar) ordered.next(), Matchers.equalTo(fourth)
-        );
-        MatcherAssert.assertThat(
-            (Scalar) ordered.next(), Matchers.equalTo(third)
+            (Scalar) ordered.next(), Matchers.equalTo(first)
         );
         MatcherAssert.assertThat(
             (Scalar) ordered.next(), Matchers.equalTo(sec)
         );
         MatcherAssert.assertThat(
-            (Scalar) ordered.next(), Matchers.equalTo(first)
+            (Scalar) ordered.next(), Matchers.equalTo(third)
+        );
+        MatcherAssert.assertThat(
+            (Scalar) ordered.next(), Matchers.equalTo(fourth)
         );
     }
     
@@ -109,7 +109,7 @@ public final class RtYamlSequenceTest {
         nodes.add(new Scalar("mihai"));
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
-            seq.string(1), Matchers.equalTo("mihai")
+            seq.string(1), Matchers.equalTo("amber")
         );
         MatcherAssert.assertThat(
             seq.yamlMapping(1), Matchers.nullValue()
@@ -127,10 +127,7 @@ public final class RtYamlSequenceTest {
         nodes.add(new Scalar("mihai"));
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
-            seq.yamlMapping(2), Matchers.notNullValue()
-        );
-        MatcherAssert.assertThat(
-            seq.yamlMapping(1), Matchers.nullValue()
+            seq.yamlMapping(1), Matchers.notNullValue()
         );
     }
 
@@ -221,9 +218,9 @@ public final class RtYamlSequenceTest {
     public void prettyPrintsSimpleYamlSequence() throws Exception {
         YamlSequence seq = Yaml.createYamlSequenceBuilder()
             .add("amihaiemil")
-            .add("sherif")
-            .add("salikjan")
             .add("rultor")
+            .add("salikjan")
+            .add("sherif")
             .build();
         String expected = this.readTestResource("simpleSequence.yml");
         MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
@@ -247,14 +244,6 @@ public final class RtYamlSequenceTest {
     public void prettyPrintsComplexYamlSequence() throws Exception {
         YamlSequence seq = Yaml.createYamlSequenceBuilder()
             .add("amihaiemil")
-            .add(
-                Yaml
-                    .createYamlMappingBuilder()
-                    .add("rule1", "test")
-                    .add("rule2", "test2")
-                    .add("rule3", "test3")
-                    .build()
-            )
             .add("salikjan")
             .add(
                 Yaml.createYamlSequenceBuilder()
@@ -262,7 +251,13 @@ public final class RtYamlSequenceTest {
                     .add("element2")
                     .add("element3")
                     .build()
-            )
+            ).add(
+                Yaml.createYamlMappingBuilder()
+                    .add("rule1", "test")
+                    .add("rule2", "test2")
+                    .add("rule3", "test3")
+                    .build()
+                )
             .build();
         String expected = this.readTestResource("complexSequence.yml");
         MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
