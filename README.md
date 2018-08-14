@@ -63,15 +63,13 @@ YamlMapping yaml = Yaml.createYamlMappingBuilder()
 ```yaml
 architect: amihaiemil
 developers: 
-  - SherifWally
   - amihaiemil
   - salikjan
+  - SherifWally
 devops: 
-  - 0pdd
   - rultor
+  - 0pdd
 ```
-
-Note that the elements of both mappings and sequences are sorted alphabetically, even though this is not explicitly required by the YAML specification.
 
 ## Reading:
 
