@@ -2,15 +2,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.amihaiemil.web</groupId>
-	<artifactId>camel</artifactId>
+	<artifactId>eo-yaml</artifactId>
 	<version>1.0.4-SNAPSHOT</version><!--rrv-sed-flag-->
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<name>Camel</name>
+	<name>eo-yaml</name>
 	<description>YAML for Java. User-friendly OOP library.</description>
-	<url>https://www.github.com/decorators-squad/camel</url>
+	<url>https://www.github.com/decorators-squad/eo-yaml</url>
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause Licence</name>
@@ -38,9 +38,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<url>https://github.com/amihaiemil/camel</url>
-		<connection>scm:git:git://github.com/amihaiemil/camel.git</connection>
-		<developerConnection>scm:git:git@github.com:amihaiemil/camel.git</developerConnection>
+		<url>https://github.com/decorators-squad/eo-yaml</url>
+		<connection>scm:git:git://github.com/decorators-squad/eo-yaml.git</connection>
+		<developerConnection>scm:git:git@github.com:decorators-squad/eo-yaml.git</developerConnection>
 	</scm>
 	<dependencies>
 		<dependency>
