@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/decorators-squad/eo-yaml.svg?branch=master)](https://travis-ci.org/decorators-squad/eo-yaml)
 [![Coverage Status](https://coveralls.io/repos/github/decorators-squad/eo-yaml/badge.svg?branch=master)](https://coveralls.io/github/decorators-squad/eo-yaml?branch=master)
 
-[![DevOps By Rultor.com](http://www.rultor.com/b/decorators-squad/camel)](http://www.rultor.com/p/decorators-squad/camel)
+[![DevOps By Rultor.com](http://www.rultor.com/b/decorators-squad/eo-yaml)](http://www.rultor.com/p/decorators-squad/eo-yaml)
 [![We recommend IntelliJ IDEA](http://amihaiemil.github.io/images/intellij-idea-recommend.svg)](https://www.jetbrains.com/idea/)
 
 YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-java-library) OOP library. Based on [spec 1.2](http://www.yaml.org/spec/1.2/spec.html).
