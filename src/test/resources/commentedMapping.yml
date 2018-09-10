@@ -4,4 +4,4 @@ developers: # all the contributors here
   - salikjan
   - sherif
 architect: mihai
-name: camel
+name: eo-yaml
