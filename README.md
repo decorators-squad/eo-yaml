@@ -1,4 +1,4 @@
-# camel
+# eo-yaml
 <img alt="camel" src="http://www.amihaiemil.com/images/camila2.png" width="120" height="70"/>
 
 [![PDD status](http://www.0pdd.com/svg?name=decorators-squad/camel)](http://www.0pdd.com/p?name=decorators-squad/camel)
@@ -17,7 +17,7 @@ To get the latest release, simply add the following to your ``pom.xml``:
 ```
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
-    <artifactId>camel</artifactId>
+    <artifactId>eo-yaml</artifactId>
     <version>1.0.3</version>
 </dependency>
 ```
