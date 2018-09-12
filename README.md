@@ -18,11 +18,11 @@ To get the latest release, simply add the following to your ``pom.xml``:
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>eo-yaml</artifactId>
-    <version>1.0.3</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
-or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/camel/1.0.3/camel-1.0.3-jar-with-dependencies.jar">fat</a> jar.
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/2.0.0/eo-yaml-2.0.0-jar-with-dependencies.jar">fat</a> jar.
 
 
 ## Usage
