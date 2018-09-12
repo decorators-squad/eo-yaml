@@ -1,5 +1,5 @@
 # eo-yaml
-<img alt="eo-yaml" src="http://www.amihaiemil.com/images/camila2.png" width="120" height="70"/>
+<img alt="eo-yaml-logo" src="http://www.amihaiemil.com/images/camila2.png" width="120" height="70"/>
 
 [![PDD status](http://www.0pdd.com/svg?name=decorators-squad/eo-yaml)](http://www.0pdd.com/p?name=decorators-squad/eo-yaml)
 [![Build Status](https://travis-ci.org/decorators-squad/eo-yaml.svg?branch=master)](https://travis-ci.org/decorators-squad/eo-yaml)
