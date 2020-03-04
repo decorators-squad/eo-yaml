@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - openjdk7
+  - openjdk8
 script:
   - set -e
   - mvn clean install -Pcheckstyle jacoco:report coveralls:report
