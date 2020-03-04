@@ -14,7 +14,7 @@ From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** is a h
 
 To get the latest release, simply add the following to your ``pom.xml``: 
 
-```
+```xml
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>eo-yaml</artifactId>
