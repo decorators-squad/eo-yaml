@@ -3,8 +3,6 @@ architect:
 env:
   MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
 merge:
-  commanders:
-    - salikjan
   script: |-
     mvn clean install -Pcheckstyle
 decrypt:
