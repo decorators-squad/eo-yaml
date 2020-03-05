@@ -58,7 +58,23 @@ public final class StrictYamlMappingTest {
         );
         MatcherAssert.assertThat(map.children().size(), Matchers.equalTo(3));
     }
-    
+
+    /**
+     * StrictYamlMapping can fetch its keys.
+     */
+    @Test
+    public void fetchesKeys() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
+        YamlMapping map = new StrictYamlMapping(new RtYamlMapping(mappings));
+        MatcherAssert.assertThat(
+            map.keys(), Matchers.not(Matchers.emptyIterable())
+        );
+        MatcherAssert.assertThat(map.keys().size(), Matchers.equalTo(3));
+    }
+
     /**
      * StringYamlMapping can throw YamlNodeNotFoundException
      * when the demanded YamlMapping is not found.

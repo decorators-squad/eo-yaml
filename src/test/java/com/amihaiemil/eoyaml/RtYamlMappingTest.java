@@ -60,11 +60,28 @@ public final class RtYamlMappingTest {
         mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
         mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
-        RtYamlMapping map = new RtYamlMapping(mappings);
+        YamlMapping map = new RtYamlMapping(mappings);
         MatcherAssert.assertThat(
             map.children(), Matchers.not(Matchers.emptyIterable())
         );
         MatcherAssert.assertThat(map.children().size(), Matchers.equalTo(3));
+    }
+
+    /**
+     * RtYamlMapping can fetch its keys.
+     */
+    @Test
+    public void fetchesKeys() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
+        YamlMapping map = new RtYamlMapping(mappings);
+        MatcherAssert.assertThat(
+            map.keys(), Matchers.not(Matchers.emptyIterable())
+        );
+        MatcherAssert.assertThat(map.keys().size(), Matchers.equalTo(3));
+
     }
 
     /**
@@ -105,7 +122,7 @@ public final class RtYamlMappingTest {
         mappings.put(key, new Scalar(value));
         mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
-        
+
         MatcherAssert.assertThat(
             map.string("key2"), Matchers.equalTo(value)
         );
@@ -123,7 +140,7 @@ public final class RtYamlMappingTest {
         mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
-        
+
         MatcherAssert.assertThat(
             map.yamlMapping("key1"), Matchers.notNullValue()
         );
@@ -165,9 +182,9 @@ public final class RtYamlMappingTest {
             map.yamlSequence("key1"), Matchers.nullValue()
         );
     }
-    
+
     /**
-     * RtYamlMapping can compare itself to a Scalar. 
+     * RtYamlMapping can compare itself to a Scalar.
      */
     @Test
     public void comparesToScalar() {
@@ -195,7 +212,7 @@ public final class RtYamlMappingTest {
             Matchers.greaterThan(0)
         );
     }
-    
+
     /**
      * RtYamlMapping can compare itself to a Mapping.
      */
@@ -218,7 +235,7 @@ public final class RtYamlMappingTest {
         othermappings.put(new Scalar("dev"), firstmap);
         othermappings.put(new Scalar("tester"), secondmap);
         YamlMapping fourthmap = new RtYamlMapping(othermappings);
-        
+
         MatcherAssert.assertThat(
             firstmap.compareTo(firstmap), Matchers.equalTo(0)
         );
@@ -261,7 +278,7 @@ public final class RtYamlMappingTest {
         String expected = this.readTestResource("simpleMapping.yml");
         MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
     }
-    
+
     /**
      * A complex YamlMapping can be pretty printed.
      * @throws Exception if something goes wrong
@@ -299,11 +316,11 @@ public final class RtYamlMappingTest {
      * @throws Exception if something goes wrong
      */
     @Test
-    public void printsEmptyYaml() throws Exception {        
+    public void printsEmptyYaml() throws Exception {
         YamlMapping yaml = Yaml.createYamlMappingBuilder().build();
         MatcherAssert.assertThat(yaml.toString(), Matchers.isEmptyString());
     }
-    
+
     /**
      * Read a test resource file's contents.
      * @param fileName File to read.
@@ -317,7 +334,7 @@ public final class RtYamlMappingTest {
             IOUtils.toByteArray(
                 new FileInputStream(
                     new File("src/test/resources/" + fileName)
-                )    
+                )
             )
         );
     }

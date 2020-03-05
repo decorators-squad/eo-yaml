@@ -138,7 +138,7 @@ final class RtYamlMapping extends AbstractYamlMapping {
                     print.append(value.toString()).append("\n");
                 } else  {
                     print
-                    .append("\n")    
+                    .append("\n")
                     .append(value.indent(indentation + 2))
                         .append("\n");
                 }
@@ -157,7 +157,7 @@ final class RtYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    Set<YamlNode> keys() {
+    public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new HashSet<>();
         keys.addAll(this.mappings.keySet());
         return keys;

@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -65,7 +66,38 @@ public final class ReadYamlMappingTest {
             second.string("fifth"), Matchers.equalTo("values")
         );
     }
-    
+
+    /**
+     * ReadYamlMapping can return its keys.
+     */
+    @Test
+    public void returnsKeys(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  fourth: some", 2));
+        lines.add(new RtYamlLine("  fifth: values", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final Set<YamlNode> keys = map.keys();
+        MatcherAssert.assertThat(
+            keys, Matchers.not(Matchers.emptyIterable())
+        );
+        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(
+            keys.contains(new Scalar("first")),
+            Matchers.is(Boolean.TRUE)
+        );
+        MatcherAssert.assertThat(
+            keys.contains(new Scalar("second")),
+            Matchers.is(Boolean.TRUE)
+        );
+        MatcherAssert.assertThat(
+            keys.contains(new Scalar("third")),
+            Matchers.is(Boolean.TRUE)
+        );
+    }
+
     /**
      * ReadYamlMapping can return the YamlMapping mapped to a
      * YamlMapping key.
@@ -112,7 +144,7 @@ public final class ReadYamlMappingTest {
             second, Matchers.instanceOf(YamlSequence.class)
         );
     }
-    
+
     /**
      * ReadYamlMapping can return the YamlMapping mapped to a
      * YamlMapping key.
@@ -133,7 +165,7 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(value, Matchers.equalTo("value"));
     }
-    
+
     /**
      * ReadYamlMapping can return the String mapped to a
      * String key.
@@ -153,7 +185,7 @@ public final class ReadYamlMappingTest {
             third, Matchers.equalTo("something")
         );
     }
-    
+
     /**
      * An empty ReadYamlMapping can be printed.
      * @throws Exception if something goes wrong
