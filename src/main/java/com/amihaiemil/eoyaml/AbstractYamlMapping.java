@@ -31,19 +31,13 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * AbstractYamlMapping implementing methods which should be the same across 
+ * AbstractYamlMapping implementing methods which should be the same across
  * all final implementations of YamlMapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlMapping implements YamlMapping{
-
-    /**
-     * Return the keys' set of this mapping.
-     * @return Set of YamlNode keys.
-     */
-    abstract Set<YamlNode> keys();
+abstract class AbstractYamlMapping implements YamlMapping {
 
     @Override
     public int hashCode() {
@@ -78,15 +72,15 @@ abstract class AbstractYamlMapping implements YamlMapping{
 
     /**
      * Compare this Mapping to another node.<br><br>
-     * 
+     *
      * A Mapping is always considered greater than a Scalar or a Sequence.<br>
-     * 
+     *
      * If o is a Mapping, their integer lengths are compared - the one with
      * the greater length is considered greater. If the lengths are equal,
      * then the 2 Mappings are equal if all elements are equal (K==K and V==V).
      * If the elements are not identical, the comparison of the first unequal
      * elements is returned.
-     * 
+     *
      * @param other The other AbstractNode.
      * @checkstyle NestedIfDepth (100 lines)
      * @checkstyle ExecutableStatementCount (100 lines)

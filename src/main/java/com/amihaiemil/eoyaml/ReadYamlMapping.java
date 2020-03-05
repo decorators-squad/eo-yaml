@@ -200,15 +200,15 @@ final class ReadYamlMapping extends AbstractYamlMapping {
                         value = new ReadYamlSequence(
                             this.lines.nested(colonLine)
                         );
-                    }    
+                    }
                 }
             }
         }
         return value;
     }
-    
+
     @Override
-    Set<YamlNode> keys() {
+    public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new HashSet<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();

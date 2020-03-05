@@ -120,7 +120,7 @@ public final class StrictYamlMapping extends AbstractYamlMapping {
     }
 
     @Override
-    Set<YamlNode> keys() {
+    public Set<YamlNode> keys() {
         return this.decorated.keys();
     }
 }
