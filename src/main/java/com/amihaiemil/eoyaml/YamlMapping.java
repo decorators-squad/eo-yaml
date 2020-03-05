@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Set;
+
 /**
  * A Yaml mapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -82,4 +84,10 @@ public interface YamlMapping extends YamlNode {
      *  to a scalar.
      */
     String string(final YamlNode key);
+
+    /**
+     * Return the keys' set of this mapping.
+     * @return Set of YamlNode keys.
+     */
+    Set<YamlNode> keys();
 }
