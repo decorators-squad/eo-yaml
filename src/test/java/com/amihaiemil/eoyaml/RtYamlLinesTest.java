@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,7 @@ public final class RtYamlLinesTest {
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
     }
-    
+
     /**
      * RtYamlLines can indent the lines properly.
      */
@@ -82,7 +82,7 @@ public final class RtYamlLinesTest {
             + "third: somethingElse\n";
         MatcherAssert.assertThat(yaml.indent(0), Matchers.equalTo(expected));
     }
-    
+
     /**
      * RtYamlLines can return nested lines for a given line.
      */
@@ -96,18 +96,18 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
         AbstractYamlLines yamlLines = new RtYamlLines(lines);
-        
+
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(2));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
         iterator = yamlLines.nested(1).iterator();
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
         iterator = yamlLines.nested(3).iterator();
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
         iterator = yamlLines.nested(4).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));

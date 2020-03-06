@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,13 +84,13 @@ public final class YamlObjectDumpTest {
      * @checkstyle FinalParameters (100 lines)
      */
     public static final class StudentSimplePojo {
-        
+
         private String firstName;
         private String lastName;
         private int age;
         private double gpa;
         private Map<String, Integer> grades = new HashMap<>();
-        
+
         public StudentSimplePojo(
             String firstName, String lastName, int age, double gpa
         ) {
@@ -101,7 +101,7 @@ public final class YamlObjectDumpTest {
             this.grades.put("Math", 9);
             this.grades.put("CS", 10);
         }
-        
+
         public String getFirstName() {
             return this.firstName;
         }

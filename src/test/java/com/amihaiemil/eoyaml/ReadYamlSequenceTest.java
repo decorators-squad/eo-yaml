@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ public final class ReadYamlSequenceTest {
             alfa.yamlMapping("alfa").string("key"), Matchers.equalTo("value")
         );
     }
-    
+
     /**
      * ReadYamlSequence can return the YamlSequence from a given index.
      * Note that a YamlSequence is ordered, so the index might differ from
@@ -92,7 +92,7 @@ public final class ReadYamlSequenceTest {
         );
         MatcherAssert.assertThat(devops.size(), Matchers.equalTo(2));
     }
-    
+
     /**
      * ReadYamlSequence can return the YamlMapping from a given index.
      * Note that a YamlSequence is ordered, so the index might differ from
@@ -109,7 +109,7 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(devops.string(0), Matchers.equalTo("rultor"));
         MatcherAssert.assertThat(devops.string(1), Matchers.equalTo("0pdd"));
     }
-    
+
     /**
      * ReadYamlSequence can return its size.
      */
@@ -128,7 +128,7 @@ public final class ReadYamlSequenceTest {
         );
         MatcherAssert.assertThat(sequence.size(), Matchers.is(3));
     }
-    
+
     /**
      * ReadYamlSequence can be iterated.
      */
@@ -148,7 +148,7 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
         MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
     }
-    
+
     /**
      * An empty ReadYamlSequence can be printed.
      * @throws Exception if something goes wrong

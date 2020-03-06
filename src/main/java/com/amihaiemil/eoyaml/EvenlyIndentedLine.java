@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ final class EvenlyIndentedLine implements YamlLine {
      * Original line.
      */
     private YamlLine line;
-    
+
     /**
      * Ctor.
      * @param line Original YamlLine
@@ -48,12 +48,12 @@ final class EvenlyIndentedLine implements YamlLine {
     EvenlyIndentedLine(final YamlLine line) {
         this.line = line;
     }
-    
+
     @Override
     public String trimmed() {
         return this.line.trimmed();
     }
-    
+
     @Override
     public int number() {
         return this.line.number();
@@ -77,7 +77,7 @@ final class EvenlyIndentedLine implements YamlLine {
     }
 
     @Override
-    public int compareTo(final YamlLine other) {    
+    public int compareTo(final YamlLine other) {
         return this.line.compareTo(other);
     }
 

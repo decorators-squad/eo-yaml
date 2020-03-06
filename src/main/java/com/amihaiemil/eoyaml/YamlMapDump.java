@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ public final class YamlMapDump extends AbstractYamlDump {
      * Map<Object, Object> to dump.
      */
     private Map<Object, Object> map;
-    
+
     /**
      * Ctor.
      * @param map Map to dump
@@ -51,7 +51,7 @@ public final class YamlMapDump extends AbstractYamlDump {
     public YamlMapDump(final Map<Object, Object> map) {
         this.map = map;
     }
-    
+
     @Override
     public YamlMapping represent() {
         YamlMappingBuilder mapBuilder = new RtYamlMappingBuilder();

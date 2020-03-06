@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,10 +37,10 @@ import org.mockito.Mockito;
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * 
+ *
  */
 public final class CachedYamlLineTest {
-    
+
     /**
      * CachedIndentedLine knows its number.
      */
@@ -51,7 +51,7 @@ public final class CachedYamlLineTest {
         );
         MatcherAssert.assertThat(line.number(), Matchers.is(12));
     }
-    
+
     /**
      * CachedIndentedLine caches trimmed String and returns same object.
      */
@@ -65,7 +65,7 @@ public final class CachedYamlLineTest {
         MatcherAssert.assertThat(line.trimmed(), Matchers.is("this line"));
         MatcherAssert.assertThat(line.trimmed(), Matchers.is("this line"));
     }
-    
+
     /**
      * CachedIndentedLine caches indentation value and doesn't recalculate it.
      */

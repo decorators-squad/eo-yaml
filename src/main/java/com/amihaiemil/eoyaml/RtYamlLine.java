@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -84,7 +84,7 @@ final class RtYamlLine implements YamlLine {
     }
 
     @Override
-    public int compareTo(final YamlLine other) {    
+    public int compareTo(final YamlLine other) {
         int result = -1;
         if (this == other) {
             result = 0;
@@ -100,8 +100,8 @@ final class RtYamlLine implements YamlLine {
     public boolean hasNestedNode() {
         final boolean result;
         final String specialCharacters = ":>|-";
- 
-        final CharSequence prevLineLastChar = 
+
+        final CharSequence prevLineLastChar =
             this.trimmed().substring(this.trimmed().length()-1);
         if(specialCharacters.contains(prevLineLastChar)) {
             result = true;

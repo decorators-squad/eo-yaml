@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ final class ReadPipeScalar implements YamlNode {
      * Lines to be represented as a wrapped scalar.
      */
     private AbstractYamlLines lines;
-    
+
     /**
      * Ctor.
      * @param lines Given lines to represent.
@@ -51,7 +51,7 @@ final class ReadPipeScalar implements YamlNode {
     ReadPipeScalar(final AbstractYamlLines lines) {
         this.lines = lines;
     }
-   
+
     @Override
     public int compareTo(final YamlNode other) {
         int result = -1;
@@ -87,7 +87,7 @@ final class ReadPipeScalar implements YamlNode {
         printed.delete(printed.length()-1, printed.length());
         return printed.toString();
     }
-    
+
     /**
      * Value of this scalar.
      * @return String
@@ -101,7 +101,7 @@ final class ReadPipeScalar implements YamlNode {
         builder.delete(builder.length()-1, builder.length());
         return builder.toString();
     }
-    
+
     @Override
     public String toString() {
         return this.indent(0);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ package com.amihaiemil.eoyaml;
 abstract class AbstractYamlLines implements Iterable<YamlLine> {
 
     /**
-     * Lines which are nested after the given YamlLine (lines which are 
+     * Lines which are nested after the given YamlLine (lines which are
      * <br> indented by 2 or more spaces beneath it).
      * @param after Number of a YamlLine
      * @return YamlLines
@@ -55,7 +55,7 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
      * @return String with the pretty-printed, indented lines.
      */
     abstract String indent(int indentation);
-    
+
     /**
      * Turn these lines into a YamlNode.
      * @param prev Previous YamlLine
@@ -96,7 +96,7 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
                         node = new ReadYamlMapping(this);
                     }
                 } else {
-                    node = new ReadYamlSequence(this);    
+                    node = new ReadYamlSequence(this);
                 }
                 break;
             case Nested.PIPED_SCALAR:

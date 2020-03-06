@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,13 +36,13 @@ import java.util.Iterator;
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
  * methods.
- * 
+ *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
 abstract class ComparableYamlSequence implements YamlSequence {
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -73,16 +73,16 @@ abstract class ComparableYamlSequence implements YamlSequence {
 
     /**
      * Compare this Sequence to another node.<br><br>
-     * 
+     *
      * A Sequence is always considered greater than a Scalar and less than
      * a Mapping.<br>
-     * 
+     *
      * If o is a Sequence, their integer lengths are compared - the one with
      * the greater length is considered greater. If the lengths are equal,
      * then the 2 Sequences are equal if all elements are equal. If the
      * elements are not identical, the comparison of the first unequal
      * elements is returned.
-     * 
+     *
      * @param other The other AbstractNode.
      * @checkstyle NestedIfDepth (100 lines)
      * @return

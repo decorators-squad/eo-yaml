@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,15 +41,15 @@ public final class YamlNodeNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Ctor. 
+     * Ctor.
      * @param msg Message
      */
     public YamlNodeNotFoundException(final String msg) {
         super(msg);
     }
-    
+
     /**
-     * Ctor. 
+     * Ctor.
      * @param init Initial exception
      */
     public YamlNodeNotFoundException(final Throwable init) {

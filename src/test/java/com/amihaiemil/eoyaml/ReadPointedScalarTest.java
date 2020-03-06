@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,11 +42,11 @@ import org.junit.Test;
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.2
- * @todo #109:30m/DEV Implement a new iterator() for YamlLines to fix 
+ * @todo #109:30m/DEV Implement a new iterator() for YamlLines to fix
  *  different indentations test as indentsValueWithDifferentIndentation() test.
  */
 public final class ReadPointedScalarTest {
-    
+
     /**
      * ReadPointedScalar should not have children.
      */
@@ -56,13 +56,13 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.children(), Matchers.emptyIterable()
         );
     }
-    
+
     /**
      * ReadPointedScalar can compare itself to a Mapping.
      */
@@ -72,7 +72,7 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("First Line", 1));
         lines.add(new RtYamlLine("Second Line", 2));
         lines.add(new RtYamlLine("Third Line", 3));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         RtYamlMapping map = new RtYamlMapping(
             new HashMap<YamlNode, YamlNode>()
@@ -89,12 +89,12 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("First Line", 1));
         lines.add(new RtYamlLine("Second Line", 2));
         lines.add(new RtYamlLine("Third Line", 3));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(scalar.compareTo(seq), Matchers.lessThan(0));
     }
-    
+
     /**
      * ReadPointedScalar can compare itself to a Scalar.
      */
@@ -102,12 +102,12 @@ public final class ReadPointedScalarTest {
     public void comparesToScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPointedScalar pipeScalar = 
+        final ReadPointedScalar pipeScalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         final Scalar scalar = new Scalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
-    
+
     /**
      * ReadPointerScalar can compare itself to other ReadPipeScalar.
      */
@@ -115,13 +115,13 @@ public final class ReadPointedScalarTest {
     public void comparesToReadPipeScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPointedScalar first = 
+        final ReadPointedScalar first =
             new ReadPointedScalar(new RtYamlLines(lines));
-        final ReadPipeScalar second = 
+        final ReadPipeScalar second =
             new ReadPipeScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.is(0));
     }
-    
+
     /**
      * ReadPointerScalar can compare itself to other ReadPointedScalar.
      */
@@ -129,30 +129,30 @@ public final class ReadPointedScalarTest {
     public void comparesToReadPointedScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPointedScalar first = 
+        final ReadPointedScalar first =
             new ReadPointedScalar(new RtYamlLines(lines));
-        final ReadPointedScalar second = 
+        final ReadPointedScalar second =
             new ReadPointedScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.is(0));
     }
-    
+
     /**
      * ReadPointedScalar can return value when all lines has no indentation.
      */
-    @Test 
+    @Test
     public void returnsValueWithNoIndentation() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Mark McGwire's", 1));
         lines.add(new RtYamlLine("year was crippled", 2));
         lines.add(new RtYamlLine("by a knee injury.", 3));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
             Matchers.is("Mark McGwire's year was crippled by a knee injury.")
         );
     }
-    
+
     /**
      * ReadPointedScalar can return value when line has different indentation.
      */
@@ -165,11 +165,11 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("\n", 3));
         lines.add(new RtYamlLine("  63 Home Runs", 4));
         lines.add(new RtYamlLine("What a year!", 5));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.is("Sammy Sosa completed another" 
+            Matchers.is("Sammy Sosa completed another"
                 + " fine season with great stats.\n"
                 + "\n  63 Home Runs\nWhat a year!"
             )
@@ -184,14 +184,14 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("Mark McGwire's", 1));
         lines.add(new RtYamlLine("year was crippled", 2));
         lines.add(new RtYamlLine("by an injury.", 3));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
             Matchers.is("    Mark McGwire's year was crippled by an injury.")
         );
     }
-    
+
     /**
      * ReadPointedScalar can indent lines with different indentation.
      */
@@ -204,11 +204,11 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("\n", 3));
         lines.add(new RtYamlLine("  63 Home Runs", 4));
         lines.add(new RtYamlLine("What a year!", 5));
-        final ReadPointedScalar scalar = 
+        final ReadPointedScalar scalar =
             new ReadPointedScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
-            Matchers.is("    Sammy Sosa completed another" 
+            Matchers.is("    Sammy Sosa completed another"
                 + " fine season with great stats.\n"
                 + "\n      63 Home Runs\n    What a year!"
             )

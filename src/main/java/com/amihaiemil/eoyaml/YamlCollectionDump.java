@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ public final class YamlCollectionDump extends AbstractYamlDump {
      * Collection<Object> to dump.
      */
     private Collection<Object> collection;
-    
+
     /**
      * Ctor.
      * @param collection Collection to dump
@@ -49,7 +49,7 @@ public final class YamlCollectionDump extends AbstractYamlDump {
     public YamlCollectionDump(final Collection<Object> collection) {
         this.collection = collection;
     }
-    
+
     @Override
     public YamlSequence represent() {
         YamlSequenceBuilder builder = new RtYamlSequenceBuilder();

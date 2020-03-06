@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ import com.amihaiemil.eoyaml.YamlObjectDumpTest.StudentSimplePojo;
  *
  */
 public final class YamlMapDumpTest {
-    
+
     /**
      * YamlMapDump can represent a Map of a simple pojo.
      */
@@ -54,22 +54,22 @@ public final class YamlMapDumpTest {
     public void representsMapOfSimplePojos() {
         StudentSimplePojo studentA =
             new StudentSimplePojo("John", "Doe", 21, 3.7);
-        StudentSimplePojo studentB = 
+        StudentSimplePojo studentB =
             new StudentSimplePojo("Albert", "Einestien", 25, 4);
         StudentSimplePojo studentC =
             new StudentSimplePojo("John", "Doe", 23, 3.7);
-        StudentSimplePojo studentD = 
+        StudentSimplePojo studentD =
             new StudentSimplePojo("Albert", "Einestien", 30, 4);
-        
+
         Map<Object, Object> map = new HashMap<>();
         map.put(studentA, studentB);
         map.put(studentC, studentD);
 
-        YamlMapping yaml = 
+        YamlMapping yaml =
             new YamlMapDump(map).represent();
         List<YamlNode> children = new ArrayList<YamlNode>(yaml.children());
         MatcherAssert.assertThat(children.size(), Matchers.equalTo(2));
-        
+
         MatcherAssert.assertThat(
             this.yamlEqualsStudent((YamlMapping) children.get(0), studentB)
             && this.yamlEqualsStudent((YamlMapping) children.get(1), studentD),
@@ -82,14 +82,14 @@ public final class YamlMapDumpTest {
      */
     @Test
     public void representsMapOfStringsAndSimplePojos() {
-        StudentSimplePojo studentA = 
+        StudentSimplePojo studentA =
             new StudentSimplePojo("John", "Doe", 25, 4);
-        StudentSimplePojo studentB = 
+        StudentSimplePojo studentB =
             new StudentSimplePojo("Albert", "Einestien", 30, 4);
         Map<Object, Object> map = new HashMap<>();
         map.put("key1", studentA);
         map.put("key2", studentB);
-        
+
         YamlMapping yaml = new YamlMapDump(map).represent();
         MatcherAssert.assertThat(
             this.yamlEqualsStudent(yaml.yamlMapping("key1"), studentA),
@@ -110,7 +110,7 @@ public final class YamlMapDumpTest {
         Map<Object, Object> map = new HashMap<>();
         map.put("key1", 12);
         map.put("key2", 13);
-        
+
         YamlMapping yaml = new YamlMapDump(map).represent();
         MatcherAssert.assertThat(
             yaml.string("key1").equals("12"),
@@ -121,7 +121,7 @@ public final class YamlMapDumpTest {
             Matchers.is(true)
         );
     }
-    
+
     /**
      * Method to check equality between a YamlMapping and a simple pojo.
      * @param yaml YamlMapping
@@ -130,8 +130,8 @@ public final class YamlMapDumpTest {
      */
     private boolean yamlEqualsStudent(final YamlMapping yaml,
         final StudentSimplePojo student) {
-        return 
-            yaml.string("firstName").equals(student.getFirstName()) 
+        return
+            yaml.string("firstName").equals(student.getFirstName())
             && yaml.string("lastName").equals(student.getLastName())
             && yaml.string("age")
                 .equals(((Integer) student.getAge()).toString())

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ public final class NoCommentsYamlLineTest {
         YamlLine line = new NoCommentsYamlLine(new RtYamlLine("line", 11));
         MatcherAssert.assertThat(line.number(), Matchers.is(11));
     }
-    
+
     /**
      * NoCommentsYamlLine returns its, indentation if it's right.
      */
@@ -65,7 +65,7 @@ public final class NoCommentsYamlLineTest {
             byFour.indentation(), Matchers.is(4)
         );
     }
-    
+
     /**
      * NoCommentsYamlLine compares right with other lines.
      */
@@ -79,7 +79,7 @@ public final class NoCommentsYamlLineTest {
             noComments.compareTo(normalLine) < 0, Matchers.is(true)
         );
     }
-    
+
     /**
      * NoCommentsYamlLine trims a comment line and return empty line.
      */
@@ -92,7 +92,7 @@ public final class NoCommentsYamlLineTest {
             noComments.trimmed(), Matchers.is("")
         );
     }
-    
+
     /**
      * NoCommentsYamlLine removes only comments and leave original string.
      */
@@ -105,7 +105,7 @@ public final class NoCommentsYamlLineTest {
             noComments.trimmed(), Matchers.is("this isn't comment")
         );
     }
-    
+
     /**
      * NoCommentsYamlLine removes only comments and leaves original string.
      * Original string has quotes.
@@ -119,7 +119,7 @@ public final class NoCommentsYamlLineTest {
             noComments.trimmed(), Matchers.is("\"this isn't comment\"")
         );
     }
-    
+
     /**
      * NoCommentsYamlLine doesn't remove escaped # in a string.
      */

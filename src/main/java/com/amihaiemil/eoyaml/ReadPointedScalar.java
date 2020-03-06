@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ import java.util.LinkedList;
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.2
- * @todo #109:30m/DEV Refactor the implementation of value() and indent() 
+ * @todo #109:30m/DEV Refactor the implementation of value() and indent()
  *  methods.
  */
 final class ReadPointedScalar implements YamlNode {
@@ -44,7 +44,7 @@ final class ReadPointedScalar implements YamlNode {
      * Lines to be represented as a wrapped scalar.
      */
     private AbstractYamlLines lines;
-    
+
     /**
      * Ctor.
      * @param lines Given lines to represent.
@@ -52,7 +52,7 @@ final class ReadPointedScalar implements YamlNode {
     ReadPointedScalar(final AbstractYamlLines lines) {
         this.lines = lines;
     }
-   
+
     @Override
     public int compareTo(final YamlNode other) {
         int result = -1;
@@ -105,14 +105,14 @@ final class ReadPointedScalar implements YamlNode {
         }
         return builder.toString();
     }
-    
+
     /**
      * Checks whether StringBuilder do not end with newline or not.
      * @param builder StringBuilder
      * @return Boolean Whether builder do not end with newline char or not
      */
     private boolean doNotEndWithNewLine(final StringBuilder builder) {
-        return builder.length() > 0 
+        return builder.length() > 0
                 && builder.charAt(builder.length()-1) != '\n';
     }
     /**
@@ -141,7 +141,7 @@ final class ReadPointedScalar implements YamlNode {
         }
         return builder.toString();
     }
-    
+
     @Override
     public String toString() {
         return this.indent(0);

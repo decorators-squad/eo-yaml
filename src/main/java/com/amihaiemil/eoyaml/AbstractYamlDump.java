@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.0
  * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
  *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
- *  it and return the Yaml node as a Yaml tree. 
+ *  it and return the Yaml node as a Yaml tree.
  */
 public abstract class AbstractYamlDump {
 
@@ -43,7 +43,7 @@ public abstract class AbstractYamlDump {
      * @return Yaml node
      */
     abstract YamlNode represent();
-    
+
     /**
      * Check if the given property is a 'leaf'. For instance, a String is
      * considered a leaf, we don't need to go deeper to check for its
