@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -131,4 +132,10 @@ final class RtYamlSequence extends AbstractYamlSequence {
     public int size() {
         return this.nodes.size();
     }
+
+    @Override
+    public Iterator<YamlNode> iterator() {
+        return this.nodes.iterator();
+    }
+
 }

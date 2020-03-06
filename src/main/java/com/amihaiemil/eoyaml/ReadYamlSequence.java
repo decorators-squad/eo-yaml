@@ -1,6 +1,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -98,6 +99,11 @@ final class ReadYamlSequence extends AbstractYamlSequence {
             size = size + 1;
         }
         return size;
+    }
+
+    @Override
+    public Iterator<YamlNode> iterator() {
+        return this.children().iterator();
     }
 
 }

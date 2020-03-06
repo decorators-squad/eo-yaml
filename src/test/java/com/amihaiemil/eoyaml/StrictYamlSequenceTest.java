@@ -60,6 +60,22 @@ public final class StrictYamlSequenceTest {
             Matchers.equalTo(3)
         );
     }
+    
+    /**
+     * StrictYamlSequence can be iterated.
+     */
+    @Test
+    public void strictSequenceIsIterable() {
+        List<YamlNode> elements = new LinkedList<>();
+        elements.add(new Scalar("key1"));
+        elements.add(new Scalar("key2"));
+        elements.add(new Scalar("key3"));
+        YamlSequence seq = new StrictYamlSequence(
+            new RtYamlSequence(elements)
+        );
+        MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
+        MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
+    }
 
     /**
      * StringYamlSequence can throw YamlNodeNotFoundException

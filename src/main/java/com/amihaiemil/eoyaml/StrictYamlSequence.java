@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Decorator for a {@link YamlSequence} which throws YamlNodeNotFoundException
@@ -119,5 +120,10 @@ public final class StrictYamlSequence extends AbstractYamlSequence {
     @Override
     public int size() {
         return this.decorated.size();
+    }
+
+    @Override
+    public Iterator<YamlNode> iterator() {
+        return this.decorated.iterator();
     }
 }

@@ -1,12 +1,14 @@
 package com.amihaiemil.eoyaml;
 
+import java.util.Iterator;
+
 /**
  * A Yaml sequence.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-public interface YamlSequence extends YamlNode {
+public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * The number of Yaml elements (scalars, mappings and sequences) found in
@@ -35,4 +37,11 @@ public interface YamlSequence extends YamlNode {
      * @return String
      */
     String string(final int index);
+    
+    /**
+     * Returns this YamlSequence's children Iterator.<br><br>
+     * It is equivalent to YamlSequence.children().iterator().
+     * @return Iterator of YamlNode.
+     */
+    Iterator<YamlNode> iterator();
 }

@@ -130,6 +130,26 @@ public final class ReadYamlSequenceTest {
     }
     
     /**
+     * ReadYamlSequence can be iterated.
+     */
+    @Test
+    public void readSequenceIsIterable(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  beta: somethingElse", 1));
+        lines.add(new RtYamlLine("- scalar", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  alfa: ", 4));
+        lines.add(new RtYamlLine("    fourth: some", 5));
+        lines.add(new RtYamlLine("    key: value", 6));
+        final YamlSequence seq = new ReadYamlSequence(
+            new RtYamlLines(lines)
+        );
+        MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
+        MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
+    }
+    
+    /**
      * An empty ReadYamlSequence can be printed.
      * @throws Exception if something goes wrong
      */

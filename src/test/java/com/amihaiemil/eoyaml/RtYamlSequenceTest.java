@@ -69,6 +69,20 @@ public final class RtYamlSequenceTest {
     }
     
     /**
+     * Sequence can be iterated.
+     */
+    @Test
+    public void sequenceIsIterable() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(Mockito.mock(YamlNode.class));
+        nodes.add(Mockito.mock(YamlNode.class));
+        nodes.add(Mockito.mock(YamlNode.class));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
+        MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
+    }
+    
+    /**
      * A Sequence maintains its order of reading.
      */
     @Test
