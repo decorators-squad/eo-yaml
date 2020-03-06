@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,12 +41,12 @@ final class WellIndentedLine implements YamlLine {
      * Content line.
      */
     private YamlLine line;
-    
+
     /**
      * Previous line.
      */
     private YamlLine previousLine;
-    
+
     /**
      * Ctor.
      * @param previous YamlLine
@@ -56,12 +56,12 @@ final class WellIndentedLine implements YamlLine {
         this.previousLine = previous;
         this.line = current;
     }
-    
+
     @Override
     public String trimmed() {
         return this.line.trimmed();
     }
-    
+
     @Override
     public int number() {
         return this.line.number();
@@ -95,7 +95,7 @@ final class WellIndentedLine implements YamlLine {
     }
 
     @Override
-    public int compareTo(final YamlLine other) {    
+    public int compareTo(final YamlLine other) {
         return this.line.compareTo(other);
     }
 

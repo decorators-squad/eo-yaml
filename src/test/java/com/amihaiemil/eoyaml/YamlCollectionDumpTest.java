@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,21 +41,21 @@ import com.amihaiemil.eoyaml.YamlObjectDumpTest.StudentSimplePojo;
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * 
+ *
  */
 public final class YamlCollectionDumpTest {
-    
+
     /**
      * YamlCollectionDump can represent Collection of strings and simple pojos.
      */
     @Test
     public void representsCollectionOfStringsAndSimplePojos() {
-        StudentSimplePojo studentA = 
+        StudentSimplePojo studentA =
             new StudentSimplePojo("John", "Doe", 25, 4);
         List<Object> collection = new ArrayList<Object>();
         collection.add(studentA);
         collection.add("objectA");
-        
+
         YamlSequence yaml = new YamlCollectionDump(collection).represent();
         MatcherAssert.assertThat(yaml.children().size(), Matchers.equalTo(2));
 

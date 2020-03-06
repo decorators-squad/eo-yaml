@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ interface YamlLine extends Comparable<YamlLine> {
      * @throws IllegalStateException if the indentation is not multiple of 2.
      */
     int indentation();
-    
+
     /**
      * Does this line precede a nested node?
      * @return True or false
@@ -77,11 +77,11 @@ interface YamlLine extends Comparable<YamlLine> {
 
         @Override
         public int indentation() {
-            return 0;    
+            return 0;
         }
-        
+
         @Override
-        public int compareTo(final YamlLine other) {    
+        public int compareTo(final YamlLine other) {
             return -1;
         }
 
@@ -89,6 +89,6 @@ interface YamlLine extends Comparable<YamlLine> {
         public boolean hasNestedNode() {
             return false;
         }
-        
+
     }
 }

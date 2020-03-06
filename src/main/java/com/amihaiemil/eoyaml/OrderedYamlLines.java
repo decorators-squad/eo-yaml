@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -93,7 +93,7 @@ final class OrderedYamlLines extends AbstractYamlLines {
     }
 
     /**
-     * Returns the lines which are nested after the given line. 
+     * Returns the lines which are nested after the given line.
      * The lines are not necessarily ordered. If the resulting lines
      * should be ordered (be iterated in order), then they have
      * to be wrapped inside a new OrderedYamlLines.

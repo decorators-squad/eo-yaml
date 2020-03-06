@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.2
  */
 final class Nested {
-    
+
     /**
      * Hidden ctor.
      */
@@ -45,29 +45,29 @@ final class Nested {
      * node should be nested bellow.
      */
     static final String YAML = ":";
-    
+
     /**
-     * If this is the last char on a line, it means that 
+     * If this is the last char on a line, it means that
      * 1) a Yaml sequence should be wrapped bellow (looks the same as a normal
      *    one, but the char '-' is ommitted from the beginning of its lines).
-     * or 
+     * or
      * 2) a Yaml node is bellow it (an element from the current sequence).
      */
     static final String SEQUENCE = "-";
-    
+
     /**
      * If this is the last char on a line, it means a pointed wrapped scalar
      * should be nested bellow (see Example 2.15 from YAML spec 1.2).
      */
     static final String POINTED_SCALAR = ">";
-    
+
     /**
      * If this is the last char on a line, it means a piped wrapped scalar
      * should be nested bellow (all newlines are significant, and
      * taken into account).
      */
     static final String PIPED_SCALAR = "|";
-    
+
     /**
      * If this is the last char on a line, it means a complex key
      * (mapping or sequence) should be nested bellow.

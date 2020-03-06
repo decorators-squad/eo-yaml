@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @return Collection of {@link YamlNode}
      */
     Collection<YamlNode> children();
-    
+
     /**
      * Print this node with a specified indentation.
      * @param indentation Number of preciding spaces of each line.

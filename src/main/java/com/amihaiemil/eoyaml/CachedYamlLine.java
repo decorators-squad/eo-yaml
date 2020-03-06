@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * Decorator class to cache values of trimmed() and indentation() method for 
+ * Decorator class to cache values of trimmed() and indentation() method for
  * a YamlLine.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
@@ -36,27 +36,27 @@ package com.amihaiemil.eoyaml;
  *
  */
 final class CachedYamlLine implements YamlLine {
-    
+
     /**
      * Content line.
      */
     private YamlLine line;
-    
+
     /**
      * Cached trimmed line.
      */
     private String trimmed;
-    
+
     /**
      * Cached indentation.
      */
     private int indentation = -1;
-    
+
     /**
      * Cached value.
      */
     private Boolean hasNestedNode;
-    
+
     /**
      * Ctor.
      * @param line YamlLine
@@ -64,7 +64,7 @@ final class CachedYamlLine implements YamlLine {
     CachedYamlLine(final YamlLine line) {
         this.line = line;
     }
-    
+
     @Override
     public int compareTo(final YamlLine other) {
         return this.line.compareTo(other);
@@ -98,7 +98,7 @@ final class CachedYamlLine implements YamlLine {
         }
         return this.hasNestedNode;
     }
-    
+
     @Override
     public String toString() {
         return this.line.toString();

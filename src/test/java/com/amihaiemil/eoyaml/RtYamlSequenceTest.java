@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,9 +65,9 @@ public final class RtYamlSequenceTest {
         MatcherAssert.assertThat(
             seq.children().size(),
             Matchers.equalTo(3)
-        );        
+        );
     }
-    
+
     /**
      * Sequence can be iterated.
      */
@@ -81,7 +81,7 @@ public final class RtYamlSequenceTest {
         MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
         MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
     }
-    
+
     /**
      * A Sequence maintains its order of reading.
      */
@@ -111,7 +111,7 @@ public final class RtYamlSequenceTest {
             (Scalar) ordered.next(), Matchers.equalTo(fourth)
         );
     }
-    
+
     /**
      * RtYamlSequence can return a Scalar as a string.
      */
@@ -164,7 +164,7 @@ public final class RtYamlSequenceTest {
     }
 
     /**
-     * Scalar can compare itself to another Scalar. 
+     * Scalar can compare itself to another Scalar.
      */
     @Test
     public void comparesToScalar() {
@@ -205,10 +205,10 @@ public final class RtYamlSequenceTest {
         nodes.add(fourth);
         RtYamlSequence seq = new RtYamlSequence(nodes);
         RtYamlSequence other = new RtYamlSequence(nodes);
-        
+
         nodes.remove(0);
         RtYamlSequence another = new RtYamlSequence(nodes);
-        
+
         nodes.remove(0);
         nodes.add(0, new Scalar("yaml"));
         RtYamlSequence sameSize = new RtYamlSequence(nodes);
@@ -239,7 +239,7 @@ public final class RtYamlSequenceTest {
         String expected = this.readTestResource("simpleSequence.yml");
         MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
     }
-    
+
     /**
      * An empty YamlSequecne can be printed.
      * @throws Exception if something goes wrong
@@ -276,7 +276,7 @@ public final class RtYamlSequenceTest {
         String expected = this.readTestResource("complexSequence.yml");
         MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
     }
-    
+
     /**
      * RtYamlSequence can return its size.
      */
@@ -289,7 +289,7 @@ public final class RtYamlSequenceTest {
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(seq.size(), Matchers.is(3));
     }
-    
+
     /**
      * Read a test resource file's contents.
      * @param fileName File to read.
@@ -303,7 +303,7 @@ public final class RtYamlSequenceTest {
             IOUtils.toByteArray(
                 new FileInputStream(
                     new File("src/test/resources/" + fileName)
-                )    
+                )
             )
         );
     }

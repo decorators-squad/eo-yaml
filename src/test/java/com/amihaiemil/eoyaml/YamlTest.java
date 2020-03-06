@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ public final class YamlTest {
             Yaml.createYamlMappingBuilder(), Matchers.notNullValue()
         );
     }
-    
+
     /**
      * Yaml can create a YamlSequenceBuilder.
      */
@@ -61,7 +61,7 @@ public final class YamlTest {
             Yaml.createYamlSequenceBuilder(), Matchers.notNullValue()
         );
     }
-    
+
     /**
      * Yaml can create a YamlInput from a File.
      * @throws Exception if something goes wrong
@@ -88,7 +88,7 @@ public final class YamlTest {
             Matchers.notNullValue()
         );
     }
-    
+
     /**
      * Yaml can create a YamlInput from a String.
      */

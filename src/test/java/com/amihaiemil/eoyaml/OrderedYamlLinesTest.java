@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -89,9 +89,9 @@ public final class OrderedYamlLinesTest {
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
     }
-    
+
     /**
      * OrderedYamlLines can indent the ordered lines properly.
      */
@@ -113,7 +113,7 @@ public final class OrderedYamlLinesTest {
             + "fox: somethingElse\n";
         MatcherAssert.assertThat(yaml.indent(0), Matchers.equalTo(expected));
     }
-    
+
     /**
      * OrderedYamlLines can return nested lines (in initial order) for a given
      * line.
@@ -128,18 +128,18 @@ public final class OrderedYamlLinesTest {
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
         AbstractYamlLines yamlLines = new RtYamlLines(lines);
-        
+
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(2));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
         iterator = yamlLines.nested(1).iterator();
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
         iterator = yamlLines.nested(3).iterator();
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
-        
+
         iterator = yamlLines.nested(4).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
@@ -158,7 +158,7 @@ public final class OrderedYamlLinesTest {
         lines.add(new RtYamlLine("      Albert", 4));
         lines.add(new RtYamlLine("Sherif", 5));
         Collections.sort(lines);
-        
+
         Iterator<YamlLine> iterator = lines.iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));

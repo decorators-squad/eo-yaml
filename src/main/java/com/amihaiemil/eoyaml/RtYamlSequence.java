@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -101,7 +101,7 @@ final class RtYamlSequence extends ComparableYamlSequence {
     public String toString() {
         return this.indent(0);
     }
-    
+
     @Override
     public String indent(final int indentation) {
         StringBuilder print = new StringBuilder();

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ final class NoCommentsYamlLine implements YamlLine {
      * Original line.
      */
     private YamlLine line;
-    
+
     /**
      * Ctor.
      * @param line Original YamlLine
@@ -48,7 +48,7 @@ final class NoCommentsYamlLine implements YamlLine {
     NoCommentsYamlLine(final YamlLine line) {
         this.line = line;
     }
-    
+
     @Override
     public int compareTo(final YamlLine other) {
         return this.line.compareTo(other);

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ import org.junit.Test;
  * @since 1.0.2
  */
 public final class ReadPipeScalarTest {
-    
+
     /**
      * ReadPipeScalar should not have children.
      */
@@ -53,7 +53,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar = 
+        final ReadPipeScalar scalar =
             new ReadPipeScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.children(), Matchers.emptyIterable()
@@ -69,14 +69,14 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar = 
+        final ReadPipeScalar scalar =
             new ReadPipeScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
             Matchers.is("First Line.\nSecond Line.\nThird Line.")
         );
     }
-    
+
     /**
      * ReadPipeScalar can compare itself to a Mapping.
      */
@@ -86,7 +86,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar = 
+        final ReadPipeScalar scalar =
             new ReadPipeScalar(new RtYamlLines(lines));
         RtYamlMapping map = new RtYamlMapping(
             new HashMap<YamlNode, YamlNode>()
@@ -103,12 +103,12 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar = 
+        final ReadPipeScalar scalar =
             new ReadPipeScalar(new RtYamlLines(lines));
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(scalar.compareTo(seq), Matchers.lessThan(0));
     }
-    
+
     /**
      * ReadPipeScalar can compare itself to a Scalar.
      */
@@ -116,12 +116,12 @@ public final class ReadPipeScalarTest {
     public void comparesToScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPipeScalar pipeScalar = 
+        final ReadPipeScalar pipeScalar =
             new ReadPipeScalar(new RtYamlLines(lines));
         final Scalar scalar = new Scalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
-    
+
     /**
      * ReadPipeScalar can compare itself to other ReadPipeScalar.
      */
@@ -129,13 +129,13 @@ public final class ReadPipeScalarTest {
     public void comparesToReadPipeScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPipeScalar first = 
+        final ReadPipeScalar first =
             new ReadPipeScalar(new RtYamlLines(lines));
-        final ReadPipeScalar second = 
+        final ReadPipeScalar second =
             new ReadPipeScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.is(0));
     }
-    
+
     /**
      * ReadPipeScalar can indent first line.
      */
@@ -145,7 +145,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar = 
+        final ReadPipeScalar scalar =
             new ReadPipeScalar(new RtYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),

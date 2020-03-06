@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2017, Mihai Emil Andronache
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -96,10 +96,10 @@ final class Scalar implements YamlNode {
 
     /**
      * Compare this Scalar to another node.<br><br>
-     * 
+     *
      * A Scalar is always considered less than a Sequence or a Mapping.<br>
      * If o is Scalar then their String values are compared lexicographically
-     * 
+     *
      * @param other The other AbstractNode.
      * @return
      *  a value < 0 if this < o <br>
