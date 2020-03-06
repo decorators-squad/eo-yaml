@@ -31,13 +31,17 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * AbstractYamlSequence implementing methods which should be the same across 
- * all final implementations of YamlSequence.
+ * Comparable YamlSequence implementing equals, hashcode and compareTo methods.
+ * <br><br>
+ * These methods should be default methods on the interface,
+ * but we are not allowed to have default implementations of java.lang.Object
+ * methods.
+ * 
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlSequence implements YamlSequence {
+abstract class ComparableYamlSequence implements YamlSequence {
     
     @Override
     public int hashCode() {

@@ -39,7 +39,7 @@ import java.util.List;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#sequence//
  */
-final class RtYamlSequence extends AbstractYamlSequence {
+final class RtYamlSequence extends ComparableYamlSequence {
 
     /**
      * Nodes in this sequence.

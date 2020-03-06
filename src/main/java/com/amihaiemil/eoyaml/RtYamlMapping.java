@@ -40,7 +40,7 @@ import java.util.TreeMap;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#mapping//
  */
-final class RtYamlMapping extends AbstractYamlMapping {
+final class RtYamlMapping extends ComparableYamlMapping {
 
     /**
      * Key:value tree map (ordered keys).

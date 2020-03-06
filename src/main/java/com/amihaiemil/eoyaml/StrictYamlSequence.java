@@ -39,7 +39,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since 1.0.0
  */
-public final class StrictYamlSequence extends AbstractYamlSequence {
+public final class StrictYamlSequence extends ComparableYamlSequence {
 
     /**
      * Original YamlSequence.

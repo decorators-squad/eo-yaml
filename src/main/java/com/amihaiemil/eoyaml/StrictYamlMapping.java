@@ -41,18 +41,18 @@ import java.util.Set;
  * @version $Id$
  * @since 1.0.0
  */
-public final class StrictYamlMapping extends AbstractYamlMapping {
+public final class StrictYamlMapping extends ComparableYamlMapping {
 
     /**
      * Original YamlMapping.
      */
-    private AbstractYamlMapping decorated;
+    private YamlMapping decorated;
 
     /**
      * Ctor.
      * @param decorated Original YamlMapping
      */
-    public StrictYamlMapping(final AbstractYamlMapping decorated) {
+    public StrictYamlMapping(final YamlMapping decorated) {
         this.decorated = decorated;
     }
 

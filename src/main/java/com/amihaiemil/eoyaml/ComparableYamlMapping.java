@@ -31,13 +31,17 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * AbstractYamlMapping implementing methods which should be the same across
- * all final implementations of YamlMapping.
+ * Comparable YamlMapping implementing equals, hashcode and compareTo methods.
+ * <br><br>
+ * These methods should be default methods on the interface,
+ * but we are not allowed to have default implementations of java.lang.Object
+ * methods.
+ * 
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlMapping implements YamlMapping {
+abstract class ComparableYamlMapping implements YamlMapping {
 
     @Override
     public int hashCode() {
@@ -95,7 +99,7 @@ abstract class AbstractYamlMapping implements YamlMapping {
         if (other == null || !(other instanceof YamlMapping)) {
             result = 1;
         } else if (this != other) {
-            final AbstractYamlMapping map = (AbstractYamlMapping) other;
+            final ComparableYamlMapping map = (ComparableYamlMapping) other;
             final Set<YamlNode> keys = this.keys();
             final Set<YamlNode> otherKeys = map.keys();
             if(keys.size() > otherKeys.size()) {

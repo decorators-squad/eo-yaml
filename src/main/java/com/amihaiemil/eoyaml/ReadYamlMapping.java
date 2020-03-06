@@ -39,7 +39,7 @@ import java.util.Set;
  * @version $Id$
  * @since 1.0.0
  */
-final class ReadYamlMapping extends AbstractYamlMapping {
+final class ReadYamlMapping extends ComparableYamlMapping {
 
     /**
      * Lines read.
