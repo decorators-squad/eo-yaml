@@ -57,14 +57,13 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     @Override
     public Collection<YamlNode> children() {
         final List<YamlNode> kids = new LinkedList<>();
-        final OrderedYamlLines ordered = new OrderedYamlLines(this.lines);
-        for (final YamlLine line : ordered) {
+        for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed) || ":".equals(trimmed)) {
                 continue;
             } else {
                 if(trimmed.endsWith(":")) {
-                    kids.add(ordered.nested(line.number()).toYamlNode(line));
+                    kids.add(this.lines.nested(line.number()).toYamlNode(line));
                 } else {
                     final String[] parts = trimmed.split(":");
                     if(parts.length < 2) {
@@ -147,7 +146,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public String indent(final int indentation) {
-        return new OrderedYamlLines(this.lines).indent(indentation);
+        return this.lines.indent(indentation);
     }
 
     /**
