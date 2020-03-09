@@ -162,11 +162,11 @@ final class ReadYamlMapping extends ComparableYamlMapping {
             if(trimmed.startsWith(key + ":")) {
                 if (map) {
                     value = new ReadYamlMapping(
-                        this.lines.nested(line.number())
+                        new SameIndentationLevel(this.lines.nested(line.number()))
                     );
                 } else {
                     value = new ReadYamlSequence(
-                        this.lines.nested(line.number())
+                        new SameIndentationLevel(this.lines.nested(line.number()))
                     );
                 }
             }
@@ -193,11 +193,11 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                     int colonLine = line.number() + keyLines.count() + 1;
                     if (map) {
                         value = new ReadYamlMapping(
-                            this.lines.nested(colonLine)
+                            new SameIndentationLevel(this.lines.nested(colonLine))
                         );
                     } else {
                         value = new ReadYamlSequence(
-                            this.lines.nested(colonLine)
+                    		new SameIndentationLevel(this.lines.nested(colonLine))
                         );
                     }
                 }

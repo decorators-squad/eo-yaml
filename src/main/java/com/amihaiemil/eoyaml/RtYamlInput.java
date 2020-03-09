@@ -57,20 +57,24 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return new ReadYamlMapping(this.readInput());
+        return new ReadYamlMapping(
+        	new SameIndentationLevel(this.readInput())
+        );
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return new ReadYamlSequence(this.readInput());
+        return new ReadYamlSequence(
+            new SameIndentationLevel(this.readInput())
+        );
     }
 
     /**
      * Read the input's lines.
-     * @return YamlLines
+     * @return All read YamlLines
      * @throws IOException If something goes wrong while reading the input.
      */
-    private YamlLines readInput() throws IOException {
+    private AllYamlLines readInput() throws IOException {
         final List<YamlLine> lines = new ArrayList<>();
         try (
             BufferedReader reader = new BufferedReader(

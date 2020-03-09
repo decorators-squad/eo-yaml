@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * YamlLines default implementation. It handles ALL the given lines, doesn't
@@ -54,30 +51,6 @@ final class AllYamlLines implements YamlLines {
         this.lines = lines;
     }
 
-    /**
-     * Returns an iterator over these Yaml lines.
-     * It <b>only</b> iterates over the lines which are at the same
-     * level of indentation with the first!
-     * @return Iterator over these yaml lines.
-     */
-    @Override
-    public Iterator<YamlLine> iterator() {
-        Iterator<YamlLine> iterator = this.lines.iterator();
-        if (iterator.hasNext()) {
-            final List<YamlLine> sameIndentation = new ArrayList<>();
-            final YamlLine first = iterator.next();
-            sameIndentation.add(first);
-            while (iterator.hasNext()) {
-                YamlLine current = iterator.next();
-                if(current.indentation() == first.indentation()) {
-                    sameIndentation.add(current);
-                }
-            }
-            iterator = sameIndentation.iterator();
-        }
-        return iterator;
-    }
-
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
@@ -95,32 +68,6 @@ final class AllYamlLines implements YamlLines {
     @Override
     public int count() {
         return this.lines.size();
-    }
-
-    @Override
-    public String indent(final int indentation) {
-        final StringBuilder indented = new StringBuilder();
-        final Iterator<YamlLine> linesIt = this.lines.iterator();
-        if(linesIt.hasNext()) {
-            final YamlLine first = linesIt.next();
-            if (first.indentation() == indentation) {
-                indented.append(first.toString()).append("\n");
-                while (linesIt.hasNext()) {
-                    indented.append(linesIt.next().toString()).append("\n");
-                }
-            } else {
-                final int offset = indentation - first.indentation();
-                for (final YamlLine line : this.lines) {
-                    int correct = line.indentation() + offset;
-                    while (correct > 0) {
-                        indented.append(" ");
-                        correct--;
-                    }
-                    indented.append(line.trimmed()).append("\n");
-                }
-            }
-        }
-        return indented.toString();
     }
 
 }

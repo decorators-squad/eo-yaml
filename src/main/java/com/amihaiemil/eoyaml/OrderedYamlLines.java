@@ -102,7 +102,7 @@ final class OrderedYamlLines implements YamlLines {
      * @param after The number of the parent line
      */
     @Override
-    public YamlLines nested(final int after) {
+    public AllYamlLines nested(final int after) {
         return this.unordered.nested(after);
     }
 

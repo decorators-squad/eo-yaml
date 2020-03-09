@@ -53,13 +53,6 @@ interface YamlLines extends Iterable<YamlLine> {
     int count();
 
     /**
-     * Indent these lines.
-     * @param indentation Spaces to precede each line.
-     * @return String with the pretty-printed, indented lines.
-     */
-    String indent(int indentation);
-
-    /**
      * Default iterator which doesn't skip any line,
      * iterates over all of them.
      * @return Iterator of YamlLine.
@@ -69,12 +62,42 @@ interface YamlLines extends Iterable<YamlLine> {
     }
     
     /**
+     * Indent these lines.
+     * @param indentation Spaces to precede each line.
+     * @return String with the pretty-printed, indented lines.
+     */
+    default String indent(final int indentation) {
+        final StringBuilder indented = new StringBuilder();
+        final Iterator<YamlLine> linesIt = this.iterator();
+        if(linesIt.hasNext()) {
+            final YamlLine first = linesIt.next();
+            if (first.indentation() == indentation) {
+                indented.append(first.toString()).append("\n");
+                while (linesIt.hasNext()) {
+                    indented.append(linesIt.next().toString()).append("\n");
+                }
+            } else {
+                final int offset = indentation - first.indentation();
+                for (final YamlLine line : this.lines()) {
+                    int correct = line.indentation() + offset;
+                    while (correct > 0) {
+                        indented.append(" ");
+                        correct--;
+                    }
+                    indented.append(line.trimmed()).append("\n");
+                }
+            }
+        }
+        return indented.toString();
+    }
+    
+    /**
      * Lines which are nested after the given YamlLine (lines which are
      * <br> indented by 2 or more spaces beneath it).
      * @param after Number of a YamlLine
      * @return YamlLines
      */
-    default YamlLines nested(final int after) {
+    default AllYamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
         for(final YamlLine line : this.lines()) {
@@ -109,18 +132,18 @@ interface YamlLines extends Iterable<YamlLine> {
                 final boolean sequence = this.iterator()
                     .next().trimmed().startsWith("-");
                 if(sequence) {
-                    node = new ReadYamlSequence(this);
+                    node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
                 } else {
-                    node = new ReadYamlMapping(this);
+                    node = new ReadYamlMapping(new SameIndentationLevel((AllYamlLines) this));
                 }
                 break;
             case Nested.KEY_YAML:
                 final boolean sequenceKey = this.iterator()
                     .next().trimmed().startsWith("-");
                 if(sequenceKey) {
-                    node = new ReadYamlSequence(this);
+                    node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
                 } else {
-                    node = new ReadYamlMapping(this);
+                    node = new ReadYamlMapping(new SameIndentationLevel((AllYamlLines) this));
                 }
                 break;
             case Nested.SEQUENCE:
@@ -128,12 +151,12 @@ interface YamlLines extends Iterable<YamlLine> {
                     final boolean elementSequence = this.iterator()
                         .next().trimmed().startsWith("-");
                     if(elementSequence) {
-                        node = new ReadYamlSequence(this);
+                        node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
                     } else {
-                        node = new ReadYamlMapping(this);
+                        node = new ReadYamlMapping(new SameIndentationLevel((AllYamlLines) this));
                     }
                 } else {
-                    node = new ReadYamlSequence(this);
+                    node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
                 }
                 break;
             case Nested.PIPED_SCALAR:
