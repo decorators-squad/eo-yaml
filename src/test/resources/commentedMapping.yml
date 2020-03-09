@@ -1,7 +1,7 @@
 # Yaml for test
+architect: mihai
 developers: # all the contributors here
   - rultor # bot used for devops
   - salikjan
   - sherif
-architect: mihai
 name: eo-yaml

@@ -12,7 +12,7 @@ YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** is a human-friendly, cross language, Unicode based data serialization language.
 
-To get the latest release, simply add the following to your ``pom.xml``: 
+To get the latest release, simply add the following to your ``pom.xml`` (it's always the latest version): 
 
 ```xml
 <dependency>

@@ -33,87 +33,54 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * YamlLines default implementation.
+ * Iterable yaml lines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-final class RtYamlLines extends AbstractYamlLines {
+interface YamlLines extends Iterable<YamlLine> {
 
     /**
-     * Yaml lines.
+     * All the YAML lines, as a collection.
+     * @return These YamlLines as a Collection.
      */
-    private Collection<YamlLine> lines;
+    Collection<YamlLine> lines();
+    
+    /**
+     * Number of lines.
+     * @return Integer.
+     */
+    int count();
 
     /**
-     * Ctor.
-     * @param lines Yaml lines collection.
+     * Turn these lines into a YamlNode.
+     * @param prev Previous YamlLine
+     * @return YamlNode
+     * @todo #107:30min/DEV Add more tests to cover all the nested node
+     *  possibilities.
      */
-    RtYamlLines(final Collection<YamlLine> lines) {
-        this.lines = lines;
-    }
-
+    YamlNode toYamlNode(final YamlLine prev);
+    
     /**
-     * Returns an iterator over these Yaml lines.
-     * It <b>only</b> iterates over the lines which are at the same
-     * level of indentation with the first!
-     * @return Iterator over these yaml lines.
+     * Default iterator which doesn't skip any line,
+     * iterates over all of them.
+     * @return Iterator of YamlLine.
      */
-    @Override
-    public Iterator<YamlLine> iterator() {
-        Iterator<YamlLine> iterator = this.lines.iterator();
-        if (iterator.hasNext()) {
-            final List<YamlLine> sameIndentation = new ArrayList<>();
-            final YamlLine first = iterator.next();
-            sameIndentation.add(first);
-            while (iterator.hasNext()) {
-                YamlLine current = iterator.next();
-                if(current.indentation() == first.indentation()) {
-                    sameIndentation.add(current);
-                }
-            }
-            iterator = sameIndentation.iterator();
-        }
-        return iterator;
+    default Iterator<YamlLine> iterator() {
+        return this.lines().iterator();
     }
-
-    @Override
-    AbstractYamlLines nested(final int after) {
-        final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
-        YamlLine start = null;
-        for(final YamlLine line : this.lines) {
-            if(line.number() == after) {
-                start = line;
-            }
-            if(line.number() > after) {
-                if(line.indentation() > start.indentation()) {
-                    nestedLines.add(line);
-                } else {
-                    break;
-                }
-            }
-        }
-        return new RtYamlLines(nestedLines);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        for (final YamlLine line : this.lines) {
-            builder.append(line.toString()).append("\n");
-        }
-        return builder.toString();
-    }
-
-    @Override
-    int count() {
-        return this.lines.size();
-    }
-
-    @Override
-    String indent(final int indentation) {
+    
+    /**
+     * Indent these lines.
+     * @param indentation Spaces to precede each line.
+     * @return String with the pretty-printed, indented lines.
+     * @todo #165:30min Add some integration tests to make sure that all types
+     *  of YAML are printed/indented correctly. It can get a little out of hand
+     *  with the different implementations of YamlLines.iterator() method.
+     */
+    default String indent(final int indentation) {
         final StringBuilder indented = new StringBuilder();
-        final Iterator<YamlLine> linesIt = this.lines.iterator();
+        final Iterator<YamlLine> linesIt = this.lines().iterator();
         if(linesIt.hasNext()) {
             final YamlLine first = linesIt.next();
             if (first.indentation() == indentation) {
@@ -123,7 +90,7 @@ final class RtYamlLines extends AbstractYamlLines {
                 }
             } else {
                 final int offset = indentation - first.indentation();
-                for (final YamlLine line : this.lines) {
+                for (final YamlLine line : this.lines()) {
                     int correct = line.indentation() + offset;
                     while (correct > 0) {
                         indented.append(" ");
@@ -135,6 +102,29 @@ final class RtYamlLines extends AbstractYamlLines {
         }
         return indented.toString();
     }
-
+    
+    /**
+     * Lines which are nested after the given YamlLine (lines which are
+     * <br> indented by 2 or more spaces beneath it).
+     * @param after Number of a YamlLine
+     * @return YamlLines
+     */
+    default AllYamlLines nested(final int after) {
+        final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
+        YamlLine start = null;
+        for(final YamlLine line : this.lines()) {
+            if(line.number() == after) {
+                start = line;
+            }
+            if(line.number() > after) {
+                if(line.indentation() > start.indentation()) {
+                    nestedLines.add(line);
+                } else {
+                    break;
+                }
+            }
+        }
+        return new AllYamlLines(nestedLines);
+    }
 
 }

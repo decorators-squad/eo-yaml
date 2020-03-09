@@ -43,13 +43,13 @@ final class ReadPointedScalar implements YamlNode {
     /**
      * Lines to be represented as a wrapped scalar.
      */
-    private AbstractYamlLines lines;
+    private YamlLines lines;
 
     /**
      * Ctor.
      * @param lines Given lines to represent.
      */
-    ReadPointedScalar(final AbstractYamlLines lines) {
+    ReadPointedScalar(final YamlLines lines) {
         this.lines = lines;
     }
 

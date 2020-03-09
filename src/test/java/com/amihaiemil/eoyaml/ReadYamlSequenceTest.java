@@ -59,8 +59,9 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("    fourth: some", 5));
         lines.add(new RtYamlLine("    key: value", 6));
         final YamlSequence sequence = new ReadYamlSequence(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
+        System.out.println(sequence);
         final YamlMapping alfa = sequence.yamlMapping(2);
         MatcherAssert.assertThat(alfa, Matchers.notNullValue());
         MatcherAssert.assertThat(alfa, Matchers.instanceOf(YamlMapping.class));
@@ -83,8 +84,9 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("- scalar", 3));
         lines.add(new RtYamlLine("- otherScalar", 4));
         final YamlSequence sequence = new ReadYamlSequence(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
+        System.out.println(sequence);
         final YamlSequence devops = sequence.yamlSequence(0);
         MatcherAssert.assertThat(devops, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -104,8 +106,9 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("- rultor", 0));
         lines.add(new RtYamlLine("- 0pdd", 1));
         final YamlSequence devops = new ReadYamlSequence(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
+        System.out.println(devops);
         MatcherAssert.assertThat(devops.string(0), Matchers.equalTo("rultor"));
         MatcherAssert.assertThat(devops.string(1), Matchers.equalTo("0pdd"));
     }
@@ -124,8 +127,9 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("    fourth: some", 5));
         lines.add(new RtYamlLine("    key: value", 6));
         final YamlSequence sequence = new ReadYamlSequence(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
+        System.out.println(sequence);
         MatcherAssert.assertThat(sequence.size(), Matchers.is(3));
     }
 
@@ -143,8 +147,9 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("    fourth: some", 5));
         lines.add(new RtYamlLine("    key: value", 6));
         final YamlSequence seq = new ReadYamlSequence(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
+        System.out.println(seq);
         MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
         MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
     }
@@ -156,7 +161,7 @@ public final class ReadYamlSequenceTest {
     @Test
     public void printsEmptyYaml() throws Exception {
         final YamlSequence sequence = new ReadYamlSequence(
-            new RtYamlLines(new ArrayList<YamlLine>())
+            new AllYamlLines(new ArrayList<YamlLine>())
         );
         MatcherAssert.assertThat(sequence.toString(), Matchers.isEmptyString());
     }

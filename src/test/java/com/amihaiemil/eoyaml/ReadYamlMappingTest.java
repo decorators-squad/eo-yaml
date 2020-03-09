@@ -56,7 +56,8 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  fourth: some", 2));
         lines.add(new RtYamlLine("  fifth: values", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
         final YamlMapping second = map.yamlMapping("second");
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -78,7 +79,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  fourth: some", 2));
         lines.add(new RtYamlLine("  fifth: values", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final Set<YamlNode> keys = map.keys();
         MatcherAssert.assertThat(
             keys, Matchers.not(Matchers.emptyIterable())
@@ -114,7 +115,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": ", 4));
         lines.add(new RtYamlLine("  map: value", 5));
         lines.add(new RtYamlLine("second: something", 6));
-        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final YamlMapping value = map.yamlMapping(key);
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -137,7 +138,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - some", 2));
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final YamlSequence second = map.yamlSequence("second");
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -160,7 +161,8 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  complex2: mapping2", 3));
         lines.add(new RtYamlLine(": value", 4));
         lines.add(new RtYamlLine("second: something", 6));
-        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
         final String value = map.string(key);
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(value, Matchers.equalTo("value"));
@@ -178,7 +180,8 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - some", 2));
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
-        final YamlMapping map = new ReadYamlMapping(new RtYamlLines(lines));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
         final String third = map.string("third");
         MatcherAssert.assertThat(third, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -193,7 +196,7 @@ public final class ReadYamlMappingTest {
     @Test
     public void printsEmptyYaml() throws Exception {
         final YamlMapping map = new ReadYamlMapping(
-            new RtYamlLines(new ArrayList<YamlLine>())
+            new AllYamlLines(new ArrayList<YamlLine>())
         );
         MatcherAssert.assertThat(map.toString(), Matchers.isEmptyString());
     }
