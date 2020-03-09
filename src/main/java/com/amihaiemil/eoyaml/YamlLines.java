@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Iterable yaml lines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: 89cef39c95fd016041b0779a81c6ce25ad9c8e44 $
+ * @version $Id$
  * @since 1.0.0
  */
 interface YamlLines extends Iterable<YamlLine> {

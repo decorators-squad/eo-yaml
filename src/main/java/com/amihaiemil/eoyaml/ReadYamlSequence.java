@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * YamlSequence read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: 5f639f30162909d9510a7013ccbbfa12c5e8175a $
+ * @version $Id$
  * @since 1.0.0
  */
 final class ReadYamlSequence extends ComparableYamlSequence {

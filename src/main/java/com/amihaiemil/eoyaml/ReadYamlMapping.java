@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * YamlMapping read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: 45ce321b60d6fd26daf9a93c6f6d860253ad190f $
+ * @version $Id$
  * @since 1.0.0
  */
 final class ReadYamlMapping extends ComparableYamlMapping {
