@@ -74,7 +74,7 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("    - fifth", 2));
         lines.add(new RtYamlLine("  second: something", 3));
         lines.add(new RtYamlLine("  third: somethingElse", 4));
-        final AbstractYamlLines yaml = new RtYamlLines(lines);
+        final YamlLines yaml = new RtYamlLines(lines);
         String expected = "first:\n"
             + "  - fourth\n"
             + "  - fifth\n"
@@ -95,7 +95,7 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("second: something", 3));
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
-        AbstractYamlLines yamlLines = new RtYamlLines(lines);
+        YamlLines yamlLines = new RtYamlLines(lines);
 
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));

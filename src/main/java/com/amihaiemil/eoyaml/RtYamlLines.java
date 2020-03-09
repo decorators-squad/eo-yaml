@@ -38,7 +38,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0.0
  */
-final class RtYamlLines extends AbstractYamlLines {
+final class RtYamlLines implements YamlLines {
 
     /**
      * Yaml lines.
@@ -78,7 +78,7 @@ final class RtYamlLines extends AbstractYamlLines {
     }
 
     @Override
-    AbstractYamlLines nested(final int after) {
+    public YamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
         for(final YamlLine line : this.lines) {
@@ -106,12 +106,12 @@ final class RtYamlLines extends AbstractYamlLines {
     }
 
     @Override
-    int count() {
+    public int count() {
         return this.lines.size();
     }
 
     @Override
-    String indent(final int indentation) {
+    public String indent(final int indentation) {
         final StringBuilder indented = new StringBuilder();
         final Iterator<YamlLine> linesIt = this.lines.iterator();
         if(linesIt.hasNext()) {

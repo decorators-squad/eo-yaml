@@ -43,13 +43,13 @@ final class ReadYamlSequence extends ComparableYamlSequence {
     /**
      * Lines read.
      */
-    private AbstractYamlLines lines;
+    private YamlLines lines;
 
     /**
      * Ctor.
      * @param lines Given lines.
      */
-    ReadYamlSequence(final AbstractYamlLines lines) {
+    ReadYamlSequence(final YamlLines lines) {
         this.lines = lines;
     }
 

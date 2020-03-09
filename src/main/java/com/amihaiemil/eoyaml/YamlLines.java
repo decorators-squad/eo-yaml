@@ -33,7 +33,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlLines implements Iterable<YamlLine> {
+interface YamlLines extends Iterable<YamlLine> {
 
     /**
      * Lines which are nested after the given YamlLine (lines which are
@@ -41,20 +41,20 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
      * @param after Number of a YamlLine
      * @return YamlLines
      */
-    abstract AbstractYamlLines nested(final int after);
+    YamlLines nested(final int after);
 
     /**
      * Number of lines.
      * @return Integer.
      */
-    abstract int count();
+    int count();
 
     /**
      * Indent these lines.
      * @param indentation Spaces to precede each line.
      * @return String with the pretty-printed, indented lines.
      */
-    abstract String indent(int indentation);
+    String indent(int indentation);
 
     /**
      * Turn these lines into a YamlNode.
@@ -63,7 +63,7 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
      * @todo #107:30min/DEV Add more tests to cover all the nested node
      *  possibilities.
      */
-    YamlNode toYamlNode(final YamlLine prev) {
+    default YamlNode toYamlNode(final YamlLine prev) {
         final String trimmed = prev.trimmed();
         final String last = trimmed.substring(trimmed.length()-1);
         final YamlNode node;

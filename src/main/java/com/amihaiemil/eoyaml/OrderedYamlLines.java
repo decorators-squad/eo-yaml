@@ -41,18 +41,18 @@ import java.util.TreeMap;
  * @version $Id$
  * @since 1.0.0
  */
-final class OrderedYamlLines extends AbstractYamlLines {
+final class OrderedYamlLines implements YamlLines {
 
     /**
      * Lines to order.
      */
-    private AbstractYamlLines unordered;
+    private YamlLines unordered;
 
     /**
      * Ctor.
      * @param unordered Decorated lines.
      */
-    OrderedYamlLines(final AbstractYamlLines unordered) {
+    OrderedYamlLines(final YamlLines unordered) {
         this.unordered = unordered;
     }
 
@@ -101,17 +101,17 @@ final class OrderedYamlLines extends AbstractYamlLines {
      * @param after The number of the parent line
      */
     @Override
-    AbstractYamlLines nested(final int after) {
+    public YamlLines nested(final int after) {
         return this.unordered.nested(after);
     }
 
     @Override
-    int count() {
+    public int count() {
         return this.unordered.count();
     }
 
     @Override
-    String indent(final int indentation) {
+    public String indent(final int indentation) {
         final StringBuilder indented = new StringBuilder();
         final Iterator<YamlLine> linesIt = this.iterator();
         if(linesIt.hasNext()) {

@@ -42,13 +42,13 @@ final class ReadPipeScalar implements YamlNode {
     /**
      * Lines to be represented as a wrapped scalar.
      */
-    private AbstractYamlLines lines;
+    private YamlLines lines;
 
     /**
      * Ctor.
      * @param lines Given lines to represent.
      */
-    ReadPipeScalar(final AbstractYamlLines lines) {
+    ReadPipeScalar(final YamlLines lines) {
         this.lines = lines;
     }
 

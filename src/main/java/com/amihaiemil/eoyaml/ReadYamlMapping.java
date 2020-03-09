@@ -44,13 +44,13 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     /**
      * Lines read.
      */
-    private AbstractYamlLines lines;
+    private YamlLines lines;
 
     /**
      * Ctor.
      * @param lines Given lines.
      */
-    ReadYamlMapping(final AbstractYamlLines lines) {
+    ReadYamlMapping(final YamlLines lines) {
         this.lines = lines;
     }
 
@@ -186,7 +186,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final AbstractYamlLines keyLines = this.lines.nested(
+                final YamlLines keyLines = this.lines.nested(
                     line.number()
                 );
                 final YamlNode keyNode = keyLines.toYamlNode(line);
