@@ -27,43 +27,54 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
+
 /**
- * Iterable yaml lines.
+ * YamlLines default implementation. "All" refers to the fact that
+ * we iterate over all of them, irrespective of indentation. There
+ * are cases where we need to iterate only over the lines which are
+ * at the same indentation level and for that we use the decorator
+ * {@link SameIndentationLevel}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-abstract class AbstractYamlLines implements Iterable<YamlLine> {
+final class AllYamlLines implements YamlLines {
 
     /**
-     * Lines which are nested after the given YamlLine (lines which are
-     * <br> indented by 2 or more spaces beneath it).
-     * @param after Number of a YamlLine
-     * @return YamlLines
+     * Yaml lines.
      */
-    abstract AbstractYamlLines nested(final int after);
+    private Collection<YamlLine> lines;
 
     /**
-     * Number of lines.
-     * @return Integer.
+     * Ctor.
+     * @param lines Yaml lines collection.
      */
-    abstract int count();
+    AllYamlLines(final Collection<YamlLine> lines) {
+        this.lines = lines;
+    }
 
-    /**
-     * Indent these lines.
-     * @param indentation Spaces to precede each line.
-     * @return String with the pretty-printed, indented lines.
-     */
-    abstract String indent(int indentation);
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        for (final YamlLine line : this.lines) {
+            builder.append(line.toString()).append("\n");
+        }
+        return builder.toString();
+    }
 
-    /**
-     * Turn these lines into a YamlNode.
-     * @param prev Previous YamlLine
-     * @return YamlNode
-     * @todo #107:30min/DEV Add more tests to cover all the nested node
-     *  possibilities.
-     */
-    YamlNode toYamlNode(final YamlLine prev) {
+    @Override
+    public Collection<YamlLine> lines() {
+        return this.lines;
+    }
+    
+    @Override
+    public int count() {
+        return this.lines.size();
+    }
+
+    @Override
+    public YamlNode toYamlNode(final YamlLine prev) {
         final String trimmed = prev.trimmed();
         final String last = trimmed.substring(trimmed.length()-1);
         final YamlNode node;
@@ -113,5 +124,5 @@ abstract class AbstractYamlLines implements Iterable<YamlLine> {
         }
         return node;
     }
-
+    
 }

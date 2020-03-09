@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * YamlMapping read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 45ce321b60d6fd26daf9a93c6f6d860253ad190f $
  * @since 1.0.0
  */
 final class ReadYamlMapping extends ComparableYamlMapping {
@@ -44,27 +44,26 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     /**
      * Lines read.
      */
-    private AbstractYamlLines lines;
+    private YamlLines lines;
 
     /**
      * Ctor.
      * @param lines Given lines.
      */
-    ReadYamlMapping(final AbstractYamlLines lines) {
-        this.lines = lines;
+    ReadYamlMapping(final AllYamlLines lines) {
+        this.lines = new SameIndentationLevel((AllYamlLines) lines);
     }
 
     @Override
     public Collection<YamlNode> children() {
         final List<YamlNode> kids = new LinkedList<>();
-        final OrderedYamlLines ordered = new OrderedYamlLines(this.lines);
-        for (final YamlLine line : ordered) {
+        for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed) || ":".equals(trimmed)) {
                 continue;
             } else {
                 if(trimmed.endsWith(":")) {
-                    kids.add(ordered.nested(line.number()).toYamlNode(line));
+                    kids.add(this.lines.nested(line.number()).toYamlNode(line));
                 } else {
                     final String[] parts = trimmed.split(":");
                     if(parts.length < 2) {
@@ -147,7 +146,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public String indent(final int indentation) {
-        return new OrderedYamlLines(this.lines).indent(indentation);
+        return this.lines.indent(indentation);
     }
 
     /**
@@ -186,7 +185,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final AbstractYamlLines keyLines = this.lines.nested(
+                final YamlLines keyLines = this.lines.nested(
                     line.number()
                 );
                 final YamlNode keyNode = keyLines.toYamlNode(line);
