@@ -61,9 +61,9 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-	public Collection<YamlLine> lines() {
-		return this.lines;
-	}
+    public Collection<YamlLine> lines() {
+        return this.lines;
+    }
     
     @Override
     public int count() {

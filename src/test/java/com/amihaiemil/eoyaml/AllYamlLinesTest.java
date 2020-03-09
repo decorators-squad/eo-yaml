@@ -41,7 +41,7 @@ import org.junit.Test;
  * @version $Id$
  * @sinve 1.0.0
  */
-public final class RtYamlLinesTest {
+public final class AllYamlLinesTest {
 
     /**
      * RtYamlLines can iterate over the lines properly.
@@ -58,6 +58,8 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("third: somethingElse", 4));
         final Iterator<YamlLine> iterator = new AllYamlLines(lines).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));
+        MatcherAssert.assertThat(iterator.next().number(), Matchers.is(2));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
         MatcherAssert.assertThat(iterator.hasNext(), Matchers.is(false));
