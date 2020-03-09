@@ -30,8 +30,11 @@ package com.amihaiemil.eoyaml;
 import java.util.Collection;
 
 /**
- * YamlLines default implementation. It handles ALL the given lines, doesn't
- * jump over or alter them in any way.
+ * YamlLines default implementation. "All" refers to the fact that
+ * we iterate over all of them, irrespective of indentation. There
+ * are cases where we need to iterate only over the lines which are
+ * at the same indentation level and for that we use the decorator
+ * {@link SameIndentationLevel}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
