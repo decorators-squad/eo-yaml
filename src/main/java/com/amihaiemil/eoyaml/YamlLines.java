@@ -74,10 +74,13 @@ interface YamlLines extends Iterable<YamlLine> {
      * Indent these lines.
      * @param indentation Spaces to precede each line.
      * @return String with the pretty-printed, indented lines.
+     * @todo #165:30min Add some integration tests to make sure that all types
+     *  of YAML are printed/indented correctly. It can get a little out of hand
+     *  with the different implementations of YamlLines.iterator() method.
      */
     default String indent(final int indentation) {
         final StringBuilder indented = new StringBuilder();
-        final Iterator<YamlLine> linesIt = this.iterator();
+        final Iterator<YamlLine> linesIt = this.lines().iterator();
         if(linesIt.hasNext()) {
             final YamlLine first = linesIt.next();
             if (first.indentation() == indentation) {

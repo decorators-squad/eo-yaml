@@ -57,6 +57,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  fifth: values", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
         final YamlMapping second = map.yamlMapping("second");
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -161,6 +162,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": value", 4));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
         final String value = map.string(key);
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(value, Matchers.equalTo("value"));
@@ -179,6 +181,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
         final String third = map.string("third");
         MatcherAssert.assertThat(third, Matchers.notNullValue());
         MatcherAssert.assertThat(

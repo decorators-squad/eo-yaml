@@ -61,6 +61,7 @@ public final class ReadYamlSequenceTest {
         final YamlSequence sequence = new ReadYamlSequence(
             new AllYamlLines(lines)
         );
+        System.out.println(sequence);
         final YamlMapping alfa = sequence.yamlMapping(2);
         MatcherAssert.assertThat(alfa, Matchers.notNullValue());
         MatcherAssert.assertThat(alfa, Matchers.instanceOf(YamlMapping.class));
@@ -85,6 +86,7 @@ public final class ReadYamlSequenceTest {
         final YamlSequence sequence = new ReadYamlSequence(
             new AllYamlLines(lines)
         );
+        System.out.println(sequence);
         final YamlSequence devops = sequence.yamlSequence(0);
         MatcherAssert.assertThat(devops, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -106,6 +108,7 @@ public final class ReadYamlSequenceTest {
         final YamlSequence devops = new ReadYamlSequence(
             new AllYamlLines(lines)
         );
+        System.out.println(devops);
         MatcherAssert.assertThat(devops.string(0), Matchers.equalTo("rultor"));
         MatcherAssert.assertThat(devops.string(1), Matchers.equalTo("0pdd"));
     }
@@ -126,6 +129,7 @@ public final class ReadYamlSequenceTest {
         final YamlSequence sequence = new ReadYamlSequence(
             new AllYamlLines(lines)
         );
+        System.out.println(sequence);
         MatcherAssert.assertThat(sequence.size(), Matchers.is(3));
     }
 
@@ -145,6 +149,7 @@ public final class ReadYamlSequenceTest {
         final YamlSequence seq = new ReadYamlSequence(
             new AllYamlLines(lines)
         );
+        System.out.println(seq);
         MatcherAssert.assertThat(seq, Matchers.not(Matchers.emptyIterable()));
         MatcherAssert.assertThat(seq, Matchers.iterableWithSize(3));
     }
