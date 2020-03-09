@@ -58,7 +58,7 @@ public final class OrderedYamlLinesTest {
         lines.add(new RtYamlLine("bay: something", 3));
         lines.add(new RtYamlLine("alba: somethingElse", 4));
         final Iterator<YamlLine> iterator = new OrderedYamlLines(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         ).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
@@ -82,7 +82,7 @@ public final class OrderedYamlLinesTest {
         lines.add(new RtYamlLine("  key: value", 4));
         lines.add(new RtYamlLine("- scalar", 5));
         final YamlLines yaml = new OrderedYamlLines(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
         final Iterator<YamlLine> iterator = yaml.iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(5));
@@ -104,7 +104,7 @@ public final class OrderedYamlLinesTest {
         lines.add(new RtYamlLine("bear: something", 3));
         lines.add(new RtYamlLine("fox: somethingElse", 4));
         final YamlLines yaml = new OrderedYamlLines(
-            new RtYamlLines(lines)
+            new AllYamlLines(lines)
         );
         String expected = "bear: something\n"
             + "fish: \n"
@@ -127,7 +127,7 @@ public final class OrderedYamlLinesTest {
         lines.add(new RtYamlLine("second: something", 3));
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
-        YamlLines yamlLines = new RtYamlLines(lines);
+        YamlLines yamlLines = new AllYamlLines(lines);
 
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));

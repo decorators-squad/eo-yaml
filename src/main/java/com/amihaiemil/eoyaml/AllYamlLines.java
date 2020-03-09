@@ -33,12 +33,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * YamlLines default implementation.
+ * YamlLines default implementation. It handles ALL the given lines, doesn't
+ * jump over or alter them in any way.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
-final class RtYamlLines implements YamlLines {
+final class AllYamlLines implements YamlLines {
 
     /**
      * Yaml lines.
@@ -49,7 +50,7 @@ final class RtYamlLines implements YamlLines {
      * Ctor.
      * @param lines Yaml lines collection.
      */
-    RtYamlLines(final Collection<YamlLine> lines) {
+    AllYamlLines(final Collection<YamlLine> lines) {
         this.lines = lines;
     }
 
@@ -78,25 +79,6 @@ final class RtYamlLines implements YamlLines {
     }
 
     @Override
-    public YamlLines nested(final int after) {
-        final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
-        YamlLine start = null;
-        for(final YamlLine line : this.lines) {
-            if(line.number() == after) {
-                start = line;
-            }
-            if(line.number() > after) {
-                if(line.indentation() > start.indentation()) {
-                    nestedLines.add(line);
-                } else {
-                    break;
-                }
-            }
-        }
-        return new RtYamlLines(nestedLines);
-    }
-
-    @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         for (final YamlLine line : this.lines) {
@@ -105,6 +87,11 @@ final class RtYamlLines implements YamlLines {
         return builder.toString();
     }
 
+    @Override
+	public Collection<YamlLine> lines() {
+		return this.lines;
+	}
+    
     @Override
     public int count() {
         return this.lines.size();
@@ -135,6 +122,5 @@ final class RtYamlLines implements YamlLines {
         }
         return indented.toString();
     }
-
 
 }

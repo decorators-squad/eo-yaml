@@ -98,6 +98,6 @@ final class RtYamlInput implements YamlInput {
                 }
             }
         }
-        return new RtYamlLines(lines);
+        return new AllYamlLines(lines);
     }
 }

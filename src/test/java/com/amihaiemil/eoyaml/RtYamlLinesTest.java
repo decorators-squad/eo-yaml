@@ -36,7 +36,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link RtYamlLines}.
+ * Unit tests for {@link AllYamlLines}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @sinve 1.0.0
@@ -56,7 +56,7 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("  - fifth", 2));
         lines.add(new RtYamlLine("second: something", 3));
         lines.add(new RtYamlLine("third: somethingElse", 4));
-        final Iterator<YamlLine> iterator = new RtYamlLines(lines).iterator();
+        final Iterator<YamlLine> iterator = new AllYamlLines(lines).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(0));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(3));
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(4));
@@ -74,7 +74,7 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("    - fifth", 2));
         lines.add(new RtYamlLine("  second: something", 3));
         lines.add(new RtYamlLine("  third: somethingElse", 4));
-        final YamlLines yaml = new RtYamlLines(lines);
+        final YamlLines yaml = new AllYamlLines(lines);
         String expected = "first:\n"
             + "  - fourth\n"
             + "  - fifth\n"
@@ -95,7 +95,7 @@ public final class RtYamlLinesTest {
         lines.add(new RtYamlLine("second: something", 3));
         lines.add(new RtYamlLine("third: somethingElse", 4));
         lines.add(new RtYamlLine("  - sixth", 5));
-        YamlLines yamlLines = new RtYamlLines(lines);
+        YamlLines yamlLines = new AllYamlLines(lines);
 
         Iterator<YamlLine> iterator = yamlLines.nested(0).iterator();
         MatcherAssert.assertThat(iterator.next().number(), Matchers.is(1));

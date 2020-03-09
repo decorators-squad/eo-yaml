@@ -54,7 +54,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadPipeScalar scalar =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.children(), Matchers.emptyIterable()
         );
@@ -70,7 +70,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadPipeScalar scalar =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
             Matchers.is("First Line.\nSecond Line.\nThird Line.")
@@ -87,7 +87,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadPipeScalar scalar =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         RtYamlMapping map = new RtYamlMapping(
             new HashMap<YamlNode, YamlNode>()
         );
@@ -104,7 +104,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadPipeScalar scalar =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(scalar.compareTo(seq), Matchers.lessThan(0));
     }
@@ -117,7 +117,7 @@ public final class ReadPipeScalarTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
         final ReadPipeScalar pipeScalar =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         final Scalar scalar = new Scalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
@@ -130,9 +130,9 @@ public final class ReadPipeScalarTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
         final ReadPipeScalar first =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         final ReadPipeScalar second =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.is(0));
     }
 
@@ -146,7 +146,7 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadPipeScalar scalar =
-            new ReadPipeScalar(new RtYamlLines(lines));
+            new ReadPipeScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
             Matchers.is("    First Line.\n    Second Line.\n    Third Line.")

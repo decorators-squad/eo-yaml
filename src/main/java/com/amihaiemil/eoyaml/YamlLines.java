@@ -27,6 +27,11 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Iterable yaml lines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -36,13 +41,11 @@ package com.amihaiemil.eoyaml;
 interface YamlLines extends Iterable<YamlLine> {
 
     /**
-     * Lines which are nested after the given YamlLine (lines which are
-     * <br> indented by 2 or more spaces beneath it).
-     * @param after Number of a YamlLine
-     * @return YamlLines
+     * All the YAML lines, as a collection.
+     * @return These YamlLines as a Collection.
      */
-    YamlLines nested(final int after);
-
+    Collection<YamlLine> lines();
+    
     /**
      * Number of lines.
      * @return Integer.
@@ -56,6 +59,40 @@ interface YamlLines extends Iterable<YamlLine> {
      */
     String indent(int indentation);
 
+    /**
+     * Default iterator which doesn't skip any line,
+     * iterates over all of them.
+     * @return Iterator of YamlLine.
+     */
+    default Iterator<YamlLine> iterator() {
+        return this.lines().iterator();
+    }
+    
+    /**
+     * Lines which are nested after the given YamlLine (lines which are
+     * <br> indented by 2 or more spaces beneath it).
+     * @param after Number of a YamlLine
+     * @return YamlLines
+     */
+    default YamlLines nested(final int after) {
+        final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
+        YamlLine start = null;
+        for(final YamlLine line : this.lines()) {
+            if(line.number() == after) {
+                start = line;
+            }
+            if(line.number() > after) {
+                if(line.indentation() > start.indentation()) {
+                    nestedLines.add(line);
+                } else {
+                    break;
+                }
+            }
+        }
+        return new AllYamlLines(nestedLines);
+    }
+    
+    
     /**
      * Turn these lines into a YamlNode.
      * @param prev Previous YamlLine

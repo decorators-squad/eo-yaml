@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -149,5 +150,10 @@ final class OrderedYamlLines implements YamlLines {
             indented.append(nested.indent(indentation + offset));
         }
         return indented.toString();
+    }
+
+    @Override
+    public Collection<YamlLine> lines() {
+        return this.unordered.lines();
     }
 }
