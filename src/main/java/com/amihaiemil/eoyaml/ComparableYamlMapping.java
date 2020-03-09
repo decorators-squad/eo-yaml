@@ -79,7 +79,7 @@ abstract class ComparableYamlMapping implements YamlMapping {
      *
      * A Mapping is always considered greater than a Scalar or a Sequence.<br>
      *
-     * If o is a Mapping, their integer lengths are compared - the one with
+     * If other is a Mapping, their integer lengths are compared - the one with
      * the greater length is considered greater. If the lengths are equal,
      * then the 2 Mappings are equal if all elements are equal (K==K and V==V).
      * If the elements are not identical, the comparison of the first unequal
@@ -89,9 +89,9 @@ abstract class ComparableYamlMapping implements YamlMapping {
      * @checkstyle NestedIfDepth (100 lines)
      * @checkstyle ExecutableStatementCount (100 lines)
      * @return
-     *   a value &lt; 0 if this &lt; o <br>
-     *   0 if this == o or <br>
-     *   a value &gt; 0 if this &gt; o
+     *   a value &lt; 0 if this &lt; other <br>
+     *   0 if this == other or <br>
+     *   a value &gt; 0 if this &gt; other
      */
     @Override
     public int compareTo(final YamlNode other) {
