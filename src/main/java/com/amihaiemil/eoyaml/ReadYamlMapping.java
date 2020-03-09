@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * YamlMapping read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 45ce321b60d6fd26daf9a93c6f6d860253ad190f $
  * @since 1.0.0
  */
 final class ReadYamlMapping extends ComparableYamlMapping {
@@ -50,7 +50,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
      * Ctor.
      * @param lines Given lines.
      */
-    ReadYamlMapping(final YamlLines lines) {
+    ReadYamlMapping(final AllYamlLines lines) {
         this.lines = new SameIndentationLevel((AllYamlLines) lines);
     }
 

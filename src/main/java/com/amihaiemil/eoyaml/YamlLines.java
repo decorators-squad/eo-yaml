@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Iterable yaml lines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 89cef39c95fd016041b0779a81c6ce25ad9c8e44 $
  * @since 1.0.0
  */
 interface YamlLines extends Iterable<YamlLine> {
@@ -109,7 +109,7 @@ interface YamlLines extends Iterable<YamlLine> {
      * @param after Number of a YamlLine
      * @return YamlLines
      */
-    default YamlLines nested(final int after) {
+    default AllYamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
         for(final YamlLine line : this.lines()) {
