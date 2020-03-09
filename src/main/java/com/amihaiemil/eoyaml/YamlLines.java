@@ -53,6 +53,15 @@ interface YamlLines extends Iterable<YamlLine> {
     int count();
 
     /**
+     * Turn these lines into a YamlNode.
+     * @param prev Previous YamlLine
+     * @return YamlNode
+     * @todo #107:30min/DEV Add more tests to cover all the nested node
+     *  possibilities.
+     */
+    YamlNode toYamlNode(final YamlLine prev);
+    
+    /**
      * Default iterator which doesn't skip any line,
      * iterates over all of them.
      * @return Iterator of YamlLine.
@@ -97,7 +106,7 @@ interface YamlLines extends Iterable<YamlLine> {
      * @param after Number of a YamlLine
      * @return YamlLines
      */
-    default AllYamlLines nested(final int after) {
+    default YamlLines nested(final int after) {
         final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
         YamlLine start = null;
         for(final YamlLine line : this.lines()) {
@@ -113,65 +122,6 @@ interface YamlLines extends Iterable<YamlLine> {
             }
         }
         return new AllYamlLines(nestedLines);
-    }
-    
-    
-    /**
-     * Turn these lines into a YamlNode.
-     * @param prev Previous YamlLine
-     * @return YamlNode
-     * @todo #107:30min/DEV Add more tests to cover all the nested node
-     *  possibilities.
-     */
-    default YamlNode toYamlNode(final YamlLine prev) {
-        final String trimmed = prev.trimmed();
-        final String last = trimmed.substring(trimmed.length()-1);
-        final YamlNode node;
-        switch (last) {
-            case Nested.YAML:
-                final boolean sequence = this.iterator()
-                    .next().trimmed().startsWith("-");
-                if(sequence) {
-                    node = new ReadYamlSequence(this);
-                } else {
-                    node = new ReadYamlMapping(this);
-                }
-                break;
-            case Nested.KEY_YAML:
-                final boolean sequenceKey = this.iterator()
-                    .next().trimmed().startsWith("-");
-                if(sequenceKey) {
-                    node = new ReadYamlSequence(this);
-                } else {
-                    node = new ReadYamlMapping(this);
-                }
-                break;
-            case Nested.SEQUENCE:
-                if(trimmed.length() == 1) {
-                    final boolean elementSequence = this.iterator()
-                        .next().trimmed().startsWith("-");
-                    if(elementSequence) {
-                        node = new ReadYamlSequence(this);
-                    } else {
-                        node = new ReadYamlMapping(this);
-                    }
-                } else {
-                    node = new ReadYamlSequence(this);
-                }
-                break;
-            case Nested.PIPED_SCALAR:
-                node = new ReadPipeScalar(this);
-                break;
-            case Nested.POINTED_SCALAR:
-                node = new ReadPointedScalar(this);
-                break;
-            default:
-                throw new IllegalStateException(
-                    "No nested Yaml node after line " + prev.number()
-                    + " which has [" + last + "] character at the end"
-                );
-        }
-        return node;
     }
 
 }
