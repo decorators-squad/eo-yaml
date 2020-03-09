@@ -31,10 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -156,38 +154,38 @@ public final class ReadPointedScalarTest {
     }
 
     /**
-     * ReadPointedScalar can return value when line has different indentation.
+     * ReadPointedScalar works with Spec Example 2.15:
+     * Folded newlines are preserved for "more indented"
+     * and blank lines.
      */
     @Test
-    //@Ignore
-    public void returnsValueWithSeveralIndentation() {
+    public void preservesFoldedNewlinesAndBlankLines() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Sammy Sosa completed another", 1));
         lines.add(new RtYamlLine("fine season with great stats.", 2));
-        lines.add(new RtYamlLine("\n", 3));
+        lines.add(new RtYamlLine("", 3));
         lines.add(new RtYamlLine("  63 Home Runs", 4));
         lines.add(new RtYamlLine("  75 Hits", 5));
-        lines.add(new RtYamlLine("\n", 6));
+        lines.add(new RtYamlLine("", 6));
         lines.add(new RtYamlLine("What a year!", 7));
         final ReadPointedScalar scalar =
             new ReadPointedScalar(new AllYamlLines(lines));
-        System.out.println(scalar);
-        System.out.println("----");
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.is("Sammy Sosa completed another fine season with great stats.\n\n  63 Home Runs\n  75 Hits\n\nWhat a year!"
+            Matchers.is(
+                "Sammy Sosa completed another "
+                + "fine season with great stats.\n\n"
+                + "  63 Home Runs\n"
+                + "  75 Hits\n\n"
+                + "What a year!"
             )
-//            Matchers.is("Sammy Sosa completed another"
-//                + " fine season with great stats.\n"
-//                + "\n  63 Home Runs\nWhat a year!"
-//            )
         );
     }
     /**
-     * ReadPointedScalar can indent lines with no indentation.
+     * ReadPointedScalar can indent a simple folded scalar.
      */
     @Test
-    public void indentsValueWithNoIndentation() {
+    public void indentsFoldedValue() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Mark McGwire's", 1));
         lines.add(new RtYamlLine("year was crippled", 2));
@@ -201,24 +199,26 @@ public final class ReadPointedScalarTest {
     }
 
     /**
-     * ReadPointedScalar can indent lines with different indentation.
+     * ReadPointedScalar can indent a scalar with
+     * preserved folded newlines and blank lines.
      */
     @Test
-    //@Ignore
-    public void indentsValueWithDifferentIndentation() {
+    public void indentsFoldedNewlinesAndBlankLines() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Sammy Sosa completed another", 1));
         lines.add(new RtYamlLine("fine season with great stats.", 2));
-        lines.add(new RtYamlLine("\n", 3));
+        lines.add(new RtYamlLine("", 3));
         lines.add(new RtYamlLine("  63 Home Runs", 4));
         lines.add(new RtYamlLine("What a year!", 5));
         final ReadPointedScalar scalar =
             new ReadPointedScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
-            Matchers.is("    Sammy Sosa completed another"
-                + " fine season with great stats.\n"
-                + "\n      63 Home Runs\n    What a year!"
+            Matchers.is(
+                "    Sammy Sosa completed another "
+                + "fine season with great stats.\n\n"
+                + "      63 Home Runs\n"
+                + "    What a year!"
             )
         );
     }
