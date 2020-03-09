@@ -137,10 +137,12 @@ public final class ReadPointedScalarTest {
     }
 
     /**
-     * ReadPointedScalar can return value when all lines has no indentation.
+     * ReadPointedScalar ignores first newline ("folded value"), and
+     * returns the lines as a single sentence. See Example 2.14:
+     * In the folded scalars, newlines become spaces
      */
     @Test
-    public void returnsValueWithNoIndentation() {
+    public void returnsFoldedValue() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Mark McGwire's", 1));
         lines.add(new RtYamlLine("year was crippled", 2));
@@ -157,22 +159,28 @@ public final class ReadPointedScalarTest {
      * ReadPointedScalar can return value when line has different indentation.
      */
     @Test
-    @Ignore
+    //@Ignore
     public void returnsValueWithSeveralIndentation() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Sammy Sosa completed another", 1));
         lines.add(new RtYamlLine("fine season with great stats.", 2));
         lines.add(new RtYamlLine("\n", 3));
         lines.add(new RtYamlLine("  63 Home Runs", 4));
-        lines.add(new RtYamlLine("What a year!", 5));
+        lines.add(new RtYamlLine("  75 Hits", 5));
+        lines.add(new RtYamlLine("\n", 6));
+        lines.add(new RtYamlLine("What a year!", 7));
         final ReadPointedScalar scalar =
-            new ReadPointedScalar(new RtYamlLines(lines));
+            new ReadPointedScalar(new RtYamlLines(lines, Boolean.FALSE));
+        System.out.println(scalar);
+        System.out.println("----");
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.is("Sammy Sosa completed another"
-                + " fine season with great stats.\n"
-                + "\n  63 Home Runs\nWhat a year!"
+            Matchers.is("Sammy Sosa completed another fine season with great stats.\n\n  63 Home Runs\n  75 Hits\n\nWhat a year!"
             )
+//            Matchers.is("Sammy Sosa completed another"
+//                + " fine season with great stats.\n"
+//                + "\n  63 Home Runs\nWhat a year!"
+//            )
         );
     }
     /**
@@ -196,7 +204,7 @@ public final class ReadPointedScalarTest {
      * ReadPointedScalar can indent lines with different indentation.
      */
     @Test
-    @Ignore
+    //@Ignore
     public void indentsValueWithDifferentIndentation() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Sammy Sosa completed another", 1));
