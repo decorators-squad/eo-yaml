@@ -27,11 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * YAML mapping implementation (rt means runtime).
@@ -158,7 +154,7 @@ final class RtYamlMapping extends ComparableYamlMapping {
 
     @Override
     public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new HashSet<>();
+        final Set<YamlNode> keys = new TreeSet<>();
         keys.addAll(this.mappings.keySet());
         return keys;
     }
