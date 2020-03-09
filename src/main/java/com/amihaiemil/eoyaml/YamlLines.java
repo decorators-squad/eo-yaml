@@ -132,18 +132,18 @@ interface YamlLines extends Iterable<YamlLine> {
                 final boolean sequence = this.iterator()
                     .next().trimmed().startsWith("-");
                 if(sequence) {
-                    node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
+                    node = new ReadYamlSequence(this);
                 } else {
-                    node = new ReadYamlMapping(new SameIndentationLevel((AllYamlLines) this));
+                    node = new ReadYamlMapping(this);
                 }
                 break;
             case Nested.KEY_YAML:
                 final boolean sequenceKey = this.iterator()
                     .next().trimmed().startsWith("-");
                 if(sequenceKey) {
-                    node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
+                    node = new ReadYamlSequence(this);
                 } else {
-                    node = new ReadYamlMapping(new SameIndentationLevel((AllYamlLines) this));
+                    node = new ReadYamlMapping(this);
                 }
                 break;
             case Nested.SEQUENCE:
@@ -151,12 +151,12 @@ interface YamlLines extends Iterable<YamlLine> {
                     final boolean elementSequence = this.iterator()
                         .next().trimmed().startsWith("-");
                     if(elementSequence) {
-                        node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
+                        node = new ReadYamlSequence(this);
                     } else {
-                        node = new ReadYamlMapping(new SameIndentationLevel((AllYamlLines) this));
+                        node = new ReadYamlMapping(this);
                     }
                 } else {
-                    node = new ReadYamlSequence(new SameIndentationLevel((AllYamlLines) this));
+                    node = new ReadYamlSequence(this);
                 }
                 break;
             case Nested.PIPED_SCALAR:
