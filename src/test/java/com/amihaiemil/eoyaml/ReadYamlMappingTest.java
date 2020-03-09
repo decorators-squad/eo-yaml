@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -69,33 +70,35 @@ public final class ReadYamlMappingTest {
     }
 
     /**
-     * ReadYamlMapping can return its keys.
+     * ReadYamlMapping can return its keys. The keys should
+     * be ordered.
      */
     @Test
-    public void returnsKeys(){
+    public void returnsOrderedKeys(){
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("first: somethingElse", 0));
-        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("zkey: somethingElse", 0));
+        lines.add(new RtYamlLine("bkey: ", 1));
         lines.add(new RtYamlLine("  fourth: some", 2));
         lines.add(new RtYamlLine("  fifth: values", 3));
-        lines.add(new RtYamlLine("third: something", 4));
+        lines.add(new RtYamlLine("akey: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final Set<YamlNode> keys = map.keys();
         MatcherAssert.assertThat(
             keys, Matchers.not(Matchers.emptyIterable())
         );
         MatcherAssert.assertThat(keys.size(), Matchers.equalTo(3));
+        final Iterator<YamlNode> iterator = keys.iterator();
         MatcherAssert.assertThat(
-            keys.contains(new Scalar("first")),
-            Matchers.is(Boolean.TRUE)
+            iterator.next(),
+            Matchers.equalTo(new Scalar("akey"))
         );
         MatcherAssert.assertThat(
-            keys.contains(new Scalar("second")),
-            Matchers.is(Boolean.TRUE)
+            iterator.next(),
+            Matchers.equalTo(new Scalar("bkey"))
         );
         MatcherAssert.assertThat(
-            keys.contains(new Scalar("third")),
-            Matchers.is(Boolean.TRUE)
+            iterator.next(),
+            Matchers.equalTo(new Scalar("zkey"))
         );
     }
 

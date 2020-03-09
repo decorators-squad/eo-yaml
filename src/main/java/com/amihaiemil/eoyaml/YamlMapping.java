@@ -86,7 +86,8 @@ public interface YamlMapping extends YamlNode {
     String string(final YamlNode key);
 
     /**
-     * Return the keys' set of this mapping.
+     * Return the keys' set of this mapping.<br><br>
+     * <b>Pay attention: </b> the keys are ordered.
      * @return Set of YamlNode keys.
      */
     Set<YamlNode> keys();

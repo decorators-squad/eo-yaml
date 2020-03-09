@@ -27,11 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * YamlMapping read from somewhere.
@@ -208,7 +204,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new HashSet<>();
+        final Set<YamlNode> keys = new TreeSet<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if(":".equals(trimmed)) {
