@@ -40,9 +40,20 @@ public interface YamlNode extends Comparable<YamlNode> {
 
     /**
      * Fetch the child nodes of this node.
+     * @deprecated Please use method values() instead. It does
+     *  exactly the same thing, it's just a change for a more suitable
+     *  name. This method will be removed in one of the future releases.
      * @return Collection of {@link YamlNode}
      */
+    @Deprecated
     Collection<YamlNode> children();
+
+    /**
+     * Fetch the values.
+     * @return Collection of {@link YamlNode}
+     */
+    Collection<YamlNode> values();
+
 
     /**
      * Print this node with a specified indentation.

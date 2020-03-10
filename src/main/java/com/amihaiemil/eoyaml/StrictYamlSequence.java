@@ -56,6 +56,11 @@ public final class StrictYamlSequence extends ComparableYamlSequence {
 
     @Override
     public Collection<YamlNode> children() {
+        return this.values();
+    }
+
+    @Override
+    public Collection<YamlNode> values() {
         return this.decorated.children();
     }
 

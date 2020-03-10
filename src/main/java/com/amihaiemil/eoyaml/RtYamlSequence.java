@@ -92,6 +92,11 @@ final class RtYamlSequence extends ComparableYamlSequence {
 
     @Override
     public Collection<YamlNode> children() {
+        return this.values();
+    }
+
+    @Override
+    public Collection<YamlNode> values() {
         final List<YamlNode> children = new LinkedList<>();
         children.addAll(this.nodes);
         return children;

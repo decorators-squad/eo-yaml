@@ -52,6 +52,11 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public Collection<YamlNode> children() {
+        return this.values();
+    }
+
+    @Override
+    public Collection<YamlNode> values() {
         final List<YamlNode> kids = new LinkedList<>();
         for(final YamlNode key : this.keys()) {
             YamlNode value = this.yamlMapping(key);
@@ -81,7 +86,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         }
         return found;
     }
-    
+
     @Override
     public YamlMapping yamlMapping(final String key) {
         final YamlMapping found;
@@ -109,7 +114,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         }
         return found;
     }
-    
+
     @Override
     public YamlSequence yamlSequence(final String key) {
         final YamlSequence found;
@@ -169,7 +174,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         }
         return value;
     }
-    
+
     @Override
     public String toString() {
         return this.indent(0);

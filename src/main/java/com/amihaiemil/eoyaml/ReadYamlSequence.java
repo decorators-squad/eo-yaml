@@ -55,6 +55,11 @@ final class ReadYamlSequence extends ComparableYamlSequence {
 
     @Override
     public Collection<YamlNode> children() {
+        return this.values();
+    }
+
+    @Override
+    public Collection<YamlNode> values() {
         final List<YamlNode> kids = new LinkedList<>();
         for(final YamlLine line : this.lines) {
             if("-".equals(line.trimmed())) {
