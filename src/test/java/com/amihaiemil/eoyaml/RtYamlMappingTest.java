@@ -109,32 +109,6 @@ public final class RtYamlMappingTest {
     }
 
     /**
-     * RtYamlMapping is ordered by keys.
-     */
-    @Test
-    public void orderedKeys() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
-        Scalar one = new Scalar("value1");
-        Scalar two = new Scalar("value2");
-        Scalar three = new Scalar("value3");
-
-        mappings.put(new Scalar("key3"), one);
-        mappings.put(new Scalar("key2"), two);
-        mappings.put(new Scalar("key1"), three);
-        RtYamlMapping map = new RtYamlMapping(mappings);
-        Iterator<YamlNode> children = map.children().iterator();
-        MatcherAssert.assertThat(
-            (Scalar) children.next(), Matchers.equalTo(three)
-        );
-        MatcherAssert.assertThat(
-            (Scalar) children.next(), Matchers.equalTo(two)
-        );
-        MatcherAssert.assertThat(
-            (Scalar) children.next(), Matchers.equalTo(one)
-        );
-    }
-
-    /**
      * RtYamlMapping can return a Scalar as a string.
      */
     @Test
