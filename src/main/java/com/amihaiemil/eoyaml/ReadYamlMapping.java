@@ -34,6 +34,10 @@ import java.util.*;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #166:30min The indent(int) method of this class, with the one from
+ *  RtYamlMapping are almost identical, only the fetching of keys/values
+ *  differs. Check to see if we could pull out a single method reusable
+ *  in both cases. Same check for YamlSequence.
  */
 final class ReadYamlMapping extends ComparableYamlMapping {
 
