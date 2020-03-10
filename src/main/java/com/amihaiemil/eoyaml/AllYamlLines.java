@@ -35,6 +35,7 @@ import java.util.Collection;
  * are cases where we need to iterate only over the lines which are
  * at the same indentation level and for that we use the decorator
  * {@link SameIndentationLevel}.
+ * @checkstyle ExecutableStatementCount (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -117,10 +118,8 @@ final class AllYamlLines implements YamlLines {
                 node = new ReadPointedScalar(this);
                 break;
             default:
-                throw new IllegalStateException(
-                    "No nested Yaml node after line " + prev.number()
-                    + " which has [" + last + "] character at the end"
-                );
+                node = null;
+                break;
         }
         return node;
     }

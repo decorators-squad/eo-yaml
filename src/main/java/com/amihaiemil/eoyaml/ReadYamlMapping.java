@@ -77,28 +77,40 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final YamlNode key) {
-        final YamlMapping value;
+        final YamlMapping found;
         if(key instanceof Scalar) {
-            value = this.yamlMapping(((Scalar) key).value());
+        	found = this.yamlMapping(((Scalar) key).value());
         } else {
-            value = (YamlMapping) this.valueOfNodeKey(key, true);
+            final YamlNode value = this.valueOfNodeKey(key);
+            if(value instanceof YamlMapping) {
+            	found = (YamlMapping) value;
+            } else {
+            	found = null;
+            }
         }
-        return value;
+        return found;
     }
     
     @Override
     public YamlMapping yamlMapping(final String key) {
-        return (YamlMapping) this.valueOfStringKey(key, true);
+    	final YamlMapping found;
+    	final YamlNode value = this.valueOfStringKey(key);;
+    	if(value instanceof YamlMapping) {
+    		found = (YamlMapping) value;
+    	} else {
+    		found = null;
+    	}
+    	return found;
     }
 
     @Override
     public YamlSequence yamlSequence(final String key) {
-        return (YamlSequence) this.valueOfStringKey(key, false);
+        return (YamlSequence) this.valueOfStringKey(key);
     }
 
     @Override
     public YamlSequence yamlSequence(final YamlNode key) {
-        return (YamlSequence) this.valueOfNodeKey(key, false);
+        return (YamlSequence) this.valueOfNodeKey(key);
     }
 
     @Override
@@ -162,23 +174,14 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     /**
      * The YamlNode value associated with a String (scalar) key.
      * @param key String key.
-     * @param map Is the value a map or a sequence?
      * @return YamlNode.
      */
-    private YamlNode valueOfStringKey(final String key, final boolean map) {
+    private YamlNode valueOfStringKey(final String key) {
         YamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
-            if(trimmed.startsWith(key + ":")) {
-                if (map) {
-                    value = new ReadYamlMapping(
-                        this.lines.nested(line.number())
-                    );
-                } else {
-                    value = new ReadYamlSequence(
-                        this.lines.nested(line.number())
-                    );
-                }
+            if(trimmed.endsWith(key + ":")) {
+                value = this.lines.nested(line.number()).toYamlNode(line);
             }
         }
         return value;
@@ -188,10 +191,9 @@ final class ReadYamlMapping extends ComparableYamlMapping {
      * The YamlNode value associated with a YamlNode key
      * (a "complex" key starting with '?').
      * @param key YamlNode key.
-     * @param map Is the value a map or a sequence?
      * @return YamlNode.
      */
-    private YamlNode valueOfNodeKey(final YamlNode key, final boolean map) {
+    private YamlNode valueOfNodeKey(final YamlNode key) {
         YamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
@@ -201,15 +203,12 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                 );
                 final YamlNode keyNode = keyLines.toYamlNode(line);
                 if(keyNode.equals(key)) {
-                    int colonLine = line.number() + keyLines.count() + 1;
-                    if (map) {
-                        value = new ReadYamlMapping(
-                            this.lines.nested(colonLine)
-                        );
-                    } else {
-                        value = new ReadYamlSequence(
-                            this.lines.nested(colonLine)
-                        );
+                    final YamlLine colonLine = this.lines.line(
+                        line.number() + keyLines.count() + 1
+                    );
+                    if(":".equals(colonLine.trimmed())) {
+                        value = this.lines.nested(colonLine.number())
+                                    .toYamlNode(colonLine);
                     }
                 }
             }

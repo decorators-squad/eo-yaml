@@ -127,4 +127,24 @@ interface YamlLines extends Iterable<YamlLine> {
         return new AllYamlLines(nestedLines);
     }
 
+    /**
+     * Get a certain YamlLine.
+     * @param number Number of the line.
+     * @return YamlLine or throws {@link IndexOutOfBoundsException}.
+     */
+    default YamlLine line(final int number) {
+        final Collection<YamlLine> lines = this.lines();
+        int index = 0;
+        for(final YamlLine line : lines){
+            if(index == number) {
+                return line;
+            }
+            index++;
+        }
+        throw new IllegalArgumentException(
+            "Couldn't find line " + number
+          + ". Pay attention, there are "
+          + this.lines().size() + " lines!");
+    }
+
 }

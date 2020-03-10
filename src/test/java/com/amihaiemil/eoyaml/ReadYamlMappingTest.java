@@ -500,6 +500,142 @@ public final class ReadYamlMappingTest {
     }
     
     /**
+     * ReadYamlMapping.yamlMapping(String) returns null if the queried
+     * key has a value that is a Scalar.
+     */
+    @Test
+    public void returnsNullOnMisreadYamlMapping_Scalar() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(
+            map.yamlMapping("first"), Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(map.yamlMapping(
+            new Scalar("first")), Matchers.nullValue()
+        );
+    }
+    
+    /**
+     * ReadYamlMapping.yamlMapping(String) returns null if the queried
+     * key has a value that is a YamlSequence.
+     */
+    @Test
+    public void returnsNullOnMisreadYamlMapping_Sequence() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(
+            map.yamlMapping("second"), Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(map.yamlMapping(
+            new Scalar("second")), Matchers.nullValue()
+        );
+    }
+    
+    /**
+     * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
+     * complex key has a Scalar value.
+     */
+    @Test
+    public void returnsNullOnMisreadYamlMapping_ScalarWithMappingKey() {
+        final YamlMapping key = new RtYamlMappingBuilder()
+            .add("complex1", "mapping1")
+            .add("complex2", "mapping2")
+            .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(": scalarValue", 4));
+        lines.add(new RtYamlLine("second: something", 6));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
+    }
+    
+    /**
+     * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
+     * complex key has a YamlSequence value.
+     */
+    @Test
+    public void returnsNullOnMisreadYamlMapping_SequenceWithMappingKey() {
+        final YamlMapping key = new RtYamlMappingBuilder()
+            .add("complex1", "mapping1")
+            .add("complex2", "mapping2")
+            .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(":", 4));
+        lines.add(new RtYamlLine("  - some", 5));
+        lines.add(new RtYamlLine("  - seq", 6));
+        lines.add(new RtYamlLine("second: something", 7));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
+    }
+    
+    /**
+     * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
+     * complex key has a Scalar value.
+     */
+    @Test
+    public void returnsNullOnMisreadYamlMapping_ScalarWithSequenceKey() {
+        final YamlSequence key = new RtYamlSequenceBuilder()
+            .add("sequence")
+            .add("key")
+            .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  - sequence", 2));
+        lines.add(new RtYamlLine("  - key", 3));
+        lines.add(new RtYamlLine(": scalarValue", 4));
+        lines.add(new RtYamlLine("second: something", 6));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
+    }
+    
+    /**
+     * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
+     * complex key has a YamlSequence value.
+     */
+    @Test
+    public void returnsNullOnMisreadYamlMapping_SequenceWithSequenceKey() {
+        final YamlSequence key = new RtYamlSequenceBuilder()
+            .add("sequence")
+            .add("key")
+            .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  - sequence", 2));
+        lines.add(new RtYamlLine("  - key", 3));
+        lines.add(new RtYamlLine(":", 4));
+        lines.add(new RtYamlLine("  - some", 5));
+        lines.add(new RtYamlLine("  - sequence", 6));
+        lines.add(new RtYamlLine("second: something", 7));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
+    }
+    
+    /**
      * An empty ReadYamlMapping can be printed.
      * @throws Exception if something goes wrong
      */
