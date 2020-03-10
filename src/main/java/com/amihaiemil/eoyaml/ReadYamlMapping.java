@@ -53,24 +53,15 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     @Override
     public Collection<YamlNode> children() {
         final List<YamlNode> kids = new LinkedList<>();
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if("?".equals(trimmed)) {
-                continue;
-            } else {
-                if(trimmed.endsWith(":")) {
-                    kids.add(this.lines.nested(line.number()).toYamlNode(line));
-                } else {
-                    final String[] parts = trimmed.split(":");
-                    if(parts.length < 2) {
-                        throw new IllegalStateException(
-                            "Expected ':' on line " + line.number()
-                        );
-                    } else {
-                        kids.add(new Scalar(parts[1].trim()));
-                    }
+        for(final YamlNode key : this.keys()) {
+            YamlNode value = this.yamlMapping(key);
+            if(value == null) {
+                value = this.yamlSequence(key);
+                if(value == null) {
+                    value = new Scalar(this.string(key));
                 }
             }
+            kids.add(value);
         }
         return kids;
     }
@@ -250,11 +241,14 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                         "Expected ':' on line " + line.number()
                     );
                 } else {
-                    keys.add(
-                        new Scalar(
-                            trimmed.substring(0, trimmed.indexOf(":")).trim()
-                        )
-                    );
+                    final String keyPart = trimmed.substring(
+                        0, trimmed.indexOf(":")
+                    ).trim();
+                    if(!keyPart.isEmpty()) {
+                        keys.add(
+                            new Scalar(keyPart)
+                        );
+                    }
                 }
             }
         }

@@ -105,10 +105,10 @@ public final class ReadYamlMappingTest {
     }
     
     /**
-     * ReadYamlMapping can return its children.
+     * ReadYamlMapping can return its key-ordered children.
      */
     @Test
-    public void returnsChildrenOfStringKeys(){
+    public void returnsOrderedChildrenOfStringKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("zkey: somethingElse", 0));
         lines.add(new RtYamlLine("bkey: ", 1));
@@ -124,10 +124,11 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             children, Matchers.iterableWithSize(4)
         );
+        System.out.println(children);
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("somethingElse"))
+            Matchers.equalTo(new Scalar("something"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -140,10 +141,6 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("something"))
-        );
-        MatcherAssert.assertThat(
-            iterator.next(),
             Matchers.equalTo(
                 Yaml.createYamlSequenceBuilder()
                     .add("seq")
@@ -151,14 +148,18 @@ public final class ReadYamlMappingTest {
                     .build()
             )
         );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("somethingElse"))
+        );
     }
     
     /**
-     * ReadYamlMapping can return its children.
+     * ReadYamlMapping can return its key-ordered children.
      * @checkstyle ExecutableStatementCount (100 lines)
      */
     @Test
-    public void returnsChildrenOfStringAndComplexKeys(){
+    public void returnsOrderedChildrenOfStringAndComplexKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
         lines.add(new RtYamlLine("? ", 1));
@@ -166,14 +167,14 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  complex2: mapping2", 3));
         lines.add(new RtYamlLine(": ", 4));
         lines.add(new RtYamlLine("  map: value", 5));
-        lines.add(new RtYamlLine("second: something ", 7));
-        lines.add(new RtYamlLine("third: ", 8));
-        lines.add(new RtYamlLine("  - singleSeq", 9));
-        lines.add(new RtYamlLine("? ", 10));
-        lines.add(new RtYamlLine("  - sequence", 11));
-        lines.add(new RtYamlLine("  - key", 12));
-        lines.add(new RtYamlLine(": simpleValue", 13));
-
+        lines.add(new RtYamlLine("second: something ", 6));
+        lines.add(new RtYamlLine("third: ", 7));
+        lines.add(new RtYamlLine("  - singleSeq", 8));
+        lines.add(new RtYamlLine("? ", 9));
+        lines.add(new RtYamlLine("  - sequence", 10));
+        lines.add(new RtYamlLine("  - key", 11));
+        lines.add(new RtYamlLine(": simpleValue", 12));
+        
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final Collection<YamlNode> children = map.children();
         MatcherAssert.assertThat(
@@ -183,14 +184,6 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             iterator.next(),
             Matchers.equalTo(new Scalar("somethingElse"))
-        );
-        MatcherAssert.assertThat(
-            iterator.next(),
-            Matchers.equalTo(
-                Yaml.createYamlMappingBuilder()
-                    .add("map", "value")
-                    .build()
-            )
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -208,8 +201,16 @@ public final class ReadYamlMappingTest {
             iterator.next(),
             Matchers.equalTo(new Scalar("simpleValue"))
         );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("map", "value")
+                    .build()
+            )
+        );
     }
-
+    
     /**
      * ReadYamlMapping can return the YamlMapping mapped to a
      * YamlMapping key.
