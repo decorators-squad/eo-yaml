@@ -130,6 +130,27 @@ public final class RtYamlMappingTest {
             map.string(key), Matchers.equalTo(value)
         );
     }
+    
+    /**
+     * RtYamlMapping can return null if the queried Scalar is missing or
+     * the found value is not actually a Scalar.
+     */
+    @Test
+    public void returnsNullOnMissingScalar() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Scalar key = new Scalar("missing");
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(new Scalar("key4"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+
+        MatcherAssert.assertThat(map.string("missing"), Matchers.nullValue());
+        MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
+        
+        MatcherAssert.assertThat(
+            map.string(new Scalar("keÿ3")), Matchers.nullValue()
+        );
+    }
 
     /**
      * RtYamlMapping can return a YamlMapping.
@@ -145,6 +166,25 @@ public final class RtYamlMappingTest {
             map.yamlMapping("key1"), Matchers.notNullValue()
         );
     }
+    
+    /**
+     * RtYamlMapping can return null if the queried YamlMapping is missing or
+     * if the found value is not actually a YamlMapping.
+     */
+    @Test
+    public void returnsNullOnMissingYamlMapping() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+
+        MatcherAssert.assertThat(
+            map.yamlMapping("key4"), Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.yamlMapping("key3"), Matchers.nullValue()
+        );
+    }
 
     /**
      * RtYamlMapping can return a YamlSequence.
@@ -157,6 +197,24 @@ public final class RtYamlMappingTest {
         RtYamlMapping map = new RtYamlMapping(mappings);
         MatcherAssert.assertThat(
             map.yamlSequence("key3"), Matchers.notNullValue()
+        );
+    }
+    
+    /**
+     * RtYamlMapping can return null if the queried YamlSequence is missing or
+     * if the found value is not actually a YamlSequence.
+     */
+    @Test
+    public void returnsNullOnMissingYamlSequence() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        MatcherAssert.assertThat(
+            map.yamlSequence("key4"), Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.yamlSequence("key1"), Matchers.nullValue()
         );
     }
 
