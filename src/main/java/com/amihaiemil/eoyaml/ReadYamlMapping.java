@@ -100,6 +100,9 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         String value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
+            if(trimmed.endsWith(key + ":")) {
+                continue;
+            }
             if(trimmed.startsWith(key + ":")) {
                 value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
             }
@@ -110,20 +113,24 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     @Override
     public String string(final YamlNode key) {
         String value = null;
-        boolean found = false;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if("?".equals(trimmed)) {
-                final YamlNode keyNode = this.lines.nested(line.number())
-                        .toYamlNode(line);
-                if(keyNode.equals(key)) {
-                    found = true;
-                    continue;
+        if(key instanceof Scalar) {
+            value = this.string(((Scalar) key).value());
+        } else {
+            boolean found = false;
+            for (final YamlLine line : this.lines) {
+                final String trimmed = line.trimmed();
+                if("?".equals(trimmed)) {
+                    final YamlNode keyNode = this.lines.nested(line.number())
+                            .toYamlNode(line);
+                    if(keyNode.equals(key)) {
+                        found = true;
+                        continue;
+                    }
                 }
-            }
-            if(found && trimmed.startsWith(":")) {
-                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-                break;
+                if(found && trimmed.startsWith(":")) {
+                    value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+                    break;
+                }
             }
         }
         return value;

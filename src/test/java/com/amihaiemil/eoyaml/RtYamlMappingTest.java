@@ -65,7 +65,7 @@ public final class RtYamlMappingTest {
         YamlMapping map = new RtYamlMapping(mappings);
         final Collection<YamlNode> children = map.children();
         MatcherAssert.assertThat(
-    		children, Matchers.not(Matchers.emptyIterable())
+            children, Matchers.not(Matchers.emptyIterable())
         );
         MatcherAssert.assertThat(children.size(), Matchers.equalTo(3));
         final Iterator<YamlNode> iterator = children.iterator();

@@ -298,6 +298,46 @@ public final class ReadYamlMappingTest {
             third, Matchers.equalTo("something")
         );
     }
+    
+    /**
+     * ReadYamlMapping.string(...) returns null if the queried
+     * Scalar is not present.
+     */
+    @Test
+    public void returnsNullOnMissingScalar() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.string("notthere"), Matchers.nullValue());
+        MatcherAssert.assertThat(map.string(
+            new Scalar("notthere")), Matchers.nullValue()
+        );
+    }
+    
+    /**
+     * ReadYamlMapping.string(...) returns null if the queried value
+     * is present but it is not actually a Scalar.
+     */
+    @Test
+    public void returnsNullOnMisreadScalar() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.string("second"), Matchers.nullValue());
+        MatcherAssert.assertThat(map.string(
+            new Scalar("second")), Matchers.nullValue()
+        );
+    }
 
     /**
      * An empty ReadYamlMapping can be printed.
