@@ -432,6 +432,26 @@ public final class ReadYamlMappingTest {
     }
 
     /**
+     * ReadYamlMapping.yamlMapping(...) returns null if the queried
+     * YamlMapping is not present.
+     */
+    @Test
+    public void returnsNullOnMissingYamlMapping() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.yamlMapping("notthere"), Matchers.nullValue());
+        MatcherAssert.assertThat(map.yamlMapping(
+            new Scalar("notthere")), Matchers.nullValue()
+        );
+    }
+    
+    /**
      * An empty ReadYamlMapping can be printed.
      * @throws Exception if something goes wrong
      */

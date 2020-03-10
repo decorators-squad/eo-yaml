@@ -76,38 +76,27 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     }
 
     @Override
-    public YamlMapping yamlMapping(final String key) {
-        return (YamlMapping) this.nodeValue(key, true);
-    }
-
-    @Override
     public YamlMapping yamlMapping(final YamlNode key) {
-        return (YamlMapping) this.nodeValue(key, true);
+    	if(key instanceof Scalar) {
+    		return this.yamlMapping(((Scalar) key).value());
+    	} else {
+    		return (YamlMapping) this.valueOfNodeKey(key, true);
+    	}
+    }
+    
+    @Override
+    public YamlMapping yamlMapping(final String key) {
+        return (YamlMapping) this.valueOfStringKey(key, true);
     }
 
     @Override
     public YamlSequence yamlSequence(final String key) {
-        return (YamlSequence) this.nodeValue(key, false);
+        return (YamlSequence) this.valueOfStringKey(key, false);
     }
 
     @Override
     public YamlSequence yamlSequence(final YamlNode key) {
-        return (YamlSequence) this.nodeValue(key, false);
-    }
-
-    @Override
-    public String string(final String key) {
-        String value = null;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if(trimmed.endsWith(key + ":")) {
-                continue;
-            }
-            if(trimmed.startsWith(key + ":")) {
-                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-            }
-        }
-        return value;
+        return (YamlSequence) this.valueOfNodeKey(key, false);
     }
 
     @Override
@@ -144,6 +133,21 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     }
 
     @Override
+    public String string(final String key) {
+        String value = null;
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if(trimmed.endsWith(key + ":")) {
+                continue;
+            }
+            if(trimmed.startsWith(key + ":")) {
+                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+            }
+        }
+        return value;
+    }
+    
+    @Override
     public String toString() {
         return this.indent(0);
     }
@@ -154,12 +158,12 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     }
 
     /**
-     * The YamlNode value associated with a String key.
+     * The YamlNode value associated with a String (scalar) key.
      * @param key String key.
      * @param map Is the value a map or a sequence?
      * @return YamlNode.
      */
-    private YamlNode nodeValue(final String key, final boolean map) {
+    private YamlNode valueOfStringKey(final String key, final boolean map) {
         YamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
@@ -179,12 +183,13 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     }
 
     /**
-     * The YamlNode value associated with a String key.
+     * The YamlNode value associated with a YamlNode key
+     * (a "complex" key starting with '?').
      * @param key YamlNode key.
      * @param map Is the value a map or a sequence?
      * @return YamlNode.
      */
-    private YamlNode nodeValue(final YamlNode key, final boolean map) {
+    private YamlNode valueOfNodeKey(final YamlNode key, final boolean map) {
         YamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
