@@ -31,10 +31,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
@@ -52,35 +54,57 @@ import org.mockito.Mockito;
 public final class RtYamlMappingTest {
 
     /**
-     * RtYamlMapping can fetch its children.
+     * RtYamlMapping can fetch its key-ordered children.
      */
     @Test
-    public void fetchesChildren() {
+    public void fetchesOrderedChildren() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
-        mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
-        mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
-        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
+        mappings.put(new Scalar("key2"), new Scalar("value1"));
+        mappings.put(new Scalar("key3"), new Scalar("value2"));
+        mappings.put(new Scalar("key1"), new Scalar("value3"));
         YamlMapping map = new RtYamlMapping(mappings);
+        final Collection<YamlNode> children = map.children();
         MatcherAssert.assertThat(
-            map.children(), Matchers.not(Matchers.emptyIterable())
+    		children, Matchers.not(Matchers.emptyIterable())
         );
-        MatcherAssert.assertThat(map.children().size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(children.size(), Matchers.equalTo(3));
+        final Iterator<YamlNode> iterator = children.iterator();
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new Scalar("value3"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new Scalar("value1"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new Scalar("value2"))
+        );
     }
 
     /**
-     * RtYamlMapping can fetch its keys.
+     * RtYamlMapping can fetch its ordered keys.
      */
     @Test
-    public void fetchesKeys() {
+    public void fetchesOrderedKeys() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
         mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
-        mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
         YamlMapping map = new RtYamlMapping(mappings);
+        final Set<YamlNode> keys = map.keys();
         MatcherAssert.assertThat(
-            map.keys(), Matchers.not(Matchers.emptyIterable())
+            keys, Matchers.not(Matchers.emptyIterable())
         );
-        MatcherAssert.assertThat(map.keys().size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(3));
+        final Iterator<YamlNode> iterator = keys.iterator();
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new Scalar("key1"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new Scalar("key2"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new Scalar("key3"))
+        );
 
     }
 
