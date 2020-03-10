@@ -77,11 +77,13 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final YamlNode key) {
-    	if(key instanceof Scalar) {
-    		return this.yamlMapping(((Scalar) key).value());
-    	} else {
-    		return (YamlMapping) this.valueOfNodeKey(key, true);
-    	}
+        final YamlMapping value;
+        if(key instanceof Scalar) {
+            value = this.yamlMapping(((Scalar) key).value());
+        } else {
+            value = (YamlMapping) this.valueOfNodeKey(key, true);
+        }
+        return value;
     }
     
     @Override
