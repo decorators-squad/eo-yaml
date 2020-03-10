@@ -104,10 +104,10 @@ public final class ReadYamlMappingTest {
     }
     
     /**
-     * ReadYamlMapping can return its children.
+     * ReadYamlMapping can return its key-ordered children.
      */
     @Test
-    public void returnsChildrenOfStringKeys(){
+    public void returnsOrderedChildrenOfStringKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("zkey: somethingElse", 0));
         lines.add(new RtYamlLine("bkey: ", 1));
@@ -154,11 +154,11 @@ public final class ReadYamlMappingTest {
     }
     
     /**
-     * ReadYamlMapping can return its children.
+     * ReadYamlMapping can return its key-ordered children.
      * @checkstyle ExecutableStatementCount (100 lines)
      */
     @Test
-    public void returnsChildrenOfStringAndComplexKeys(){
+    public void returnsOrderedChildrenOfStringAndComplexKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
         lines.add(new RtYamlLine("? ", 1));
@@ -186,14 +186,6 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(
-                Yaml.createYamlMappingBuilder()
-                    .add("map", "value")
-                    .build()
-            )
-        );
-        MatcherAssert.assertThat(
-            iterator.next(),
             Matchers.equalTo(new Scalar("something"))
         );
         MatcherAssert.assertThat(
@@ -207,6 +199,14 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             iterator.next(),
             Matchers.equalTo(new Scalar("simpleValue"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("map", "value")
+                    .build()
+            )
         );
     }
 
