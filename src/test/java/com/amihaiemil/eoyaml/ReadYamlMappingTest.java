@@ -121,7 +121,7 @@ public final class ReadYamlMappingTest {
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final Collection<YamlNode> children = map.children();
         MatcherAssert.assertThat(
-    		children, Matchers.iterableWithSize(4)
+            children, Matchers.iterableWithSize(4)
         );
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
@@ -154,6 +154,7 @@ public final class ReadYamlMappingTest {
     
     /**
      * ReadYamlMapping can return its children.
+     * @checkstyle ExecutableStatementCount (100 lines)
      */
     @Test
     public void returnsChildrenOfStringAndComplexKeys(){
@@ -175,7 +176,7 @@ public final class ReadYamlMappingTest {
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final Collection<YamlNode> children = map.children();
         MatcherAssert.assertThat(
-    		children, Matchers.iterableWithSize(5)
+            children, Matchers.iterableWithSize(5)
         );
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
