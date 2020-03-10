@@ -123,10 +123,11 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             children, Matchers.iterableWithSize(4)
         );
+        System.out.println(children);
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("somethingElse"))
+            Matchers.equalTo(new Scalar("something"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -139,16 +140,16 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("something"))
-        );
-        MatcherAssert.assertThat(
-            iterator.next(),
             Matchers.equalTo(
                 Yaml.createYamlSequenceBuilder()
                     .add("seq")
                     .add("value")
                     .build()
             )
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("somethingElse"))
         );
     }
     
