@@ -116,20 +116,27 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         if(key instanceof Scalar) {
             value = this.string(((Scalar) key).value());
         } else {
-            boolean found = false;
+            boolean foundComplexKey = false;
             for (final YamlLine line : this.lines) {
                 final String trimmed = line.trimmed();
                 if("?".equals(trimmed)) {
                     final YamlNode keyNode = this.lines.nested(line.number())
                             .toYamlNode(line);
                     if(keyNode.equals(key)) {
-                        found = true;
+                        foundComplexKey = true;
                         continue;
                     }
                 }
-                if(found && trimmed.startsWith(":")) {
-                    value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-                    break;
+                if(foundComplexKey) {
+                    if(trimmed.endsWith(":")) {
+                        break;
+                    }
+                    if(trimmed.startsWith(":")) {
+                        value = trimmed.substring(
+                            trimmed.indexOf(":") + 1
+                        ).trim();
+                        break;
+                    }
                 }
             }
         }
