@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -99,6 +100,111 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             iterator.next(),
             Matchers.equalTo(new Scalar("zkey"))
+        );
+    }
+    
+    /**
+     * ReadYamlMapping can return its children.
+     */
+    @Test
+    public void returnsChildrenOfStringKeys(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("zkey: somethingElse", 0));
+        lines.add(new RtYamlLine("bkey: ", 1));
+        lines.add(new RtYamlLine("  bchildkey1: some", 2));
+        lines.add(new RtYamlLine("  bchildkey2: values", 3));
+        lines.add(new RtYamlLine("akey: something", 4));
+        lines.add(new RtYamlLine("ukey: ", 5));
+        lines.add(new RtYamlLine("  - seq", 6));
+        lines.add(new RtYamlLine("  - value", 7));
+
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final Collection<YamlNode> children = map.children();
+        MatcherAssert.assertThat(
+    		children, Matchers.iterableWithSize(4)
+        );
+        final Iterator<YamlNode> iterator = children.iterator();
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("somethingElse"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("bchildkey1", "some")
+                    .add("bchildkey2", "values")
+                    .build()
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("something"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlSequenceBuilder()
+                    .add("seq")
+                    .add("value")
+                    .build()
+            )
+        );
+    }
+    
+    /**
+     * ReadYamlMapping can return its children.
+     */
+    @Test
+    public void returnsChildrenOfStringAndComplexKeys(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(": ", 4));
+        lines.add(new RtYamlLine("  map: value", 5));
+        lines.add(new RtYamlLine("second: something ", 7));
+        lines.add(new RtYamlLine("third: ", 8));
+        lines.add(new RtYamlLine("  - singleSeq", 9));
+        lines.add(new RtYamlLine("? ", 10));
+        lines.add(new RtYamlLine("  - sequence", 11));
+        lines.add(new RtYamlLine("  - key", 12));
+        lines.add(new RtYamlLine(": simpleValue", 13));
+
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final Collection<YamlNode> children = map.children();
+        MatcherAssert.assertThat(
+    		children, Matchers.iterableWithSize(5)
+        );
+        final Iterator<YamlNode> iterator = children.iterator();
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("somethingElse"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("map", "value")
+                    .build()
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("something"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlSequenceBuilder()
+                    .add("singleSeq")
+                    .build()
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
+            Matchers.equalTo(new Scalar("simpleValue"))
         );
     }
 

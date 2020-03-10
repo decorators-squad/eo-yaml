@@ -55,7 +55,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         final List<YamlNode> kids = new LinkedList<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
-            if("?".equals(trimmed) || ":".equals(trimmed)) {
+            if("?".equals(trimmed)) {
                 continue;
             } else {
                 if(trimmed.endsWith(":")) {
@@ -67,13 +67,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                             "Expected ':' on line " + line.number()
                         );
                     } else {
-                        kids.add(
-                            new Scalar(
-                                trimmed.substring(
-                                    trimmed.indexOf(":") + 1
-                                ).trim()
-                            )
-                        );
+                        kids.add(new Scalar(parts[1].trim()));
                     }
                 }
             }
