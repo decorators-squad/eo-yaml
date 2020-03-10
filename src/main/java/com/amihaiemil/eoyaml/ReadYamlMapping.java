@@ -79,13 +79,13 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     public YamlMapping yamlMapping(final YamlNode key) {
         final YamlMapping found;
         if(key instanceof Scalar) {
-        	found = this.yamlMapping(((Scalar) key).value());
+            found = this.yamlMapping(((Scalar) key).value());
         } else {
             final YamlNode value = this.valueOfNodeKey(key);
             if(value instanceof YamlMapping) {
-            	found = (YamlMapping) value;
+                found = (YamlMapping) value;
             } else {
-            	found = null;
+                found = null;
             }
         }
         return found;
@@ -93,24 +93,42 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     
     @Override
     public YamlMapping yamlMapping(final String key) {
-    	final YamlMapping found;
-    	final YamlNode value = this.valueOfStringKey(key);;
-    	if(value instanceof YamlMapping) {
-    		found = (YamlMapping) value;
-    	} else {
-    		found = null;
-    	}
-    	return found;
-    }
-
-    @Override
-    public YamlSequence yamlSequence(final String key) {
-        return (YamlSequence) this.valueOfStringKey(key);
+        final YamlMapping found;
+        final YamlNode value = this.valueOfStringKey(key);
+        if(value instanceof YamlMapping) {
+            found = (YamlMapping) value;
+        } else {
+            found = null;
+        }
+        return found;
     }
 
     @Override
     public YamlSequence yamlSequence(final YamlNode key) {
-        return (YamlSequence) this.valueOfNodeKey(key);
+        final YamlSequence found;
+        if(key instanceof Scalar) {
+            found = this.yamlSequence(((Scalar) key).value());
+        } else {
+            final YamlNode value = this.valueOfNodeKey(key);
+            if(value instanceof YamlSequence) {
+                found = (YamlSequence) value;
+            } else {
+                found = null;
+            }
+        }
+        return found;
+    }
+    
+    @Override
+    public YamlSequence yamlSequence(final String key) {
+        final YamlSequence found;
+        final YamlNode value = this.valueOfStringKey(key);
+        if(value instanceof YamlSequence) {
+            found = (YamlSequence) value;
+        } else {
+            found = null;
+        }
+        return found;
     }
 
     @Override
