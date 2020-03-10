@@ -29,8 +29,6 @@ package com.amihaiemil.eoyaml;
 
 import java.util.*;
 
-import org.apache.commons.collections.list.TreeList;
-
 /**
  * YamlMapping read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -55,66 +53,86 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     @Override
     public Collection<YamlNode> children() {
         final List<YamlNode> kids = new LinkedList<>();
-//        for (final YamlLine line : this.lines) {
-//            final String trimmed = line.trimmed();
-//            if("?".equals(trimmed)) {
-//                continue;
-//            } else {
-//                if(trimmed.endsWith(":")) {
-//                    kids.add(this.lines.nested(line.number()).toYamlNode(line));
-//                } else {
-//                    final String[] parts = trimmed.split(":");
-//                    if(parts.length < 2) {
-//                        throw new IllegalStateException(
-//                            "Expected ':' on line " + line.number()
-//                        );
-//                    } else {
-//                        kids.add(new Scalar(parts[1].trim()));
-//                    }
-//                }
-//            }
-//        }
-        for(final YamlNode key : this.keys()) {
-        	YamlNode value = this.yamlMapping(key);
-        	if(value == null) {
-        		value = this.yamlSequence(key);
-        		if(value == null) {
-        			if(key instanceof Scalar) {
-            		    value = new Scalar(
-            		        this.string(
-            		            ((Scalar) key).value()
-            		        )
-            		    );
-        			} else {
-        				value = new Scalar(this.string(key));
-        			}
-            	}
-        	}
-        	kids.add(value);
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if("?".equals(trimmed)) {
+                continue;
+            } else {
+                if(trimmed.endsWith(":")) {
+                    kids.add(this.lines.nested(line.number()).toYamlNode(line));
+                } else {
+                    final String[] parts = trimmed.split(":");
+                    if(parts.length < 2) {
+                        throw new IllegalStateException(
+                            "Expected ':' on line " + line.number()
+                        );
+                    } else {
+                        kids.add(new Scalar(parts[1].trim()));
+                    }
+                }
+            }
         }
         return kids;
+    }
+
+    @Override
+    public YamlMapping yamlMapping(final YamlNode key) {
+    	final YamlMapping value;
+    	if(key instanceof Scalar) {
+    		value = (YamlMapping) this.yamlMapping(((Scalar) key).value());
+    	} else {
+    		value = (YamlMapping) this.nodeValue(key, true);
+    	}
+        return value;
     }
 
     @Override
     public YamlMapping yamlMapping(final String key) {
         return (YamlMapping) this.nodeValue(key, true);
     }
-
+    
     @Override
-    public YamlMapping yamlMapping(final YamlNode key) {
-        return (YamlMapping) this.nodeValue(key, true);
+    public YamlSequence yamlSequence(final YamlNode key) {
+    	final YamlSequence value;
+    	if(key instanceof Scalar) {
+    		value = (YamlSequence) this.yamlSequence(((Scalar) key).value());
+    	} else {
+    		value = (YamlSequence) this.nodeValue(key, false);
+    	}
+        return value;
     }
-
+    
     @Override
     public YamlSequence yamlSequence(final String key) {
         return (YamlSequence) this.nodeValue(key, false);
     }
 
     @Override
-    public YamlSequence yamlSequence(final YamlNode key) {
-        return (YamlSequence) this.nodeValue(key, false);
+    public String string(final YamlNode key) {
+        String value = null;
+        if(key instanceof Scalar) {
+        	value = this.string(((Scalar) key).value());
+        } else {
+	        boolean found = false;
+	        for (final YamlLine line : this.lines) {
+	            final String trimmed = line.trimmed();
+	            if("?".equals(trimmed)) {
+	                final YamlNode keyNode = this.lines.nested(line.number())
+	                        .toYamlNode(line);
+	                if(keyNode.equals(key)) {
+	                    found = true;
+	                    continue;
+	                }
+	            }
+	            if(found && trimmed.startsWith(":")) {
+	                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+	                break;
+	            }
+	        }
+        }
+        return value;
     }
-
+    
     @Override
     public String string(final String key) {
         String value = null;
@@ -122,28 +140,6 @@ final class ReadYamlMapping extends ComparableYamlMapping {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(key + ":")) {
                 value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-            }
-        }
-        return value;
-    }
-
-    @Override
-    public String string(final YamlNode key) {
-        String value = null;
-        boolean found = false;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if("?".equals(trimmed)) {
-                final YamlNode keyNode = this.lines.nested(line.number())
-                        .toYamlNode(line);
-                if(keyNode.equals(key)) {
-                    found = true;
-                    continue;
-                }
-            }
-            if(found && trimmed.startsWith(":")) {
-                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-                break;
             }
         }
         return value;
