@@ -322,6 +322,48 @@ public final class ReadYamlMappingTest {
     }
     
     /**
+     * ReadYamlMapping.string(YamlMapping) returns null if the queried
+     * Scalar is not present.
+     */
+    @Test
+    public void returnsNullOnMissingScalarWithMappingKey() {
+        final YamlMapping key = new RtYamlMappingBuilder()
+            .add("complex1", "mapping1")
+            .add("complex2", "mapping2")
+            .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
+    }
+    
+    /**
+     * ReadYamlMapping.string(YamlSequence) returns null if the queried
+     * Scalar is not present.
+     */
+    @Test
+    public void returnsNullOnMissingScalarWithSequenceKey() {
+        final YamlSequence key = new RtYamlSequenceBuilder()
+            .add("sequence")
+            .add("key")
+            .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        
+        MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
+    }
+    
+    /**
      * ReadYamlMapping.string(...) returns null if the queried value
      * is present but it is not actually a Scalar.
      */
