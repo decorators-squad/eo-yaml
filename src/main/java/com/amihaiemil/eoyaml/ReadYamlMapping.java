@@ -182,7 +182,44 @@ final class ReadYamlMapping extends ComparableYamlMapping {
 
     @Override
     public String indent(final int indentation) {
-        return this.lines.indent(indentation);
+        StringBuilder print = new StringBuilder();
+        int spaces = indentation;
+        StringBuilder indent = new StringBuilder();
+        while (spaces > 0) {
+            indent.append(" ");
+            spaces--;
+        }
+        for(final YamlNode key : this.keys()) {
+            print.append(indent);
+            YamlNode value = this.yamlMapping(key);
+            if(value == null) {
+                value = this.yamlSequence(key);
+                if(value == null) {
+                    value = new Scalar(this.string(key));
+                }
+            }
+            if(key instanceof Scalar) {
+                print.append(key.toString()).append(": ");
+                if (value instanceof Scalar) {
+                    print.append(value.toString()).append("\n");
+                } else  {
+                    print
+                        .append("\n")
+                        .append(value.indent(indentation + 2))
+                        .append("\n");
+                }
+            } else {
+                print.append("?\n").append(key.indent(indentation + 2))
+                    .append("\n").append(indent).append(":\n")
+                    .append(value.indent(indentation + 2))
+                    .append("\n");
+            }
+        }
+        String printed = print.toString();
+        if(printed.length() > 0) {
+            printed = printed.substring(0, printed.length() - 1);
+        }
+        return printed;
     }
 
     /**
