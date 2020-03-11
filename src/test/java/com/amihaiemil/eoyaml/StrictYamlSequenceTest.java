@@ -43,10 +43,10 @@ import java.util.List;
  */
 public final class StrictYamlSequenceTest {
     /**
-     * StrictYamlSequence can fetch its children.
+     * StrictYamlSequence can fetch its values.
      */
     @Test
-    public void fetchesChildren() {
+    public void fetchesValues() {
         List<YamlNode> elements = new LinkedList<>();
         elements.add(new Scalar("key1"));
         elements.add(new Scalar("key2"));
@@ -56,7 +56,7 @@ public final class StrictYamlSequenceTest {
         );
 
         MatcherAssert.assertThat(
-            sequence.children().size(),
+            sequence.values().size(),
             Matchers.equalTo(3)
         );
     }

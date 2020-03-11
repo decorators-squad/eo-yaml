@@ -56,14 +56,14 @@ public final class ScalarTest {
     }
 
     /**
-     * A Scalar shouldn't have any child nodes.
+     * A Scalar shouldn't have any values nodes.
      */
     @Test
-    public void hasNoChildren() {
+    public void hasNoValues() {
         final String val = "test scalar value";
         final Scalar scl = new Scalar(val);
         MatcherAssert.assertThat(
-            scl.children(), Matchers.emptyIterable()
+            scl.values(), Matchers.emptyIterable()
         );
     }
 

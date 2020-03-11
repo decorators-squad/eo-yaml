@@ -49,7 +49,7 @@ abstract class ComparableYamlMapping implements YamlMapping {
         for(final YamlNode key : this.keys()) {
             hash += key.hashCode();
         }
-        for(final YamlNode value : this.children()) {
+        for(final YamlNode value : this.values()) {
             hash += value.hashCode();
         }
         return hash;
@@ -109,8 +109,8 @@ abstract class ComparableYamlMapping implements YamlMapping {
             } else {
                 final Iterator<YamlNode> keysIt = keys.iterator();
                 final Iterator<YamlNode> otherKeysIt = otherKeys.iterator();
-                final Iterator<YamlNode> values = this.children().iterator();
-                final Iterator<YamlNode> otherVals = map.children().iterator();
+                final Iterator<YamlNode> values = this.values().iterator();
+                final Iterator<YamlNode> otherVals = map.values().iterator();
                 int keysComparison;
                 int valuesComparison;
                 while(values.hasNext()) {

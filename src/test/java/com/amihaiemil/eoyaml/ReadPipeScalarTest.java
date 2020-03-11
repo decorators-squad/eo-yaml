@@ -45,10 +45,10 @@ import org.junit.Test;
 public final class ReadPipeScalarTest {
 
     /**
-     * ReadPipeScalar should not have children.
+     * ReadPipeScalar should not have values.
      */
     @Test
-    public void hasNoChildren() {
+    public void hasNoValues() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
@@ -56,7 +56,7 @@ public final class ReadPipeScalarTest {
         final ReadPipeScalar scalar =
             new ReadPipeScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
-            scalar.children(), Matchers.emptyIterable()
+            scalar.values(), Matchers.emptyIterable()
         );
     }
 

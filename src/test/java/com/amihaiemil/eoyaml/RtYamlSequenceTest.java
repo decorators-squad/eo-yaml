@@ -50,20 +50,20 @@ import org.mockito.Mockito;
 public final class RtYamlSequenceTest {
 
     /**
-     * Sequence can fetch its children.
+     * Sequence can fetch its values.
      */
     @Test
-    public void fetchesChildren() {
+    public void fetchesValues() {
         List<YamlNode> nodes = new LinkedList<>();
         nodes.add(Mockito.mock(YamlNode.class));
         nodes.add(Mockito.mock(YamlNode.class));
         nodes.add(Mockito.mock(YamlNode.class));
         RtYamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
-            seq.children(), Matchers.not(Matchers.emptyIterable())
+            seq.values(), Matchers.not(Matchers.emptyIterable())
         );
         MatcherAssert.assertThat(
-            seq.children().size(),
+            seq.values().size(),
             Matchers.equalTo(3)
         );
     }
@@ -97,7 +97,7 @@ public final class RtYamlSequenceTest {
         nodes.add(third);
         nodes.add(fourth);
         RtYamlSequence seq = new RtYamlSequence(nodes);
-        Iterator<YamlNode> ordered = seq.children().iterator();
+        Iterator<YamlNode> ordered = seq.values().iterator();
         MatcherAssert.assertThat(
             (Scalar) ordered.next(), Matchers.equalTo(first)
         );

@@ -65,7 +65,7 @@ public final class YamlObjectDumpTest {
         );
         YamlMapping grades = yaml.yamlMapping("grades");
         MatcherAssert.assertThat(
-            grades.children().size(), Matchers.equalTo(2)
+            grades.values().size(), Matchers.equalTo(2)
         );
         MatcherAssert.assertThat(
             grades.string("Math"), Matchers.equalTo("9")

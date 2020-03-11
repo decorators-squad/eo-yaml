@@ -44,10 +44,10 @@ import org.junit.Test;
 public final class ReadPointedScalarTest {
 
     /**
-     * ReadPointedScalar should not have children.
+     * ReadPointedScalar should not have values.
      */
     @Test
-    public void hasNoChildren() {
+    public void hasNoValues() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
@@ -55,7 +55,7 @@ public final class ReadPointedScalarTest {
         final ReadPointedScalar scalar =
             new ReadPointedScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
-            scalar.children(), Matchers.emptyIterable()
+            scalar.values(), Matchers.emptyIterable()
         );
     }
 

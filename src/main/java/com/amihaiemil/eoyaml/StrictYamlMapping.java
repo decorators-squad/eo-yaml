@@ -63,7 +63,7 @@ public final class StrictYamlMapping extends ComparableYamlMapping {
 
     @Override
     public Collection<YamlNode> values() {
-        return this.decorated.children();
+        return this.decorated.values();
     }
 
     @Override

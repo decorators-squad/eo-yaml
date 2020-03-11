@@ -67,7 +67,7 @@ public final class YamlMapDumpTest {
 
         YamlMapping yaml =
             new YamlMapDump(map).represent();
-        List<YamlNode> children = new ArrayList<YamlNode>(yaml.children());
+        List<YamlNode> children = new ArrayList<YamlNode>(yaml.values());
         MatcherAssert.assertThat(children.size(), Matchers.equalTo(2));
 
         MatcherAssert.assertThat(

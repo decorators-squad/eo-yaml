@@ -44,19 +44,19 @@ import org.mockito.Mockito;
 public final class StrictYamlMappingTest {
 
     /**
-     * StrictYamlMapping can fetch its children.
+     * StrictYamlMapping can fetch its values.
      */
     @Test
-    public void fetchesChildren() {
+    public void fetchesValues() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
         mappings.put(new Scalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new Scalar("key2"), Mockito.mock(YamlNode.class));
         mappings.put(new Scalar("key3"), Mockito.mock(YamlNode.class));
         YamlMapping map = new StrictYamlMapping(new RtYamlMapping(mappings));
         MatcherAssert.assertThat(
-            map.children(), Matchers.not(Matchers.emptyIterable())
+            map.values(), Matchers.not(Matchers.emptyIterable())
         );
-        MatcherAssert.assertThat(map.children().size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(map.values().size(), Matchers.equalTo(3));
     }
 
     /**

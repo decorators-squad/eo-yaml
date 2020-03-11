@@ -88,7 +88,7 @@ final class ReadYamlSequence extends ComparableYamlSequence {
     public YamlMapping yamlMapping(final int index) {
         YamlMapping mapping = null;
         int count = 0;
-        for (final YamlNode node : this.children()) {
+        for (final YamlNode node : this.values()) {
             if (count == index && node instanceof YamlMapping) {
                 mapping = (YamlMapping) node;
             }
@@ -101,7 +101,7 @@ final class ReadYamlSequence extends ComparableYamlSequence {
     public YamlSequence yamlSequence(final int index) {
         YamlSequence sequence = null;
         int count = 0;
-        for (final YamlNode node : this.children()) {
+        for (final YamlNode node : this.values()) {
             if (count == index && node instanceof YamlSequence) {
                 sequence = (YamlSequence) node;
             }
@@ -114,7 +114,7 @@ final class ReadYamlSequence extends ComparableYamlSequence {
     public String string(final int index) {
         String scalar = null;
         int count = 0;
-        for (final YamlNode node : this.children()) {
+        for (final YamlNode node : this.values()) {
             if (count == index && node instanceof Scalar) {
                 scalar = ((Scalar) node).value();
             }
@@ -135,7 +135,7 @@ final class ReadYamlSequence extends ComparableYamlSequence {
 
     @Override
     public Iterator<YamlNode> iterator() {
-        return this.children().iterator();
+        return this.values().iterator();
     }
 
 }

@@ -124,7 +124,7 @@ public final class RtYamlMappingBuilderTest {
             mapping.string("architect"), Matchers.equalTo("amihaiemil")
         );
         MatcherAssert.assertThat(
-            mapping.yamlSequence("developers").children().size(),
+            mapping.yamlSequence("developers").values().size(),
             Matchers.equalTo(2)
         );
     }

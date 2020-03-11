@@ -54,16 +54,16 @@ import org.mockito.Mockito;
 public final class RtYamlMappingTest {
 
     /**
-     * RtYamlMapping can fetch its key-ordered children.
+     * RtYamlMapping can fetch its key-ordered values.
      */
     @Test
-    public void fetchesOrderedChildren() {
+    public void fetchesOrderedValues() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
         mappings.put(new Scalar("key2"), new Scalar("value1"));
         mappings.put(new Scalar("key3"), new Scalar("value2"));
         mappings.put(new Scalar("key1"), new Scalar("value3"));
         YamlMapping map = new RtYamlMapping(mappings);
-        final Collection<YamlNode> children = map.children();
+        final Collection<YamlNode> children = map.values();
         MatcherAssert.assertThat(
             children, Matchers.not(Matchers.emptyIterable())
         );
