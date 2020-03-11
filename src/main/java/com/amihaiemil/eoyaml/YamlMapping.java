@@ -226,7 +226,7 @@ public interface YamlMapping extends YamlNode {
      *     float value = Float.parseFloat(map.string(...));
      * </pre>
      * @param key The key of the value.
-     * @return Found integer or -1 if there is no value for the key,
+     * @return Found float or -1 if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable float.
@@ -288,7 +288,7 @@ public interface YamlMapping extends YamlNode {
      * @return Found long or -1L if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable double.
+     *  is not a parsable long.
      */
     default long longNumber(final String key) {
         return this.longNumber(new Scalar(key));
@@ -305,7 +305,7 @@ public interface YamlMapping extends YamlNode {
      * @return Found long or -1L if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable double.
+     *  is not a parsable long.
      */
     default long longNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -320,7 +320,7 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     LocalDate dateTime = LocalDate.parse(map.string(...));
+     *     LocalDate date = LocalDate.parse(map.string(...));
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,
@@ -336,7 +336,7 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     LocalDate dateTime = LocalDate.parse(map.string(...));
+     *     LocalDate date = LocalDate.parse(map.string(...));
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,

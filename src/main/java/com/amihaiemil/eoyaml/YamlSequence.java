@@ -51,24 +51,21 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     /**
      * Get the Yaml mapping  from the given index.
      * @param index Integer index.
-     * @return Yaml mapping or null if nothing is found,
-     *  or if the found value is not a YamlMapping.
+     * @return Yaml mapping.
      */
     YamlMapping yamlMapping(final int index);
 
     /**
      * Get the Yaml sequence from the given index.
      * @param index Integer index.
-     * @return Yaml sequence or null if nothing is found,
-     *  or if the found value is not a YamlSequence.
+     * @return Yaml sequence.
      */
     YamlSequence yamlSequence(final int index);
 
     /**
      * Get the String from the given index.
      * @param index Integer index.
-     * @return String or null if nothing is found, or
-     *  if the found YamlNode is not a Scalar.
+     * @return String.
      */
     String string(final int index);
 
@@ -126,8 +123,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     int value = Integer.parseInt(sequence.string(...));
      * </pre>
      * @param index The index of the value.
-     * @return Found integer or -1 if there is no value found or it
-     *  the value is not a string Scalar.
+     * @return Found integer.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable integer.
      */
@@ -147,8 +143,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     float value = Float.parseFloat(sequence.string(...));
      * </pre>
      * @param index The index of the value.
-     * @return Found integer or -1 if there is no value found or it
-     *  the value is not a string Scalar.
+     * @return Found float.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable float.
      */
@@ -168,8 +163,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     double value = Double.parseDouble(sequence.string(...));
      * </pre>
      * @param index The index of the value.
-     * @return Found integer or -1.0 if there is no value found or it
-     *  the value is not a string Scalar.
+     * @return Found double.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
      */
@@ -189,10 +183,9 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     long value = Long.parseLong(sequence.string(...));
      * </pre>
      * @param index The index of the value.
-     * @return Found integer or -1L if there is no value found or it
-     *  the value is not a string Scalar.
+     * @return Found long.
      * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable double.
+     *  is not a parsable long.
      */
     default long longNumber(final int index) {
         final String value = this.string(index);
@@ -210,8 +203,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     LocalDate dateTime = LocalDate.parse(sequence.string(...));
      * </pre>
      * @param index The index of the value.
-     * @return Found LocalDate or null if there is no value found or it
-     *  the value is not a string Scalar.
+     * @return Found LocalDate.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDate date(final int index) {
@@ -230,8 +222,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     LocalDateTime dateTime = LocalDateTime.parse(sequence.string(...));
      * </pre>
      * @param index The index of the value.
-     * @return Found LocalDateTime or null if there is no value found or it
-     *  the value is not a string Scalar.
+     * @return Found LocalDateTime.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDateTime dateTime(final int index) {
