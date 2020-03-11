@@ -86,6 +86,14 @@ public interface YamlMapping extends YamlNode {
     String string(final YamlNode key);
 
     /**
+     * Get the YamlNode mapped to the specified key.
+     * @param key YamlNode key. Could be a simple scalar,
+     *  a YamlMapping or a YamlSequence.
+     * @return The found YamlNode or null if nothing is found.
+     */
+    YamlNode value(final YamlNode key);
+    
+    /**
      * Return the keys' set of this mapping.<br><br>
      * <b>Pay attention: </b> the keys are ordered.
      * @return Set of YamlNode keys.

@@ -128,4 +128,15 @@ public final class StrictYamlMapping extends ComparableYamlMapping {
     public Set<YamlNode> keys() {
         return this.decorated.keys();
     }
+
+    @Override
+    public YamlNode value(final YamlNode key) {
+        YamlNode found = this.decorated.value(key);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No String found for key " + key
+            );
+        }
+        return found;
+    }
 }

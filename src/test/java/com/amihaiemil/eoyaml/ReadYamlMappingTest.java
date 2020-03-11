@@ -302,6 +302,80 @@ public final class ReadYamlMappingTest {
             third, Matchers.equalTo("something")
         );
     }
+
+    /**
+     * ReadYamlMapping can return the Scalar mapped to a
+     * Scalar key.
+     */
+    @Test
+    public void returnsScalarValueWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final YamlNode first = map.value(new Scalar("first"));
+        MatcherAssert.assertThat(first, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            first, Matchers.equalTo(new Scalar("somethingElse"))
+        );
+    }
+    
+    /**
+     * ReadYamlMapping can return the Sequence mapped to a
+     * Scalar key.
+     */
+    @Test
+    public void returnsSequenceValueWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  - some", 2));
+        lines.add(new RtYamlLine("  - sequence", 3));
+        lines.add(new RtYamlLine("third: something", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final YamlNode second = map.value(new Scalar("second"));
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+    }
+    
+    /**
+     * ReadYamlMapping can return the Mapping mapped to a
+     * Scalar key.
+     */
+    @Test
+    public void returnsMappingValueWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  some: mapping", 2));
+        lines.add(new RtYamlLine("third: something", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final YamlNode second = map.value(new Scalar("second"));
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlMapping.class)
+        );
+    }
+    
+    /**
+     * ReadYamlMapping can return null if value is missing.
+     */
+    @Test
+    public void returnsNullIfValueIsMissing(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  some: mapping", 2));
+        lines.add(new RtYamlLine("third: something", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final YamlNode missing = map.value(new Scalar("notthere"));
+        MatcherAssert.assertThat(missing, Matchers.nullValue());
+    }
     
     /**
      * ReadYamlMapping.string(...) returns null if the queried
