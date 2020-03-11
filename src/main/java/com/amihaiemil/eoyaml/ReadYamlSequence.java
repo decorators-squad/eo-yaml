@@ -80,11 +80,6 @@ final class ReadYamlSequence extends ComparableYamlSequence {
     }
 
     @Override
-    public String indent(final int indentation) {
-        return this.lines.indent(indentation);
-    }
-
-    @Override
     public YamlMapping yamlMapping(final int index) {
         YamlMapping mapping = null;
         int count = 0;

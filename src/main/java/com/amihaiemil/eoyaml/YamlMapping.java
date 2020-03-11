@@ -99,4 +99,53 @@ public interface YamlMapping extends YamlNode {
      * @return Set of YamlNode keys.
      */
     Set<YamlNode> keys();
+
+    /**
+     * Indent this YamlMapping. This is a default method since indentation
+     * logic should be identical for any kind of YamlMapping, regardless of
+     * its implementation.
+     * @param indentation Indentation to start with. Usually, it's 0, since we
+     *  don't want to have spates at the beginning. But in the case of nested
+     *  YamlNodes, this value may be > 0.
+     * @return String indented YamlMapping, by the specified indentation.
+     */
+    default String indent(final int indentation) {
+        if(indentation < 0) {
+            throw new IllegalArgumentException(
+                "Indentation level has to be >=0"
+            );
+        }
+        final StringBuilder print = new StringBuilder();
+        int spaces = indentation;
+        final StringBuilder indent = new StringBuilder();
+        while (spaces > 0) {
+            indent.append(" ");
+            spaces--;
+        }
+        for(final YamlNode key : this.keys()) {
+            print.append(indent);
+            final YamlNode value = this.value(key);
+            if(key instanceof Scalar) {
+                print.append(key.toString()).append(": ");
+                if (value instanceof Scalar) {
+                    print.append(value.toString()).append("\n");
+                } else  {
+                    print
+                        .append("\n")
+                        .append(value.indent(indentation + 2))
+                        .append("\n");
+                }
+            } else {
+                print.append("?\n").append(key.indent(indentation + 2))
+                    .append("\n").append(indent).append(":\n")
+                    .append(value.indent(indentation + 2))
+                    .append("\n");
+            }
+        }
+        String printed = print.toString();
+        if(printed.length() > 0) {
+            printed = printed.substring(0, printed.length() - 1);
+        }
+        return printed;
+    }
 }

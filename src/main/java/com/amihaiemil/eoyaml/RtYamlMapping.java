@@ -119,45 +119,6 @@ final class RtYamlMapping extends ComparableYamlMapping {
     }
 
     @Override
-    public String indent(final int indentation) {
-        StringBuilder print = new StringBuilder();
-        int spaces = indentation;
-        StringBuilder indent = new StringBuilder();
-        while (spaces > 0) {
-            indent.append(" ");
-            spaces--;
-        }
-        for(final Map.Entry<YamlNode, YamlNode> entry
-            : this.mappings.entrySet()
-        ) {
-            print.append(indent);
-            YamlNode key = entry.getKey();
-            YamlNode value = entry.getValue();
-            if(key instanceof Scalar) {
-                print.append(key.toString()).append(": ");
-                if (value instanceof Scalar) {
-                    print.append(value.toString()).append("\n");
-                } else  {
-                    print
-                    .append("\n")
-                    .append(value.indent(indentation + 2))
-                        .append("\n");
-                }
-            } else {
-                print.append("?\n").append(key.indent(indentation + 2))
-                    .append("\n").append(indent).append(":\n")
-                    .append(value.indent(indentation + 2))
-                    .append("\n");
-            }
-        }
-        String printed = print.toString();
-        if(printed.length() > 0) {
-            printed = printed.substring(0, printed.length() - 1);
-        }
-        return printed;
-    }
-
-    @Override
     public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new TreeSet<>();
         keys.addAll(this.mappings.keySet());

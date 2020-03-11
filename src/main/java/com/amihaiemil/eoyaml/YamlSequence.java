@@ -71,4 +71,38 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return Iterator of YamlNode.
      */
     Iterator<YamlNode> iterator();
+    
+    /**
+     * Indent this YamlSequence. This is a default method since indentation
+     * logic should be identical for any kind of YamlSequence, regardless of
+     * its implementation.
+     * @param indentation Indentation to start with. Usually, it's 0, since we
+     *  don't want to have spates at the beginning. But in the case of nested
+     *  YamlNodes, this value may be > 0.
+     * @return String indented YamlSequence, by the specified indentation.
+     */
+    default String indent(final int indentation) {
+        final StringBuilder print = new StringBuilder();
+        int spaces = indentation;
+        final StringBuilder indent = new StringBuilder();
+        while (spaces > 0) {
+            indent.append(" ");
+            spaces--;
+        }
+        for (final YamlNode node : this.values()) {
+            print.append(indent)
+                .append("- ");
+            if (node instanceof Scalar) {
+                print.append(node.toString()).append("\n");
+            } else  {
+                print.append("\n").append(node.indent(indentation + 2))
+                    .append("\n");
+            }
+        }
+        String printed = print.toString();
+        if(printed.length() > 0) {
+            printed = printed.substring(0, printed.length() - 1);
+        }
+        return printed;
+    }
 }

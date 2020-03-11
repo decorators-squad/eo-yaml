@@ -108,32 +108,6 @@ final class RtYamlSequence extends ComparableYamlSequence {
     }
 
     @Override
-    public String indent(final int indentation) {
-        StringBuilder print = new StringBuilder();
-        int spaces = indentation;
-        StringBuilder indent = new StringBuilder();
-        while (spaces > 0) {
-            indent.append(" ");
-            spaces--;
-        }
-        for (final YamlNode node : this.nodes) {
-            print.append(indent)
-                .append("- ");
-            if (node instanceof Scalar) {
-                print.append(node.toString()).append("\n");
-            } else  {
-                print.append("\n").append(node.indent(indentation + 2))
-                    .append("\n");
-            }
-        }
-        String printed = print.toString();
-        if(printed.length() > 0) {
-            printed = printed.substring(0, printed.length() - 1);
-        }
-        return printed;
-    }
-
-    @Override
     public int size() {
         return this.nodes.size();
     }

@@ -118,11 +118,6 @@ public final class StrictYamlSequence extends ComparableYamlSequence {
     }
 
     @Override
-    public String indent(final int indentation) {
-        return this.decorated.indent(indentation);
-    }
-
-    @Override
     public int size() {
         return this.decorated.size();
     }
