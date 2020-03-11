@@ -163,4 +163,9 @@ final class RtYamlMapping extends ComparableYamlMapping {
         keys.addAll(this.mappings.keySet());
         return keys;
     }
+
+    @Override
+    public YamlNode value(final YamlNode key) {
+        return this.mappings.get(key);
+    }
 }

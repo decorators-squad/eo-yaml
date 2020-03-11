@@ -378,6 +378,73 @@ public final class RtYamlMappingTest {
     }
 
     /**
+     * RtYamlMapping.value(YamlNode) can return a found Scalar value.
+     */
+    @Test
+    public void returnsScalarValue() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Scalar value = new Scalar("value2");
+        Scalar key = new Scalar("key2");
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(key, value);
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+
+        MatcherAssert.assertThat(map.value(key), Matchers.equalTo(value));
+    }
+    
+    /**
+     * RtYamlMapping.value(YamlNode) can return a found YamlMapping value.
+     */
+    @Test
+    public void returnsYamlMappingValue() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        YamlMapping value = Mockito.mock(YamlMapping.class);
+        Scalar key = new Scalar("key2");
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(key, value);
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+
+        MatcherAssert.assertThat(map.value(key), Matchers.equalTo(value));
+    }
+    
+    /**
+     * RtYamlMapping.value(YamlNode) can return a found YamlSequence value.
+     */
+    @Test
+    public void returnsYamlSequenceValue() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        YamlSequence value = Mockito.mock(YamlSequence.class);
+        Scalar key = new Scalar("key2");
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(key, value);
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+
+        MatcherAssert.assertThat(map.value(key), Matchers.equalTo(value));
+    }
+    
+    /**
+     * RtYamlMapping.value(YamlNode) can return null if the value is not there.
+     */
+    @Test
+    public void returnsNullOnMissingValue() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        YamlSequence value = Mockito.mock(YamlSequence.class);
+        Scalar key = new Scalar("key2");
+        mappings.put(new Scalar("key3"), Mockito.mock(YamlSequence.class));
+        mappings.put(key, value);
+        mappings.put(new Scalar("key1"), Mockito.mock(YamlMapping.class));
+        RtYamlMapping map = new RtYamlMapping(mappings);
+
+        MatcherAssert.assertThat(
+            map.value(new Scalar("notthere")),
+            Matchers.nullValue()
+        );
+    }
+    
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
