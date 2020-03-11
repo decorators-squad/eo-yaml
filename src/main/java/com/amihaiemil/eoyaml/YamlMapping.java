@@ -244,10 +244,10 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     float value = Double.parseDouble(map.string(...));
+     *     double value = Double.parseDouble(map.string(...));
      * </pre>
      * @param key The key of the value.
-     * @return Found float or -1.0 if there is no value for the key,
+     * @return Found double or -1.0 if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
@@ -261,10 +261,10 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     float value = Double.parseDouble(map.string(...));
+     *     double value = Double.parseDouble(map.string(...));
      * </pre>
      * @param key The key of the value.
-     * @return Found integer or -1.0 if there is no value for the key,
+     * @return Found double or -1.0 if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
@@ -282,10 +282,10 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     float value = Long.parseLong(map.string(...));
+     *     long value = Long.parseLong(map.string(...));
      * </pre>
      * @param key The key of the value.
-     * @return Found float or -1L if there is no value for the key,
+     * @return Found long or -1L if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
@@ -299,10 +299,10 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     float value = Long.parseLong(map.string(...));
+     *     long value = Long.parseLong(map.string(...));
      * </pre>
      * @param key The key of the value.
-     * @return Found integer or -1L if there is no value for the key,
+     * @return Found long or -1L if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
@@ -320,7 +320,7 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     LocalDateTime dateTime = LocalDate.parse(map.string(...));
+     *     LocalDate dateTime = LocalDate.parse(map.string(...));
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,
@@ -336,7 +336,7 @@ public interface YamlMapping extends YamlNode {
      * from this map. It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     LocalDateTime dateTime = LocalDate.parse(map.string(...));
+     *     LocalDate dateTime = LocalDate.parse(map.string(...));
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,

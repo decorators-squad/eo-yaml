@@ -27,10 +27,14 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Iterator;
 
 /**
  * A Yaml sequence.
+ * @checkstyle ReturnCount (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -47,21 +51,24 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     /**
      * Get the Yaml mapping  from the given index.
      * @param index Integer index.
-     * @return Yaml mapping
+     * @return Yaml mapping or null if nothing is found,
+     *  or if the found value is not a YamlMapping.
      */
     YamlMapping yamlMapping(final int index);
 
     /**
-     * Get the Yaml sequence  from the given index.
+     * Get the Yaml sequence from the given index.
      * @param index Integer index.
-     * @return Yaml sequence
+     * @return Yaml sequence or null if nothing is found,
+     *  or if the found value is not a YamlSequence.
      */
     YamlSequence yamlSequence(final int index);
 
     /**
      * Get the String from the given index.
      * @param index Integer index.
-     * @return String
+     * @return String or null if nothing is found, or
+     *  if the found YamlNode is not a Scalar.
      */
     String string(final int index);
 
@@ -109,5 +116,129 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+    
+    /**
+     * Convenience method to directly read an integer value
+     * from this sequence. It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     int value = Integer.parseInt(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Found integer or -1 if there is no value found or it
+     *  the value is not a string Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable integer.
+     */
+    default int integer(final int index) {
+        final String value = this.string(index);
+        if(value != null && !value.isEmpty()) {
+            return Integer.parseInt(value);
+        }
+        return -1;
+    }
+    
+    /**
+     * Convenience method to directly read a float value
+     * from this sequence. It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     float value = Float.parseFloat(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Found integer or -1 if there is no value found or it
+     *  the value is not a string Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable float.
+     */
+    default float floatNumber(final int index) {
+        final String value = this.string(index);
+        if(value != null && !value.isEmpty()) {
+            return Float.parseFloat(value);
+        }
+        return -1;
+    }
+    
+    /**
+     * Convenience method to directly read a double value
+     * from this sequence. It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     double value = Double.parseDouble(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Found integer or -1.0 if there is no value found or it
+     *  the value is not a string Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable double.
+     */
+    default double doubleNumber(final int index) {
+        final String value = this.string(index);
+        if(value != null && !value.isEmpty()) {
+            return Double.parseDouble(value);
+        }
+        return -1.0;
+    }
+    
+    /**
+     * Convenience method to directly read a long value
+     * from this sequence. It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     long value = Long.parseLong(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Found integer or -1L if there is no value found or it
+     *  the value is not a string Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable double.
+     */
+    default long longNumber(final int index) {
+        final String value = this.string(index);
+        if(value != null && !value.isEmpty()) {
+            return Long.parseLong(value);
+        }
+        return -1L;
+    }
+
+    /**
+     * Convenience method to directly read a LocalDate value
+     * from this sequence. It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     LocalDate dateTime = LocalDate.parse(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Found LocalDate or null if there is no value found or it
+     *  the value is not a string Scalar.
+     * @throws DateTimeParseException - if the Scalar value cannot be parsed.
+     */
+    default LocalDate date(final int index) {
+        final String value = this.string(index);
+        if(value != null && !value.isEmpty()) {
+            return LocalDate.parse(value);
+        }
+        return null;
+    }
+    
+    /**
+     * Convenience method to directly read a LocalDateTime value
+     * from this sequence. It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     LocalDateTime dateTime = LocalDateTime.parse(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Found LocalDateTime or null if there is no value found or it
+     *  the value is not a string Scalar.
+     * @throws DateTimeParseException - if the Scalar value cannot be parsed.
+     */
+    default LocalDateTime dateTime(final int index) {
+        final String value = this.string(index);
+        if(value != null && !value.isEmpty()) {
+            return LocalDateTime.parse(value);
+        }
+        return null;
     }
 }
