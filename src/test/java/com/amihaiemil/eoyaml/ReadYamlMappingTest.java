@@ -108,7 +108,7 @@ public final class ReadYamlMappingTest {
      * ReadYamlMapping can return its key-ordered children.
      */
     @Test
-    public void returnsOrderedChildrenOfStringKeys(){
+    public void returnsOrderedValuesOfStringKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("zkey: somethingElse", 0));
         lines.add(new RtYamlLine("bkey: ", 1));
@@ -120,7 +120,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - value", 7));
 
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final Collection<YamlNode> children = map.children();
+        final Collection<YamlNode> children = map.values();
         MatcherAssert.assertThat(
             children, Matchers.iterableWithSize(4)
         );
@@ -159,7 +159,7 @@ public final class ReadYamlMappingTest {
      * @checkstyle ExecutableStatementCount (100 lines)
      */
     @Test
-    public void returnsOrderedChildrenOfStringAndComplexKeys(){
+    public void returnsOrderedValuesOfStringAndComplexKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
         lines.add(new RtYamlLine("? ", 1));

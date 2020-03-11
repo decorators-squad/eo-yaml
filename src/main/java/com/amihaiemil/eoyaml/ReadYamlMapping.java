@@ -51,11 +51,6 @@ final class ReadYamlMapping extends ComparableYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> children() {
-        return this.values();
-    }
-
-    @Override
     public Collection<YamlNode> values() {
         final List<YamlNode> values = new LinkedList<>();
         for(final YamlNode key : this.keys()) {

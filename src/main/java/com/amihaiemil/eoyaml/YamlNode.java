@@ -46,7 +46,9 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @return Collection of {@link YamlNode}
      */
     @Deprecated
-    Collection<YamlNode> children();
+    default Collection<YamlNode> children() {
+        return this.values();
+    }
 
     /**
      * Fetch the values.

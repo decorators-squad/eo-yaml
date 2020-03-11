@@ -67,7 +67,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Returns this YamlSequence's children Iterator.<br><br>
-     * It is equivalent to YamlSequence.children().iterator().
+     * It is equivalent to YamlSequence.values().iterator().
      * @return Iterator of YamlNode.
      */
     Iterator<YamlNode> iterator();

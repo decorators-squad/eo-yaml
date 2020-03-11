@@ -46,7 +46,7 @@ abstract class ComparableYamlSequence implements YamlSequence {
     @Override
     public int hashCode() {
         int hash = 0;
-        for(final YamlNode node : this.children()) {
+        for(final YamlNode node : this.values()) {
             hash += node.hashCode();
         }
         return hash;
@@ -98,9 +98,9 @@ abstract class ComparableYamlSequence implements YamlSequence {
         } else if (other instanceof YamlMapping) {
             result = -1;
         } else if (this != other) {
-            final Collection<YamlNode> nodes = this.children();
+            final Collection<YamlNode> nodes = this.values();
             nodes.hashCode();
-            final Collection<YamlNode> others = other.children();
+            final Collection<YamlNode> others = other.values();
             if(nodes.size() > others.size()) {
                 result = 1;
             } else if (nodes.size() < others.size()) {

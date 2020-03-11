@@ -104,11 +104,6 @@ final class RtYamlMapping extends ComparableYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> children() {
-        return this.values();
-    }
-
-    @Override
     public Collection<YamlNode> values() {
         return this.mappings.values();
     }
