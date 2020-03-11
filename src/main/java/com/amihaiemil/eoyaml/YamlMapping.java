@@ -31,6 +31,7 @@ import java.util.Set;
 
 /**
  * A Yaml mapping.
+ * @checkstyle ExecutableStatementCount (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -136,10 +137,19 @@ public interface YamlMapping extends YamlNode {
                         .append("\n");
                 }
             } else {
-                print.append("?\n").append(key.indent(indentation + 2))
-                    .append("\n").append(indent).append(":\n")
-                    .append(value.indent(indentation + 2))
-                    .append("\n");
+                print
+                    .append("?\n")
+                    .append(key.indent(indentation + 2)).append("\n")
+                    .append(indent).append(":");
+                if(value instanceof Scalar) {
+                    print
+                        .append(" ").append(value);
+                } else {
+                    print
+                        .append("\n")
+                        .append(value.indent(indentation + 2));
+                }
+                print.append("\n");
             }
         }
         String printed = print.toString();
