@@ -93,6 +93,78 @@ public final class RtYamlInputTest {
             read, Matchers.equalTo(expected)
         );
     }
+    
+    /**
+     * RtYamlnput can read and indent a complex mapping.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsAndIndentsComplexMapping() throws Exception {
+        YamlMapping expected = Yaml.createYamlMappingBuilder()
+                .add("first", "value1")
+                .add("second", "value2")
+                .add("third",
+                    Yaml.createYamlSequenceBuilder()
+                        .add("singleElementSequence")
+                        .build()
+                ).add(
+                    Yaml.createYamlSequenceBuilder()
+                        .add("sequence")
+                        .add("key")
+                        .build(),
+                    "scalar"
+                ).add(
+                    Yaml.createYamlMappingBuilder()
+                        .add("map", "asKey")
+                        .add("map1", "asKey2")
+                        .build(),
+                    Yaml.createYamlMappingBuilder()
+                        .add("someMapping",  "value")
+                        .build()
+                )
+                .build();
+        System.out.println(expected);
+        YamlMapping actual = new RtYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/indentedComplexMapping.yml")
+            )
+        ).readYamlMapping();
+        MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
+    }
+    
+    /**
+     * RtYamlnput can read and indent a complex sequence.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsAndIndentsComplexSequence() throws Exception {
+        final YamlSequence expected = Yaml.createYamlSequenceBuilder()
+            .add("amihaiemil")
+            .add("salikjan")
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("element1")
+                    .add("element2")
+                    .add("element3")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlMappingBuilder()
+                    .add("rule1", "test")
+                    .add("rule2", "test2")
+                    .add("rule3", "test3")
+                    .build()
+            )
+            .build();
+        final YamlSequence actual = new RtYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/complexSequence.yml")
+            )
+        ).readYamlSequence();
+        MatcherAssert.assertThat(
+            actual.indent(0), Matchers.equalTo(expected.indent(0))
+        );
+    }
 
     /**
      * A YamlSequence in block style can be read.

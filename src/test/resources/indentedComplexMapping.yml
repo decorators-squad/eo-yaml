@@ -1,0 +1,13 @@
+first: value1
+second: value2
+third: 
+  - singleElementSequence
+?
+  - sequence
+  - key
+: scalar
+?
+  map: asKey
+  map1: asKey2
+:
+  someMapping: value
