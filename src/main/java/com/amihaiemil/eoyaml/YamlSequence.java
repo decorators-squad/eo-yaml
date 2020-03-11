@@ -77,11 +77,16 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * logic should be identical for any kind of YamlSequence, regardless of
      * its implementation.
      * @param indentation Indentation to start with. Usually, it's 0, since we
-     *  don't want to have spates at the beginning. But in the case of nested
+     *  don't want to have spaces at the beginning. But in the case of nested
      *  YamlNodes, this value may be > 0.
      * @return String indented YamlSequence, by the specified indentation.
      */
     default String indent(final int indentation) {
+        if(indentation < 0) {
+            throw new IllegalArgumentException(
+                "Indentation level has to be >=0"
+            );
+        }
         final StringBuilder print = new StringBuilder();
         int spaces = indentation;
         final StringBuilder indent = new StringBuilder();

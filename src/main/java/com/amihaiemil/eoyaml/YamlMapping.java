@@ -105,7 +105,7 @@ public interface YamlMapping extends YamlNode {
      * logic should be identical for any kind of YamlMapping, regardless of
      * its implementation.
      * @param indentation Indentation to start with. Usually, it's 0, since we
-     *  don't want to have spates at the beginning. But in the case of nested
+     *  don't want to have spaces at the beginning. But in the case of nested
      *  YamlNodes, this value may be > 0.
      * @return String indented YamlMapping, by the specified indentation.
      */
