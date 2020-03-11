@@ -110,6 +110,19 @@ public final class StrictYamlMappingTest {
         YamlMapping strict = new StrictYamlMapping(origin);
         strict.string("key");
     }
+    
+    /**
+     * StringYamlMapping can throw YamlNodeNotFoundException
+     * when the demanded value is not found.
+     */
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullValue() {
+        Scalar key = new Scalar("key");
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        Mockito.when(origin.value(key)).thenReturn(null);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        strict.string(key);
+    }
 
     /**
      * StringYamlMapping can fetch a YamlMapping based in its key.
@@ -152,6 +165,21 @@ public final class StrictYamlMappingTest {
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.string("key"), Matchers.equalTo("found")
+        );
+    }
+    
+    /**
+     * StringYamlMapping can fetch a value based in its key.
+     */
+    @Test
+    public void returnsValue() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        YamlNode key = new Scalar("key");
+        YamlNode value = new Scalar("value");
+        Mockito.when(origin.value(key)).thenReturn(value);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        MatcherAssert.assertThat(
+            strict.value(key), Matchers.equalTo(value)
         );
     }
 }
