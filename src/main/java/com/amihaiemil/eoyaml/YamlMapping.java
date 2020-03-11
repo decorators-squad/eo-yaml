@@ -27,11 +27,15 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Set;
 
 /**
  * A Yaml mapping.
  * @checkstyle ExecutableStatementCount (300 lines)
+ * @checkstyle ReturnCount (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -157,5 +161,229 @@ public interface YamlMapping extends YamlNode {
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+    
+    /**
+     * Convenience method to directly read an integer value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     int value = Integer.parseInt(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found integer or -1 if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable integer.
+     */
+    default int integer(final String key) {
+        return this.integer(new Scalar(key));
+    }
+    
+    /**
+     * Convenience method to directly read an integer value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     int value = Integer.parseInt(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found integer or -1 if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable integer.
+     */
+    default int integer(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value != null && value instanceof Scalar) {
+            return Integer.parseInt(((Scalar) value).value());
+        }
+        return -1;
+    }
+    
+    /**
+     * Convenience method to directly read a float value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     float value = Float.parseFloat(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found float or -1 if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable float.
+     */
+    default float floatNumber(final String key) {
+        return this.floatNumber(new Scalar(key));
+    }
+    
+    /**
+     * Convenience method to directly read a float value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     float value = Float.parseFloat(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found integer or -1 if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable float.
+     */
+    default float floatNumber(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value != null && value instanceof Scalar) {
+            return Float.parseFloat(((Scalar) value).value());
+        }
+        return -1;
+    }
+    
+    /**
+     * Convenience method to directly read a double value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     float value = Double.parseDouble(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found float or -1.0 if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable double.
+     */
+    default double doubleNumber(final String key) {
+        return this.doubleNumber(new Scalar(key));
+    }
+    
+    /**
+     * Convenience method to directly read a double value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     float value = Double.parseDouble(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found integer or -1.0 if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable double.
+     */
+    default double doubleNumber(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value != null && value instanceof Scalar) {
+            return Double.parseDouble(((Scalar) value).value());
+        }
+        return -1.0;
+    }
+    
+    /**
+     * Convenience method to directly read a long value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     float value = Long.parseLong(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found float or -1L if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable double.
+     */
+    default long longNumber(final String key) {
+        return this.longNumber(new Scalar(key));
+    }
+    
+    /**
+     * Convenience method to directly read a long value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     float value = Long.parseLong(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found integer or -1L if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws NumberFormatException - if the Scalar value
+     *  is not a parsable double.
+     */
+    default long longNumber(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value != null && value instanceof Scalar) {
+            return Long.parseLong(((Scalar) value).value());
+        }
+        return -1L;
+    }
+
+    /**
+     * Convenience method to directly read a LocalDate value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     LocalDateTime dateTime = LocalDate.parse(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found LocalDate or null if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws DateTimeParseException - if the Scalar value cannot be parsed.
+     */
+    default LocalDate date(final String key) {
+        return this.date(new Scalar(key));
+    }
+    
+    /**
+     * Convenience method to directly read a LocalDate value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     LocalDateTime dateTime = LocalDate.parse(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found LocalDate or null if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws DateTimeParseException - if the Scalar value cannot be parsed.
+     */
+    default LocalDate date(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value != null && value instanceof Scalar) {
+            return LocalDate.parse(((Scalar) value).value());
+        }
+        return null;
+    }
+    
+    /**
+     * Convenience method to directly read a LocalDateTime value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     LocalDateTime dateTime = LocalDateTime.parse(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found LocalDateTime or null if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws DateTimeParseException - if the Scalar value cannot be parsed.
+     */
+    default LocalDateTime dateTime(final String key) {
+        return this.dateTime(new Scalar(key));
+    }
+    
+    /**
+     * Convenience method to directly read a LocalDateTime value
+     * from this map. It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     LocalDateTime dateTime = LocalDateTime.parse(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Found LocalDateTime or null if there is no value for the key,
+     *  or the value is not a Scalar.
+     * @throws DateTimeParseException - if the Scalar value cannot be parsed.
+     */
+    default LocalDateTime dateTime(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value != null && value instanceof Scalar) {
+            return LocalDateTime.parse(((Scalar) value).value());
+        }
+        return null;
     }
 }
