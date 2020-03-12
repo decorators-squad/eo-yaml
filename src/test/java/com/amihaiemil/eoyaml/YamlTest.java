@@ -63,6 +63,16 @@ public final class YamlTest {
     }
 
     /**
+     * Yaml can create a YamlStreamBuilder.
+     */
+    @Test
+    public void createsYamlStreamBuilder() {
+        MatcherAssert.assertThat(
+            Yaml.createYamlStreamBuilder(), Matchers.notNullValue()
+        );
+    }
+
+    /**
      * Yaml can create a YamlInput from a File.
      * @throws Exception if something goes wrong
      */
