@@ -37,10 +37,10 @@ public interface YamlStreamBuilder {
     
     /**
      * Add a YAML to the Stream.
-     * @param node YamlNode
+     * @param document YamlNode
      * @return This builder
      */
-    YamlStreamBuilder add(final YamlNode node);
+    YamlStreamBuilder add(final YamlNode document);
 
     /**
      * Build the YamlStream.

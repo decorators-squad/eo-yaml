@@ -28,9 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -55,10 +53,6 @@ public final class RtYamlMappingBuilderTest {
         MatcherAssert.assertThat(
             mappingBuilder, Matchers.not(Matchers.is(withAdded))
         );
-        Map<String, String> test = new HashMap<>();
-        test.put("1", "2");
-        test.put("2", "5");
-        test.put("3", "6");
     }
 
     /**

@@ -104,19 +104,21 @@ final class RtYamlStreamBuilder implements YamlStreamBuilder {
      * @version $Id$
      * @since 3.1.1
      */
-    static class BuiltYamlStream implements YamlStream {
+    static class BuiltYamlStream extends ComparableYamlStream {
 
+        /**
+         * Documents as a List.
+         */
+        private Collection<YamlNode> documents;
+        
         /**
          * The Stream of YAML Documents.
          */
         private Stream<YamlNode> documentStream;
         
         BuiltYamlStream(final Collection<YamlNode> documents) {
-            this(documents.stream());
-        }
-        
-        BuiltYamlStream(final Stream<YamlNode> documents) {
-            this.documentStream = documents;
+            this.documents = documents;
+            this.documentStream = documents.stream();
         }
         
         public Iterator<YamlNode> iterator() {
@@ -278,6 +280,16 @@ final class RtYamlStreamBuilder implements YamlStreamBuilder {
 
         public Optional<YamlNode> findAny() {
             return this.documentStream.findAny();
+        }
+
+        @Override
+        public Collection<YamlNode> values() {
+            return this.documents;
+        }
+
+        @Override
+        public String toString() {
+            return this.indent(0);
         }
     }
     

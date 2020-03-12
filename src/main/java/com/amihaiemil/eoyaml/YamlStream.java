@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
 import java.util.stream.Stream;
 
 /**
@@ -35,6 +36,68 @@ import java.util.stream.Stream;
  * @version $Id$
  * @since 3.1.1
  */
-public interface YamlStream extends Stream<YamlNode> {
+public interface YamlStream extends YamlNode, Stream<YamlNode> {
 
+    /**
+     * Indent this YamlStream. It will take all elements and separate
+     * them with "---". It also starts with "---".
+     * If the YamlStream is empty, it will just print: 
+     * <pre>
+     * ---
+     * ...
+     * </pre>
+     * 
+     * Here is an example of printed YamlStream:
+     * <pre>
+     * ---
+     *   architect: amihaiemil
+     *   developers: 
+     *     - amihaiemil
+     *     - salikjan
+     * ---
+     *   architect: yegor256
+     *   developers: 
+     *     - paolo
+     *     - mario
+     * </pre>
+     * @param indentation Integer specifying the root indentation level.
+     *  Usually 0, but it may be greater than 0 if this YamlNode should
+     *  be nested within a bigger YAML.
+     * @return String.
+     */
+    default String indent(final int indentation) {
+        if(indentation < 0) {
+            throw new IllegalArgumentException(
+                "Indentation level has to be >=0"
+            );
+        }
+        final StringBuilder print = new StringBuilder();
+        int spaces = indentation;
+        final StringBuilder indent = new StringBuilder();
+        while (spaces > 0) {
+            indent.append(" ");
+            spaces--;
+        }
+        final Collection<YamlNode> values = this.values();
+        String printed;
+        if(values.size() == 0) {
+            print
+                .append(indent).append("---\n")
+                .append(indent).append("...");
+            printed = print.toString();
+        } else {
+            for (final YamlNode node : values) {
+                print.append(indent)
+                     .append("---\n");
+                print.append(node.indent(indentation + 2));
+                print.append("\n");
+            }
+            printed = print.toString();
+            if(printed.length() > 0) {
+                printed = printed.substring(0, printed.length() - 1);
+            }
+        }
+        return printed;
+    }
+    
 }
