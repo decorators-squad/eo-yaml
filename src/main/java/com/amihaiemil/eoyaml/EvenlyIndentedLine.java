@@ -29,11 +29,15 @@ package com.amihaiemil.eoyaml;
 
 /**
  * Any Yaml line should have an even indentation (multiple of 2).
+ * @deprecated Usage of this class has been removed since the assumption
+ *  that any YAML line should have an even indentation is incorrect. It
+ *  will probably be removed later.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  *
  */
+@Deprecated
 final class EvenlyIndentedLine implements YamlLine {
 
     /**

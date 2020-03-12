@@ -89,7 +89,7 @@ final class RtYamlInput implements YamlInput {
                         new CachedYamlLine(
                             new WellIndentedLine(
                                 previous,
-                                new EvenlyIndentedLine(current)
+                                current
                             )
                         )
                     );
