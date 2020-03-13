@@ -34,7 +34,33 @@ import java.util.List;
 
 /**
  * YamlLines decorator which iterates over them and verifies
- * that their indentation is correct.
+ * that their indentation is correct.<br><br>
+ * Initially, we used to do this validation at line level, right when each
+ * line is being read (in {@link RtYamlInput}). However, we decided
+ * to do it at YamlLines level, as a decorator, because
+ * in some cases, we need to eliminate some of them first (markers,
+ * directives etc). <br><br>
+ * 
+ * This class can be used as follows:
+ * 
+ * <pre>
+ * 
+ * YamlLines wellIndented = new SameIndentationLevel(
+ *     new WellIndented(lines)
+ * );//Iterate over the lines which are at the same indentation level
+ * </pre>
+ * or
+ * <pre>
+ * 
+ * YamlLines wellIndented = new SameIndentationLevel(
+ *     new WellIndented(
+ *         new NoMarkersOrDirectives(
+ *             lines
+ *         )//ignore markers or directives
+ *     )
+ * );//Iterate over the lines which are at the same indentation level
+ * </pre>
+ * 
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.2
@@ -86,7 +112,8 @@ final class WellIndented implements YamlLines {
                     if(lineIndent > prevIndent) {
                         throw new IllegalStateException(
                             "Indentation of line " + line.number() + " is "
-                            + "greater than the previous one's"
+                            + "greater than the previous one's. "
+                            + "It should be the same or less."
                         );
                     }
                 }
