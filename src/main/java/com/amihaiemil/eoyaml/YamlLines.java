@@ -41,16 +41,12 @@ import java.util.List;
 interface YamlLines extends Iterable<YamlLine> {
 
     /**
-     * All the YAML lines, as a collection.
+     * All the YAML lines, as a collection.<br>
+     * This method should always return all the lines
+     * there are, irrespective of iteration logic!
      * @return These YamlLines as a Collection.
      */
     Collection<YamlLine> lines();
-    
-    /**
-     * Number of lines.
-     * @return Integer.
-     */
-    int count();
 
     /**
      * Turn these lines into a YamlNode.

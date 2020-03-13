@@ -70,11 +70,6 @@ final class AllYamlLines implements YamlLines {
     }
     
     @Override
-    public int count() {
-        return this.lines.size();
-    }
-
-    @Override
     public YamlNode toYamlNode(final YamlLine prev) {
         final String trimmed = prev.trimmed();
         final String last = trimmed.substring(trimmed.length()-1);

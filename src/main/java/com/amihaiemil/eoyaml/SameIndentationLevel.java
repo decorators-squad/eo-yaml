@@ -85,11 +85,6 @@ final class SameIndentationLevel implements YamlLines {
     }
 
     @Override
-    public int count() {
-        return this.lines().size();
-    }
-
-    @Override
     public YamlNode toYamlNode(final YamlLine prev) {
         return this.all.toYamlNode(prev);
     }
