@@ -59,7 +59,7 @@ public interface YamlInput {
     default YamlStream readYamlStream() throws IOException {
         throw new UnsupportedOperationException(
             "Not yet implemented. You can follow the development here "
-          + "https://github.com/decorators-squad/eo-yaml/issues/11. " 
+          + "https://github.com/decorators-squad/eo-yaml/issues/90. " 
           + "You may also contribute if you have the time!" 
         );
     }

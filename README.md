@@ -29,9 +29,11 @@ or download the <a href="https://oss.sonatype.org/service/local/repositories/rel
 
 The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to:
 
-## Features
+## Features (ongoing work!)
 
 Since the library is quite young, it doesn't support all the features of YAML yet. For now, it only supports creating/parsing [Block Style](http://yaml.org/spec/1.2/spec.html#Block) YAML, so use it if you have to read/create configuration files and such stuff. It doesn't yet implement features such as **flow** or **recursive** representation, **aliases & anchors** or document streams (more YAMLs separated by ``---``).
+
+Have a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML it supports so far.
 
 However, keep in mind that the library is based on interfaces and OOP best practices, so you can probably extend/decorate the objects in order to create the functionality you need! 
 
@@ -113,12 +115,11 @@ You can also parse maps (``Map<Object, Object>``) and collections (``Collection<
 
 ## Contribute
 
-Contributors are [welcome](http://www.amihaiemil.com/2016/12/30/becoming-a-contributor.html)
+Contributors are welcome!
 
 1. Open an issue regarding an improvement you thought of, or a bug you noticed, or ask to be assigned to an existing one.
 2. If the issue is confirmed, fork the repository, do the changes on a separate branch and make a Pull Request.
 3. After review and acceptance, the PR is merged and closed.
-4. You are automatically listed as a contributor on the repo and the project's site (to follow)
 
 Make sure the maven build
 

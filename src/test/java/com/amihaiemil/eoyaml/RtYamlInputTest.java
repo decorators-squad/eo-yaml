@@ -186,5 +186,16 @@ public final class RtYamlInputTest {
 
         MatcherAssert.assertThat(read, Matchers.equalTo(expected));
     }
+    
+    /**
+     * Reading of YamlStream is not yet implemented, an exception should
+     * be thrown.
+     * @throws Exception If something goes wrong.
+     */
+    @Test (expected = UnsupportedOperationException.class)
+    public void readingYamlStreamNotImplemented() throws Exception {
+        final YamlInput input = Yaml.createYamlInput("");
+        input.readYamlStream();
+    }
 
 }
