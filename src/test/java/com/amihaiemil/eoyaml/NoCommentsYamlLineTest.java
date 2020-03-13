@@ -99,10 +99,10 @@ public final class NoCommentsYamlLineTest {
     @Test
     public void trimsCommentsAtEndOfLineWithoutQuotes() {
         YamlLine noComments = new NoCommentsYamlLine(
-            new RtYamlLine("  this isn't comment   #here is the comment", 1)
+            new RtYamlLine("  this isnt a comment   #here is the comment", 1)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("this isn't comment")
+            noComments.trimmed(), Matchers.is("this isnt a comment")
         );
     }
 
@@ -124,12 +124,25 @@ public final class NoCommentsYamlLineTest {
      * NoCommentsYamlLine doesn't remove escaped # in a string.
      */
     @Test
-    public void doesNotTrimsEscapedHash() {
+    public void doesNotTrimQuotesEscapedHash() {
         YamlLine noComments = new NoCommentsYamlLine(
-            new RtYamlLine(" \"value = #5\" ", 2)
+            new RtYamlLine("  value: \"this isn't mambo #5\" ", 2)
         );
         MatcherAssert.assertThat(
-            noComments.trimmed(), Matchers.is("\"value = #5\"")
+            noComments.trimmed(), Matchers.is("value: \"this isn't mambo #5\"")
+        );
+    }
+    
+    /**
+     * NoCommentsYamlLine doesn't remove escaped # in a string.
+     */
+    @Test
+    public void doesNotTrimApostropheEscapedHash() {
+        YamlLine noComments = new NoCommentsYamlLine(
+            new RtYamlLine("  value: '#5' ", 2)
+        );
+        MatcherAssert.assertThat(
+            noComments.trimmed(), Matchers.is("value: '#5'")
         );
     }
 }
