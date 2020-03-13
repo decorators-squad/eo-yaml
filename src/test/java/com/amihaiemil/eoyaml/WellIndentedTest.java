@@ -141,7 +141,7 @@ public final class WellIndentedTest {
         final YamlLines wiLines = new WellIndented(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             wiLines,
-            Matchers.iterableWithSize(5)
+            Matchers.iterableWithSize(3)
         );
     }
     
@@ -157,7 +157,7 @@ public final class WellIndentedTest {
         final YamlLines wiLines = new WellIndented(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             wiLines,
-            Matchers.iterableWithSize(5)
+            Matchers.iterableWithSize(3)
         );
     }
 }
