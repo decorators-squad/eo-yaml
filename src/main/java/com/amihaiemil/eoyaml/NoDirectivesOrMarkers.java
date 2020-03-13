@@ -33,14 +33,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * SameIndentationLevel. Decorates some YamlLines
- * and iterates only over those which are at the same
- * indentation level with the first one.
+ * No directives or markers. Decorates some YamlLines
+ * and ignores YAML directives and markers from iteration.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.0.2
+ * @since 3.1.2
  */
-final class SameIndentationLevel implements YamlLines {
+final class NoDirectivesOrMarkers implements YamlLines {
 
     /**
      * YamlLines.
@@ -49,32 +48,37 @@ final class SameIndentationLevel implements YamlLines {
 
     /**
      * Ctor.
-     * @param yamlLines All the Yaml lines.
+     * @param yamlLines The Yaml lines.
      */
-    SameIndentationLevel(final YamlLines yamlLines) {
+    NoDirectivesOrMarkers(final YamlLines yamlLines) {
         this.yamlLines = yamlLines;
     }
 
     /**
      * Returns an iterator over these Yaml lines.
-     * It <b>only</b> iterates over the lines which are at the same
-     * level of indentation with the first!
+     * It ignores the YAML Directives and Marker lines.
      * @return Iterator over these yaml lines.
      */
     @Override
     public Iterator<YamlLine> iterator() {
         Iterator<YamlLine> iterator = this.yamlLines.iterator();
         if (iterator.hasNext()) {
-            final List<YamlLine> sameIndentation = new ArrayList<>();
-            final YamlLine first = iterator.next();
-            sameIndentation.add(first);
+            final List<YamlLine> noDirectivesOrMarkers = new ArrayList<>();
             while (iterator.hasNext()) {
-                YamlLine current = iterator.next();
-                if(current.indentation() == first.indentation()) {
-                    sameIndentation.add(current);
+                final YamlLine current = iterator.next();
+                final String currentLine = current.trimmed();
+                if(
+                    "---".equals(currentLine) ||
+                    "...".equals(currentLine) ||
+                    currentLine.startsWith("%") ||
+                    currentLine.startsWith("!!")
+                ) {
+                    continue;
+                } else {
+                    noDirectivesOrMarkers.add(current);
                 }
             }
-            iterator = sameIndentation.iterator();
+            iterator = noDirectivesOrMarkers.iterator();
         }
         return iterator;
     }
@@ -93,5 +97,4 @@ final class SameIndentationLevel implements YamlLines {
     public YamlNode toYamlNode(final YamlLine prev) {
         return this.yamlLines.toYamlNode(prev);
     }
-
 }

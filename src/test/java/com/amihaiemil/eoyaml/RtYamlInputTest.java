@@ -167,6 +167,21 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * At the moment, when reading a mapping, we should ignore any YAML
+     * Directive or Marker line, such as "%YAML 1.2" or "---" or "...".
+     * @throws Exception if something is wrong.
+     */
+    @Test
+    public void readsMappingWithoutDirectives() throws Exception {
+        final YamlMapping actual = new RtYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/mapping_ignore_directives.yml")
+            )
+        ).readYamlMapping();
+        System.out.println(actual.toString());
+    }
+    
+    /**
      * A YamlSequence in block style can be read.
      * @throws Exception If something goes wrong.
      */

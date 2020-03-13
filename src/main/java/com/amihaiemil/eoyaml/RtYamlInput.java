@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Implementation for {@link YamlInput}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: 29bd9c937aa0122b92ce404890943345f9b99d49 $
+ * @version $Id$
  * @since 1.0.0
  */
 final class RtYamlInput implements YamlInput {
@@ -57,12 +57,20 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return new ReadYamlMapping(this.readInput());
+        return new ReadYamlMapping(
+            new NoDirectivesOrMarkers(
+                this.readInput()
+            )
+        );
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return new ReadYamlSequence(this.readInput());
+        return new ReadYamlSequence(
+            new NoDirectivesOrMarkers(
+                this.readInput()
+            )
+        );
     }
 
     /**

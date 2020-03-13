@@ -100,7 +100,7 @@ final class RtYamlLine implements YamlLine {
     public boolean hasNestedNode() {
         final boolean result;
         final String specialCharacters = ":>|-?";
-
+        
         final CharSequence prevLineLastChar =
             this.trimmed().substring(this.trimmed().length()-1);
         if(specialCharacters.contains(prevLineLastChar)) {
