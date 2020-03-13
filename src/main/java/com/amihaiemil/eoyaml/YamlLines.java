@@ -71,39 +71,6 @@ interface YamlLines extends Iterable<YamlLine> {
     }
     
     /**
-     * Indent these lines.
-     * @param indentation Spaces to precede each line.
-     * @return String with the pretty-printed, indented lines.
-     * @todo #165:30min Add some integration tests to make sure that all types
-     *  of YAML are printed/indented correctly. It can get a little out of hand
-     *  with the different implementations of YamlLines.iterator() method.
-     */
-    default String indent(final int indentation) {
-        final StringBuilder indented = new StringBuilder();
-        final Iterator<YamlLine> linesIt = this.lines().iterator();
-        if(linesIt.hasNext()) {
-            final YamlLine first = linesIt.next();
-            if (first.indentation() == indentation) {
-                indented.append(first.toString()).append("\n");
-                while (linesIt.hasNext()) {
-                    indented.append(linesIt.next().toString()).append("\n");
-                }
-            } else {
-                final int offset = indentation - first.indentation();
-                for (final YamlLine line : this.lines()) {
-                    int correct = line.indentation() + offset;
-                    while (correct > 0) {
-                        indented.append(" ");
-                        correct--;
-                    }
-                    indented.append(line.trimmed()).append("\n");
-                }
-            }
-        }
-        return indented.toString();
-    }
-    
-    /**
      * Lines which are nested after the given YamlLine (lines which are
      * <br> indented by 2 or more spaces beneath it).
      * @param after Number of a YamlLine
