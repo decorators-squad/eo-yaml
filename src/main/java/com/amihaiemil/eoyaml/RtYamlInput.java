@@ -79,18 +79,14 @@ final class RtYamlInput implements YamlInput {
         ) {
             String line;
             int number = 0;
-            YamlLine previous = new YamlLine.NullYamlLine();
             while ((line = reader.readLine()) != null) {
                 final YamlLine current = new NoCommentsYamlLine(
                     new RtYamlLine(line, number)
                 );
                 if(!current.trimmed().isEmpty()) {
-                    lines.add(
-                        new CachedYamlLine(current)
-                    );
-                    number++;
-                    previous = current;
+                    lines.add(new CachedYamlLine(current));
                 }
+                number++;
             }
         }
         return new AllYamlLines(lines);
