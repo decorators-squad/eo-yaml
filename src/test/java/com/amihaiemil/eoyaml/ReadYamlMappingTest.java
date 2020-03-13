@@ -177,7 +177,7 @@ public final class ReadYamlMappingTest {
         
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         System.out.print(map);
-        final Collection<YamlNode> children = map.children();
+        final Collection<YamlNode> children = map.values();
         MatcherAssert.assertThat(
             children, Matchers.iterableWithSize(5)
         );
@@ -477,8 +477,8 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  complex1: mapping1", 2));
         lines.add(new RtYamlLine("  complex2: mapping2", 3));
         lines.add(new RtYamlLine(":", 4));
-        lines.add(new RtYamlLine(" - some", 5));
-        lines.add(new RtYamlLine(" - sequence", 6));
+        lines.add(new RtYamlLine("  - some", 5));
+        lines.add(new RtYamlLine("  - sequence", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         System.out.print(map);
@@ -502,8 +502,8 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 2));
         lines.add(new RtYamlLine("  - key", 3));
         lines.add(new RtYamlLine(":", 4));
-        lines.add(new RtYamlLine(" - some", 5));
-        lines.add(new RtYamlLine(" - sequence", 6));
+        lines.add(new RtYamlLine("  - some", 5));
+        lines.add(new RtYamlLine("  - sequence", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         

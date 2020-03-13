@@ -86,12 +86,7 @@ final class RtYamlInput implements YamlInput {
                 );
                 if(!current.trimmed().isEmpty()) {
                     lines.add(
-                        new CachedYamlLine(
-                            new WellIndentedLine(
-                                previous,
-                                current
-                            )
-                        )
+                        new CachedYamlLine(current)
                     );
                     number++;
                     previous = current;

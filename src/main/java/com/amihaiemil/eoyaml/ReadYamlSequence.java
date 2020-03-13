@@ -50,7 +50,9 @@ final class ReadYamlSequence extends ComparableYamlSequence {
      * @param lines Given lines.
      */
     ReadYamlSequence(final AllYamlLines lines) {
-        this.lines = new SameIndentationLevel((AllYamlLines) lines);
+        this.lines = new SameIndentationLevel(
+            new WellIndented(lines)
+        );
     }
 
     @Override

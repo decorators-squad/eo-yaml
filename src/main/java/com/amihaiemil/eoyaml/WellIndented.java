@@ -33,14 +33,14 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * SameIndentationLevel. Decorates some YamlLines
- * and iterates only over those which are at the same
- * indentation level with the first one.
+ * YamlLines decorator which iterates over them and verifies
+ * that their indentation is correct.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.0.2
+ * @since 3.1.2
+ *
  */
-final class SameIndentationLevel implements YamlLines {
+final class WellIndented implements YamlLines {
 
     /**
      * YamlLines.
@@ -51,34 +51,52 @@ final class SameIndentationLevel implements YamlLines {
      * Ctor.
      * @param yamlLines The Yaml lines.
      */
-    SameIndentationLevel(final YamlLines yamlLines) {
+    WellIndented(final YamlLines yamlLines) {
         this.yamlLines = yamlLines;
     }
-
+    
     /**
      * Returns an iterator over these Yaml lines.
-     * It <b>only</b> iterates over the lines which are at the same
-     * level of indentation with the first!
+     * It will verify that each line is properly indented in relation
+     * to the previous one and will complain if the indentation is not
+     * correct.
      * @return Iterator over these yaml lines.
      */
     @Override
     public Iterator<YamlLine> iterator() {
-        Iterator<YamlLine> iterator = this.yamlLines.iterator();
-        if (iterator.hasNext()) {
-            final List<YamlLine> sameIndentation = new ArrayList<>();
-            final YamlLine first = iterator.next();
-            sameIndentation.add(first);
-            while (iterator.hasNext()) {
-                YamlLine current = iterator.next();
-                if(current.indentation() == first.indentation()) {
-                    sameIndentation.add(current);
+        final Iterator<YamlLine> iterator = this.yamlLines.iterator();
+        final List<YamlLine> wellIndented = new ArrayList<>();
+        YamlLine previous;
+        if(iterator.hasNext()) {
+            previous = iterator.next();
+            wellIndented.add(previous);
+            while(iterator.hasNext()) {
+                YamlLine line = iterator.next();
+                int prevIndent = previous.indentation();
+                int lineIndent = line.indentation();
+                if(previous.hasNestedNode()) {
+                    if(lineIndent != prevIndent+2) {
+                        throw new IllegalStateException(
+                            "Indentation of line " + line.number()
+                             + " is not ok. It should be greater than the"
+                             + " previous line's by 2"
+                        );
+                    }
+                } else {
+                    if(lineIndent > prevIndent) {
+                        throw new IllegalStateException(
+                            "Indentation of line " + line.number() + " is "
+                            + "greater than the previous one's"
+                        );
+                    }
                 }
+                previous = line;
+                wellIndented.add(line);
             }
-            iterator = sameIndentation.iterator();
         }
-        return iterator;
+        return wellIndented.iterator();
     }
-
+    
     @Override
     public Collection<YamlLine> lines() {
         return this.yamlLines.lines();

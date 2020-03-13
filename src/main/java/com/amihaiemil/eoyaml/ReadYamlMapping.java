@@ -47,7 +47,9 @@ final class ReadYamlMapping extends ComparableYamlMapping {
      * @param lines Given lines.
      */
     ReadYamlMapping(final AllYamlLines lines) {
-        this.lines = new SameIndentationLevel((AllYamlLines) lines);
+        this.lines = new SameIndentationLevel(
+            new WellIndented(lines)
+        );
     }
 
     @Override
