@@ -36,6 +36,8 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import org.junit.Assert;
+
 /**
  * Unit tests for {@link WellIndented}.
  * @author Mihai Andronache
@@ -109,6 +111,7 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(5)
         );
+        Assert.fail("IllegalStateException was expected!");
     }
     
     /**
@@ -127,6 +130,7 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(5)
         );
+        Assert.fail("IllegalStateException was expected!");
     }
     
     /**
@@ -143,6 +147,7 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(3)
         );
+        Assert.fail("IllegalStateException was expected!");
     }
     
     /**
@@ -152,12 +157,13 @@ public final class WellIndentedTest {
     public void complainsOnBadlyIndentedMapping() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
-        lines.add(new RtYamlLine("  second_not_ok: ", 1));
+        lines.add(new RtYamlLine("  second_not_ok: value ", 1));
         lines.add(new RtYamlLine("third: something", 2));
         final YamlLines wiLines = new WellIndented(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             wiLines,
             Matchers.iterableWithSize(3)
         );
+        Assert.fail("IllegalStateException was expected!");
     }
 }

@@ -112,7 +112,8 @@ final class WellIndented implements YamlLines {
                     if(lineIndent > prevIndent) {
                         throw new IllegalStateException(
                             "Indentation of line " + line.number() + " is "
-                            + "greater than the previous one's."
+                            + "greater than the previous one's. "
+                            + "It should be less or equal."
                         );
                     }
                 }
