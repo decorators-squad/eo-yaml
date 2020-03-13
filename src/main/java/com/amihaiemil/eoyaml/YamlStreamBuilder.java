@@ -27,41 +27,25 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.IOException;
-
 /**
- * Yaml input.
+ * Builder of YamlStream. Implementations should be immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 3.1.1
  */
-public interface YamlInput {
-
-    /**
-     * Read the given input as a Yaml mapping.
-     * @return Read YamlMapping.
-     * @throws IOException if the input cannot be read for some reason
-     */
-    YamlMapping readYamlMapping() throws IOException;
-
-    /**
-     * Read the given input as a Yaml sequence.
-     * @return Read YamlSequence.
-     * @throws IOException if the input cannot be read for some reason
-     */
-    YamlSequence readYamlSequence() throws IOException;
+public interface YamlStreamBuilder {
     
     /**
-     * Read the given input as a Yaml stream.
-     * @return Read YamlStream.
-     * @throws IOException if the input cannot be read for some reason
+     * Add a YAML to the Stream.
+     * @param document YamlNode
+     * @return This builder
      */
-    default YamlStream readYamlStream() throws IOException {
-        throw new UnsupportedOperationException(
-            "Not yet implemented. You can follow the development here "
-          + "https://github.com/decorators-squad/eo-yaml/issues/90. " 
-          + "You may also contribute if you have the time!" 
-        );
-    }
+    YamlStreamBuilder add(final YamlNode document);
 
+    /**
+     * Build the YamlStream.
+     * @return Built YamlStream.
+     */
+    YamlStream build();
+    
 }

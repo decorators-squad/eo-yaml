@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Comparable YamlSequence implementing equals, hashcode and compareTo methods.
+ * Comparable YamlStream implementing equals, hashcode and compareTo methods.
  * <br><br>
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
@@ -39,9 +39,9 @@ import java.util.Iterator;
  *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 3.1.1
  */
-abstract class ComparableYamlSequence implements YamlSequence {
+abstract class ComparableYamlStream implements YamlStream {
 
     @Override
     public int hashCode() {
@@ -53,20 +53,20 @@ abstract class ComparableYamlSequence implements YamlSequence {
     }
 
     /**
-     * Equals method for YamlSequence. It returns true if the compareTo(...)
+     * Equals method for YamlStream. It returns true if the compareTo(...)
      * method returns 0.
-     * @param other The YamlSequence to which this is compared.
+     * @param other The YamlStream to which this is compared.
      * @return True or false
      */
     @Override
     public boolean equals(final Object other) {
         final boolean result;
-        if (other == null || !(other instanceof YamlSequence)) {
+        if (other == null || !(other instanceof YamlStream)) {
             result = false;
         } else if (this == other) {
             result = true;
         } else {
-            result = this.compareTo((YamlSequence) other) == 0;
+            result = this.compareTo((YamlStream) other) == 0;
         }
         return result;
     }
@@ -74,12 +74,12 @@ abstract class ComparableYamlSequence implements YamlSequence {
     /**
      * Compare this Sequence to another node.<br><br>
      *
-     * A Sequence is always considered greater than a Scalar and less than
-     * a Mapping.<br>
+     * A YamlStream is always considered greater than a Scalar,
+     * a YamlSequence or a YamlMapping.
      *
-     * If other is a Sequence, their integer lengths are compared - the one with
-     * the greater length is considered greater. If the lengths are equal,
-     * then the 2 Sequences are equal if all elements are equal. If the
+     * If other is a YamlStream, their integer lengths are compared - the one
+     * with the greater length is considered greater. If the lengths are equal,
+     * then the 2 YamlStreams are equal if all elements are equal. If the
      * elements are not identical, the comparison of the first unequal
      * elements is returned.
      *
@@ -95,8 +95,10 @@ abstract class ComparableYamlSequence implements YamlSequence {
         int result = 0;
         if (other == null || other instanceof Scalar) {
             result = 1;
+        } else if (other instanceof YamlSequence) {
+            result = 1;
         } else if (other instanceof YamlMapping) {
-            result = -1;
+            result = 1;
         } else if (this != other) {
             final Collection<YamlNode> nodes = this.values();
             final Collection<YamlNode> others = other.values();
@@ -117,5 +119,4 @@ abstract class ComparableYamlSequence implements YamlSequence {
         }
         return result;
     }
-
 }

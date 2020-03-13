@@ -27,99 +27,97 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Stream;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link RtYamlMappingBuilder}.
+ * Unit tests for {@link RtYamlStreamBuilder}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 3.1.1
  */
-public final class RtYamlMappingBuilderTest {
-
+public final class RtYamlStreamBuilderTest {
+    
     /**
-     * RtYamlMappingBuilder can add a K:V pair of Strings.
+     * RtYamlStreamBuilder can add a YamlSequence.
      */
     @Test
-    public void addsPairOfStrings() {
-        YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
-        YamlMappingBuilder withAdded = mappingBuilder.add("key", "value");
-        MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
-        MatcherAssert.assertThat(
-            mappingBuilder, Matchers.not(Matchers.is(withAdded))
-        );
-    }
-
-    /**
-     * RtYamlMappingBuilder can add a K:V pair of String and YamlNode.
-     */
-    @Test
-    public void addsPairOfStringYamlNode() {
-        YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
-        YamlMappingBuilder withAdded = mappingBuilder.add(
-            "key", new Scalar("value")
+    public void addsYamlSequence() {
+        YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
+        YamlStreamBuilder withAdded = streamBuilder.add(
+            Mockito.mock(YamlSequence.class)              
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            mappingBuilder, Matchers.not(Matchers.is(withAdded))
+            streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-
+    
     /**
-     * RtYamlMappingBuilder can add a K:V pair of String and YamlNode.
+     * RtYamlStreamBuilder can add a YamlMapping.
      */
     @Test
-    public void addsPairOfYamlNodeString() {
-        YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
-        YamlMappingBuilder withAdded = mappingBuilder.add(
-            new Scalar("key"), "value"
+    public void addsYamlMapping() {
+        YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
+        YamlStreamBuilder withAdded = streamBuilder.add(
+            Mockito.mock(YamlMapping.class)              
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            mappingBuilder, Matchers.not(Matchers.is(withAdded))
+            streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-
+    
     /**
-     * RtYamlMappingBuilder can add a K:V pair of YamlNode.
+     * RtYamlStreamBuilder can add a Scalar.
      */
     @Test
-    public void addsPairOfYamlNodes() {
-        YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
-        YamlMappingBuilder withAdded = mappingBuilder.add(
-            new Scalar("key"), new Scalar("value")
+    public void addsScalar() {
+        YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
+        YamlStreamBuilder withAdded = streamBuilder.add(
+            new Scalar("test")            
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            mappingBuilder, Matchers.not(Matchers.is(withAdded))
+            streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-
+    
     /**
-     * RtYamlMappingBuilder can build a YamlMapping.
+     * RtYamlStreamBuilder can add a YamlNode.
      */
     @Test
-    public void buildsYamlMapping() {
-        YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
-        List<YamlNode> devs = new ArrayList<>();
-        devs.add(new Scalar("amihaiemil"));
-        devs.add(new Scalar("salikjan"));
-        YamlMapping mapping = mappingBuilder
-            .add("architect", "amihaiemil")
-            .add("developers", new RtYamlSequence(devs))
+    public void addsYamlNode() {
+        YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
+        YamlStreamBuilder withAdded = streamBuilder.add(
+            Mockito.mock(YamlNode.class)              
+        );
+        MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            streamBuilder, Matchers.not(Matchers.is(withAdded))
+        );
+    }
+    
+    /**
+     * RtYamlStreamBuilder can build the YamlStream.
+     */
+    @Test
+    public void buildsYamlStream() {
+        final YamlStream stream = new RtYamlStreamBuilder()
+            .add(Mockito.mock(YamlMapping.class))
+            .add(Mockito.mock(YamlSequence.class))
+            .add(Mockito.mock(YamlNode.class))
             .build();
-        MatcherAssert.assertThat(mapping, Matchers.notNullValue());
+        
+        MatcherAssert.assertThat(stream, Matchers.notNullValue());
+        MatcherAssert.assertThat(stream, Matchers.instanceOf(Stream.class));
         MatcherAssert.assertThat(
-            mapping.string("architect"), Matchers.equalTo("amihaiemil")
-        );
-        MatcherAssert.assertThat(
-            mapping.yamlSequence("developers").values().size(),
-            Matchers.equalTo(2)
+              stream.values(), Matchers.iterableWithSize(3)
         );
     }
+    
 }
