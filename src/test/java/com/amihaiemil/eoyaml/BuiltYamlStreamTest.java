@@ -253,6 +253,118 @@ public final class BuiltYamlStreamTest {
     }
     
     /**
+     * Two identical YamlStreams are equal.
+     */
+    @Test
+    public void streamsAreEqual() {
+        final YamlStream first = Yaml.createYamlStreamBuilder()
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("rultor")
+                    .add("salikjan")
+                    .add("sherif")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("andrei")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("yegor")
+                    .add("paolo")
+                    .add("cesar")
+                    .build()
+            )
+            .build();
+        final YamlStream second = Yaml.createYamlStreamBuilder()
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("rultor")
+                    .add("salikjan")
+                    .add("sherif")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("andrei")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("yegor")
+                    .add("paolo")
+                    .add("cesar")
+                    .build()
+            )
+            .build();
+        MatcherAssert.assertThat(
+            second.equals(first),
+            Matchers.is(Boolean.TRUE)
+        );
+        MatcherAssert.assertThat(
+            first.equals(second),
+            Matchers.is(Boolean.TRUE)
+        );
+        MatcherAssert.assertThat(
+            first.equals(first),
+            Matchers.is(Boolean.TRUE)
+        );
+        MatcherAssert.assertThat(
+            second.equals(second),
+            Matchers.is(Boolean.TRUE)
+        );
+    }
+    
+    /**
+     * Two different YamlStreams are equal.
+     */
+    @Test
+    public void differentStreamsAreNotEqual() {
+        final YamlStream first = Yaml.createYamlStreamBuilder()
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("rultor")
+                    .add("salikjan")
+                    .add("sherif")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("andrei")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("yegor")
+                    .add("paolo")
+                    .add("cesar")
+                    .build()
+            )
+            .build();
+        final YamlStream second = Yaml.createYamlStreamBuilder()
+            .add(
+                Yaml.createYamlMappingBuilder()
+                    .add("architect", "felicia")
+                    .add(
+                        "developer", "sara"
+                    )
+                    .add("name", "docker-java-api")
+                    .build()
+            )
+            .build();
+        MatcherAssert.assertThat(
+            second.equals(first),
+            Matchers.is(Boolean.FALSE)
+        );
+        MatcherAssert.assertThat(
+            first.equals(second),
+            Matchers.is(Boolean.FALSE)
+        );
+    }
+    
+    /**
      * BuiltYamlStreams can hold an empty stream.
      * @throws Exception If something goes wrong.
      */
