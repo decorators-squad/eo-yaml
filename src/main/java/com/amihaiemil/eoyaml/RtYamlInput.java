@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Implementation for {@link YamlInput}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: 29bd9c937aa0122b92ce404890943345f9b99d49 $
  * @since 1.0.0
  */
 final class RtYamlInput implements YamlInput {
@@ -93,9 +93,9 @@ final class RtYamlInput implements YamlInput {
                             )
                         )
                     );
-                    number++;
                     previous = current;
                 }
+                number++;
             }
         }
         return new AllYamlLines(lines);
