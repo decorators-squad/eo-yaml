@@ -71,6 +71,11 @@ final class NoCommentsYamlLine implements YamlLine {
                 while(i < trimmed.length() && trimmed.charAt(i) != '"') {
                     i++;
                 }
+            } else if(trimmed.charAt(i) == '\'') {
+                i++;
+                while(i < trimmed.length() && trimmed.charAt(i) != '\'') {
+                    i++;
+                }
             }
             i++;
         }
