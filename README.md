@@ -18,11 +18,11 @@ To get the latest release, simply add the following to your ``pom.xml`` (it's al
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>eo-yaml</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
 </dependency>
 ```
 
-or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/3.1.0/eo-yaml-3.1.0-jar-with-dependencies.jar">fat</a> jar.
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/3.1.1/eo-yaml-3.1.1-jar-with-dependencies.jar">fat</a> jar.
 
 
 ## Usage
