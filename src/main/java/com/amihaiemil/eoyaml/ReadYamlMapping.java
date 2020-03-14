@@ -46,8 +46,10 @@ final class ReadYamlMapping extends ComparableYamlMapping {
      * Ctor.
      * @param lines Given lines.
      */
-    ReadYamlMapping(final YamlLines lines) {
-        this.lines = new SameIndentationLevel(lines);
+    ReadYamlMapping(final AllYamlLines lines) {
+        this.lines = new SameIndentationLevel(
+            new WellIndented(lines)
+        );
     }
 
     @Override
@@ -201,7 +203,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                 final YamlNode keyNode = keyLines.toYamlNode(line);
                 if(keyNode.equals(key)) {
                     final YamlLine colonLine = this.lines.line(
-                        line.number() + keyLines.count() + 1
+                        line.number() + keyLines.lines().size() + 1
                     );
                     if(":".equals(colonLine.trimmed())) {
                         value = this.lines.nested(colonLine.number())

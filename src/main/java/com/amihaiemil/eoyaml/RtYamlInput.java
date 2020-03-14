@@ -57,20 +57,12 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return new ReadYamlMapping(
-            new NoDirectivesOrMarkers(
-                this.readInput()
-            )
-        );
+        return new ReadYamlMapping(this.readInput());
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return new ReadYamlSequence(
-            new NoDirectivesOrMarkers(
-                this.readInput()
-            )
-        );
+        return new ReadYamlSequence(this.readInput());
     }
 
     /**
@@ -87,21 +79,12 @@ final class RtYamlInput implements YamlInput {
         ) {
             String line;
             int number = 0;
-            YamlLine previous = new YamlLine.NullYamlLine();
             while ((line = reader.readLine()) != null) {
                 final YamlLine current = new NoCommentsYamlLine(
                     new RtYamlLine(line, number)
                 );
                 if(!current.trimmed().isEmpty()) {
-                    lines.add(
-                        new CachedYamlLine(
-                            new WellIndentedLine(
-                                previous,
-                                current
-                            )
-                        )
-                    );
-                    previous = current;
+                    lines.add(new CachedYamlLine(current));
                 }
                 number++;
             }

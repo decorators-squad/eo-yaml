@@ -49,7 +49,7 @@ final class SameIndentationLevel implements YamlLines {
 
     /**
      * Ctor.
-     * @param yamlLines All the Yaml lines.
+     * @param yamlLines The Yaml lines.
      */
     SameIndentationLevel(final YamlLines yamlLines) {
         this.yamlLines = yamlLines;
@@ -82,11 +82,6 @@ final class SameIndentationLevel implements YamlLines {
     @Override
     public Collection<YamlLine> lines() {
         return this.yamlLines.lines();
-    }
-
-    @Override
-    public int count() {
-        return this.lines().size();
     }
 
     @Override

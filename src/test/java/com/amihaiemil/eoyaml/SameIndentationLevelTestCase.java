@@ -65,27 +65,6 @@ public final class SameIndentationLevelTestCase {
     }
     
     /**
-     * SameIndentationLevel should return its line count, the number
-     * of all the lines that it encapsulates.
-     */
-    @Test
-    public void fetchesCount() {
-        final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("first: somethingElse", 0));
-        lines.add(new RtYamlLine("second: ", 1));
-        lines.add(new RtYamlLine("  fourth: some", 2));
-        lines.add(new RtYamlLine("  fifth: values", 3));
-        lines.add(new RtYamlLine("third: something", 4));
-        final YamlLines yaml = new SameIndentationLevel(
-            new AllYamlLines(lines)
-        );
-        MatcherAssert.assertThat(
-            yaml.count(),
-            Matchers.equalTo(lines.size())
-        );
-    }
-    
-    /**
      * SameIndentationLevel should iterate only over the lines,
      * which have the same level of indentation.
      */

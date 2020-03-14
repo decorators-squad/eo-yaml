@@ -63,22 +63,22 @@ final class NoDirectivesOrMarkers implements YamlLines {
     public Iterator<YamlLine> iterator() {
         Iterator<YamlLine> iterator = this.yamlLines.iterator();
         if (iterator.hasNext()) {
-            final List<YamlLine> noDirectivesOrMarkers = new ArrayList<>();
+            final List<YamlLine> noDirsOrMarks = new ArrayList<>();
             while (iterator.hasNext()) {
                 final YamlLine current = iterator.next();
                 final String currentLine = current.trimmed();
-                if(
-                    "---".equals(currentLine) ||
-                    "...".equals(currentLine) ||
-                    currentLine.startsWith("%") ||
-                    currentLine.startsWith("!!")
+                if (
+                    "---".equals(currentLine)
+                        || "...".equals(currentLine)
+                        || currentLine.startsWith("%")
+                        || currentLine.startsWith("!!")
                 ) {
                     continue;
                 } else {
-                    noDirectivesOrMarkers.add(current);
+                    noDirsOrMarks.add(current);
                 }
             }
-            iterator = noDirectivesOrMarkers.iterator();
+            iterator = noDirsOrMarks.iterator();
         }
         return iterator;
     }
@@ -86,11 +86,6 @@ final class NoDirectivesOrMarkers implements YamlLines {
     @Override
     public Collection<YamlLine> lines() {
         return this.yamlLines.lines();
-    }
-
-    @Override
-    public int count() {
-        return this.lines().size();
     }
 
     @Override
