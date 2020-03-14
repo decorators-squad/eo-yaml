@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Set;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -101,28 +102,28 @@ public final class RtYamlInputTest {
     @Test
     public void readsAndIndentsComplexMapping() throws Exception {
         YamlMapping expected = Yaml.createYamlMappingBuilder()
-                .add("first", "value1")
-                .add("second", "value2")
-                .add("third",
-                    Yaml.createYamlSequenceBuilder()
-                        .add("singleElementSequence")
-                        .build()
-                ).add(
-                    Yaml.createYamlSequenceBuilder()
-                        .add("sequence")
-                        .add("key")
-                        .build(),
-                    "scalar"
-                ).add(
-                    Yaml.createYamlMappingBuilder()
-                        .add("map", "asKey")
-                        .add("map1", "asKey2")
-                        .build(),
-                    Yaml.createYamlMappingBuilder()
-                        .add("someMapping",  "value")
-                        .build()
-                )
-                .build();
+            .add("first", "value1")
+            .add("second", "value2")
+            .add("third",
+                Yaml.createYamlSequenceBuilder()
+                    .add("singleElementSequence")
+                    .build()
+            ).add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("sequence")
+                    .add("key")
+                    .build(),
+                "scalar"
+            ).add(
+                Yaml.createYamlMappingBuilder()
+                    .add("map", "asKey")
+                    .add("map1", "asKey2")
+                    .build(),
+                Yaml.createYamlMappingBuilder()
+                    .add("someMapping",  "value")
+                    .build()
+            )
+            .build();
         System.out.println(expected);
         YamlMapping actual = new RtYamlInput(
             new FileInputStream(
@@ -172,13 +173,115 @@ public final class RtYamlInputTest {
      * @throws Exception if something is wrong.
      */
     @Test
-    public void readsMappingWithoutDirectives() throws Exception {
-        final YamlMapping actual = new RtYamlInput(
+    public void readsMappingWithoutDirectivesAndMarkers() throws Exception {
+        final YamlMapping mapping = new RtYamlInput(
             new FileInputStream(
                 new File("src/test/resources/mapping_ignore_directives.yml")
             )
         ).readYamlMapping();
-        System.out.println(actual.toString());
+        final Set<YamlNode> keys = mapping.keys();
+        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(
+            keys.contains(new Scalar("palette")),
+            Matchers.is(Boolean.TRUE)
+        );
+        MatcherAssert.assertThat(
+            keys.contains(new Scalar("workspace")),
+            Matchers.is(Boolean.TRUE)
+        );        
+        
+        final YamlMapping palette = mapping.yamlMapping("palette");
+        MatcherAssert.assertThat(palette.keys().size(), Matchers.is(12));
+        MatcherAssert.assertThat(palette.values().size(), Matchers.is(12));
+        MatcherAssert.assertThat(
+            palette.string("gray"),
+            Matchers.is("'#404040'")
+        );
+        MatcherAssert.assertThat(
+            palette.string("magenta"),
+            Matchers.is("rgb(255, 102, 255)")
+        );
+        
+        final YamlMapping workspace = mapping.yamlMapping("workspace");
+        MatcherAssert.assertThat(workspace.keys().size(), Matchers.is(3));
+        MatcherAssert.assertThat(workspace.values().size(), Matchers.is(3));
+        MatcherAssert.assertThat(
+            workspace.string("background"),
+            Matchers.is("gray")
+        );
+        MatcherAssert.assertThat(
+            workspace.yamlMapping("elements")
+                .yamlMapping("devices")
+                .yamlMapping("pins")
+                .yamlSequence("active")
+                .string(1),
+            Matchers.is("hsl(163, 45%, 100%)")
+        );
+        MatcherAssert.assertThat(
+            workspace.yamlMapping("guides").string("grid"),
+            Matchers.is("stroke rgba(255, 255, 255, 0.3)")
+        );
+    }
+    
+    /**
+     * At the moment, when reading a sequence, we should ignore any YAML
+     * Directive or Marker line, such as "%YAML 1.2" or "---" or "...".
+     * @throws Exception if something is wrong.
+     */
+    @Test
+    public void readsSequenceWithoutDirectivesAndMarkers() throws Exception {
+        final YamlSequence sequence = new RtYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/sequence_ignore_directives.yml")
+            )
+        ).readYamlSequence();
+        final YamlMapping first = sequence.yamlMapping(0);
+        MatcherAssert.assertThat(
+            first.keys().size(), Matchers.equalTo(1)
+        );
+        MatcherAssert.assertThat(
+            first.values().size(), Matchers.equalTo(1)
+        );
+        
+        final YamlMapping palette = first.yamlMapping("palette");
+        MatcherAssert.assertThat(palette.keys().size(), Matchers.is(12));
+        MatcherAssert.assertThat(palette.values().size(), Matchers.is(12));
+        MatcherAssert.assertThat(
+            palette.string("gray"),
+            Matchers.is("'#404040'")
+        );
+        MatcherAssert.assertThat(
+            palette.string("magenta"),
+            Matchers.is("rgb(255, 102, 255)")
+        );
+        
+        final YamlMapping second = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(
+            second.keys().size(), Matchers.equalTo(1)
+        );
+        MatcherAssert.assertThat(
+            second.values().size(), Matchers.equalTo(1)
+        );
+        
+        final YamlMapping workspace = second.yamlMapping("workspace");
+        MatcherAssert.assertThat(workspace.keys().size(), Matchers.is(3));
+        MatcherAssert.assertThat(workspace.values().size(), Matchers.is(3));
+        MatcherAssert.assertThat(
+            workspace.string("background"),
+            Matchers.is("gray")
+        );
+        MatcherAssert.assertThat(
+            workspace.yamlMapping("elements")
+                .yamlMapping("devices")
+                .yamlMapping("pins")
+                .yamlSequence("active")
+                .string(1),
+            Matchers.is("hsl(163, 45%, 100%)")
+        );
+        MatcherAssert.assertThat(
+            workspace.yamlMapping("guides").string("grid"),
+            Matchers.is("stroke rgba(255, 255, 255, 0.3)")
+        );
     }
     
     /**
@@ -195,7 +298,7 @@ public final class RtYamlInputTest {
 
         YamlSequence read = new RtYamlInput(
             new ByteArrayInputStream(
-                "- apples\n- pears\n- peaches".getBytes()
+                "---\n- apples\n- pears\n- peaches".getBytes()
             )
         ).readYamlSequence();
 

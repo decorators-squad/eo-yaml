@@ -1,0 +1,51 @@
+# At the moment, the parser shouldn't care about directives and marker lines, when
+# reading a YAML mapping or sequence.
+%YAML 1.2
+---
+-
+  palette:
+    # The palette is a universal, theme-specific collection of colors.
+    # It serves as the theme's variables, which can be referenced by
+    # $(color) anywhere in the theme, eg.
+    #  wire:
+    #    off: stroke $(light_gray)
+    # It can also be used in JS, using the Draw.paletteColor(col: string)
+    # function.
+
+    # - Grayscale -
+    black: '#303030'
+    gray: '#404040'
+    light_gray: '#484848'
+    white: white
+
+    # - Colors -
+    red: rgb(255, 105, 102)
+    orange: rgb(255, 179, 102)
+    yellow: rgb(255, 255, 102)
+    green: rgb(102, 155, 102)
+    cyan: rgb(102, 230, 255)
+    blue: rgb(102, 102, 255)
+    purple: rgb(189, 102, 255)
+    magenta: rgb(255, 102, 255)
+
+-
+  workspace:
+
+    background: gray
+  
+    guides:
+      lines: stroke rgba(255, 255, 255, 0.3)
+      grid: stroke rgba(255, 255, 255, 0.3)
+  
+    elements:
+      devices:
+        pins:
+          inactive: 'fill #c0c0c0'
+          active:
+            - hsl(224, 45%, 100%)
+            - hsl(163, 45%, 100%)
+            - hsl(102, 45%, 100%)
+        wires:
+          inactive: 'stroke #808080'
+          active: activePin
+          creator: stroke rgba(255, 255, 255, 0.125)

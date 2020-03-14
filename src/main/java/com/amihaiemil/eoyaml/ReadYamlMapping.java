@@ -30,7 +30,9 @@ package com.amihaiemil.eoyaml;
 import java.util.*;
 
 /**
- * YamlMapping read from somewhere.
+ * YamlMapping read from somewhere. YAML directives and
+ * document start/end markers are ignored. This is assumed
+ * to be a plain YAML mapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -48,7 +50,11 @@ final class ReadYamlMapping extends ComparableYamlMapping {
      */
     ReadYamlMapping(final AllYamlLines lines) {
         this.lines = new SameIndentationLevel(
-            new WellIndented(lines)
+            new WellIndented(
+                new NoDirectivesOrMarkers(
+                    lines
+                )
+            )
         );
     }
 

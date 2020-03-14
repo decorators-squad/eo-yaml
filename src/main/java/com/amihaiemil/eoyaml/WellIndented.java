@@ -54,7 +54,7 @@ import java.util.List;
  * 
  * YamlLines wellIndented = new SameIndentationLevel(
  *     new WellIndented(
- *         new NoMarkersOrDirectives(
+ *         new NoDirectivesOrMarkers(
  *             lines
  *         )//ignore markers or directives
  *     )

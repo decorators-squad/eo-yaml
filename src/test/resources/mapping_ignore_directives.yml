@@ -24,12 +24,12 @@ palette:
   green: rgb(102, 155, 102)
   cyan: rgb(102, 230, 255)
   blue: rgb(102, 102, 255)
-  purple: rgb(189, 102, 255) # Line 23, invalid for some reason
+  purple: rgb(189, 102, 255)
   magenta: rgb(255, 102, 255)
 
 workspace:
 
-  background: fill $(gray)
+  background: gray
   
   guides:
     lines: stroke rgba(255, 255, 255, 0.3)
@@ -39,11 +39,11 @@ workspace:
     devices:
       pins:
         inactive: 'fill #c0c0c0'
-        active: &activePin
+        active:
           - hsl(224, 45%, 100%)
           - hsl(163, 45%, 100%)
           - hsl(102, 45%, 100%)
       wires:
         inactive: 'stroke #808080'
-        active: *activePin
+        active: activePin
         creator: stroke rgba(255, 255, 255, 0.125)
