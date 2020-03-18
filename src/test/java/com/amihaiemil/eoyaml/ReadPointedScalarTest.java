@@ -100,7 +100,7 @@ public final class ReadPointedScalarTest {
         lines.add(new RtYamlLine("Java", 1));
         final ReadPointedScalar pipeScalar =
             new ReadPointedScalar(new AllYamlLines(lines));
-        final Scalar scalar = new Scalar("Java");
+        final BuiltPlainScalar scalar = new BuiltPlainScalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
 

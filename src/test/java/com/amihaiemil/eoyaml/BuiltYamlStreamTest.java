@@ -196,7 +196,7 @@ public final class BuiltYamlStreamTest {
     public void greaterThanAScalar() {
         final YamlStream stream = Yaml.createYamlStreamBuilder().build();
         MatcherAssert.assertThat(
-            stream.compareTo(new Scalar("test")),
+            stream.compareTo(new BuiltPlainScalar("test")),
             Matchers.greaterThan(0)
         );
     }

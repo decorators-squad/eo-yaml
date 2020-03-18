@@ -68,7 +68,9 @@ final class ReadYamlSequence extends ComparableYamlSequence {
             } else {
                 final String trimmed = line.trimmed();
                 kids.add(
-                    new Scalar(trimmed.substring(trimmed.indexOf('-')+1).trim())
+                    new BuiltPlainScalar(
+                        trimmed.substring(trimmed.indexOf('-')+1).trim()
+                    )
                 );
             }
         }

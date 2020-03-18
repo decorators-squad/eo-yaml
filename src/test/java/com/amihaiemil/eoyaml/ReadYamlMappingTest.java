@@ -92,15 +92,15 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = keys.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("akey"))
+            Matchers.equalTo(new BuiltPlainScalar("akey"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("bkey"))
+            Matchers.equalTo(new BuiltPlainScalar("bkey"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("zkey"))
+            Matchers.equalTo(new BuiltPlainScalar("zkey"))
         );
     }
     
@@ -128,7 +128,7 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("something"))
+            Matchers.equalTo(new BuiltPlainScalar("something"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -150,7 +150,7 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("somethingElse"))
+            Matchers.equalTo(new BuiltPlainScalar("somethingElse"))
         );
     }
     
@@ -184,11 +184,11 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("somethingElse"))
+            Matchers.equalTo(new BuiltPlainScalar("somethingElse"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("something"))
+            Matchers.equalTo(new BuiltPlainScalar("something"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -200,7 +200,7 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new Scalar("simpleValue"))
+            Matchers.equalTo(new BuiltPlainScalar("simpleValue"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -318,10 +318,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode first = map.value(new Scalar("first"));
+        final YamlNode first = map.value(new BuiltPlainScalar("first"));
         MatcherAssert.assertThat(first, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            first, Matchers.equalTo(new Scalar("somethingElse"))
+            first, Matchers.equalTo(new BuiltPlainScalar("somethingElse"))
         );
     }
     
@@ -338,7 +338,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode second = map.value(new Scalar("second"));
+        final YamlNode second = map.value(new BuiltPlainScalar("second"));
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlSequence.class)
@@ -357,7 +357,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  some: mapping", 2));
         lines.add(new RtYamlLine("third: something", 3));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode second = map.value(new Scalar("second"));
+        final YamlNode second = map.value(new BuiltPlainScalar("second"));
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlMapping.class)
@@ -375,7 +375,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  some: mapping", 2));
         lines.add(new RtYamlLine("third: something", 3));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode missing = map.value(new Scalar("notthere"));
+        final YamlNode missing = map.value(new BuiltPlainScalar("notthere"));
         MatcherAssert.assertThat(missing, Matchers.nullValue());
     }
     
@@ -395,7 +395,7 @@ public final class ReadYamlMappingTest {
         
         MatcherAssert.assertThat(map.string("notthere"), Matchers.nullValue());
         MatcherAssert.assertThat(map.string(
-            new Scalar("notthere")), Matchers.nullValue()
+            new BuiltPlainScalar("notthere")), Matchers.nullValue()
         );
     }
     
@@ -457,7 +457,7 @@ public final class ReadYamlMappingTest {
         
         MatcherAssert.assertThat(map.string("second"), Matchers.nullValue());
         MatcherAssert.assertThat(map.string(
-            new Scalar("second")), Matchers.nullValue()
+            new BuiltPlainScalar("second")), Matchers.nullValue()
         );
     }
     
@@ -528,7 +528,7 @@ public final class ReadYamlMappingTest {
             map.yamlSequence("notthere"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlSequence(
-            new Scalar("notthere")), Matchers.nullValue()
+            new BuiltPlainScalar("notthere")), Matchers.nullValue()
         );
     }
     
@@ -596,7 +596,7 @@ public final class ReadYamlMappingTest {
             map.yamlMapping("first"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlMapping(
-            new Scalar("first")), Matchers.nullValue()
+            new BuiltPlainScalar("first")), Matchers.nullValue()
         );
     }
     
@@ -618,7 +618,7 @@ public final class ReadYamlMappingTest {
             map.yamlMapping("second"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlMapping(
-            new Scalar("second")), Matchers.nullValue()
+            new BuiltPlainScalar("second")), Matchers.nullValue()
         );
     }
     
@@ -744,7 +744,7 @@ public final class ReadYamlMappingTest {
             map.yamlMapping("notthere"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlMapping(
-            new Scalar("notthere")), Matchers.nullValue()
+            new BuiltPlainScalar("notthere")), Matchers.nullValue()
         );
     }
     
@@ -812,7 +812,7 @@ public final class ReadYamlMappingTest {
             map.yamlSequence("first"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlSequence(
-            new Scalar("first")), Matchers.nullValue()
+            new BuiltPlainScalar("first")), Matchers.nullValue()
         );
     }
     
@@ -834,7 +834,7 @@ public final class ReadYamlMappingTest {
             map.yamlSequence("second"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlSequence(
-            new Scalar("second")), Matchers.nullValue()
+            new BuiltPlainScalar("second")), Matchers.nullValue()
         );
     }
     

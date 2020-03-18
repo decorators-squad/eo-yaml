@@ -62,17 +62,17 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
 
     @Override
     public YamlMappingBuilder add(final String key, final String value) {
-        return this.add(new Scalar(key), new Scalar(value));
+        return this.add(new BuiltPlainScalar(key), new BuiltPlainScalar(value));
     }
 
     @Override
     public YamlMappingBuilder add(final YamlNode key, final String value) {
-        return this.add(key, new Scalar(value));
+        return this.add(key, new BuiltPlainScalar(value));
     }
 
     @Override
     public YamlMappingBuilder add(final String key, final YamlNode value) {
-        return this.add(new Scalar(key), value);
+        return this.add(new BuiltPlainScalar(key), value);
     }
 
     @Override

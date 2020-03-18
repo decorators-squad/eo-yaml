@@ -31,40 +31,35 @@ import java.util.Collection;
 import java.util.LinkedList;
 
 /**
- * Read Yaml Scalar when previous yaml line ends with '|' character.
- * @author Sherif Waly (sherifwaly95@gmail.com)
+ * YAML Plain scalar to be used when building a YAML, via
+ * one of the builders.
+ * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.2
- *
+ * @since 1.0.0
+ * @see http://yaml.org/spec/1.2/spec.html#scalar//
  */
-final class ReadPipeScalar implements YamlNode {
+final class BuiltPlainScalar extends ComparableScalar {
 
     /**
-     * Lines to be represented as a wrapped scalar.
+     * This scalar's value.
      */
-    private YamlLines lines;
+    private String value;
 
     /**
      * Ctor.
-     * @param lines Given lines to represent.
+     * @param value Given value for this scalar.
      */
-    ReadPipeScalar(final YamlLines lines) {
-        this.lines = lines;
+    BuiltPlainScalar(final String value) {
+        this.value = value;
     }
 
+    /**
+     * Value of this scalar.
+     * @return Value of type T.
+     */
     @Override
-    public int compareTo(final YamlNode other) {
-        int result = -1;
-        if (this == other) {
-            result = 0;
-        } else if (other == null) {
-            result = 1;
-        } else if (other instanceof BuiltPlainScalar) {
-            result = this.value().compareTo(((BuiltPlainScalar) other).value());
-        } else if (other instanceof ReadPipeScalar) {
-            result = this.value().compareTo(((ReadPipeScalar) other).value());
-        }
-        return result;
+    public String value() {
+        return this.value;
     }
 
     @Override
@@ -73,38 +68,19 @@ final class ReadPipeScalar implements YamlNode {
     }
 
     @Override
-    public String indent(final int indentation) {
-        StringBuilder printed = new StringBuilder();
-        for(final YamlLine line: this.lines) {
-            int spaces = indentation;
-            while (spaces > 0) {
-                printed.append(" ");
-                spaces--;
-            }
-            printed.append(line.trimmed());
-            printed.append('\n');
-        }
-        printed.delete(printed.length()-1, printed.length());
-        return printed.toString();
-    }
-
-    /**
-     * Value of this scalar.
-     * @return String
-     */
-    public String value() {
-        StringBuilder builder = new StringBuilder();
-        for(final YamlLine line: this.lines) {
-            builder.append(line.trimmed());
-            builder.append('\n');
-        }
-        builder.delete(builder.length()-1, builder.length());
-        return builder.toString();
+    public String toString() {
+        return this.indent(0);
     }
 
     @Override
-    public String toString() {
-        return this.indent(0);
+    public String indent(final int indentation) {
+        int spaces = indentation;
+        StringBuilder printed = new StringBuilder();
+        while (spaces > 0) {
+            printed.append(" ");
+            spaces--;
+        }
+        return printed.append(this.value).toString();
     }
 
 }

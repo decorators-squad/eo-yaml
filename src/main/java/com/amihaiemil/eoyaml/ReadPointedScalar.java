@@ -60,8 +60,8 @@ final class ReadPointedScalar implements YamlNode {
             result = 0;
         } else if (other == null) {
             result = 1;
-        } else if (other instanceof Scalar) {
-            result = this.value().compareTo(((Scalar) other).value());
+        } else if (other instanceof BuiltPlainScalar) {
+            result = this.value().compareTo(((BuiltPlainScalar) other).value());
         } else if (other instanceof ReadPipeScalar) {
             result = this.value().compareTo(((ReadPipeScalar) other).value());
         } else if (other instanceof ReadPointedScalar) {

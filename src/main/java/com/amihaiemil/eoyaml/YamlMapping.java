@@ -177,7 +177,7 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable integer.
      */
     default int integer(final String key) {
-        return this.integer(new Scalar(key));
+        return this.integer(new BuiltPlainScalar(key));
     }
     
     /**
@@ -215,7 +215,7 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable float.
      */
     default float floatNumber(final String key) {
-        return this.floatNumber(new Scalar(key));
+        return this.floatNumber(new BuiltPlainScalar(key));
     }
     
     /**
@@ -253,7 +253,7 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable double.
      */
     default double doubleNumber(final String key) {
-        return this.doubleNumber(new Scalar(key));
+        return this.doubleNumber(new BuiltPlainScalar(key));
     }
     
     /**
@@ -291,7 +291,7 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable long.
      */
     default long longNumber(final String key) {
-        return this.longNumber(new Scalar(key));
+        return this.longNumber(new BuiltPlainScalar(key));
     }
     
     /**
@@ -328,7 +328,7 @@ public interface YamlMapping extends YamlNode {
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDate date(final String key) {
-        return this.date(new Scalar(key));
+        return this.date(new BuiltPlainScalar(key));
     }
     
     /**
@@ -364,7 +364,7 @@ public interface YamlMapping extends YamlNode {
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDateTime dateTime(final String key) {
-        return this.dateTime(new Scalar(key));
+        return this.dateTime(new BuiltPlainScalar(key));
     }
     
     /**

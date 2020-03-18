@@ -27,112 +27,20 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
- * YAML scalar.
+ * Yaml Scalar.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 3.1.3
  */
-final class Scalar implements YamlNode {
-
+public interface Scalar extends YamlNode {
+    
     /**
-     * This scalar's value.
+     * Value of this scalar. The value returned by this
+     * method should be un-escaped. e.g. if the scalar is
+     * escaped, say '#404040', the returned value should be
+     * #404040.
+     * @return String value.
      */
-    private String value;
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     */
-    Scalar(final String value) {
-        this.value = value;
-    }
-
-    /**
-     * Value of this scalar.
-     * @return Value of type T.
-     */
-    public String value() {
-        return this.value;
-    }
-
-    @Override
-    public Collection<YamlNode> values() {
-        return new LinkedList<YamlNode>();
-    }
-
-    /**
-     * Equality of two objects.
-     * @param anotherObject Reference to righthand object
-     * @return True if object are equal and False if are not.
-     */
-    @Override
-    public boolean equals(final Object anotherObject) {
-        if (this == anotherObject) {
-            return true;
-        }
-        if (anotherObject == null || getClass() != anotherObject.getClass()) {
-            return false;
-        }
-
-        final Scalar scalar = (Scalar) anotherObject;
-
-        return this.value.equals(scalar.value);
-
-    }
-
-    /**
-     * Hash Code of this scalar.
-     * @return Value of hashCode() of type int.
-     */
-    @Override
-    public int hashCode() {
-        return this.value.hashCode();
-    }
-
-    /**
-     * Compare this Scalar to another node.<br><br>
-     *
-     * A Scalar is always considered less than a Sequence or a Mapping.<br>
-     * If o is Scalar then their String values are compared lexicographically
-     *
-     * @param other The other AbstractNode.
-     * @return
-     *  a value < 0 if this < o <br>
-     *   0 if this == o or <br>
-     *  a value > 0 if this > o
-     */
-    @Override
-    public int compareTo(final YamlNode other) {
-        int result = -1;
-        if (this == other) {
-            result = 0;
-        } else if (other == null) {
-            result = 1;
-        } else if (other instanceof Scalar) {
-            result = this.value.compareTo(((Scalar) other).value);
-        }
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
-    @Override
-    public String indent(final int indentation) {
-        int spaces = indentation;
-        StringBuilder printed = new StringBuilder();
-        while (spaces > 0) {
-            printed.append(" ");
-            spaces--;
-        }
-        return printed.append(this.value).toString();
-    }
-
+    String value();
 }

@@ -54,7 +54,7 @@ final class RtYamlMapping extends ComparableYamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final String key) {
-        return this.yamlMapping(new Scalar(key));
+        return this.yamlMapping(new BuiltPlainScalar(key));
     }
 
     @Override
@@ -71,7 +71,7 @@ final class RtYamlMapping extends ComparableYamlMapping {
 
     @Override
     public YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new Scalar(key));
+        return this.yamlSequence(new BuiltPlainScalar(key));
     }
 
     @Override
@@ -88,7 +88,7 @@ final class RtYamlMapping extends ComparableYamlMapping {
 
     @Override
     public String string(final String key) {
-        return this.string(new Scalar(key));
+        return this.string(new BuiltPlainScalar(key));
     }
 
     @Override

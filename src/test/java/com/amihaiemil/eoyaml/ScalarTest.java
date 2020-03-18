@@ -37,7 +37,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link Scalar}.
+ * Unit tests for {@link BuiltPlainScalar}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -51,7 +51,7 @@ public final class ScalarTest {
     @Test
     public void returnsValue() {
         final String val = "test scalar value";
-        final Scalar scl = new Scalar(val);
+        final BuiltPlainScalar scl = new BuiltPlainScalar(val);
         MatcherAssert.assertThat(scl.value(), Matchers.equalTo(val));
     }
 
@@ -61,7 +61,7 @@ public final class ScalarTest {
     @Test
     public void hasNoValues() {
         final String val = "test scalar value";
-        final Scalar scl = new Scalar(val);
+        final BuiltPlainScalar scl = new BuiltPlainScalar(val);
         MatcherAssert.assertThat(
             scl.values(), Matchers.emptyIterable()
         );
@@ -74,8 +74,8 @@ public final class ScalarTest {
     @Test
     public void equalsAndHashCode() {
         final String val = "test scalar value";
-        final Scalar firstScalar = new Scalar(val);
-        final Scalar secondScalar = new Scalar(val);
+        final BuiltPlainScalar firstScalar = new BuiltPlainScalar(val);
+        final BuiltPlainScalar secondScalar = new BuiltPlainScalar(val);
 
         MatcherAssert.assertThat(firstScalar, Matchers.equalTo(secondScalar));
         MatcherAssert.assertThat(secondScalar, Matchers.equalTo(firstScalar));
@@ -94,10 +94,10 @@ public final class ScalarTest {
      */
     @Test
     public void comparesToScalar() {
-        Scalar first = new Scalar("java");
-        Scalar second = new Scalar("java");
-        Scalar digits = new Scalar("123");
-        Scalar otherDigits = new Scalar("124");
+        BuiltPlainScalar first = new BuiltPlainScalar("java");
+        BuiltPlainScalar second = new BuiltPlainScalar("java");
+        BuiltPlainScalar digits = new BuiltPlainScalar("123");
+        BuiltPlainScalar otherDigits = new BuiltPlainScalar("124");
         MatcherAssert.assertThat(first.compareTo(first), Matchers.equalTo(0));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.equalTo(0));
         MatcherAssert.assertThat(
@@ -116,7 +116,7 @@ public final class ScalarTest {
      */
     @Test
     public void comparesToMapping() {
-        Scalar first = new Scalar("java");
+        BuiltPlainScalar first = new BuiltPlainScalar("java");
         RtYamlMapping map = new RtYamlMapping(
             new HashMap<YamlNode, YamlNode>()
         );
@@ -128,7 +128,7 @@ public final class ScalarTest {
      */
     @Test
     public void comparesToSequence() {
-        Scalar first = new Scalar("java");
+        BuiltPlainScalar first = new BuiltPlainScalar("java");
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }

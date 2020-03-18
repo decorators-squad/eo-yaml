@@ -27,31 +27,58 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
- * Read Yaml Scalar when previous yaml line ends with '|' character.
- * @author Sherif Waly (sherifwaly95@gmail.com)
- * @version $Id$
- * @since 1.0.2
+ * Comparable Yaml Scalar implementing equals, hashcode and compareTo methods.
+ * <br><br>
+ * These methods should be default methods on the interface,
+ * but we are not allowed to have default implementations of java.lang.Object
+ * methods.
  *
+ * @author Mihai Andronache (amihaiemil@gmail.com)
+ * @version $Id$
+ * @since 3.1.3
  */
-final class ReadPipeScalar implements YamlNode {
-
+abstract class ComparableScalar implements Scalar {
+    
     /**
-     * Lines to be represented as a wrapped scalar.
+     * Equality of two objects.
+     * @param other Reference to the right hand Scalar
+     * @return True if object are equal and False if are not.
      */
-    private YamlLines lines;
-
-    /**
-     * Ctor.
-     * @param lines Given lines to represent.
-     */
-    ReadPipeScalar(final YamlLines lines) {
-        this.lines = lines;
+    @Override
+    public boolean equals(final Object other) {
+        final boolean result;
+        if (other == null || !(other instanceof Scalar)) {
+            result = false;
+        } else if (this == other) {
+            result = true;
+        } else {
+            result = this.compareTo((Scalar) other) == 0;
+        }
+        return result;
     }
 
+    /**
+     * Hash Code of this scalar.
+     * @return Value of hashCode() of type int.
+     */
+    @Override
+    public int hashCode() {
+        return this.value().hashCode();
+    }
+
+    /**
+     * Compare this Scalar to another node.<br><br>
+     *
+     * A Scalar is always considered less than a Sequence or a Mapping.<br>
+     * If o is Scalar then their String values are compared lexicographically
+     *
+     * @param other The other AbstractNode.
+     * @return
+     *  a value < 0 if this < o <br>
+     *   0 if this == o or <br>
+     *  a value > 0 if this > o
+     */
     @Override
     public int compareTo(final YamlNode other) {
         int result = -1;
@@ -59,52 +86,9 @@ final class ReadPipeScalar implements YamlNode {
             result = 0;
         } else if (other == null) {
             result = 1;
-        } else if (other instanceof BuiltPlainScalar) {
-            result = this.value().compareTo(((BuiltPlainScalar) other).value());
-        } else if (other instanceof ReadPipeScalar) {
-            result = this.value().compareTo(((ReadPipeScalar) other).value());
+        } else if (other instanceof Scalar) {
+            result = this.value().compareTo(((Scalar) other).value());
         }
         return result;
     }
-
-    @Override
-    public Collection<YamlNode> values() {
-        return new LinkedList<YamlNode>();
-    }
-
-    @Override
-    public String indent(final int indentation) {
-        StringBuilder printed = new StringBuilder();
-        for(final YamlLine line: this.lines) {
-            int spaces = indentation;
-            while (spaces > 0) {
-                printed.append(" ");
-                spaces--;
-            }
-            printed.append(line.trimmed());
-            printed.append('\n');
-        }
-        printed.delete(printed.length()-1, printed.length());
-        return printed.toString();
-    }
-
-    /**
-     * Value of this scalar.
-     * @return String
-     */
-    public String value() {
-        StringBuilder builder = new StringBuilder();
-        for(final YamlLine line: this.lines) {
-            builder.append(line.trimmed());
-            builder.append('\n');
-        }
-        builder.delete(builder.length()-1, builder.length());
-        return builder.toString();
-    }
-
-    @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
 }

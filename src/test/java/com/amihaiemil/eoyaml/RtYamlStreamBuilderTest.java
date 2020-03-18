@@ -79,7 +79,7 @@ public final class RtYamlStreamBuilderTest {
     public void addsScalar() {
         YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
         YamlStreamBuilder withAdded = streamBuilder.add(
-            new Scalar("test")            
+            new BuiltPlainScalar("test")            
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
