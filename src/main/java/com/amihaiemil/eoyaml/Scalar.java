@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
 
 /**
  * YAML scalar.
@@ -132,7 +133,11 @@ final class Scalar implements YamlNode {
             printed.append(" ");
             spaces--;
         }
-        return printed.append(this.value).toString();
+        return printed.append(removeQuotes(this.value)).toString();
+    }
+
+    public String removeQuotes(final String s) {
+        return s.replaceAll("(?m)^'|'$", "");
     }
 
 }

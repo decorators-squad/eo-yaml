@@ -132,4 +132,18 @@ public final class ScalarTest {
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }
+
+
+    /**
+     * Remove start/end quotes.
+     */
+    @Test
+    public void returnsValues() {
+        final String quoted = "'#404040'";
+        final String unquoted = "#404040";
+        final Scalar scl = new Scalar(quoted);
+        final Scalar scl1 = new Scalar(unquoted);
+        MatcherAssert.assertThat(scl.toString(), Matchers.equalTo(unquoted));
+        MatcherAssert.assertThat(scl1.toString(), Matchers.equalTo(unquoted));
+    }
 }
