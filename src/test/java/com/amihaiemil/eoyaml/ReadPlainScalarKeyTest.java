@@ -33,66 +33,81 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Unit tests for {@ling ReadPlainScalarValue}.
+ * Unit tests for {@link ReadPlainScalarKey}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3
  */
-public final class ReadPlainScalarValueTest {
+public final class ReadPlainScalarKeyTest {
 
     /**
-     * ReadPlainScalarValue can return the scalar's value from a mapping line.
+     * ReadPlainScalarKey can return the key from a YamlLine that
+     * represents a simple key: value mapping.
      */
     @Test
-    public void returnsValueFromMappingLine() {
-        final Scalar scalar = new ReadPlainScalarValue(
+    public void returnsKeyWithScalarValue() {
+        final Scalar scalar = new ReadPlainScalarKey(
             new RtYamlLine("key: value", 0)
         );
-        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("key"));
     }
 
     /**
-     * ReadPlainScalarValue can return the scalar's value from a sequence line.
+     * ReadPlainScalarKey can return the key from a YamlLine that
+     * represents a mapping between a simple key and a YamlNode value.
      */
     @Test
-    public void returnsValueFromSequenceLine() {
-        final Scalar scalar = new ReadPlainScalarValue(
-            new RtYamlLine("- value", 0)
+    public void returnsKeyWithYamlNodeValue() {
+        final Scalar scalar = new ReadPlainScalarKey(
+            new RtYamlLine("key: ", 0)
         );
-        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("key"));
     }
 
     /**
-     * ReadPlainScalarValue should throw an exception if the given line doesn't
-     * contain a scalar.
+     * ReadPlainScalarKey will complain if the given YamlLine contains
+     * the start of a complex key rather than a Scalar key.
      */
     @Test(expected = IllegalStateException.class)
-    public void missingScalarInSequence() {
-        final YamlLine line = new RtYamlLine("-", 0);
-        final Scalar scalar = new ReadPlainScalarValue(line);
+    public void complainsOnStartOfComplexKey() {
+        final YamlLine line = new RtYamlLine("?", 0);
+        final Scalar scalar = new ReadPlainScalarKey(line);
+        scalar.value();
+        Assert.fail("IllegalStateException was expected.");
+
+    }
+
+    /**
+     * ReadPlainScalarKey will complain if the given YamlLine contains
+     * the end of a complex key rather than a Scalar key.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void complainsOnEndOfComplexKey() {
+        final YamlLine line = new RtYamlLine(":", 0);
+        final Scalar scalar = new ReadPlainScalarKey(line);
         scalar.value();
         Assert.fail("IllegalStateException was expected.");
     }
 
     /**
-     * ReadPlainScalarValue should throw an exception if the given line doesn't
-     * contain a scalar.
+     * ReadPlainScalarKey will complain if the given YamlLine is actually
+     * part of a YamlSequence.
      */
     @Test(expected = IllegalStateException.class)
-    public void missingScalarInMapping() {
-        final YamlLine line = new RtYamlLine("key: ", 0);
-        final Scalar scalar = new ReadPlainScalarValue(line);
+    public void complainsOnLineFromSequence() {
+        final YamlLine line = new RtYamlLine("- someValue", 0);
+        final Scalar scalar = new ReadPlainScalarKey(line);
         scalar.value();
         Assert.fail("IllegalStateException was expected.");
     }
 
     /**
-     * ReadPlainScalarValue will complain if the given YamlLine is empty.
+     * ReadPlainScalarKey will complain if the given YamlLine is empty.
      */
     @Test(expected = IllegalStateException.class)
     public void complainsOnEmptyLine() {
         final YamlLine line = new RtYamlLine("", 0);
-        final Scalar scalar = new ReadPlainScalarValue(line);
+        final Scalar scalar = new ReadPlainScalarKey(line);
         scalar.value();
         Assert.fail("IllegalStateException was expected.");
     }

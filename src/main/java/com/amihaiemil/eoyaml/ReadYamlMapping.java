@@ -224,26 +224,12 @@ final class ReadYamlMapping extends ComparableYamlMapping {
         final Set<YamlNode> keys = new TreeSet<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
-            if(":".equals(trimmed)) {
+            if(trimmed.startsWith(":")) {
                 continue;
             } else if ("?".equals(trimmed)) {
                 keys.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
-                final String[] parts = trimmed.split(":");
-                if(parts.length < 2 && !trimmed.endsWith(":")) {
-                    throw new IllegalStateException(
-                        "Expected ':' on line " + line.number()
-                    );
-                } else {
-                    final String keyPart = trimmed.substring(
-                        0, trimmed.indexOf(":")
-                    ).trim();
-                    if(!keyPart.isEmpty()) {
-                        keys.add(
-                            new BuiltPlainScalar(keyPart)
-                        );
-                    }
-                }
+                keys.add(new ReadPlainScalarKey(line));
             }
         }
         return keys;

@@ -44,6 +44,9 @@ public interface Scalar extends YamlNode {
      * escaped, say '#404040', the returned value should be
      * #404040.
      * @return String value.
+     * @throws IllegalStateException In the case of reading YAML,
+     *  this exception is thrown if the Scalar isn't found where it's
+     *  supposed to be.
      */
     String value();
 

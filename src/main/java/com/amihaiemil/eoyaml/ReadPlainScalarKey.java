@@ -28,18 +28,16 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * A plain scalar value read from a read mapping or a read sequence.
- * @author Mihai Andronace (amihaiemil@gmail.com)
+ * A Scalar key from a ReadYamlMapping.
+ * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3
  */
-final class ReadPlainScalarValue extends ComparableScalar {
+final class ReadPlainScalarKey extends ComparableScalar {
 
     /**
-     * Line where the plain scalar value is supposed to be found.
-     * The Scalar can be either after the ":" character, if this
-     * line is from a mapping, or after the "-" character, if
-     * this line is from a sequence.
+     * Line where the plain scalar key is supposed to be found.
+     * This line should start with "key:".
      */
     private YamlLine line;
 
@@ -47,27 +45,25 @@ final class ReadPlainScalarValue extends ComparableScalar {
      * Constructor.
      * @param line Read YamlLine.
      */
-    ReadPlainScalarValue(final YamlLine line) {
+    ReadPlainScalarKey(final YamlLine line) {
         this.line = line;
     }
 
     @Override
     public String value() {
-        final String value;
         final String trimmed = this.line.trimmed();
-        if(trimmed.startsWith("-") && trimmed.length() > 1) {
-            value = trimmed.substring(trimmed.indexOf('-')+1).trim();
-        } else if(trimmed.contains(":") && !trimmed.endsWith(":")) {
-            value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-        } else {
-            throw new IllegalStateException(
-                "Missing scalar on line " + (this.line.number() + 1) + ". "
-                + "The line was expected to be either part of a "
-                + "mapping (key: value) or part of a sequence (- value). "
-                + "Instead, the line is: [" + this.line.trimmed() + "]."
-            );
+        if(trimmed.contains(":")) {
+            final String keyPart = trimmed.substring(
+                0, trimmed.indexOf(":")
+            ).trim();
+            if (!keyPart.isEmpty()) {
+                return keyPart;
+            }
         }
-        return value;
+        throw new IllegalStateException(
+            "Expected scalar key on line " + (this.line.number() + 1) + "."
+                + " The line should have the format 'key: value' or 'key:'. "
+                + "Instead, the line is: [" + this.line.trimmed() + "]."
+        );
     }
-
 }
