@@ -62,10 +62,11 @@ final class ReadFoldedBlockScalar extends ComparableScalar {
     @Override
     public String indent(final int indentation) {
         StringBuilder builder = new StringBuilder();
+        final String newLine = System.lineSeparator();
         for(final YamlLine line: this.lines) {
             if(line.trimmed().length() == 0 || line.indentation() > 0) {
                 if(this.doNotEndWithNewLine(builder)) {
-                    builder.append('\n');
+                    builder.append(newLine);
                 }
                 int spaces = line.indentation();
                 if(spaces > 0) {
@@ -74,7 +75,7 @@ final class ReadFoldedBlockScalar extends ComparableScalar {
                     }
                 }
                 builder.append(line.trimmed());
-                builder.append('\n');
+                builder.append(newLine);
             } else {
                 if(this.doNotEndWithNewLine(builder)) {
                     builder.append(' ');
@@ -96,7 +97,7 @@ final class ReadFoldedBlockScalar extends ComparableScalar {
      */
     private boolean doNotEndWithNewLine(final StringBuilder builder) {
         return builder.length() > 0
-                && builder.charAt(builder.length()-1) != '\n';
+                && !builder.toString().endsWith(System.lineSeparator());
     }
     /**
      * Value of this scalar.
@@ -104,17 +105,18 @@ final class ReadFoldedBlockScalar extends ComparableScalar {
      */
     public String value() {
         StringBuilder builder = new StringBuilder();
+        final String newLine = System.lineSeparator();
         for(final YamlLine line: this.lines) {
             if(line.trimmed().length() == 0 || line.indentation() > 0) {
                 if(this.doNotEndWithNewLine(builder)) {
-                    builder.append('\n');
+                    builder.append(newLine);
                 }
                 int indentation = line.indentation();
                 for(int i = 0; i < indentation; i++) {
                     builder.append(' ');
                 }
                 builder.append(line.trimmed());
-                builder.append('\n');
+                builder.append(newLine);
             } else {
                 if(this.doNotEndWithNewLine(builder)) {
                     builder.append(' ');

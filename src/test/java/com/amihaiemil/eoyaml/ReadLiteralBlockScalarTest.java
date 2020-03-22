@@ -42,7 +42,7 @@ import org.junit.Test;
  * @version $Id$
  * @since 1.0.2
  */
-public final class ReadPipeScalarTest {
+public final class ReadLiteralBlockScalarTest {
 
     /**
      * ReadPipeScalar should not have values.
@@ -73,7 +73,11 @@ public final class ReadPipeScalarTest {
             new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.is("First Line.\nSecond Line.\nThird Line.")
+            Matchers.is(
+            "First Line." + System.lineSeparator()
+                + "Second Line."+ System.lineSeparator()
+                + "Third Line."
+            )
         );
     }
 
@@ -149,7 +153,11 @@ public final class ReadPipeScalarTest {
             new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
-            Matchers.is("    First Line.\n    Second Line.\n    Third Line.")
+            Matchers.is(
+            "    First Line." + System.lineSeparator()
+                + "    Second Line." + System.lineSeparator()
+                + "    Third Line."
+            )
         );
     }
 }

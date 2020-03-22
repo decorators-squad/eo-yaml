@@ -97,7 +97,7 @@ public interface YamlMapping extends YamlNode {
      * @return The found YamlNode or null if nothing is found.
      */
     YamlNode value(final YamlNode key);
-    
+
     /**
      * Return the keys' set of this mapping.<br><br>
      * <b>Pay attention: </b> the keys are ordered.
@@ -120,6 +120,7 @@ public interface YamlMapping extends YamlNode {
                 "Indentation level has to be >=0"
             );
         }
+        final String newLine = System.lineSeparator();
         final StringBuilder print = new StringBuilder();
         int spaces = indentation;
         final StringBuilder indent = new StringBuilder();
@@ -133,27 +134,27 @@ public interface YamlMapping extends YamlNode {
             if(key instanceof Scalar) {
                 print.append(key.toString()).append(": ");
                 if (value instanceof Scalar) {
-                    print.append(value.toString()).append("\n");
+                    print.append(value.toString()).append(newLine);
                 } else  {
                     print
-                        .append("\n")
+                        .append(newLine)
                         .append(value.indent(indentation + 2))
-                        .append("\n");
+                        .append(newLine);
                 }
             } else {
                 print
-                    .append("?\n")
-                    .append(key.indent(indentation + 2)).append("\n")
+                    .append("?").append(newLine)
+                    .append(key.indent(indentation + 2)).append(newLine)
                     .append(indent).append(":");
                 if(value instanceof Scalar) {
                     print
                         .append(" ").append(value);
                 } else {
                     print
-                        .append("\n")
+                        .append(newLine)
                         .append(value.indent(indentation + 2));
                 }
-                print.append("\n");
+                print.append(newLine);
             }
         }
         String printed = print.toString();
@@ -162,7 +163,7 @@ public interface YamlMapping extends YamlNode {
         }
         return printed;
     }
-    
+
     /**
      * Convenience method to directly read an integer value
      * from this map. It is equivalent to:
@@ -179,7 +180,7 @@ public interface YamlMapping extends YamlNode {
     default int integer(final String key) {
         return this.integer(new BuiltPlainScalar(key));
     }
-    
+
     /**
      * Convenience method to directly read an integer value
      * from this map. It is equivalent to:
@@ -200,7 +201,7 @@ public interface YamlMapping extends YamlNode {
         }
         return -1;
     }
-    
+
     /**
      * Convenience method to directly read a float value
      * from this map. It is equivalent to:
@@ -217,7 +218,7 @@ public interface YamlMapping extends YamlNode {
     default float floatNumber(final String key) {
         return this.floatNumber(new BuiltPlainScalar(key));
     }
-    
+
     /**
      * Convenience method to directly read a float value
      * from this map. It is equivalent to:
@@ -238,7 +239,7 @@ public interface YamlMapping extends YamlNode {
         }
         return -1;
     }
-    
+
     /**
      * Convenience method to directly read a double value
      * from this map. It is equivalent to:
@@ -255,7 +256,7 @@ public interface YamlMapping extends YamlNode {
     default double doubleNumber(final String key) {
         return this.doubleNumber(new BuiltPlainScalar(key));
     }
-    
+
     /**
      * Convenience method to directly read a double value
      * from this map. It is equivalent to:
@@ -276,7 +277,7 @@ public interface YamlMapping extends YamlNode {
         }
         return -1.0;
     }
-    
+
     /**
      * Convenience method to directly read a long value
      * from this map. It is equivalent to:
@@ -293,7 +294,7 @@ public interface YamlMapping extends YamlNode {
     default long longNumber(final String key) {
         return this.longNumber(new BuiltPlainScalar(key));
     }
-    
+
     /**
      * Convenience method to directly read a long value
      * from this map. It is equivalent to:
@@ -330,7 +331,7 @@ public interface YamlMapping extends YamlNode {
     default LocalDate date(final String key) {
         return this.date(new BuiltPlainScalar(key));
     }
-    
+
     /**
      * Convenience method to directly read a LocalDate value
      * from this map. It is equivalent to:
@@ -350,7 +351,7 @@ public interface YamlMapping extends YamlNode {
         }
         return null;
     }
-    
+
     /**
      * Convenience method to directly read a LocalDateTime value
      * from this map. It is equivalent to:
@@ -366,7 +367,7 @@ public interface YamlMapping extends YamlNode {
     default LocalDateTime dateTime(final String key) {
         return this.dateTime(new BuiltPlainScalar(key));
     }
-    
+
     /**
      * Convenience method to directly read a LocalDateTime value
      * from this map. It is equivalent to:
