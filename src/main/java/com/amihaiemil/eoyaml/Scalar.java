@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**
  * Yaml Scalar.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -34,7 +37,7 @@ package com.amihaiemil.eoyaml;
  * @since 3.1.3
  */
 public interface Scalar extends YamlNode {
-    
+
     /**
      * Value of this scalar. The value returned by this
      * method should be un-escaped. e.g. if the scalar is
@@ -43,4 +46,28 @@ public interface Scalar extends YamlNode {
      * @return String value.
      */
     String value();
+
+    /**
+     * A scalar has no values.
+     * @return Empty collection.
+     */
+    default Collection<YamlNode> values() {
+        return new LinkedList<>();
+    }
+
+    /**
+     * Indent this scalar. This method is supposed to be default and applicable
+     * to any kind of scalar.
+     * @param indentation Number of preceding spaces of each line.
+     * @return Indented Scalar.
+     */
+    default String indent(final int indentation) {
+        int spaces = indentation;
+        StringBuilder printed = new StringBuilder();
+        while (spaces > 0) {
+            printed.append(" ");
+            spaces--;
+        }
+        return printed.append(this.value()).toString();
+    }
 }

@@ -28,34 +28,45 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * YAML Plain scalar to be used when building a YAML, via
- * one of the builders.
- * @author Mihai Andronache (amihaiemil@gmail.com)
+ * A plain scalar value read from a read mapping or a read sequence.
+ * @author Mihai Andronace (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 3.1.3
  */
-final class BuiltPlainScalar extends ComparableScalar {
+final class ReadPlainScalarValue extends ComparableScalar {
 
     /**
-     * This scalar's value.
+     * Line where the plain scalar value is supposed to be found.
+     * The Scalar can be either after the ":" character, if this
+     * line is from a mapping, or after the "-" character, if
+     * this line is from a sequence.
      */
-    private String value;
+    private YamlLine line;
 
     /**
-     * Ctor.
-     * @param value Given value for this scalar.
+     * Constructor.
+     * @param line Read YamlLine.
      */
-    BuiltPlainScalar(final String value) {
-        this.value = value;
+    ReadPlainScalarValue(final YamlLine line) {
+        this.line = line;
     }
 
-    /**
-     * Value of this scalar.
-     * @return Value of type T.
-     */
     @Override
     public String value() {
-        return this.value;
+        final String value;
+        final String trimmed = this.line.trimmed();
+        if(trimmed.startsWith("-") && trimmed.length() > 1) {
+            value = trimmed.substring(trimmed.indexOf('-')+1).trim();
+        } else if(trimmed.contains(":") && !trimmed.endsWith(":")) {
+            value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+        } else {
+            throw new IllegalStateException(
+                "Missing scalar on line " + (this.line.number() + 1) + " . "
+                + "The line was expected to be either part of a "
+                + "mapping (key: value) or part of a sequence (- value)."
+            );
+        }
+        return value;
     }
+
 }

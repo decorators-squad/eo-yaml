@@ -39,7 +39,7 @@ package com.amihaiemil.eoyaml;
  * @since 3.1.3
  */
 abstract class ComparableScalar implements Scalar {
-    
+
     /**
      * Equality of two objects.
      * @param other Reference to the right hand Scalar
@@ -90,5 +90,10 @@ abstract class ComparableScalar implements Scalar {
             result = this.value().compareTo(((Scalar) other).value());
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.indent(0);
     }
 }

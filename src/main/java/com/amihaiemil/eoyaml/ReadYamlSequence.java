@@ -66,12 +66,7 @@ final class ReadYamlSequence extends ComparableYamlSequence {
             if("-".equals(line.trimmed())) {
                 kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
-                final String trimmed = line.trimmed();
-                kids.add(
-                    new BuiltPlainScalar(
-                        trimmed.substring(trimmed.indexOf('-')+1).trim()
-                    )
-                );
+                kids.add(new ReadPlainScalarValue(line));
             }
         }
         return kids;

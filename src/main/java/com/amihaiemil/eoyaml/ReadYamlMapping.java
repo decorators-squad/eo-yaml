@@ -145,9 +145,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                         break;
                     }
                     if(trimmed.startsWith(":")) {
-                        value = trimmed.substring(
-                            trimmed.indexOf(":") + 1
-                        ).trim();
+                        value = new ReadPlainScalarValue(line).value();
                         break;
                     }
                 }
@@ -165,7 +163,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
                 continue;
             }
             if(trimmed.startsWith(key + ":")) {
-                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+                value = new ReadPlainScalarValue(line).value();
             }
         }
         return value;

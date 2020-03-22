@@ -27,35 +27,62 @@
  */
 package com.amihaiemil.eoyaml;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
- * YAML Plain scalar to be used when building a YAML, via
- * one of the builders.
+ * Unit tests for {@ling ReadPlainScalarValue}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 3.1.3
  */
-final class BuiltPlainScalar extends ComparableScalar {
+public final class ReadPlainScalarValueTest {
 
     /**
-     * This scalar's value.
+     * ReadPlainScalarValue can return the scalar's value from a mapping line.
      */
-    private String value;
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     */
-    BuiltPlainScalar(final String value) {
-        this.value = value;
+    @Test
+    public void returnsValueFromMappingLine() {
+        final Scalar scalar = new ReadPlainScalarValue(
+            new RtYamlLine("key: value", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
     }
 
     /**
-     * Value of this scalar.
-     * @return Value of type T.
+     * ReadPlainScalarValue can return the scalar's value from a sequence line.
      */
-    @Override
-    public String value() {
-        return this.value;
+    @Test
+    public void returnsValueFromSequenceLine() {
+        final Scalar scalar = new ReadPlainScalarValue(
+            new RtYamlLine("- value", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+    }
+
+    /**
+     * ReadPlainScalarValue should throw an exception if the given line doesn't
+     * contain a scalar.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void missingScalarInSequence() {
+        final YamlLine line = new RtYamlLine("-", 0);
+        final Scalar scalar = new ReadPlainScalarValue(line);
+        scalar.value();
+        Assert.fail("IllegalStateException was expected.");
+    }
+
+    /**
+     * ReadPlainScalarValue should throw an exception if the given line doesn't
+     * contain a scalar.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void missingScalarInMapping() {
+        final YamlLine line = new RtYamlLine("key: ", 0);
+        final Scalar scalar = new ReadPlainScalarValue(line);
+        scalar.value();
+        Assert.fail("IllegalStateException was expected.");
     }
 }
