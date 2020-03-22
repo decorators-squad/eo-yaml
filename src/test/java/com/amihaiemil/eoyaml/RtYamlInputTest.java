@@ -27,14 +27,12 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -312,15 +310,78 @@ public final class RtYamlInputTest {
     }
 
     /**
-     * Reading of YamlStream is not yet implemented, an exception should
-     * be thrown.
+     * A Yaml stream of mappings can be read.
      * @throws Exception If something goes wrong.
      */
-    @Test (expected = UnsupportedOperationException.class)
-    @Ignore
-    public void readingYamlStreamNotImplemented() throws Exception {
-        final YamlInput input = Yaml.createYamlInput("");
-        input.readYamlStream();
+    @Test
+    public void readsStreamOfMappings() throws Exception {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/streamOfMappings.yml")
+            )
+        );
+        final YamlStream read = input.readYamlStream();
+        System.out.print(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(this.readTestResource("streamOfMappings.yml"))
+        );
+    }
+
+    /**
+     * A Yaml stream of sequences can be read.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsStreamOfSequences() throws Exception {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/streamOfSequences.yml")
+            )
+        );
+        final YamlStream read = input.readYamlStream();
+        System.out.print(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(this.readTestResource("streamOfSequences.yml"))
+        );
+    }
+
+    /**
+     * A stream of mixed YAML documents can be read.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsMixedStream() throws Exception {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileInputStream(
+                new File("src/test/resources/streamMixed.yml")
+            )
+        );
+        final YamlStream read = input.readYamlStream();
+        System.out.print(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(this.readTestResource("streamMixed.yml"))
+        );
+    }
+
+    /**
+     * Read a test resource file's contents.
+     * @param fileName File to read.
+     * @return File's contents as String.
+     * @throws FileNotFoundException If somethig is wrong.
+     * @throws IOException If somethig is wrong.
+     */
+    private String readTestResource(final String fileName)
+        throws FileNotFoundException, IOException {
+        return new String(
+            IOUtils.toByteArray(
+                new FileInputStream(
+                    new File("src/test/resources/" + fileName)
+                )
+            )
+        );
     }
 
 }

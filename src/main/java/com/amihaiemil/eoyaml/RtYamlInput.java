@@ -67,7 +67,7 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlStream readYamlStream() throws IOException {
-        return null;
+        return new ReadYamlStream(this.readInput());
     }
 
     /**

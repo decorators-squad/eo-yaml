@@ -1,0 +1,124 @@
+/**
+ * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright notice, this
+ *  list of conditions and the following disclaimer.
+ *  Redistributions in binary form must reproduce the above copyright notice,
+ *  this list of conditions and the following disclaimer in the documentation
+ *  and/or other materials provided with the distribution.
+ * Neither the name of the copyright holder nor the names of its
+ *  contributors may be used to endorse or promote products derived from
+ *  this software without specific prior written permission.
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+package com.amihaiemil.eoyaml;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * StartMarkers. Decorator over some YamlLines, that
+ * only iterates over the YAML Document start markers (---).<br><br>
+ * It is used by {@link ReadYamlStream} to separate YAML documents.
+ * @author Mihai Andronache(amihaiemil@gmail.com)
+ * @version $Id$
+ * @since 3.1.4
+ */
+final class StartMarkers implements YamlLines {
+
+    /**
+     * Yaml lines.
+     */
+    private YamlLines yamlLines;
+
+    /**
+     * Constructor.
+     * @param yamlLines The YAML Lines.
+     */
+    StartMarkers(final YamlLines yamlLines){
+        this.yamlLines = yamlLines;
+    }
+
+    /**
+     * Returns an iterator over these Yaml lines.
+     * It ignores the YAML Directives and Marker lines.
+     * @todo #90:30min This method has to be enhanced to also cover
+     *  the case when the first "---" is missing. A YAML Stream of documents
+     *  can also omit the Start Marker for the first YAML Document.
+     * @return Iterator over these yaml lines.
+     */
+    @Override
+    public Iterator<YamlLine> iterator() {
+        Iterator<YamlLine> iterator = this.yamlLines.iterator();
+        if (iterator.hasNext()) {
+            final List<YamlLine> startMarkers = new ArrayList<>();
+            while (iterator.hasNext()) {
+                final YamlLine current = iterator.next();
+                final String currentLine = current.trimmed();
+                if ("---".equals(currentLine)) {
+                    startMarkers.add(current);
+                }
+            }
+            iterator = startMarkers.iterator();
+        }
+        return iterator;
+    }
+
+    /**
+     * Lines which are nested after the given YamlLine. The given YamlLine
+     * has to be a Start Marker (---). "Nested lines" means all the lines
+     * which are after it, until Start Marker, End Marker (...) or end-of-file
+     * is met.
+     * @param after Number of a YamlLine
+     * @return YamlLines
+     */
+    @Override
+    public AllYamlLines nested(final int after) {
+        final YamlLine startLine = this.yamlLines.line(after);
+        if(!"---".equals(startLine.trimmed())) {
+            throw new IllegalStateException(
+                "Expected start of Yaml document on line " + (after + 1)
+              + " (---) while reading the Yaml stream. Instead, the line is ["
+              + startLine.trimmed() + "]."
+            );
+        }
+        final List<YamlLine> yamlDocLines = new ArrayList<>();
+        for(final YamlLine line : this.lines()) {
+            if(line.number() > after) {
+                final String current = line.trimmed();
+                if("---".equals(current) || "...".equals(current)) {
+                    break;
+                } else {
+                    yamlDocLines.add(line);
+                }
+            }
+        }
+        return new AllYamlLines(yamlDocLines);
+    }
+
+    @Override
+    public Collection<YamlLine> lines() {
+        return this.yamlLines.lines();
+    }
+
+    @Override
+    public YamlNode toYamlNode(final YamlLine prev) {
+        return this.yamlLines.toYamlNode(prev);
+    }
+}

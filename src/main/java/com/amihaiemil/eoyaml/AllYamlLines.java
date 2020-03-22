@@ -36,6 +36,7 @@ import java.util.Collection;
  * at the same indentation level and for that we use the decorator
  * {@link SameIndentationLevel}.
  * @checkstyle ExecutableStatementCount (400 lines)
+ * @checkstyle CyclomaticComplexity (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -94,7 +95,7 @@ final class AllYamlLines implements YamlLines {
                 }
                 break;
             case Nested.SEQUENCE:
-                if(trimmed.length() == 1) {
+                if(trimmed.length() == 1 || "---".equals(trimmed)) {
                     final boolean elementSequence = this.iterator()
                         .next().trimmed().startsWith("-");
                     if(elementSequence) {
