@@ -75,7 +75,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return Iterator of YamlNode.
      */
     Iterator<YamlNode> iterator();
-    
+
     /**
      * Indent this YamlSequence. This is a default method since indentation
      * logic should be identical for any kind of YamlSequence, regardless of
@@ -91,6 +91,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
                 "Indentation level has to be >=0"
             );
         }
+        final String newLine = System.lineSeparator();
         final StringBuilder print = new StringBuilder();
         int spaces = indentation;
         final StringBuilder indent = new StringBuilder();
@@ -102,10 +103,12 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
             print.append(indent)
                 .append("- ");
             if (node instanceof Scalar) {
-                print.append(node.toString()).append("\n");
+                print.append(node.toString()).append(newLine);
             } else  {
-                print.append("\n").append(node.indent(indentation + 2))
-                    .append("\n");
+                print
+                    .append(newLine)
+                    .append(node.indent(indentation + 2))
+                    .append(newLine);
             }
         }
         String printed = print.toString();
@@ -114,7 +117,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return printed;
     }
-    
+
     /**
      * Convenience method to directly read an integer value
      * from this sequence. It is equivalent to:
@@ -134,7 +137,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return -1;
     }
-    
+
     /**
      * Convenience method to directly read a float value
      * from this sequence. It is equivalent to:
@@ -154,7 +157,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return -1;
     }
-    
+
     /**
      * Convenience method to directly read a double value
      * from this sequence. It is equivalent to:
@@ -174,7 +177,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return -1.0;
     }
-    
+
     /**
      * Convenience method to directly read a long value
      * from this sequence. It is equivalent to:
@@ -213,7 +216,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return null;
     }
-    
+
     /**
      * Convenience method to directly read a LocalDateTime value
      * from this sequence. It is equivalent to:

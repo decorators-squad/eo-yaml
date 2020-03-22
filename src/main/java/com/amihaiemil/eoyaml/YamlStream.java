@@ -41,22 +41,22 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
     /**
      * Indent this YamlStream. It will take all elements and separate
      * them with "---". It also starts with "---".
-     * If the YamlStream is empty, it will just print: 
+     * If the YamlStream is empty, it will just print:
      * <pre>
      * ---
      * ...
      * </pre>
-     * 
+     *
      * Here is an example of printed YamlStream:
      * <pre>
      * ---
      *   architect: amihaiemil
-     *   developers: 
+     *   developers:
      *     - amihaiemil
      *     - salikjan
      * ---
      *   architect: yegor256
-     *   developers: 
+     *   developers:
      *     - paolo
      *     - mario
      * </pre>
@@ -72,6 +72,7 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
             );
         }
         final StringBuilder print = new StringBuilder();
+        final String newLine = System.lineSeparator();
         int spaces = indentation;
         final StringBuilder indent = new StringBuilder();
         while (spaces > 0) {
@@ -82,15 +83,17 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
         String printed;
         if(values.size() == 0) {
             print
-                .append(indent).append("---\n")
+                .append(indent).append("---")
+                .append(newLine)
                 .append(indent).append("...");
             printed = print.toString();
         } else {
             for (final YamlNode node : values) {
                 print.append(indent)
-                     .append("---\n");
+                    .append("---")
+                    .append(newLine);
                 print.append(node.indent(indentation + 2));
-                print.append("\n");
+                print.append(newLine);
             }
             printed = print.toString();
             if(printed.length() > 0) {
@@ -99,5 +102,5 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
         }
         return printed;
     }
-    
+
 }

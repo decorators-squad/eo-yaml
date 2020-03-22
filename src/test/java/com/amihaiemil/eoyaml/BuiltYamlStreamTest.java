@@ -100,7 +100,7 @@ public final class BuiltYamlStreamTest {
             Matchers.equalTo(this.readTestResource("streamOfMappings.yml"))
         );
     }
-    
+
     /**
      * BuiltYamlStreams can hold a stream of sequences.
      * @throws Exception If something goes wrong.
@@ -138,7 +138,7 @@ public final class BuiltYamlStreamTest {
             Matchers.equalTo(this.readTestResource("streamOfSequences.yml"))
         );
     }
-    
+
     /**
      * BuiltYamlStreams can hold a stream of mixed nodes.
      * @throws Exception If something goes wrong.
@@ -187,7 +187,7 @@ public final class BuiltYamlStreamTest {
             Matchers.equalTo(this.readTestResource("streamMixed.yml"))
         );
     }
-    
+
     /**
      * According to the comparison rules, any YamlStream is always considered
      * "greater than" a scalar.
@@ -200,7 +200,7 @@ public final class BuiltYamlStreamTest {
             Matchers.greaterThan(0)
         );
     }
-    
+
     /**
      * According to the comparison rules, any YamlStream is always considered
      * "greater than" a mapping.
@@ -213,7 +213,7 @@ public final class BuiltYamlStreamTest {
             Matchers.greaterThan(0)
         );
     }
-    
+
     /**
      * According to the comparison rules, any YamlStream is always considered
      * "greater than" a sequence.
@@ -226,7 +226,7 @@ public final class BuiltYamlStreamTest {
             Matchers.greaterThan(0)
         );
     }
-    
+
     /**
      * Two YamlStreams which are empty should be equal.
      */
@@ -251,7 +251,7 @@ public final class BuiltYamlStreamTest {
             Matchers.is(Boolean.TRUE)
         );
     }
-    
+
     /**
      * Two identical YamlStreams are equal.
      */
@@ -316,7 +316,7 @@ public final class BuiltYamlStreamTest {
             Matchers.is(Boolean.TRUE)
         );
     }
-    
+
     /**
      * Two different YamlStreams are equal.
      */
@@ -363,7 +363,7 @@ public final class BuiltYamlStreamTest {
             Matchers.is(Boolean.FALSE)
         );
     }
-    
+
     /**
      * BuiltYamlStreams can hold an empty stream.
      * @throws Exception If something goes wrong.
@@ -378,10 +378,10 @@ public final class BuiltYamlStreamTest {
         );
         MatcherAssert.assertThat(
             mappings.toString(),
-            Matchers.equalTo("---\n...")
+            Matchers.equalTo("---" + System.lineSeparator() + "...")
         );
     }
-    
+
     /**
      * Read a test resource file's contents.
      * @param fileName File to read.
@@ -399,5 +399,5 @@ public final class BuiltYamlStreamTest {
             )
         );
     }
-    
+
 }

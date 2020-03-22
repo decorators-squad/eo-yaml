@@ -67,7 +67,7 @@ final class ReadLiteralBlockScalar extends ComparableScalar {
                 spaces--;
             }
             printed.append(line.trimmed());
-            printed.append('\n');
+            printed.append(System.lineSeparator());
         }
         printed.delete(printed.length()-1, printed.length());
         return printed.toString();
@@ -81,7 +81,7 @@ final class ReadLiteralBlockScalar extends ComparableScalar {
         StringBuilder builder = new StringBuilder();
         for(final YamlLine line: this.lines) {
             builder.append(line.trimmed());
-            builder.append('\n');
+            builder.append(System.lineSeparator());
         }
         builder.delete(builder.length()-1, builder.length());
         return builder.toString();

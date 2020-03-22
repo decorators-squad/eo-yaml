@@ -41,7 +41,7 @@ import org.junit.Test;
  * @version $Id$
  * @since 1.0.2
  */
-public final class ReadPointedScalarTest {
+public final class ReadFoldedBlockScalarTest {
 
     /**
      * ReadPointedScalar should not have values.
@@ -172,9 +172,14 @@ public final class ReadPointedScalarTest {
             scalar.value(),
             Matchers.is(
                 "Sammy Sosa completed another "
-                + "fine season with great stats.\n\n"
-                + "  63 Home Runs\n"
-                + "  75 Hits\n\n"
+                + "fine season with great stats."
+                + System.lineSeparator()
+                + System.lineSeparator()
+                + "  63 Home Runs"
+                + System.lineSeparator()
+                + "  75 Hits"
+                + System.lineSeparator()
+                + System.lineSeparator()
                 + "What a year!"
             )
         );
@@ -214,8 +219,11 @@ public final class ReadPointedScalarTest {
             scalar.indent(4),
             Matchers.is(
                 "    Sammy Sosa completed another "
-                + "fine season with great stats.\n\n"
-                + "      63 Home Runs\n"
+                + "fine season with great stats."
+                + System.lineSeparator()
+                + System.lineSeparator()
+                + "      63 Home Runs"
+                + System.lineSeparator()
                 + "    What a year!"
             )
         );

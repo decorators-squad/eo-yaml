@@ -295,10 +295,15 @@ public final class RtYamlInputTest {
             .add("pears")
             .add("peaches")
             .build();
-
         YamlSequence read = new RtYamlInput(
             new ByteArrayInputStream(
-                "---\n- apples\n- pears\n- peaches".getBytes()
+                new StringBuilder()
+                    .append("---").append(System.lineSeparator())
+                    .append("- apples").append(System.lineSeparator())
+                    .append("- pears").append(System.lineSeparator())
+                    .append("- peaches").append(System.lineSeparator())
+                    .toString()
+                    .getBytes()
             )
         ).readYamlSequence();
 
