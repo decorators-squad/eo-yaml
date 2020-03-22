@@ -27,18 +27,24 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
- * Read Yaml Scalar when previous yaml line ends with '>' character.
+ * Read Yaml folded block Scalar. This is a Scalar spanning multiple lines.
+ * This Scalar's newlines will be ignored ("folded"), the scalar's value
+ * is a single line of text split in multiple lines for readability.<br><br>
+ * Example of Folded Block Scalar:
+ * <pre>
+ *   folded block scalar: >
+ *     a long line split into
+ *     several short
+ *     lines for readability
+ * </pre>
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.2
  * @todo #109:30m/DEV Refactor the implementation of value() and indent()
  *  methods.
  */
-final class ReadPointedScalar implements YamlNode {
+final class ReadFoldedBlockScalar extends ComparableScalar {
 
     /**
      * Lines to be represented as a wrapped scalar.
@@ -49,31 +55,8 @@ final class ReadPointedScalar implements YamlNode {
      * Ctor.
      * @param lines Given lines to represent.
      */
-    ReadPointedScalar(final YamlLines lines) {
+    ReadFoldedBlockScalar(final YamlLines lines) {
         this.lines = lines;
-    }
-
-    @Override
-    public int compareTo(final YamlNode other) {
-        int result = -1;
-        if (this == other) {
-            result = 0;
-        } else if (other == null) {
-            result = 1;
-        } else if (other instanceof BuiltPlainScalar) {
-            result = this.value().compareTo(((BuiltPlainScalar) other).value());
-        } else if (other instanceof ReadPipeScalar) {
-            result = this.value().compareTo(((ReadPipeScalar) other).value());
-        } else if (other instanceof ReadPointedScalar) {
-            result =
-                this.value().compareTo(((ReadPointedScalar) other).value());
-        }
-        return result;
-    }
-
-    @Override
-    public Collection<YamlNode> values() {
-        return new LinkedList<YamlNode>();
     }
 
     @Override
@@ -140,11 +123,6 @@ final class ReadPointedScalar implements YamlNode {
             }
         }
         return builder.toString();
-    }
-
-    @Override
-    public String toString() {
-        return this.indent(0);
     }
 
 }

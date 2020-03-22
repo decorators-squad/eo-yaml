@@ -59,14 +59,14 @@ final class Nested {
      * If this is the last char on a line, it means a pointed wrapped scalar
      * should be nested bellow (see Example 2.15 from YAML spec 1.2).
      */
-    static final String POINTED_SCALAR = ">";
+    static final String FOLDED_BLOCK_SCALAR = ">";
 
     /**
-     * If this is the last char on a line, it means a piped wrapped scalar
+     * If this is the last char on a line, it means a literal block scalar
      * should be nested bellow (all newlines are significant, and
      * taken into account).
      */
-    static final String PIPED_SCALAR = "|";
+    static final String LITERAL_BLOCK_SCALAR = "|";
 
     /**
      * If this is the last char on a line, it means a complex key

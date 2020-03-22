@@ -37,7 +37,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link ReadPipeScalar}.
+ * Unit tests for {@link ReadLiteralBlockScalar}.
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.2
@@ -53,8 +53,8 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.values(), Matchers.emptyIterable()
         );
@@ -69,8 +69,8 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
             Matchers.is("First Line.\nSecond Line.\nThird Line.")
@@ -86,8 +86,8 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         RtYamlMapping map = new RtYamlMapping(
             new HashMap<YamlNode, YamlNode>()
         );
@@ -103,8 +103,8 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(scalar.compareTo(seq), Matchers.lessThan(0));
     }
@@ -116,8 +116,8 @@ public final class ReadPipeScalarTest {
     public void comparesToScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPipeScalar pipeScalar =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar pipeScalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         final BuiltPlainScalar scalar = new BuiltPlainScalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
@@ -129,10 +129,10 @@ public final class ReadPipeScalarTest {
     public void comparesToReadPipeScalar() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("Java", 1));
-        final ReadPipeScalar first =
-            new ReadPipeScalar(new AllYamlLines(lines));
-        final ReadPipeScalar second =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar first =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar second =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.is(0));
     }
 
@@ -145,8 +145,8 @@ public final class ReadPipeScalarTest {
         lines.add(new RtYamlLine("First Line.", 1));
         lines.add(new RtYamlLine("Second Line.", 2));
         lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadPipeScalar scalar =
-            new ReadPipeScalar(new AllYamlLines(lines));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
             Matchers.is("    First Line.\n    Second Line.\n    Third Line.")

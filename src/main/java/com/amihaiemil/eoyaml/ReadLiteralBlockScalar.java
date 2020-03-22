@@ -27,17 +27,22 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
- * Read Yaml Scalar when previous yaml line ends with '|' character.
+ * Read Yaml literal block Scalar. This is a Scalar spanning multiple lines.
+ * This Scalar's lines will be treated as separate lines and won't be folded
+ * into a single line. Example of Literal Block Scalar:
+ * <pre>
+ *   literal block scalar: |
+ *     a multiline text
+ *     line two of the scalar
+ *     line three of the scalar
+ * </pre>
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.2
  *
  */
-final class ReadPipeScalar implements YamlNode {
+final class ReadLiteralBlockScalar extends ComparableScalar {
 
     /**
      * Lines to be represented as a wrapped scalar.
@@ -48,28 +53,8 @@ final class ReadPipeScalar implements YamlNode {
      * Ctor.
      * @param lines Given lines to represent.
      */
-    ReadPipeScalar(final YamlLines lines) {
+    ReadLiteralBlockScalar(final YamlLines lines) {
         this.lines = lines;
-    }
-
-    @Override
-    public int compareTo(final YamlNode other) {
-        int result = -1;
-        if (this == other) {
-            result = 0;
-        } else if (other == null) {
-            result = 1;
-        } else if (other instanceof BuiltPlainScalar) {
-            result = this.value().compareTo(((BuiltPlainScalar) other).value());
-        } else if (other instanceof ReadPipeScalar) {
-            result = this.value().compareTo(((ReadPipeScalar) other).value());
-        }
-        return result;
-    }
-
-    @Override
-    public Collection<YamlNode> values() {
-        return new LinkedList<YamlNode>();
     }
 
     @Override
@@ -100,11 +85,6 @@ final class ReadPipeScalar implements YamlNode {
         }
         builder.delete(builder.length()-1, builder.length());
         return builder.toString();
-    }
-
-    @Override
-    public String toString() {
-        return this.indent(0);
     }
 
 }

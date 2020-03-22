@@ -68,7 +68,7 @@ final class AllYamlLines implements YamlLines {
     public Collection<YamlLine> lines() {
         return this.lines;
     }
-    
+
     @Override
     public YamlNode toYamlNode(final YamlLine prev) {
         final String trimmed = prev.trimmed();
@@ -106,11 +106,11 @@ final class AllYamlLines implements YamlLines {
                     node = new ReadYamlSequence(this);
                 }
                 break;
-            case Nested.PIPED_SCALAR:
-                node = new ReadPipeScalar(this);
+            case Nested.LITERAL_BLOCK_SCALAR:
+                node = new ReadLiteralBlockScalar(this);
                 break;
-            case Nested.POINTED_SCALAR:
-                node = new ReadPointedScalar(this);
+            case Nested.FOLDED_BLOCK_SCALAR:
+                node = new ReadFoldedBlockScalar(this);
                 break;
             default:
                 node = null;
@@ -118,5 +118,5 @@ final class AllYamlLines implements YamlLines {
         }
         return node;
     }
-    
+
 }
