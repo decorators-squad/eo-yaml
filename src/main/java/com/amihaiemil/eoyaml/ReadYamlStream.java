@@ -46,11 +46,6 @@ final class ReadYamlStream extends ComparableYamlStream {
 
     /**
      * Constructor.
-     * @todo #90:30min Check and see how we can use the {@link WellIndented}
-     *  decorator here, to validate that the lines have correct indentation.
-     *  Maybe we will need to do some changes inside WellIndented, since in the
-     *  case of a YAML Stream, the lines after the Start Mark can be more
-     *  indented or they can have the same indentation as the mark.
      * @param lines All YAML lines as they are read from the input.
      */
     ReadYamlStream(final AllYamlLines lines) {
