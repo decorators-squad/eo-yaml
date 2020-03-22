@@ -65,6 +65,11 @@ final class RtYamlInput implements YamlInput {
         return new ReadYamlSequence(this.readInput());
     }
 
+    @Override
+    public YamlStream readYamlStream() throws IOException {
+        return null;
+    }
+
     /**
      * Read the input's lines.
      * @return All read YamlLines

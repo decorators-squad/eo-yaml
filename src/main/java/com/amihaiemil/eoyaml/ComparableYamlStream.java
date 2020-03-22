@@ -119,4 +119,9 @@ abstract class ComparableYamlStream implements YamlStream {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return this.indent(0);
+    }
 }

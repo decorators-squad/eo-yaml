@@ -140,7 +140,7 @@
                         </executions>
                         <configuration>
                             <excludes>
-                                <exclude>**/*RtYamlStreamBuilder$*.*</exclude>
+                                <exclude>**/*YamlStream.java</exclude>
                             </excludes>
                         </configuration>
                     </plugin>

@@ -50,18 +50,12 @@ public interface YamlInput {
      * @throws IOException if the input cannot be read for some reason
      */
     YamlSequence readYamlSequence() throws IOException;
-    
+
     /**
      * Read the given input as a Yaml stream.
      * @return Read YamlStream.
      * @throws IOException if the input cannot be read for some reason
      */
-    default YamlStream readYamlStream() throws IOException {
-        throw new UnsupportedOperationException(
-            "Not yet implemented. You can follow the development here "
-          + "https://github.com/decorators-squad/eo-yaml/issues/90. " 
-          + "You may also contribute if you have the time!" 
-        );
-    }
+    YamlStream readYamlStream() throws IOException;
 
 }
