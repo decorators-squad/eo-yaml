@@ -94,7 +94,7 @@ public final class RtYamlInputTest {
             read, Matchers.equalTo(expected)
         );
     }
-    
+
     /**
      * RtYamlnput can read and indent a complex mapping.
      * @throws Exception If something goes wrong.
@@ -132,7 +132,7 @@ public final class RtYamlInputTest {
         ).readYamlMapping();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
     }
-    
+
     /**
      * RtYamlnput can read and indent a complex sequence.
      * @throws Exception If something goes wrong.
@@ -188,20 +188,20 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             keys.contains(new BuiltPlainScalar("workspace")),
             Matchers.is(Boolean.TRUE)
-        );        
-        
+        );
+
         final YamlMapping palette = mapping.yamlMapping("palette");
         MatcherAssert.assertThat(palette.keys().size(), Matchers.is(12));
         MatcherAssert.assertThat(palette.values().size(), Matchers.is(12));
         MatcherAssert.assertThat(
-            palette.string("gray"),
-            Matchers.is("'#404040'")
+            palette.string("light_gray"),
+            Matchers.is("#484848")
         );
         MatcherAssert.assertThat(
             palette.string("magenta"),
             Matchers.is("rgb(255, 102, 255)")
         );
-        
+
         final YamlMapping workspace = mapping.yamlMapping("workspace");
         MatcherAssert.assertThat(workspace.keys().size(), Matchers.is(3));
         MatcherAssert.assertThat(workspace.values().size(), Matchers.is(3));
@@ -222,7 +222,7 @@ public final class RtYamlInputTest {
             Matchers.is("stroke rgba(255, 255, 255, 0.3)")
         );
     }
-    
+
     /**
      * At the moment, when reading a sequence, we should ignore any YAML
      * Directive or Marker line, such as "%YAML 1.2" or "---" or "...".
@@ -242,19 +242,19 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             first.values().size(), Matchers.equalTo(1)
         );
-        
+
         final YamlMapping palette = first.yamlMapping("palette");
         MatcherAssert.assertThat(palette.keys().size(), Matchers.is(12));
         MatcherAssert.assertThat(palette.values().size(), Matchers.is(12));
         MatcherAssert.assertThat(
             palette.string("gray"),
-            Matchers.is("'#404040'")
+            Matchers.is("#404040")
         );
         MatcherAssert.assertThat(
             palette.string("magenta"),
             Matchers.is("rgb(255, 102, 255)")
         );
-        
+
         final YamlMapping second = sequence.yamlMapping(1);
         MatcherAssert.assertThat(
             second.keys().size(), Matchers.equalTo(1)
@@ -262,7 +262,7 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             second.values().size(), Matchers.equalTo(1)
         );
-        
+
         final YamlMapping workspace = second.yamlMapping("workspace");
         MatcherAssert.assertThat(workspace.keys().size(), Matchers.is(3));
         MatcherAssert.assertThat(workspace.values().size(), Matchers.is(3));
@@ -283,7 +283,7 @@ public final class RtYamlInputTest {
             Matchers.is("stroke rgba(255, 255, 255, 0.3)")
         );
     }
-    
+
     /**
      * A YamlSequence in block style can be read.
      * @throws Exception If something goes wrong.
@@ -304,7 +304,7 @@ public final class RtYamlInputTest {
 
         MatcherAssert.assertThat(read, Matchers.equalTo(expected));
     }
-    
+
     /**
      * Reading of YamlStream is not yet implemented, an exception should
      * be thrown.

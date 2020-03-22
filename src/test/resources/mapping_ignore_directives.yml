@@ -14,7 +14,7 @@ palette:
   # - Grayscale -
   black: '#303030'
   gray: '#404040'
-  light_gray: '#484848'
+  light_gray: "#484848"
   white: white
 
   # - Colors -
@@ -30,11 +30,11 @@ palette:
 workspace:
 
   background: gray
-  
+
   guides:
     lines: stroke rgba(255, 255, 255, 0.3)
     grid: stroke rgba(255, 255, 255, 0.3)
-  
+
   elements:
     devices:
       pins:

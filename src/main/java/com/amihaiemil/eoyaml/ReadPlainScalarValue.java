@@ -67,7 +67,28 @@ final class ReadPlainScalarValue extends ComparableScalar {
                 + "Instead, the line is: [" + this.line.trimmed() + "]."
             );
         }
-        return value;
+        return this.unescape(value);
     }
 
+    /**
+     * Remove the possible escaping quotes or apostrophes surrounding the
+     * given value.
+     * @param value The value to unescape.
+     * @return The value without quotes or apostrophes.
+     */
+    private String unescape(final String value) {
+        final String unescaped;
+        if(value == null || value.length()<=2) {
+            unescaped = value;
+        } else {
+            if (value.startsWith("\"") && value.endsWith("\"")) {
+                unescaped = value.substring(1, value.length() - 1);
+            } else if (value.startsWith("'") && value.endsWith("'")) {
+                unescaped = value.substring(1, value.length() - 1);
+            } else {
+                unescaped = value;
+            }
+        }
+        return unescaped;
+    }
 }
