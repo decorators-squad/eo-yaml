@@ -40,18 +40,18 @@ import java.util.List;
  * to do it at YamlLines level, as a decorator, because
  * in some cases, we need to eliminate some of them first (markers,
  * directives etc). <br><br>
- * 
+ *
  * This class can be used as follows:
- * 
+ *
  * <pre>
- * 
+ *
  * YamlLines wellIndented = new SameIndentationLevel(
  *     new WellIndented(lines)
  * );//Iterate over the lines which are at the same indentation level
  * </pre>
  * or
  * <pre>
- * 
+ *
  * YamlLines wellIndented = new SameIndentationLevel(
  *     new WellIndented(
  *         new NoDirectivesOrMarkers(
@@ -60,7 +60,7 @@ import java.util.List;
  *     )
  * );//Iterate over the lines which are at the same indentation level
  * </pre>
- * 
+ *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.2
@@ -80,7 +80,7 @@ final class WellIndented implements YamlLines {
     WellIndented(final YamlLines yamlLines) {
         this.yamlLines = yamlLines;
     }
-    
+
     /**
      * Returns an iterator over these Yaml lines.
      * It will verify that each line is properly indented in relation
@@ -100,18 +100,19 @@ final class WellIndented implements YamlLines {
                 YamlLine line = iterator.next();
                 int prevIndent = previous.indentation();
                 int lineIndent = line.indentation();
-                if(previous.hasNestedNode()) {
+                if(previous.requireNestedIndentation()) {
                     if(lineIndent != prevIndent+2) {
                         throw new IllegalStateException(
-                            "Indentation of line " + line.number()
-                             + " is not ok. It should be greater than the"
-                             + " previous line's by 2"
+                            "Indentation of line " + (line.number() + 1)
+                             + " is not ok. It should be greater than the one"
+                             + " of line " + (previous.number() + 1)
+                             + " by 2 spaces."
                         );
                     }
                 } else {
                     if(lineIndent > prevIndent) {
                         throw new IllegalStateException(
-                            "Indentation of line " + line.number() + " is "
+                            "Indentation of line " + (line.number() +1) + " is "
                             + "greater than the previous one's. "
                             + "It should be less or equal."
                         );
@@ -123,7 +124,7 @@ final class WellIndented implements YamlLines {
         }
         return wellIndented.iterator();
     }
-    
+
     @Override
     public Collection<YamlLine> lines() {
         return this.yamlLines.lines();

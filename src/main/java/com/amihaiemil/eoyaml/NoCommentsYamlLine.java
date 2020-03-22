@@ -93,8 +93,8 @@ final class NoCommentsYamlLine implements YamlLine {
     }
 
     @Override
-    public boolean hasNestedNode() {
-        return new RtYamlLine(this.trimmed(), 0).hasNestedNode();
+    public boolean requireNestedIndentation() {
+        return new RtYamlLine(this.trimmed(), 0).requireNestedIndentation();
     }
 
     @Override

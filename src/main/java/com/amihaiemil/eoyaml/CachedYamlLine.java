@@ -92,9 +92,9 @@ final class CachedYamlLine implements YamlLine {
     }
 
     @Override
-    public boolean hasNestedNode() {
+    public boolean requireNestedIndentation() {
         if (this.hasNestedNode == null) {
-            this.hasNestedNode = this.line.hasNestedNode();
+            this.hasNestedNode = this.line.requireNestedIndentation();
         }
         return this.hasNestedNode;
     }

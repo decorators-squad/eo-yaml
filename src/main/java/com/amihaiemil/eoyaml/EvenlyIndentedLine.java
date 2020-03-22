@@ -86,7 +86,7 @@ final class EvenlyIndentedLine implements YamlLine {
     }
 
     @Override
-    public boolean hasNestedNode() {
-        return this.line.hasNestedNode();
+    public boolean requireNestedIndentation() {
+        return this.line.requireNestedIndentation();
     }
 }

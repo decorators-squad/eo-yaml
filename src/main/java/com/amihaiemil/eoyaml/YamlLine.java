@@ -56,10 +56,11 @@ interface YamlLine extends Comparable<YamlLine> {
     int indentation();
 
     /**
-     * Does this line precede a nested node?
+     * Do the following line(s) require a deeper indentation than this line's?
      * @return True or false
      */
-    boolean hasNestedNode();
+    boolean requireNestedIndentation();
+
     /**
      * YamlLine null object.
      */
@@ -86,7 +87,7 @@ interface YamlLine extends Comparable<YamlLine> {
         }
 
         @Override
-        public boolean hasNestedNode() {
+        public boolean requireNestedIndentation() {
             return false;
         }
 

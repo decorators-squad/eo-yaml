@@ -97,10 +97,10 @@ final class RtYamlLine implements YamlLine {
     }
 
     @Override
-    public boolean hasNestedNode() {
+    public boolean requireNestedIndentation() {
         final boolean result;
         final String specialCharacters = ":>|-?";
-        
+
         final CharSequence prevLineLastChar =
             this.trimmed().substring(this.trimmed().length()-1);
         if(specialCharacters.contains(prevLineLastChar)) {

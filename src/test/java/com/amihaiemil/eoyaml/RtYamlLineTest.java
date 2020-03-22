@@ -49,24 +49,25 @@ public final class RtYamlLineTest {
     }
 
     /**
-     * RtYamlLine knows if it has a nested YamlNode after it.
+     * RtYamlLine knows if the following line(s) require a deeped indentation
+     * or not.
      */
     @Test
-    public void precedesYamlNode() {
+    public void requiresNestedIndentation() {
         MatcherAssert.assertThat(
-            new RtYamlLine("this:", 12).hasNestedNode(),
+            new RtYamlLine("this:", 12).requireNestedIndentation(),
             Matchers.is(true)
         );
         MatcherAssert.assertThat(
-            new RtYamlLine("this: |> ", 12).hasNestedNode(),
+            new RtYamlLine("this: |> ", 12).requireNestedIndentation(),
             Matchers.is(true)
         );
         MatcherAssert.assertThat(
-            new RtYamlLine("this: |- ", 12).hasNestedNode(),
+            new RtYamlLine("this: |- ", 12).requireNestedIndentation(),
             Matchers.is(true)
         );
         MatcherAssert.assertThat(
-            new RtYamlLine("this: value", 12).hasNestedNode(),
+            new RtYamlLine("this: value", 12).requireNestedIndentation(),
             Matchers.is(false)
         );
     }
