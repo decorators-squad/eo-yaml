@@ -86,6 +86,7 @@ final class WellIndented implements YamlLines {
      * It will verify that each line is properly indented in relation
      * to the previous one and will complain if the indentation is not
      * correct.
+     * @checkstyle LineLength (50 lines)
      * @return Iterator over these yaml lines.
      */
     @Override
@@ -110,10 +111,11 @@ final class WellIndented implements YamlLines {
                         );
                     }
                 } else {
-                    if(lineIndent > prevIndent) {
+                    if(!"---".equals(previous.trimmed()) && lineIndent > prevIndent) {
                         throw new IllegalStateException(
                             "Indentation of line " + (line.number() +1) + " is "
-                            + "greater than the previous one's. "
+                            + "greater than the one of line "
+                            + (previous.number() + 1) + ". "
                             + "It should be less or equal."
                         );
                     }
@@ -128,6 +130,11 @@ final class WellIndented implements YamlLines {
     @Override
     public Collection<YamlLine> lines() {
         return this.yamlLines.lines();
+    }
+
+    @Override
+    public AllYamlLines nested(final int after) {
+        return this.yamlLines.nested(after);
     }
 
     @Override

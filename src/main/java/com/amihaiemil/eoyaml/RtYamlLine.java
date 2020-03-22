@@ -99,14 +99,18 @@ final class RtYamlLine implements YamlLine {
     @Override
     public boolean requireNestedIndentation() {
         final boolean result;
-        final String specialCharacters = ":>|-?";
 
-        final CharSequence prevLineLastChar =
-            this.trimmed().substring(this.trimmed().length()-1);
-        if(specialCharacters.contains(prevLineLastChar)) {
-            result = true;
-        } else {
+        if("---".equals(this.trimmed())) {
             result = false;
+        } else {
+            final String specialCharacters = ":>|-?";
+            final CharSequence prevLineLastChar =
+                this.trimmed().substring(this.trimmed().length() - 1);
+            if (specialCharacters.contains(prevLineLastChar)) {
+                result = true;
+            } else {
+                result = false;
+            }
         }
         return result;
     }

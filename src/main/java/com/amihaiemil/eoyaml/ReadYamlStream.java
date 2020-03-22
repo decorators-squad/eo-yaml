@@ -54,7 +54,9 @@ final class ReadYamlStream extends ComparableYamlStream {
      * @param lines All YAML lines as they are read from the input.
      */
     ReadYamlStream(final AllYamlLines lines) {
-        this.lines = new StartMarkers(lines);
+        this.lines = new WellIndented(
+            new StartMarkers(lines)
+        );
     }
 
     @Override
