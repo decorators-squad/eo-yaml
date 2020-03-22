@@ -43,7 +43,7 @@ import org.junit.Test;
  * @since 1.0.0
  *
  */
-public final class ScalarTest {
+public final class BuiltPlainScalarTest {
 
     /**
      * Scalar can return its own value.
