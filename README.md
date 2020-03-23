@@ -38,6 +38,9 @@ Here is what we have so far:
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
 * Building and Reading YAML Streams (integrated with Java 8's Stream API!) ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
+* Others:
+    - Automatic validation of the input's indentation.
+    - Clear and detailed Exceptions. For instance, in the case of bad indentation, it will tell you exactly which line is problematic and why.
 
 Also, you can have a look a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML that the library can read and handle so far.
 
