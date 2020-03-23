@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -57,16 +56,8 @@ public final class ReadYamlStreamTest {
     /**
      * If an empty Yaml stream is provided,
      * then ReadYamlStream should be empty.
-     * @todo #90:30min Fix this test case. The problem is that,
-     *  by the time .toYamlNode(...) is called, the YamlLines
-     *  iterable is actually empty and iterator.next() throws an
-     *  exception. A more general solution should be provided, we
-     *  should actually have an EmptyYamlNode implementation, or
-     *  something else, to represent the case of a YamlNode with no
-     *  lines.
      */
     @Test
-    @Ignore
     public void worksWithEmptyStream() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("---", 0));

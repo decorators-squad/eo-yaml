@@ -58,11 +58,10 @@ final class ReadYamlStream extends ComparableYamlStream {
     public Collection<YamlNode> values() {
         final List<YamlNode> values = new ArrayList<>();
         for(final YamlLine startDoc : this.lines) {
-            values.add(
-                this.lines
-                    .nested(startDoc.number())
-                    .toYamlNode(startDoc)
-            );
+            final YamlLines document = this.lines.nested(startDoc.number());
+            if(!document.lines().isEmpty()) {
+                values.add(document.toYamlNode(startDoc));
+            }
         }
         return values;
 

@@ -367,6 +367,66 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * RtYamlInput can read an empty mapping.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsEmptyMapping() throws Exception {
+        final String newLine = System.lineSeparator();
+        YamlMapping read = Yaml.createYamlInput(
+            "---" + newLine + "..."
+        ).readYamlMapping();
+        MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(read.keys(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(read.toString(), Matchers.isEmptyString());
+
+        read = Yaml.createYamlInput("").readYamlMapping();
+        MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(read.keys(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(read.toString(), Matchers.isEmptyString());
+    }
+
+    /**
+     * RtYamlInput can read an empty sequence.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsEmptySequence() throws Exception {
+        final String newLine = System.lineSeparator();
+        YamlSequence read = Yaml.createYamlInput(
+            "---" + newLine + "..."
+        ).readYamlSequence();
+        MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(read.toString(), Matchers.isEmptyString());
+
+        read = Yaml.createYamlInput("").readYamlSequence();
+        MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(read.toString(), Matchers.isEmptyString());
+    }
+
+    /**
+     * RtYamlInput can read an empty stream.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsEmptyStream() throws Exception {
+        final String newLine = System.lineSeparator();
+        YamlStream read = Yaml.createYamlInput(
+            "---" + newLine + "..."
+        ).readYamlStream();
+        MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(
+            read.toString(), Matchers.equalTo("---" + newLine + "...")
+        );
+
+        read = Yaml.createYamlInput("").readYamlStream();
+        MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
+        MatcherAssert.assertThat(
+            read.toString(), Matchers.equalTo("---" + newLine + "...")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
