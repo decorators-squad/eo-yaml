@@ -50,7 +50,9 @@ final class ReadYamlStream extends ComparableYamlStream {
      */
     ReadYamlStream(final AllYamlLines lines) {
         this.lines = new WellIndented(
-            new StartMarkers(lines)
+            new StartMarkers(
+                new NoDirectives(lines)
+            )
         );
     }
 

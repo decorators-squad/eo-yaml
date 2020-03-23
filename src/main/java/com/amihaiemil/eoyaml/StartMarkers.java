@@ -48,57 +48,75 @@ final class StartMarkers implements YamlLines {
     private YamlLines yamlLines;
 
     /**
-     * Constructor.
+     * Constructor. Pay attention, directives will be
+     * omitted from the given lines.
      * @param yamlLines The YAML Lines.
      */
     StartMarkers(final YamlLines yamlLines){
+        this(new NoDirectives(yamlLines));
+    }
+
+    /**
+     * Constructor.
+     * @param yamlLines The YAML Lines. YAML Directives
+     *  should always be omitted, we only iterate over
+     *  the Start markers.
+     */
+    StartMarkers(final NoDirectives yamlLines){
         this.yamlLines = yamlLines;
     }
 
     /**
-     * Returns an iterator over these Yaml lines.
-     * It ignores the YAML Directives and Marker lines.
-     * @todo #90:30min This method has to be enhanced to also cover
-     *  the case when the first "---" is missing. A YAML Stream of documents
-     *  can also omit the Start Marker for the first YAML Document.
+     * Returns an iterator containing only the Start Marker lines (---),
+     * with the possible exception of the FIRST line, which can be the first
+     * line of the first document (in YAML Streams, the Start Marker
+     * of the first document can be missing). e.g. Both are valid:
+     * <pre>
+     * ---
+     * test: 1
+     * ---
+     * test 2
+     * </pre>
+     * and
+     * <pre>
+     * test: 1
+     * ---
+     * test: 2
+     * </pre>
      * @return Iterator over these yaml lines.
      */
     @Override
     public Iterator<YamlLine> iterator() {
         Iterator<YamlLine> iterator = this.yamlLines.iterator();
         if (iterator.hasNext()) {
-            final List<YamlLine> startMarkers = new ArrayList<>();
+            final List<YamlLine> docsStart = new ArrayList<>();
+            docsStart.add(iterator.next());
             while (iterator.hasNext()) {
                 final YamlLine current = iterator.next();
                 final String currentLine = current.trimmed();
                 if ("---".equals(currentLine)) {
-                    startMarkers.add(current);
+                    docsStart.add(current);
                 }
             }
-            iterator = startMarkers.iterator();
+            iterator = docsStart.iterator();
         }
         return iterator;
     }
 
     /**
-     * Lines which are nested after the given YamlLine. The given YamlLine
-     * has to be a Start Marker (---). "Nested lines" means all the lines
-     * which are after it, until Start Marker, End Marker (...) or end-of-file
-     * is met.
+     * Lines which are nested after the given YamlLine. "Nested lines" means
+     * all the lines which are after it, until a Start Marker,
+     * an End Marker (...) or end-of-file is met.
      * @param after Number of a YamlLine
      * @return YamlLines
      */
     @Override
     public AllYamlLines nested(final int after) {
+        final List<YamlLine> yamlDocLines = new ArrayList<>();
         final YamlLine startLine = this.yamlLines.line(after);
         if(!"---".equals(startLine.trimmed())) {
-            throw new IllegalStateException(
-                "Expected start of Yaml document on line " + (after + 1)
-              + " (---) while reading the Yaml stream. Instead, the line is ["
-              + startLine.trimmed() + "]."
-            );
+            yamlDocLines.add(startLine);
         }
-        final List<YamlLine> yamlDocLines = new ArrayList<>();
         for(final YamlLine line : this.lines()) {
             if(line.number() > after) {
                 final String current = line.trimmed();

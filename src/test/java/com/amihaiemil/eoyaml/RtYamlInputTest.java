@@ -28,11 +28,14 @@
 package com.amihaiemil.eoyaml;
 
 import java.io.*;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -365,6 +368,78 @@ public final class RtYamlInputTest {
             Matchers.equalTo(this.readTestResource("streamMixed.yml"))
         );
     }
+
+    /**
+     * A stream of YAML Documents, when the first Start Marker is missing,
+     * can be read.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsStreamWithoutFirstStartMarker() throws Exception {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileInputStream(
+                new File(
+                    "src/test/resources/streamWithoutFirstStartMarker.yml"
+                )
+            )
+        );
+        final YamlStream read = input.readYamlStream();
+        final Collection<YamlNode> values = read.values();
+        final Iterator<YamlNode> iterator = values.iterator();
+        MatcherAssert.assertThat(values, Matchers.iterableWithSize(3));
+        MatcherAssert.assertThat(
+            ((YamlMapping) iterator.next()).string("architect"),
+            Matchers.equalTo("mihai")
+        );
+        MatcherAssert.assertThat(
+            ((YamlMapping) iterator.next()).string("architect"),
+            Matchers.equalTo("vlad")
+        );
+        MatcherAssert.assertThat(
+            ((YamlMapping) iterator.next()).string("architect"),
+            Matchers.equalTo("felicia")
+        );
+    }
+
+    /**
+     * A stream of YAML Documents, when the first Start Marker is missing,
+     * can be read. The file also contains comments.
+     * @throws Exception If something goes wrong.
+     * @todo #211:30min Fix this unit test. The YAML from the file is not
+     *  read properly, most likely because of line-numbering Issues. The first
+     *  actual line of YAML has number 3 because the comments are omitted.
+     *  YamlLines.line(...) is not aware of these possible numbering diffs.
+     */
+    @Test
+    @Ignore
+    public void readsStreamWithoutFirstStartMarkerAndComments()
+        throws Exception {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileInputStream(
+                new File(
+                    "src/test/resources/streamWithComments.yml"
+                )
+            )
+        );
+        final YamlStream read = input.readYamlStream();
+        System.out.print(read);
+        final Collection<YamlNode> values = read.values();
+        final Iterator<YamlNode> iterator = values.iterator();
+        MatcherAssert.assertThat(values, Matchers.iterableWithSize(3));
+        MatcherAssert.assertThat(
+            ((YamlMapping) iterator.next()).string("architect"),
+            Matchers.equalTo("mihai")
+        );
+        MatcherAssert.assertThat(
+            ((YamlMapping) iterator.next()).string("architect"),
+            Matchers.equalTo("vlad")
+        );
+        MatcherAssert.assertThat(
+            ((YamlMapping) iterator.next()).string("architect"),
+            Matchers.equalTo("felicia")
+        );
+    }
+
 
     /**
      * RtYamlInput can read an empty mapping.

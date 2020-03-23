@@ -33,20 +33,19 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * No directives or markers. Decorates some YamlLines
- * and ignores YAML directives and markers from iteration.
- * Use this class as follows:
+ * No directives. Decorates some YamlLines
+ * and ignores YAML directives from the iteration.
+ * This class can be used as follows:
  * <pre>
- *  YamlLines noDirs = new NoDirectivesOrMarkers(
+ *  YamlLines noDirs = new NoDirectives(
  *      new AllYamlLines(lines)
- * );//Ignores YAML Directives and Start/End markers from iteration.
+ * );//Ignores YAML Directives from iteration.
  * </pre>
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.1.2
+ * @since 3.1.4
  */
-final class NoDirectivesOrMarkers implements YamlLines {
-
+final class NoDirectives implements YamlLines {
     /**
      * YamlLines.
      */
@@ -56,35 +55,30 @@ final class NoDirectivesOrMarkers implements YamlLines {
      * Ctor.
      * @param yamlLines The Yaml lines.
      */
-    NoDirectivesOrMarkers(final YamlLines yamlLines) {
+    NoDirectives(final YamlLines yamlLines) {
         this.yamlLines = yamlLines;
     }
 
     /**
      * Returns an iterator over these Yaml lines.
-     * It ignores the YAML Directives and Marker lines.
+     * It ignores the lines containing YAML Directives.
      * @return Iterator over these yaml lines.
      */
     @Override
     public Iterator<YamlLine> iterator() {
         Iterator<YamlLine> iterator = this.yamlLines.iterator();
         if (iterator.hasNext()) {
-            final List<YamlLine> noDirsOrMarks = new ArrayList<>();
+            final List<YamlLine> noDirectives = new ArrayList<>();
             while (iterator.hasNext()) {
                 final YamlLine current = iterator.next();
                 final String currentLine = current.trimmed();
-                if (
-                    "---".equals(currentLine)
-                        || "...".equals(currentLine)
-                        || currentLine.startsWith("%")
-                        || currentLine.startsWith("!!")
-                ) {
+                if (currentLine.startsWith("%")) {
                     continue;
                 } else {
-                    noDirsOrMarks.add(current);
+                    noDirectives.add(current);
                 }
             }
-            iterator = noDirsOrMarks.iterator();
+            iterator = noDirectives.iterator();
         }
         return iterator;
     }
