@@ -31,87 +31,24 @@ The API of this library is clean, intuitive and generally close to the ``javax.j
 
 ## Features (ongoing work!)
 
-Since the library is quite young, it doesn't support all the features of YAML yet. For now, it only supports creating/parsing [Block Style](http://yaml.org/spec/1.2/spec.html#Block) YAML, so use it if you have to read/create configuration files and such stuff. It doesn't yet implement features such as **flow** or **recursive** representation, **aliases & anchors** or document streams (more YAMLs separated by ``---``).
+Since the library is quite young, it doesn't support all the features of YAML yet.
 
-Have a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML it supports so far.
+Here is what we have so far:
 
-However, keep in mind that the library is based on interfaces and OOP best practices, so you can probably extend/decorate the objects in order to create the functionality you need! 
+* Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
+* Building and Reading YAML Streams (integrated with Java 8's Stream API!) ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
+* Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
+
+Also, you can have a look a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML that the library can read and handle so far.
+
+Here is what we're still missing and working on:
+
+* Flow and Recursive representation
+* Aliases and anchors
+
+**Keep in mind** that the library is based on interfaces and OOP best practices, so you can probably extend/decorate the objects in order to create the functionality you need, if it's not yet implemented. 
 
 If you have some time and like the library, please consider contributing. 
-
-## Building and printing Yaml:
-
-```java
-YamlMapping yaml = Yaml.createYamlMappingBuilder()
-    .add("architect", "amihaiemil")
-    .add(
-        "devops",
-        Yaml.createYamlSequenceBuilder()
-            .add("rultor")
-            .add("0pdd")
-            .build()
-    ).add(
-        "developers",
-        Yaml.createYamlSequenceBuilder()
-            .add("amihaiemil")
-            .add("salikjan")
-            .add("SherifWally")
-            .build()
-    ).build();
-```
-
-``toString()`` methods are overriden to pretty-print the yaml, so the above ``yaml.toString()`` will print:
-
-```yaml
-architect: amihaiemil
-developers: 
-  - amihaiemil
-  - salikjan
-  - SherifWally
-devops: 
-  - rultor
-  - 0pdd
-```
-
-## Reading:
-
-Reading a Yaml input is very straight-forward, as outlined bellow. There is one **important** aspect: the input has to be
-a valid (well-indented) Yaml, otherwise you will get an exception, at some point, when trying to work with the read object!
-
-```java
-//createYamlInput is overloaded to accept also String InputStream
-YamlMapping yamlMapping = Yaml.createYamlInput(new File("mapping.yml"))
-    .readYamlMapping();
-
-YamlSequence yamlSequence = Yaml.createYamlInput(new File("sequence.yml"))
-    .readYamlSequence();
-```
-
-## Parsing a Pojo:
-
-Pojos can be parsed ("dumped") into Yaml as follows (attributes need to have getters and setters): 
-
-```java
-Map<String, Integer> grades = new HashMap<>();
-grades.put("Math", 9);
-grades.put("CS", 10);
-YamlMapping studentYaml = new YamlObjectDump(
-    new Student ("John", "Doe", 20, grades)
-).represent();
-```
-
-``studentYaml.toString()`` will print:
-
-```yaml
-age: 20
-firstName: John
-grades: 
-  CS: 10
-  Math: 9
-lastName: Doe
-```
-
-You can also parse maps (``Map<Object, Object>``) and collections (``Collection<Object>``) using ``YamlMapDump`` and ``YamlCollectionDump`` respecitvely
 
 ## Contribute
 
