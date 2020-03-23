@@ -449,8 +449,8 @@ public final class RtYamlMappingTest {
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
-     * @throws FileNotFoundException If somethig is wrong.
-     * @throws IOException If somethig is wrong.
+     * @throws FileNotFoundException If something is wrong.
+     * @throws IOException If something is wrong.
      */
     private String readTestResource(final String fileName)
         throws FileNotFoundException, IOException {
