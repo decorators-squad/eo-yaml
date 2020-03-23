@@ -181,6 +181,48 @@ public final class StartMarkersTest {
 
     /**
      * The iterator returned by StartMarkers only covers the lines
+     * representing a start marker (---), with the exception of the first one,
+     * which might not be a start marker (in a stream, the start marker of the
+     * first document can be missing).
+     */
+    @Test
+    public void iteratesOnlyOverStartMarkersMissingFirst() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("  time: 12:00", 0));
+        lines.add(new RtYamlLine("  temperature: 25C", 1));
+        lines.add(new RtYamlLine("...", 2));
+        lines.add(new RtYamlLine("---", 3));
+        lines.add(new RtYamlLine("  time: 16:00", 4));
+        lines.add(new RtYamlLine("  temperature: 20C", 5));
+        lines.add(new RtYamlLine("...", 6));
+        lines.add(new RtYamlLine("---", 7));
+        lines.add(new RtYamlLine("  time: 22:00", 8));
+        lines.add(new RtYamlLine("  temperature: 15C", 9));
+        lines.add(new RtYamlLine("...", 10));
+        final YamlLines smLines = new StartMarkers(
+            new AllYamlLines(lines)
+        );
+        MatcherAssert.assertThat(
+            smLines,
+            Matchers.iterableWithSize(3)
+        );
+        final Iterator<YamlLine> iterator = smLines.iterator();
+        MatcherAssert.assertThat(
+            iterator.next().trimmed(),
+            Matchers.equalTo("time: 12:00")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().trimmed(),
+            Matchers.equalTo("---")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().trimmed(),
+            Matchers.equalTo("---")
+        );
+    }
+
+    /**
+     * The iterator returned by StartMarkers only covers the lines
      * representing a start marker (---). In this test case,
      * there are no document End Markers (...);
      */
@@ -437,6 +479,34 @@ public final class StartMarkersTest {
         lines.add(new RtYamlLine("time: 12:00", 1));
         lines.add(new RtYamlLine("temperature: 25C", 2));
         lines.add(new RtYamlLine("---", 3));
+        final AllYamlLines mapping = new StartMarkers(
+            new AllYamlLines(lines)
+        ).nested(0);
+        MatcherAssert.assertThat(mapping, Matchers.iterableWithSize(2));
+        final Iterator<YamlLine> iterator = mapping.iterator();
+        MatcherAssert.assertThat(
+            iterator.next().trimmed(),
+            Matchers.equalTo("time: 12:00")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().trimmed(),
+            Matchers.equalTo("temperature: 25C")
+        );
+    }
+
+    /**
+     * StartMarkers can get the lines of the first YAML Document,
+     * when its Start Marker is missing.
+     */
+    @Test
+    public void getsNestedLinesOfFirstDocWithoutStartMarker() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("time: 12:00", 0));
+        lines.add(new RtYamlLine("temperature: 25C", 1));
+        lines.add(new RtYamlLine("---", 2));
+        lines.add(new RtYamlLine("time: 16:00", 3));
+        lines.add(new RtYamlLine("temperature: 17C", 4));
+        lines.add(new RtYamlLine("...", 5));
         final AllYamlLines mapping = new StartMarkers(
             new AllYamlLines(lines)
         ).nested(0);

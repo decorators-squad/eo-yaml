@@ -1,0 +1,15 @@
+architect: mihai
+developers:
+  - rultor
+  - salikjan
+  - sherif
+name: eo-yaml
+---
+architect: vlad
+developers:
+  - andrei
+name: eo-json-impl
+---
+architect: felicia
+developer: sara
+name: docker-java-api

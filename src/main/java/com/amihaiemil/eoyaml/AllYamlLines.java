@@ -42,6 +42,9 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #211:30min Method toYamlNode has a lot of duplicated case, it
+ *  most likely needs to be refactored. Make sure to add tests for all
+ *  the performed changes as this method is quite important in the library.
  */
 final class AllYamlLines implements YamlLines {
 
@@ -141,7 +144,13 @@ final class AllYamlLines implements YamlLines {
                 node = new ReadFoldedBlockScalar(this);
                 break;
             default:
-                node = null;
+                final boolean elementSequence = this.iterator()
+                    .next().trimmed().startsWith("-");
+                if(elementSequence) {
+                    node = new ReadYamlSequence(this);
+                } else {
+                    node = new ReadYamlMapping(this);
+                }
                 break;
         }
         return node;
