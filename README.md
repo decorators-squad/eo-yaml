@@ -36,7 +36,7 @@ Since the library is quite young, it doesn't support all the features of YAML ye
 Here is what we have so far:
 
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
-* Building and Reading YAML Streams (integrated with Java 8's Stream API!) ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
+* Building and Reading YAML Streams, integrated with Java 8's Stream API ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
 * Others:
     - Automatic validation of the input's indentation.
