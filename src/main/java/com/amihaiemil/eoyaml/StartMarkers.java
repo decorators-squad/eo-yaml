@@ -48,10 +48,21 @@ final class StartMarkers implements YamlLines {
     private YamlLines yamlLines;
 
     /**
-     * Constructor.
+     * Constructor. Pay attention, directives will be
+     * omitted from the given lines.
      * @param yamlLines The YAML Lines.
      */
     StartMarkers(final YamlLines yamlLines){
+        this(new NoDirectives(yamlLines));
+    }
+
+    /**
+     * Constructor.
+     * @param yamlLines The YAML Lines. YAML Directives
+     *  should always be omitted, we only iterate over
+     *  the Start markers.
+     */
+    StartMarkers(final NoDirectives yamlLines){
         this.yamlLines = yamlLines;
     }
 
