@@ -37,11 +37,6 @@ import java.util.stream.Collectors;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
- * @todo #221:30min Finish the implementation of the methods in this interface.
- *  Figure out how to implement literal and built block scalars, also in the
- *  the context of indenting/printing a bigger YAML node, as well as printing
- *  only that single scalar. Maybe we will need a class called YamlPrinter,
- *  that looks for the type of the node to print.
  */
 final class RtYamlScalarBuilder implements YamlScalarBuilder {
 
@@ -83,11 +78,93 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
 
     @Override
     public Scalar buildFoldedBlockScalar() {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        return new BuiltBlockScalar(this.lines, Boolean.TRUE);
     }
 
     @Override
     public Scalar buildLiteralBlockScalar() {
-        throw new UnsupportedOperationException("Not yet implemented.");
+        return new BuiltBlockScalar(this.lines, Boolean.FALSE);
+    }
+
+    /**
+     * A built block Scalar. It can be folded or literal.
+     * @author Mihai Andronache (amihaiemil@gmail.com)
+     * @version $Id$
+     * @since 4.0.0
+     */
+    static class BuiltBlockScalar extends ComparableScalar {
+
+        /**
+         * Lines of this scalar.
+         */
+        private final List<String> lines;
+
+        /**
+         * Folded or not (literal)?
+         */
+        private final boolean folded;
+
+        /**
+         * Ctor.
+         * @param lines Given string lines.
+         * @param folded Folded or not (literal).
+         */
+        BuiltBlockScalar(final List<String> lines, final boolean folded) {
+            this.lines = lines;
+            this.folded = folded;
+        }
+
+        @Override
+        public String value() {
+            final String value;
+            if(this.folded) {
+                value = this.lines.stream().map(
+                    line -> line.replaceAll(System.lineSeparator(), " ")
+                ).collect(Collectors.joining(" "));
+            } else {
+                value = this.lines.stream().collect(
+                    Collectors.joining(System.lineSeparator())
+                );
+            }
+            return value;
+        }
+
+        /**
+         * Indent this block scalar. When indenting/printing, we're going to
+         * separate the lines.
+         * @param indentation Number of preceding spaces of each line.
+         * @return Indented Scalar.
+         */
+        public String indent(final int indentation) {
+            int spaces = indentation;
+            StringBuilder print = new StringBuilder();
+            StringBuilder alignment = new StringBuilder();
+            while (spaces > 0) {
+                alignment.append(" ");
+                spaces--;
+            }
+            for(int idx = 0; idx < this.lines.size(); idx++) {
+                final String line = this.lines.get(idx);
+                if(line.contains(System.lineSeparator())) {
+                    final String[] hardcodedNewLines = line.split(
+                        System.lineSeparator()
+                    );
+                    for(final String subline : hardcodedNewLines) {
+                        print
+                            .append(alignment)
+                            .append(subline)
+                            .append(System.lineSeparator());
+                    }
+                } else {
+                    print
+                        .append(alignment)
+                        .append(line);
+                    if (idx < this.lines.size() - 1) {
+                        print.append(System.lineSeparator());
+                    }
+                }
+            }
+            return print.toString();
+        }
     }
 }

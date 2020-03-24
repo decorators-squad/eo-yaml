@@ -109,4 +109,92 @@ public final class RtYamlScalarBuilderTest {
             Matchers.isEmptyString()
         );
     }
+
+    /**
+     * RtYamlScalarBuilder can build a folded block scalar
+     * on a single line of text.
+     */
+    @Test
+    public void buildsSingleLineFoldedBlockScalar() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("value").buildFoldedBlockScalar();
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo("value")
+        );
+    }
+
+    /**
+     * RtYamlScalarBuilder can build a literal block scalar
+     * on a single line of text.
+     */
+    @Test
+    public void buildsSingleLineLiteralBlockScalar() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("value").buildLiteralBlockScalar();
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo("value")
+        );
+    }
+
+    /**
+     * RtYamlScalarBuilder can build an empty folded block scalar.
+     */
+    @Test
+    public void buildsEmptyFoldedBlockScalar() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .buildFoldedBlockScalar();
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.isEmptyString()
+        );
+    }
+
+    /**
+     * RtYamlScalarBuilder can build an empty literal block scalar.
+     */
+    @Test
+    public void buildsEmptyLiteralBlockScalar() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .buildLiteralBlockScalar();
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.isEmptyString()
+        );
+    }
+
+    /**
+     * RtYamlScalarBuilder can build a folded block scalar with multiple lines.
+     * @checkstyle LineLength (30 lines)
+     */
+    @Test
+    public void buildsFoldedBlockScalarNoNewLines() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("a folded scalar")
+            .addLine("that will be on the same line")
+            .buildPlainScalar();
+        MatcherAssert.assertThat(
+            scalar.value(), Matchers.equalTo("a folded scalar that will be on the same line")
+        );
+    }
+
+    /**
+     * RtYamlScalarBuilder can build a folded block scalar with multiple lines.
+     * @checkstyle LineLength (30 lines)
+     */
+    @Test
+    public void buildsFoldedBlockScalarRemovesAddedNewLines() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("a folded block scalar")
+            .addLine("that will be" + System.lineSeparator() + "on the same line.")
+            .addLine("Its value will be on a single line because NEWLINE is omitted.")
+            .buildFoldedBlockScalar();
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo(
+            "a folded block scalar that will be on the same line. Its value will be on a single line because NEWLINE is omitted."
+            )
+        );
+    }
 }

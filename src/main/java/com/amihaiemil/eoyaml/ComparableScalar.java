@@ -33,7 +33,11 @@ package com.amihaiemil.eoyaml;
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
  * methods.
- *
+ * @todo #227:30min Override the toString() method in each concrete type of
+ *  Scalar to print it in context. At the moment calling toString() on a
+ *  Scalar doesn't print a valid YAML. The printed YAML should contain a
+ *  Start Marker, followed by the proper scalar mark and finally the End
+ *  Marker.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3

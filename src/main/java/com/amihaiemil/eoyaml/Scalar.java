@@ -59,8 +59,7 @@ public interface Scalar extends YamlNode {
     }
 
     /**
-     * Indent this scalar. This method is supposed to be default and applicable
-     * to any kind of scalar.
+     * Indent this scalar.
      * @param indentation Number of preceding spaces of each line.
      * @return Indented Scalar.
      */

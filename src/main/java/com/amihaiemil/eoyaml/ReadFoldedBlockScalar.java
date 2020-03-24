@@ -41,8 +41,6 @@ package com.amihaiemil.eoyaml;
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.2
- * @todo #109:30m/DEV Refactor the implementation of value() and indent()
- *  methods.
  */
 final class ReadFoldedBlockScalar extends ComparableScalar {
 
