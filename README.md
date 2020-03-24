@@ -27,7 +27,8 @@ or download the <a href="https://oss.sonatype.org/service/local/repositories/rel
 
 ## Usage
 
-The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to:
+The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to.
+Just start form the ``com.amihaiemil.eoyaml.Yaml`` class, it offers all the builders and readers you may need.
 
 ## Features (ongoing work!)
 
