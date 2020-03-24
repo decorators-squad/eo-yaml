@@ -62,7 +62,15 @@ public final class Yaml {
     public static YamlSequenceBuilder createYamlSequenceBuilder() {
         return new RtYamlSequenceBuilder();
     }
-    
+
+    /**
+     * Create a {@link YamlScalarBuilder}.
+     * @return Builder of Yaml Scalars.
+     */
+    public static YamlScalarBuilder createYamlScalarBuilder() {
+        return new RtYamlScalarBuilder();
+    }
+
     /**
      * Create a {@link YamlStreamBuilder}.
      * @return Builder of YamlStream.

@@ -27,56 +27,67 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
- * Builder of Yaml Scalar. Implementations should be immutable and thread-safe.
+ * Implementation for {@link YamlScalarBuilder}. "Rt" stands for "Runtime.
+ * This class is immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.2.0
+ * @todo #221:30min Finish the implementation of the methods in this interface.
+ *  Figure out how to implement literal and built block scalars, also in the
+ *  the context of indenting/printing a bigger YAML node, as well as printing
+ *  only that single scalar. Maybe we will need a class called YamlPrinter,
+ *  that looks for the type of the node to print.
  */
-public interface YamlScalarBuilder {
+final class RtYamlScalarBuilder implements YamlScalarBuilder {
 
     /**
-     * Add a line of text this Scalar. You can use this multiple
-     * times or just once, if your String already contains NEW_LINE
-     * chars.
-     * @param value String
-     * @return An instance of this builder.
+     * Added lines.
      */
-    YamlScalarBuilder addLine(final String value);
+    private final List<String> lines;
 
     /**
-     * Build a plain Scalar. Ideally, you should use this when
-     * your scalar is short, a single line of text.<br><br>
-     * If you added more lines of text, all of them will be put together,
-     * separated by spaces.
-     * @return The built Scalar.
+     * Default ctor.
      */
-    Scalar buildPlainScalar();
+    RtYamlScalarBuilder() {
+        this(new LinkedList<>());
+    }
 
     /**
-     * Build a Folded Block Scalar. Use this when your scalar has multiple
-     * lines of text, but you don't care about the newlines, you want them
-     * all separated by spaces. <br><br>
-     *
-     * The difference from buildPlainScalar() comes when you are printing
-     * the created YAML:
-     * <pre>
-     *     plain: a very long scalar which should have been built as Folded
-     *     folded:>
-     *       a very long scalar which
-     *       has been folded for readability
-     * </pre>
-     *
-     * @return The built Scalar.
+     * Constructor.
+     * @param lines String lines of the Scalar.
      */
-    Scalar buildFoldedBlockScalar();
+    RtYamlScalarBuilder(final List<String> lines) {
+        this.lines = lines;
+    }
 
-    /**
-     * Build a Literal Block Scalar. Use this when your scalar has multiple
-     * lines and you want these lines to be separated.
-     *
-     * @return The built Scalar.
-     */
-    Scalar buildLiteralBlockScalar();
+    @Override
+    public YamlScalarBuilder addLine(final String value) {
+        final List<String> all = new LinkedList<>();
+        all.addAll(this.lines);
+        all.add(value);
+        return new RtYamlScalarBuilder(all);
+    }
 
+    @Override
+    public Scalar buildPlainScalar() {
+        final String plain = this.lines.stream().map(
+            line -> line.replaceAll(System.lineSeparator(), " ")
+        ).collect(Collectors.joining(" "));
+        return new PlainStringScalar(plain);
+    }
+
+    @Override
+    public Scalar buildFoldedBlockScalar() {
+        throw new UnsupportedOperationException("Not yet implemented.");
+    }
+
+    @Override
+    public Scalar buildLiteralBlockScalar() {
+        throw new UnsupportedOperationException("Not yet implemented.");
+    }
 }
