@@ -48,9 +48,9 @@ public final class StrictYamlSequenceTest {
     @Test
     public void fetchesValues() {
         List<YamlNode> elements = new LinkedList<>();
-        elements.add(new BuiltPlainScalar("key1"));
-        elements.add(new BuiltPlainScalar("key2"));
-        elements.add(new BuiltPlainScalar("key3"));
+        elements.add(new PlainStringScalar("key1"));
+        elements.add(new PlainStringScalar("key2"));
+        elements.add(new PlainStringScalar("key3"));
         YamlSequence sequence = new StrictYamlSequence(
             new RtYamlSequence(elements)
         );
@@ -67,9 +67,9 @@ public final class StrictYamlSequenceTest {
     @Test
     public void strictSequenceIsIterable() {
         List<YamlNode> elements = new LinkedList<>();
-        elements.add(new BuiltPlainScalar("key1"));
-        elements.add(new BuiltPlainScalar("key2"));
-        elements.add(new BuiltPlainScalar("key3"));
+        elements.add(new PlainStringScalar("key1"));
+        elements.add(new PlainStringScalar("key2"));
+        elements.add(new PlainStringScalar("key3"));
         YamlSequence seq = new StrictYamlSequence(
             new RtYamlSequence(elements)
         );
@@ -119,8 +119,8 @@ public final class StrictYamlSequenceTest {
     @Test
     public void returnsSize() {
         List<YamlNode> elements = new LinkedList<>();
-        elements.add(new BuiltPlainScalar("key1"));
-        elements.add(new BuiltPlainScalar("key2"));
+        elements.add(new PlainStringScalar("key1"));
+        elements.add(new PlainStringScalar("key2"));
         YamlSequence sequence = new StrictYamlSequence(
             new RtYamlSequence(elements)
         );

@@ -92,18 +92,18 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = keys.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("akey"))
+            Matchers.equalTo(new PlainStringScalar("akey"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("bkey"))
+            Matchers.equalTo(new PlainStringScalar("bkey"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("zkey"))
+            Matchers.equalTo(new PlainStringScalar("zkey"))
         );
     }
-    
+
     /**
      * ReadYamlMapping can return its key-ordered children.
      */
@@ -128,7 +128,7 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("something"))
+            Matchers.equalTo(new PlainStringScalar("something"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -150,10 +150,10 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("somethingElse"))
+            Matchers.equalTo(new PlainStringScalar("somethingElse"))
         );
     }
-    
+
     /**
      * ReadYamlMapping can return its key-ordered children.
      * @checkstyle ExecutableStatementCount (100 lines)
@@ -174,7 +174,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 10));
         lines.add(new RtYamlLine("  - key", 11));
         lines.add(new RtYamlLine(": simpleValue", 12));
-        
+
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         System.out.print(map);
         final Collection<YamlNode> children = map.values();
@@ -184,11 +184,11 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("somethingElse"))
+            Matchers.equalTo(new PlainStringScalar("somethingElse"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("something"))
+            Matchers.equalTo(new PlainStringScalar("something"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -200,7 +200,7 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new BuiltPlainScalar("simpleValue"))
+            Matchers.equalTo(new PlainStringScalar("simpleValue"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -211,7 +211,7 @@ public final class ReadYamlMappingTest {
             )
         );
     }
-    
+
     /**
      * ReadYamlMapping can return the YamlMapping mapped to a
      * YamlMapping key.
@@ -318,13 +318,13 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode first = map.value(new BuiltPlainScalar("first"));
+        final YamlNode first = map.value(new PlainStringScalar("first"));
         MatcherAssert.assertThat(first, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            first, Matchers.equalTo(new BuiltPlainScalar("somethingElse"))
+            first, Matchers.equalTo(new PlainStringScalar("somethingElse"))
         );
     }
-    
+
     /**
      * ReadYamlMapping can return the Sequence mapped to a
      * Scalar key.
@@ -338,13 +338,13 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode second = map.value(new BuiltPlainScalar("second"));
+        final YamlNode second = map.value(new PlainStringScalar("second"));
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlSequence.class)
         );
     }
-    
+
     /**
      * ReadYamlMapping can return the Mapping mapped to a
      * Scalar key.
@@ -357,13 +357,13 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  some: mapping", 2));
         lines.add(new RtYamlLine("third: something", 3));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode second = map.value(new BuiltPlainScalar("second"));
+        final YamlNode second = map.value(new PlainStringScalar("second"));
         MatcherAssert.assertThat(second, Matchers.notNullValue());
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlMapping.class)
         );
     }
-    
+
     /**
      * ReadYamlMapping can return null if value is missing.
      */
@@ -375,10 +375,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  some: mapping", 2));
         lines.add(new RtYamlLine("third: something", 3));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode missing = map.value(new BuiltPlainScalar("notthere"));
+        final YamlNode missing = map.value(new PlainStringScalar("notthere"));
         MatcherAssert.assertThat(missing, Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.string(...) returns null if the queried
      * Scalar is not present.
@@ -392,13 +392,13 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.string("notthere"), Matchers.nullValue());
         MatcherAssert.assertThat(map.string(
-            new BuiltPlainScalar("notthere")), Matchers.nullValue()
+            new PlainStringScalar("notthere")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.string(YamlMapping) returns null if the queried
      * Scalar is not present.
@@ -416,10 +416,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.string(YamlSequence) returns null if the queried
      * Scalar is not present.
@@ -437,10 +437,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.string(...) returns null if the queried value
      * is present but it is not actually a Scalar.
@@ -454,13 +454,13 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.string("second"), Matchers.nullValue());
         MatcherAssert.assertThat(map.string(
-            new BuiltPlainScalar("second")), Matchers.nullValue()
+            new PlainStringScalar("second")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.string(YamlMapping) returns null if the queried value
      * is present but it is not actually a Scalar.
@@ -485,7 +485,7 @@ public final class ReadYamlMappingTest {
         System.out.println(">>>");
         MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.string(YamlSequence) returns null if the queried value
      * is present but it is not actually a Scalar.
@@ -506,7 +506,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
     }
 
@@ -523,15 +523,15 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(
             map.yamlSequence("notthere"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlSequence(
-            new BuiltPlainScalar("notthere")), Matchers.nullValue()
+            new PlainStringScalar("notthere")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(...) returns null if the queried
      * YamlSequence is not present, based on a complex key.
@@ -551,10 +551,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  map: value", 5));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(...) returns null if the queried
      * YamlMapping is not present.
@@ -574,10 +574,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  map: value", 5));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(String) returns null if the queried
      * key has a value that is a Scalar.
@@ -591,15 +591,15 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(
             map.yamlMapping("first"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlMapping(
-            new BuiltPlainScalar("first")), Matchers.nullValue()
+            new PlainStringScalar("first")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(String) returns null if the queried
      * key has a value that is a YamlSequence.
@@ -613,15 +613,15 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(
             map.yamlMapping("second"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlMapping(
-            new BuiltPlainScalar("second")), Matchers.nullValue()
+            new PlainStringScalar("second")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
      * complex key has a Scalar value.
@@ -640,10 +640,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": scalarValue", 4));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
      * complex key has a YamlSequence value.
@@ -664,10 +664,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - seq", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
      * complex key has a Scalar value.
@@ -686,10 +686,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": scalarValue", 4));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(YamlNode) returns null if the queried
      * complex key has a YamlSequence value.
@@ -710,10 +710,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
     }
-    
+
     /**
      * An empty ReadYamlMapping can be printed.
      * @throws Exception if something goes wrong
@@ -725,7 +725,7 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(map.toString(), Matchers.isEmptyString());
     }
-        
+
     /**
      * ReadYamlMapping.yamlMapping(...) returns null if the queried
      * YamlMapping is not present.
@@ -739,15 +739,15 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(
             map.yamlMapping("notthere"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlMapping(
-            new BuiltPlainScalar("notthere")), Matchers.nullValue()
+            new PlainStringScalar("notthere")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.yamlMapping(...) returns null if the queried
      * YamlMapping is not present.
@@ -767,10 +767,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  map: value", 5));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlMapping(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(...) returns null if the queried
      * YamlSequence is not present.
@@ -790,10 +790,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  map: value", 5));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(String) returns null if the queried
      * key has a value that is a Scalar.
@@ -807,15 +807,15 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  - sequence", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(
             map.yamlSequence("first"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlSequence(
-            new BuiltPlainScalar("first")), Matchers.nullValue()
+            new PlainStringScalar("first")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(String) returns null if the queried
      * key has a value that is a YamlMapping.
@@ -829,15 +829,15 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  key2: notSeq", 3));
         lines.add(new RtYamlLine("third: something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(
             map.yamlSequence("second"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(map.yamlSequence(
-            new BuiltPlainScalar("second")), Matchers.nullValue()
+            new PlainStringScalar("second")), Matchers.nullValue()
         );
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(YamlNode) returns null if the queried
      * complex key has a Scalar value.
@@ -856,10 +856,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": scalarValue", 4));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(YamlNode) returns null if the queried
      * complex key has a YamlMapping value.
@@ -880,10 +880,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  not: seq", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(YamlNode) returns null if the queried
      * complex key has a Scalar value.
@@ -902,10 +902,10 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine(": scalarValue", 4));
         lines.add(new RtYamlLine("second: something", 6));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
-    
+
     /**
      * ReadYamlMapping.yamlSequence(YamlNode) returns null if the queried
      * complex key has a YamlMapping value.
@@ -926,7 +926,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  not: seq", 6));
         lines.add(new RtYamlLine("second: something", 7));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        
+
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
 }

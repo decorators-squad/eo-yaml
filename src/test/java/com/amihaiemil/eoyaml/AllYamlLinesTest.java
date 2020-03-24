@@ -151,17 +151,17 @@ public final class AllYamlLinesTest {
         MatcherAssert.assertThat(values.size(), Matchers.is(3));
         System.out.print(values);
         MatcherAssert.assertThat(
-            values.contains(new BuiltPlainScalar("value1")),
+            values.contains(new PlainStringScalar("value1")),
             Matchers.is(Boolean.TRUE)
         );
         MatcherAssert.assertThat(
             values.contains(
-                new BuiltPlainScalar("value2")
+                new PlainStringScalar("value2")
             ),
             Matchers.is(Boolean.TRUE)
         );
         MatcherAssert.assertThat(
-            values.contains(new BuiltPlainScalar("value3")),
+            values.contains(new PlainStringScalar("value3")),
             Matchers.is(Boolean.TRUE)
         );
     }
@@ -188,17 +188,17 @@ public final class AllYamlLinesTest {
         MatcherAssert.assertThat(values.size(), Matchers.is(3));
         System.out.print(values);
         MatcherAssert.assertThat(
-            values.contains(new BuiltPlainScalar("value1")),
+            values.contains(new PlainStringScalar("value1")),
             Matchers.is(Boolean.TRUE)
         );
         MatcherAssert.assertThat(
             values.contains(
-                new BuiltPlainScalar("value2")
+                new PlainStringScalar("value2")
             ),
             Matchers.is(Boolean.TRUE)
         );
         MatcherAssert.assertThat(
-            values.contains(new BuiltPlainScalar("value3")),
+            values.contains(new PlainStringScalar("value3")),
             Matchers.is(Boolean.TRUE)
         );
     }

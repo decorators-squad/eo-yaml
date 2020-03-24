@@ -243,7 +243,7 @@ final class ReadYamlMapping extends ComparableYamlMapping {
             if(value == null) {
                 final String val = this.string(key);
                 if(val != null) {
-                    value = new BuiltPlainScalar(val);
+                    value = new PlainStringScalar(val);
 
                 }
             }

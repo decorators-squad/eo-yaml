@@ -61,7 +61,7 @@ public final class RtYamlSequenceBuilderTest {
     public void addsYamlNode() {
         YamlSequenceBuilder sequenceBuilder = new RtYamlSequenceBuilder();
         YamlSequenceBuilder withAdded =
-            sequenceBuilder.add(new BuiltPlainScalar("value"));
+            sequenceBuilder.add(new PlainStringScalar("value"));
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
             sequenceBuilder, Matchers.not(Matchers.is(withAdded))
@@ -75,8 +75,8 @@ public final class RtYamlSequenceBuilderTest {
     public void buildsYamlSequence() {
         YamlSequenceBuilder sequenceBuilder = new RtYamlSequenceBuilder();
         List<YamlNode> devs = new LinkedList<>();
-        devs.add(new BuiltPlainScalar("amihaiemil"));
-        devs.add(new BuiltPlainScalar("salikjan"));
+        devs.add(new PlainStringScalar("amihaiemil"));
+        devs.add(new PlainStringScalar("salikjan"));
         YamlSequence sequence = sequenceBuilder
             .add("amihaiemil")
             .add(new RtYamlSequence(devs))

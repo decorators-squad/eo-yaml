@@ -184,11 +184,11 @@ public final class RtYamlInputTest {
         final Set<YamlNode> keys = mapping.keys();
         MatcherAssert.assertThat(keys.size(), Matchers.equalTo(2));
         MatcherAssert.assertThat(
-            keys.contains(new BuiltPlainScalar("palette")),
+            keys.contains(new PlainStringScalar("palette")),
             Matchers.is(Boolean.TRUE)
         );
         MatcherAssert.assertThat(
-            keys.contains(new BuiltPlainScalar("workspace")),
+            keys.contains(new PlainStringScalar("workspace")),
             Matchers.is(Boolean.TRUE)
         );
 
