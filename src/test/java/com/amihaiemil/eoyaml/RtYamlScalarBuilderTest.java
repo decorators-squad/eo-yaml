@@ -27,95 +27,86 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
- * Unit tests for {@link Yaml}.
+ * Unit tests for {@link RtYamlScalarBuilder}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 4.0.0
  */
-public final class YamlTest {
+public final class RtYamlScalarBuilderTest {
 
     /**
-     * Yaml can create a YamlMappingBuilder.
+     * RtYamlScalarBuilder can add line of text.
      */
     @Test
-    public void createsYamlMappingBuilder() {
+    public void addsLineOfText() {
+        final YamlScalarBuilder scalarBuilder = new RtYamlScalarBuilder();
+        final YamlScalarBuilder withAdded = scalarBuilder.addLine("a scalar");
+        MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            Yaml.createYamlMappingBuilder(), Matchers.notNullValue()
+            scalarBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
 
     /**
-     * Yaml can create a YamlSequenceBuilder.
+     * RtYamlScalarBuilder can build a plain scalar with no newlines.
+     * @checkstyle LineLength (30 lines)
      */
     @Test
-    public void createsYamlSequenceBuilder() {
+    public void buildsPlainScalarNoNewLines() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("a plain scalar")
+            .addLine("that will be on the same line")
+            .buildPlainScalar();
         MatcherAssert.assertThat(
-            Yaml.createYamlSequenceBuilder(), Matchers.notNullValue()
+            scalar.value(), Matchers.equalTo("a plain scalar that will be on the same line")
         );
     }
 
     /**
-     * Yaml can create a YamlScalarBuilder.
+     * RtYamlScalarBuilder can build a plain scalar, while removing
+     * the hardcoded newlines.
+     * @checkstyle LineLength (30 lines)
      */
     @Test
-    public void createsYamlScalarBuilder() {
+    public void buildsPlainScalarRemovesAddedNewLines() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("a plain scalar")
+            .addLine("that will be" + System.lineSeparator() + "on the same line.")
+            .addLine("You cannot trick it.")
+            .buildPlainScalar();
         MatcherAssert.assertThat(
-            Yaml.createYamlScalarBuilder(), Matchers.notNullValue()
+            scalar.value(),
+            Matchers.equalTo("a plain scalar that will be on the same line. You cannot trick it.")
         );
     }
 
     /**
-     * Yaml can create a YamlStreamBuilder.
+     * RtYamlScalarBuilder can build on a single line of text.
      */
     @Test
-    public void createsYamlStreamBuilder() {
+    public void buildsSingleLinePlainScalar() {
+        final Scalar scalar = new RtYamlScalarBuilder()
+            .addLine("value").buildPlainScalar();
         MatcherAssert.assertThat(
-            Yaml.createYamlStreamBuilder(), Matchers.notNullValue()
+            scalar.value(),
+            Matchers.equalTo("value")
         );
     }
 
     /**
-     * Yaml can create a YamlInput from a File.
-     * @throws Exception if something goes wrong
+     * RtYamlScalarBuilder can build an empty plain scalar.
      */
     @Test
-    public void createsYamlInputFromFile() throws Exception {
+    public void buildsEmptyPlainScalar() {
+        final Scalar scalar = new RtYamlScalarBuilder().buildPlainScalar();
         MatcherAssert.assertThat(
-            Yaml.createYamlInput(
-                new File("src/test/resources/simpleMapping.yml")
-            ),
-            Matchers.notNullValue()
-        );
-    }
-
-    /**
-     * Yaml can create a YamlInput from an InputStream.
-     */
-    @Test
-    public void createsYamlInputFromInputStream() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput(
-                new ByteArrayInputStream("yaml: test".getBytes())
-            ),
-            Matchers.notNullValue()
-        );
-    }
-
-    /**
-     * Yaml can create a YamlInput from a String.
-     */
-    @Test
-    public void createsYamlInputFromString() {
-        MatcherAssert.assertThat(
-            Yaml.createYamlInput("yaml: test"), Matchers.notNullValue()
+            scalar.value(),
+            Matchers.isEmptyString()
         );
     }
 }

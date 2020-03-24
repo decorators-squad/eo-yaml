@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * This class is immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.2.0
+ * @since 4.0.0
  * @todo #221:30min Finish the implementation of the methods in this interface.
  *  Figure out how to implement literal and built block scalars, also in the
  *  the context of indenting/printing a bigger YAML node, as well as printing

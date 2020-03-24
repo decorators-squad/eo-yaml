@@ -31,7 +31,7 @@ package com.amihaiemil.eoyaml;
  * Builder of Yaml Scalar. Implementations should be immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.2.0
+ * @since 4.0.0
  */
 public interface YamlScalarBuilder {
 
