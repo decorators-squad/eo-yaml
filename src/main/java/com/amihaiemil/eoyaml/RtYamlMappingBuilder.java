@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * YamlMappingBuilder implementation.
+ * YamlMappingBuilder implementation. "Rt" stands for "Runtime".
  * This class is immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation for {@link YamlInput}.
+ * Implementation for {@link YamlInput}. "Rt" stands for "Runtime".
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0

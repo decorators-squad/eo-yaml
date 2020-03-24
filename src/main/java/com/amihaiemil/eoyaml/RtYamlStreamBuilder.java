@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * YamlStreamBuilder implementation.
+ * YamlStreamBuilder implementation. "Rt" stands for "Runtime".
  * This class is immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$

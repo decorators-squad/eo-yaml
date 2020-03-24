@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 /**
  * Default implementation of {@link YamlLine}.
+ * "Rt" stands for "Runtime".
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0

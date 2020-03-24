@@ -31,7 +31,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * YamlSequenceBuilder implementation.
+ * YamlSequenceBuilder implementation. "Rt" stands for "Runtime".
  * This class is immutable and thread-safe.
  * @author Salavat.Yalalov (s.yalalov@gmail.com)
  * @version $Id$
