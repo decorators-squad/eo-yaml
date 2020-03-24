@@ -28,14 +28,18 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * YAML Plain scalar to be used when building a YAML, via
- * one of the builders.
+ * YAML Plain scalar from String. Use this class when dealing with
+ * built YAML or in the unit tests.
+ *
+ * DO NOT use it when READING yaml. For reading use
+ * {@link ReadPlainScalarValue}!
+ *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#scalar//
  */
-final class BuiltPlainScalar extends ComparableScalar {
+final class PlainStringScalar extends ComparableScalar {
 
     /**
      * This scalar's value.
@@ -46,7 +50,7 @@ final class BuiltPlainScalar extends ComparableScalar {
      * Ctor.
      * @param value Given value for this scalar.
      */
-    BuiltPlainScalar(final String value) {
+    PlainStringScalar(final String value) {
         this.value = value;
     }
 

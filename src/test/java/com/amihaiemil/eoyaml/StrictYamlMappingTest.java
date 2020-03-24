@@ -50,9 +50,9 @@ public final class StrictYamlMappingTest {
     @Test
     public void fetchesValues() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
-        mappings.put(new BuiltPlainScalar("key1"), Mockito.mock(YamlNode.class));
-        mappings.put(new BuiltPlainScalar("key2"), Mockito.mock(YamlNode.class));
-        mappings.put(new BuiltPlainScalar("key3"), Mockito.mock(YamlNode.class));
+        mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
+        mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
+        mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));
         YamlMapping map = new StrictYamlMapping(new RtYamlMapping(mappings));
         MatcherAssert.assertThat(
             map.values(), Matchers.not(Matchers.emptyIterable())
@@ -66,9 +66,9 @@ public final class StrictYamlMappingTest {
     @Test
     public void fetchesKeys() {
         Map<YamlNode, YamlNode> mappings = new HashMap<>();
-        mappings.put(new BuiltPlainScalar("key1"), Mockito.mock(YamlNode.class));
-        mappings.put(new BuiltPlainScalar("key2"), Mockito.mock(YamlNode.class));
-        mappings.put(new BuiltPlainScalar("key3"), Mockito.mock(YamlNode.class));
+        mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
+        mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
+        mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));
         YamlMapping map = new StrictYamlMapping(new RtYamlMapping(mappings));
         MatcherAssert.assertThat(
             map.keys(), Matchers.not(Matchers.emptyIterable())
@@ -111,14 +111,14 @@ public final class StrictYamlMappingTest {
         YamlMapping strict = new StrictYamlMapping(origin);
         strict.string("key");
     }
-    
+
     /**
      * StringYamlMapping can throw YamlNodeNotFoundException
      * when the demanded value is not found.
      */
     @Test (expected = YamlNodeNotFoundException.class)
     public void exceptionOnNullValue() {
-        BuiltPlainScalar key = new BuiltPlainScalar("key");
+        PlainStringScalar key = new PlainStringScalar("key");
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         Mockito.when(origin.value(key)).thenReturn(null);
         YamlMapping strict = new StrictYamlMapping(origin);
@@ -132,7 +132,7 @@ public final class StrictYamlMappingTest {
     public void returnsMapping() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlMapping found = Mockito.mock(YamlMapping.class);
-        YamlNode key = new BuiltPlainScalar("key");
+        YamlNode key = new PlainStringScalar("key");
         Mockito.when(origin.yamlMapping(key)).thenReturn(found);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
@@ -147,7 +147,7 @@ public final class StrictYamlMappingTest {
     public void returnsSequence() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlSequence found = Mockito.mock(YamlSequence.class);
-        YamlNode key = new BuiltPlainScalar("key");
+        YamlNode key = new PlainStringScalar("key");
         Mockito.when(origin.yamlSequence(key)).thenReturn(found);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
@@ -161,22 +161,22 @@ public final class StrictYamlMappingTest {
     @Test
     public void returnsString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
-        YamlNode key = new BuiltPlainScalar("key");
+        YamlNode key = new PlainStringScalar("key");
         Mockito.when(origin.string(key)).thenReturn("found");
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.string("key"), Matchers.equalTo("found")
         );
     }
-    
+
     /**
      * StringYamlMapping can fetch a value based in its key.
      */
     @Test
     public void returnsValue() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
-        YamlNode key = new BuiltPlainScalar("key");
-        YamlNode value = new BuiltPlainScalar("value");
+        YamlNode key = new PlainStringScalar("key");
+        YamlNode value = new PlainStringScalar("value");
         Mockito.when(origin.value(key)).thenReturn(value);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(

@@ -62,7 +62,7 @@ public final class RtYamlMappingBuilderTest {
     public void addsPairOfStringYamlNode() {
         YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
         YamlMappingBuilder withAdded = mappingBuilder.add(
-            "key", new BuiltPlainScalar("value")
+            "key", new PlainStringScalar("value")
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -77,7 +77,7 @@ public final class RtYamlMappingBuilderTest {
     public void addsPairOfYamlNodeString() {
         YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
         YamlMappingBuilder withAdded = mappingBuilder.add(
-            new BuiltPlainScalar("key"), "value"
+            new PlainStringScalar("key"), "value"
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -92,7 +92,7 @@ public final class RtYamlMappingBuilderTest {
     public void addsPairOfYamlNodes() {
         YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
         YamlMappingBuilder withAdded = mappingBuilder.add(
-            new BuiltPlainScalar("key"), new BuiltPlainScalar("value")
+            new PlainStringScalar("key"), new PlainStringScalar("value")
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
@@ -107,8 +107,8 @@ public final class RtYamlMappingBuilderTest {
     public void buildsYamlMapping() {
         YamlMappingBuilder mappingBuilder = new RtYamlMappingBuilder();
         List<YamlNode> devs = new ArrayList<>();
-        devs.add(new BuiltPlainScalar("amihaiemil"));
-        devs.add(new BuiltPlainScalar("salikjan"));
+        devs.add(new PlainStringScalar("amihaiemil"));
+        devs.add(new PlainStringScalar("salikjan"));
         YamlMapping mapping = mappingBuilder
             .add("architect", "amihaiemil")
             .add("developers", new RtYamlSequence(devs))

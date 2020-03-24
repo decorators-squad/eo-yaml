@@ -100,7 +100,7 @@ public final class ReadFoldedBlockScalarTest {
         lines.add(new RtYamlLine("Java", 1));
         final ReadFoldedBlockScalar pipeScalar =
             new ReadFoldedBlockScalar(new AllYamlLines(lines));
-        final BuiltPlainScalar scalar = new BuiltPlainScalar("Java");
+        final PlainStringScalar scalar = new PlainStringScalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
 

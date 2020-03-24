@@ -122,7 +122,7 @@ public final class ReadLiteralBlockScalarTest {
         lines.add(new RtYamlLine("Java", 1));
         final ReadLiteralBlockScalar pipeScalar =
             new ReadLiteralBlockScalar(new AllYamlLines(lines));
-        final BuiltPlainScalar scalar = new BuiltPlainScalar("Java");
+        final PlainStringScalar scalar = new PlainStringScalar("Java");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
 

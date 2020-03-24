@@ -88,10 +88,10 @@ public final class RtYamlSequenceTest {
     @Test
     public void sequenceKeepsOrder() {
         List<YamlNode> nodes = new LinkedList<>();
-        BuiltPlainScalar first = new BuiltPlainScalar("test");
-        BuiltPlainScalar sec = new BuiltPlainScalar("mihai");
-        BuiltPlainScalar third = new BuiltPlainScalar("amber");
-        BuiltPlainScalar fourth = new BuiltPlainScalar("5433");
+        PlainStringScalar first = new PlainStringScalar("test");
+        PlainStringScalar sec = new PlainStringScalar("mihai");
+        PlainStringScalar third = new PlainStringScalar("amber");
+        PlainStringScalar fourth = new PlainStringScalar("5433");
         nodes.add(first);
         nodes.add(sec);
         nodes.add(third);
@@ -99,16 +99,16 @@ public final class RtYamlSequenceTest {
         RtYamlSequence seq = new RtYamlSequence(nodes);
         Iterator<YamlNode> ordered = seq.values().iterator();
         MatcherAssert.assertThat(
-            (BuiltPlainScalar) ordered.next(), Matchers.equalTo(first)
+            (PlainStringScalar) ordered.next(), Matchers.equalTo(first)
         );
         MatcherAssert.assertThat(
-            (BuiltPlainScalar) ordered.next(), Matchers.equalTo(sec)
+            (PlainStringScalar) ordered.next(), Matchers.equalTo(sec)
         );
         MatcherAssert.assertThat(
-            (BuiltPlainScalar) ordered.next(), Matchers.equalTo(third)
+            (PlainStringScalar) ordered.next(), Matchers.equalTo(third)
         );
         MatcherAssert.assertThat(
-            (BuiltPlainScalar) ordered.next(), Matchers.equalTo(fourth)
+            (PlainStringScalar) ordered.next(), Matchers.equalTo(fourth)
         );
     }
 
@@ -118,9 +118,9 @@ public final class RtYamlSequenceTest {
     @Test
     public void returnsYamlScalarAsString() {
         List<YamlNode> nodes = new LinkedList<>();
-        nodes.add(new BuiltPlainScalar("test"));
-        nodes.add(new BuiltPlainScalar("amber"));
-        nodes.add(new BuiltPlainScalar("mihai"));
+        nodes.add(new PlainStringScalar("test"));
+        nodes.add(new PlainStringScalar("amber"));
+        nodes.add(new PlainStringScalar("mihai"));
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
             seq.string(1), Matchers.equalTo("amber")
@@ -136,9 +136,9 @@ public final class RtYamlSequenceTest {
     @Test
     public void returnsYamlMapping() {
         List<YamlNode> nodes = new LinkedList<>();
-        nodes.add(new BuiltPlainScalar("test"));
+        nodes.add(new PlainStringScalar("test"));
         nodes.add(Mockito.mock(YamlMapping.class));
-        nodes.add(new BuiltPlainScalar("mihai"));
+        nodes.add(new PlainStringScalar("mihai"));
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
             seq.yamlMapping(1), Matchers.notNullValue()
@@ -151,7 +151,7 @@ public final class RtYamlSequenceTest {
     @Test
     public void returnsYamlSequence() {
         List<YamlNode> nodes = new LinkedList<>();
-        nodes.add(new BuiltPlainScalar("test"));
+        nodes.add(new PlainStringScalar("test"));
         nodes.add(Mockito.mock(YamlMapping.class));
         nodes.add(Mockito.mock(YamlSequence.class));
         YamlSequence seq = new RtYamlSequence(nodes);
@@ -169,7 +169,7 @@ public final class RtYamlSequenceTest {
     @Test
     public void comparesToScalar() {
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
-        BuiltPlainScalar scalar = new BuiltPlainScalar("java");
+        PlainStringScalar scalar = new PlainStringScalar("java");
         MatcherAssert.assertThat(
             seq.compareTo(scalar),
             Matchers.greaterThan(0)
@@ -195,10 +195,10 @@ public final class RtYamlSequenceTest {
     @Test
     public void comparesToSequence() {
         List<YamlNode> nodes = new LinkedList<>();
-        BuiltPlainScalar first = new BuiltPlainScalar("test");
-        BuiltPlainScalar sec = new BuiltPlainScalar("mihai");
-        BuiltPlainScalar third = new BuiltPlainScalar("amber");
-        BuiltPlainScalar fourth = new BuiltPlainScalar("5433");
+        PlainStringScalar first = new PlainStringScalar("test");
+        PlainStringScalar sec = new PlainStringScalar("mihai");
+        PlainStringScalar third = new PlainStringScalar("amber");
+        PlainStringScalar fourth = new PlainStringScalar("5433");
         nodes.add(first);
         nodes.add(sec);
         nodes.add(third);
@@ -210,7 +210,7 @@ public final class RtYamlSequenceTest {
         RtYamlSequence another = new RtYamlSequence(nodes);
 
         nodes.remove(0);
-        nodes.add(0, new BuiltPlainScalar("yaml"));
+        nodes.add(0, new PlainStringScalar("yaml"));
         RtYamlSequence sameSize = new RtYamlSequence(nodes);
 
         MatcherAssert.assertThat(seq.compareTo(seq), Matchers.equalTo(0));
@@ -283,9 +283,9 @@ public final class RtYamlSequenceTest {
     @Test
     public void returnsSize(){
         List<YamlNode> nodes = new LinkedList<>();
-        nodes.add(new BuiltPlainScalar("test"));
+        nodes.add(new PlainStringScalar("test"));
         nodes.add(Mockito.mock(YamlMapping.class));
-        nodes.add(new BuiltPlainScalar("mihai"));
+        nodes.add(new PlainStringScalar("mihai"));
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(seq.size(), Matchers.is(3));
     }

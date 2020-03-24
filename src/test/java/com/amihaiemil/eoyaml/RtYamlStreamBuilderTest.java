@@ -41,7 +41,7 @@ import org.mockito.Mockito;
  * @since 3.1.1
  */
 public final class RtYamlStreamBuilderTest {
-    
+
     /**
      * RtYamlStreamBuilder can add a YamlSequence.
      */
@@ -49,14 +49,14 @@ public final class RtYamlStreamBuilderTest {
     public void addsYamlSequence() {
         YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
         YamlStreamBuilder withAdded = streamBuilder.add(
-            Mockito.mock(YamlSequence.class)              
+            Mockito.mock(YamlSequence.class)
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
             streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-    
+
     /**
      * RtYamlStreamBuilder can add a YamlMapping.
      */
@@ -64,14 +64,14 @@ public final class RtYamlStreamBuilderTest {
     public void addsYamlMapping() {
         YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
         YamlStreamBuilder withAdded = streamBuilder.add(
-            Mockito.mock(YamlMapping.class)              
+            Mockito.mock(YamlMapping.class)
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
             streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-    
+
     /**
      * RtYamlStreamBuilder can add a Scalar.
      */
@@ -79,14 +79,14 @@ public final class RtYamlStreamBuilderTest {
     public void addsScalar() {
         YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
         YamlStreamBuilder withAdded = streamBuilder.add(
-            new BuiltPlainScalar("test")            
+            new PlainStringScalar("test")
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
             streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-    
+
     /**
      * RtYamlStreamBuilder can add a YamlNode.
      */
@@ -94,14 +94,14 @@ public final class RtYamlStreamBuilderTest {
     public void addsYamlNode() {
         YamlStreamBuilder streamBuilder = new RtYamlStreamBuilder();
         YamlStreamBuilder withAdded = streamBuilder.add(
-            Mockito.mock(YamlNode.class)              
+            Mockito.mock(YamlNode.class)
         );
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
             streamBuilder, Matchers.not(Matchers.is(withAdded))
         );
     }
-    
+
     /**
      * RtYamlStreamBuilder can build the YamlStream.
      */
@@ -112,12 +112,12 @@ public final class RtYamlStreamBuilderTest {
             .add(Mockito.mock(YamlSequence.class))
             .add(Mockito.mock(YamlNode.class))
             .build();
-        
+
         MatcherAssert.assertThat(stream, Matchers.notNullValue());
         MatcherAssert.assertThat(stream, Matchers.instanceOf(Stream.class));
         MatcherAssert.assertThat(
               stream.values(), Matchers.iterableWithSize(3)
         );
     }
-    
+
 }
