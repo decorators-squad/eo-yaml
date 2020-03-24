@@ -63,37 +63,24 @@ public final class ReadPlainScalarValueTest {
     }
 
     /**
-     * ReadPlainScalarValue should throw an exception if the given line doesn't
-     * contain a scalar.
+     * ReadPlainScalarValue will return the plain scalar
      */
-    @Test(expected = IllegalStateException.class)
-    public void missingScalarInSequence() {
-        final YamlLine line = new RtYamlLine("-", 0);
+    @Test
+    public void returnsPlainScalar() {
+        final YamlLine line = new RtYamlLine("value", 0);
         final Scalar scalar = new ReadPlainScalarValue(line);
-        scalar.value();
-        Assert.fail("IllegalStateException was expected.");
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
     }
 
     /**
-     * ReadPlainScalarValue should throw an exception if the given line doesn't
-     * contain a scalar.
+     * ReadPlainScalarValue will return empty string if the line is empty.
+     * Should never be the case in real practice, however, because empty
+     * lines are omitted when read.
      */
-    @Test(expected = IllegalStateException.class)
-    public void missingScalarInMapping() {
-        final YamlLine line = new RtYamlLine("key: ", 0);
-        final Scalar scalar = new ReadPlainScalarValue(line);
-        scalar.value();
-        Assert.fail("IllegalStateException was expected.");
-    }
-
-    /**
-     * ReadPlainScalarValue will complain if the given YamlLine is empty.
-     */
-    @Test(expected = IllegalStateException.class)
-    public void complainsOnEmptyLine() {
+    @Test
+    public void returnsEmptyScalar() {
         final YamlLine line = new RtYamlLine("", 0);
         final Scalar scalar = new ReadPlainScalarValue(line);
-        scalar.value();
-        Assert.fail("IllegalStateException was expected.");
+        MatcherAssert.assertThat(scalar.value(), Matchers.isEmptyString());
     }
 }

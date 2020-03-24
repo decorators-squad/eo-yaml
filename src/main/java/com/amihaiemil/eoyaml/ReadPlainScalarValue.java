@@ -60,12 +60,7 @@ final class ReadPlainScalarValue extends ComparableScalar {
         } else if(trimmed.contains(":") && !trimmed.endsWith(":")) {
             value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
         } else {
-            throw new IllegalStateException(
-                "Missing scalar on line " + (this.line.number() + 1) + ". "
-                + "The line was expected to be either part of a "
-                + "mapping (key: value) or part of a sequence (- value). "
-                + "Instead, the line is: [" + this.line.trimmed() + "]."
-            );
+            value = trimmed;
         }
         return this.unescape(value);
     }
