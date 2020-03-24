@@ -28,7 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * A plain scalar value read from a read mapping or a read sequence.
+ * A plain scalar value read from somewhere.
  * @author Mihai Andronace (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3
@@ -39,7 +39,8 @@ final class ReadPlainScalarValue extends ComparableScalar {
      * Line where the plain scalar value is supposed to be found.
      * The Scalar can be either after the ":" character, if this
      * line is from a mapping, or after the "-" character, if
-     * this line is from a sequence.
+     * this line is from a sequence, or it represents the whole line,
+     * if no "-" or ":" are found.
      */
     private YamlLine line;
 
