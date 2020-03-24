@@ -42,9 +42,6 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #211:30min Method toYamlNode has a lot of duplicated case, it
- *  most likely needs to be refactored. Make sure to add tests for all
- *  the performed changes as this method is quite important in the library.
  */
 final class AllYamlLines implements YamlLines {
 
@@ -102,56 +99,44 @@ final class AllYamlLines implements YamlLines {
 
     @Override
     public YamlNode toYamlNode(final YamlLine prev) {
-        final String trimmed = prev.trimmed();
-        final String last = trimmed.substring(trimmed.length()-1);
         final YamlNode node;
-        switch (last) {
-            case Nested.YAML:
-                final boolean sequence = this.iterator()
-                    .next().trimmed().startsWith("-");
-                if(sequence) {
-                    node = new ReadYamlSequence(this);
-                } else {
-                    node = new ReadYamlMapping(this);
-                }
-                break;
-            case Nested.KEY_YAML:
-                final boolean sequenceKey = this.iterator()
-                    .next().trimmed().startsWith("-");
-                if(sequenceKey) {
-                    node = new ReadYamlSequence(this);
-                } else {
-                    node = new ReadYamlMapping(this);
-                }
-                break;
-            case Nested.SEQUENCE:
-                if(trimmed.length() == 1 || "---".equals(trimmed)) {
-                    final boolean elementSequence = this.iterator()
-                        .next().trimmed().startsWith("-");
-                    if(elementSequence) {
-                        node = new ReadYamlSequence(this);
-                    } else {
-                        node = new ReadYamlMapping(this);
-                    }
-                } else {
-                    node = new ReadYamlSequence(this);
-                }
-                break;
-            case Nested.LITERAL_BLOCK_SCALAR:
-                node = new ReadLiteralBlockScalar(this);
-                break;
-            case Nested.FOLDED_BLOCK_SCALAR:
-                node = new ReadFoldedBlockScalar(this);
-                break;
-            default:
-                final boolean elementSequence = this.iterator()
-                    .next().trimmed().startsWith("-");
-                if(elementSequence) {
-                    node = new ReadYamlSequence(this);
-                } else {
-                    node = new ReadYamlMapping(this);
-                }
-                break;
+        final String prevLine = prev.trimmed();
+        final String lastChar = prevLine.substring(prevLine.length()-1);
+
+        if(lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
+            node = new ReadLiteralBlockScalar(this);
+        } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
+            node = new ReadFoldedBlockScalar(this);
+        } else if(prevLine.matches(Follows.FOLDED_SEQUENCE)) {
+            node = new ReadYamlSequence(this);
+        } else {
+            node = this.mappingSequenceOrPlainScalar();
+        }
+        return node;
+    }
+
+    /**
+     * Try to figure out what YAML node (mapping, sequence or scalar) do these
+     * lines represent.
+     * @return Found YamlNode.
+     */
+    private YamlNode mappingSequenceOrPlainScalar() {
+        final YamlNode node;
+        final YamlLine first = this.iterator().next();
+        if(first.trimmed().startsWith("-")) {
+            node = new ReadYamlSequence(this);
+        } else if (first.trimmed().contains(":")){
+            node = new ReadYamlMapping(this);
+        } else if(this.lines().size() == 1) {
+            node = new ReadPlainScalarValue(first);
+        } else {
+            throw new IllegalStateException(
+                "Could not parse YAML starting at line " + (first.number() + 1)
+              + " . It should be a sequence (line should start with '-'), "
+              + "a mapping (line should contain ':') or it should be a plain "
+              + "scalar, but it has " + this.lines.size() + " lines, "
+              + "while a plain scalar should be only 1 line!"
+            );
         }
         return node;
     }

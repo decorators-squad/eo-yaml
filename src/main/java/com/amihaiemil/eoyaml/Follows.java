@@ -28,49 +28,56 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * Nested Yaml types.
+ * Nested Yaml types. If a YAML line ends with one
+ * of these, it means a certain type of YAML Node follows.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.2
  */
-final class Nested {
+final class Follows {
 
     /**
      * Hidden ctor.
      */
-    private Nested() {}
+    private Follows() {
+    }
 
     /**
-     * If this is the last char on a line, it means a Yaml
-     * node should be nested bellow.
-     */
-    static final String YAML = ":";
-
-    /**
-     * If this is the last char on a line, it means that
-     * 1) a Yaml sequence should be wrapped bellow (looks the same as a normal
-     *    one, but the char '-' is ommitted from the beginning of its lines).
-     * or
-     * 2) a Yaml node is bellow it (an element from the current sequence).
-     */
-    static final String SEQUENCE = "-";
-
-    /**
-     * If this is the last char on a line, it means a pointed wrapped scalar
+     * If this is the last char on a line, it means a folded block scalar
      * should be nested bellow (see Example 2.15 from YAML spec 1.2).
+     * <pre>
+     *   foldedScalar: >
+     *     a long line split into
+     *     several short
+     *     lines for readability
+     * </pre>
      */
     static final String FOLDED_BLOCK_SCALAR = ">";
 
     /**
      * If this is the last char on a line, it means a literal block scalar
-     * should be nested bellow (all newlines are significant, and
-     * taken into account).
+     * should be nested bellow.
+     * <pre>
+     *   literalScalar: |
+     *     line 1
+     *     line 2
+     *     line 3
+     * </pre>
      */
     static final String LITERAL_BLOCK_SCALAR = "|";
 
     /**
-     * If this is the last char on a line, it means a complex key
-     * (mapping or sequence) should be nested bellow.
+     * If the line ends with this, it means a folded sequence follows after it.
+     * This is a RegEx pattern because we want it to work even if there are
+     * spaces between the | and the -. Both "| -" and "|-" line endings
+     * should be fine.
+     * E.g.
+     * <pre>
+     *     foldedSequence: |-
+     *       some
+     *       sequence
+     *       values
+     * </pre>
      */
-    static final String KEY_YAML = "?";
+    static final String FOLDED_SEQUENCE = "^.+\\|[ ]*\\-$";
 }

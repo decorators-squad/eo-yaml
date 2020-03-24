@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -63,7 +62,7 @@ public final class ReadPlainScalarValueTest {
     }
 
     /**
-     * ReadPlainScalarValue will return the plain scalar
+     * ReadPlainScalarValue will return the plain scalar.
      */
     @Test
     public void returnsPlainScalar() {
