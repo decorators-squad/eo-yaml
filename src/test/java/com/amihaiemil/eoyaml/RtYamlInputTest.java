@@ -502,6 +502,41 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * RtYamlInput can read empty scalars.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsEmptyScalars() throws Exception {
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("").readPlainScalar().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("").readFoldedBlockScalar().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("").readLiteralBlockScalar().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("---" + System.lineSeparator() + "...")
+                .readPlainScalar().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("---" + System.lineSeparator() + " ...")
+                .readFoldedBlockScalar().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("---" + System.lineSeparator() + "...")
+                .readLiteralBlockScalar().value(),
+            Matchers.isEmptyString()
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -73,18 +74,13 @@ final class RtYamlInput implements YamlInput {
     @Override
     public Scalar readPlainScalar() throws IOException {
         final ReadPlainScalarValue read;
-        final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
-        if(lines.lines().size() == 0) {
+        final Iterator<YamlLine> iterator = new NoDirectivesOrMarkers(
+            this.readInput()
+        ).iterator();
+        if(!iterator.hasNext()) {
             read = new ReadPlainScalarValue(new YamlLine.NullYamlLine());
-        } else if (lines.lines().size() == 1) {
-            read = new ReadPlainScalarValue(lines.iterator().next());
         } else {
-            throw new IllegalArgumentException(
-                "The provided input should be a plain scalar, "
-              + "on a single line (excluding YAML directives, "
-              + "Start/End Markers etc). Instead, the input "
-              + "has " + lines.lines() + " lines."
-            );
+            read = new ReadPlainScalarValue(iterator.next());
         }
         return read;
     }
@@ -93,11 +89,12 @@ final class RtYamlInput implements YamlInput {
     public Scalar readFoldedBlockScalar() throws IOException {
         final ReadFoldedBlockScalar read;
         final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
-        if(lines.lines().size() == 0) {
+        final Iterator<YamlLine> iterator = lines.iterator();
+        if(!iterator.hasNext()) {
             read = new ReadFoldedBlockScalar(lines);
         } else {
             read = (ReadFoldedBlockScalar) lines.toYamlNode(
-                lines.iterator().next()
+                iterator.next()
             );
         }
         return read;
@@ -107,11 +104,12 @@ final class RtYamlInput implements YamlInput {
     public Scalar readLiteralBlockScalar() throws IOException {
         final ReadLiteralBlockScalar read;
         final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
-        if(lines.lines().size() == 0) {
+        final Iterator<YamlLine> iterator = lines.iterator();
+        if(!iterator.hasNext()) {
             read = new ReadLiteralBlockScalar(lines);
         } else {
             read = (ReadLiteralBlockScalar) lines.toYamlNode(
-                lines.iterator().next()
+                iterator.next()
             );
         }
         return read;

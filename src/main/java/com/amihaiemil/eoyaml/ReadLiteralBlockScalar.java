@@ -85,7 +85,9 @@ final class ReadLiteralBlockScalar extends BaseScalar {
             builder.append(line.trimmed());
             builder.append(System.lineSeparator());
         }
-        builder.delete(builder.length()-1, builder.length());
+        if(builder.length() > 0) {
+            builder.delete(builder.length() - 1, builder.length());
+        }
         return builder.toString();
     }
 
