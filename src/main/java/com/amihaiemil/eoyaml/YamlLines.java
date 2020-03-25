@@ -50,8 +50,6 @@ interface YamlLines extends Iterable<YamlLine> {
      * Turn these lines into a YamlNode.
      * @param prev Previous YamlLine
      * @return YamlNode
-     * @todo #107:30min/DEV Add more tests to cover all the nested node
-     *  possibilities.
      */
     YamlNode toYamlNode(final YamlLine prev);
 

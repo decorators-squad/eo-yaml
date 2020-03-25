@@ -88,6 +88,9 @@ final class ReadFoldedBlockScalar extends BaseScalar {
     /**
      * Value of this scalar.
      * @return String
+     * @todo #224:30min This method is not correct. It returns the original
+     *  value of the block scalar, yet it should fold (remove) new-lines.
+     *  Fix this and provide some unit tests to prove the bug is gone.
      */
     public String value() {
         StringBuilder builder = new StringBuilder();

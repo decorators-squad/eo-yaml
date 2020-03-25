@@ -537,6 +537,55 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * RtYamlInput can read a plain scalar.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsPlainScalar() throws Exception {
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput("scalar").readPlainScalar().value(),
+            Matchers.equalTo("scalar")
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput(
+                "---"
+              + System.lineSeparator()
+              + "scalar"
+              + System.lineSeparator()
+              + "..."
+            ).readPlainScalar().value(),
+            Matchers.equalTo("scalar")
+        );
+    }
+
+    /**
+     * RtYamlInput can read a folded block scalar.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    @Ignore
+    public void readsFoldedBlockScalar() throws Exception {
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput(
+                ">" + System.lineSeparator()
+              + "  some folded" + System.lineSeparator()
+              + "  block scalar"
+            ).readFoldedBlockScalar().value(),
+            Matchers.equalTo("some folded block scalar")
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput(
+                "---" + System.lineSeparator()
+              + ">" + System.lineSeparator()
+              + "  some folded" + System.lineSeparator()
+              + "  block scalar" + System.lineSeparator()
+              + "..."
+            ).readFoldedBlockScalar().value(),
+            Matchers.equalTo("some folded block scalar")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
