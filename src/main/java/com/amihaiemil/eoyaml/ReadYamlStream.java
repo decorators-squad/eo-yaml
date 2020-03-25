@@ -37,7 +37,7 @@ import java.util.List;
  * @version $Id$
  * @since 3.1.4
  */
-final class ReadYamlStream extends ComparableYamlStream {
+final class ReadYamlStream extends BaseYamlStream {
 
     /**
      * Read lines of this YAML Stream.

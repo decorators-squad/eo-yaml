@@ -79,7 +79,7 @@ final class RtYamlStreamBuilder implements YamlStreamBuilder {
      * @version $Id$
      * @since 3.1.1
      */
-    static class BuiltYamlStream extends ComparableYamlStream {
+    static class BuiltYamlStream extends BaseYamlStream {
 
         /**
          * Documents as a List.

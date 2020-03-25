@@ -31,17 +31,20 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Comparable YamlStream implementing equals, hashcode and compareTo methods.
+ * Base YamlStream which all implementations should extend.
+ * It implementing toString(), equals, hashcode and compareTo methods.
  * <br><br>
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
- * methods.
- *
+ * methods.<br><br>
+ * This class also offers the package-protected indent(...) method, which
+ * returns the indented value of the stream, used in printing YAML. This
+ * method should NOT be visible to users.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.1.1
+ * @since 4.0.0
  */
-abstract class ComparableYamlStream implements YamlStream {
+abstract class BaseYamlStream implements YamlStream {
 
     @Override
     public int hashCode() {
