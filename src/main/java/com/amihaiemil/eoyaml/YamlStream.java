@@ -49,6 +49,12 @@ import java.util.stream.*;
 public interface YamlStream extends YamlNode, Stream<YamlNode> {
 
     /**
+     * Fetch the values from this stream.
+     * @return Collection of {@link YamlNode}
+     */
+    Collection<YamlNode> values();
+
+    /**
      * Indent this YamlStream. It will take all elements and separate
      * them with "---". It also starts with "---".
      * If the YamlStream is empty, it will just print:

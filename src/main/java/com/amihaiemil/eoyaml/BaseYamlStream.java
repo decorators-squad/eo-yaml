@@ -104,7 +104,7 @@ abstract class BaseYamlStream implements YamlStream {
             result = 1;
         } else if (this != other) {
             final Collection<YamlNode> nodes = this.values();
-            final Collection<YamlNode> others = other.values();
+            final Collection<YamlNode> others = ((YamlStream) other).values();
             if(nodes.size() > others.size()) {
                 result = 1;
             } else if (nodes.size() < others.size()) {

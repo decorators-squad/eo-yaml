@@ -27,9 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 /**
  * Yaml Scalar.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -49,14 +46,6 @@ public interface Scalar extends YamlNode {
      *  supposed to be.
      */
     String value();
-
-    /**
-     * A scalar has no values.
-     * @return Empty collection.
-     */
-    default Collection<YamlNode> values() {
-        return new LinkedList<>();
-    }
 
     /**
      * Indent this scalar.

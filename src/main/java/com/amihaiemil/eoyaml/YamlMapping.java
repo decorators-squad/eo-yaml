@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -104,6 +105,12 @@ public interface YamlMapping extends YamlNode {
      * @return Set of YamlNode keys.
      */
     Set<YamlNode> keys();
+
+    /**
+     * Fetch the values of this mapping.
+     * @return Collection of {@link YamlNode}
+     */
+    Collection<YamlNode> values();
 
     /**
      * Indent this YamlMapping. This is a default method since indentation

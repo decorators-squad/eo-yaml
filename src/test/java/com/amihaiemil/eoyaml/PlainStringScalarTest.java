@@ -54,19 +54,7 @@ public final class PlainStringScalarTest {
         final PlainStringScalar scl = new PlainStringScalar(val);
         MatcherAssert.assertThat(scl.value(), Matchers.equalTo(val));
     }
-
-    /**
-     * A Scalar shouldn't have any values nodes.
-     */
-    @Test
-    public void hasNoValues() {
-        final String val = "test scalar value";
-        final PlainStringScalar scl = new PlainStringScalar(val);
-        MatcherAssert.assertThat(
-            scl.values(), Matchers.emptyIterable()
-        );
-    }
-
+    
     /**
      * Make sure that equals and hash code are reflexive
      * and symmetric.

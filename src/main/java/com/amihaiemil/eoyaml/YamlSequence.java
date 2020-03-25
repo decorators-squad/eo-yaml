@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -47,6 +48,12 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return Integer.
      */
     int size();
+
+    /**
+     * Fetch the values of this sequence.
+     * @return Collection of {@link YamlNode}
+     */
+    Collection<YamlNode> values();
 
     /**
      * Get the Yaml mapping  from the given index.

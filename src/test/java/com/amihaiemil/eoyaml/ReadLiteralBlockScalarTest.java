@@ -45,22 +45,6 @@ import org.junit.Test;
 public final class ReadLiteralBlockScalarTest {
 
     /**
-     * ReadPipeScalar should not have values.
-     */
-    @Test
-    public void hasNoValues() {
-        final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("First Line.", 1));
-        lines.add(new RtYamlLine("Second Line.", 2));
-        lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadLiteralBlockScalar scalar =
-            new ReadLiteralBlockScalar(new AllYamlLines(lines));
-        MatcherAssert.assertThat(
-            scalar.values(), Matchers.emptyIterable()
-        );
-    }
-
-    /**
      * ReadPipeScalar can return the value of input YamlLines.
      */
     @Test

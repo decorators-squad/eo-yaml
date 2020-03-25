@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-
 /**
  * YAML node.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -37,13 +35,6 @@ import java.util.Collection;
  * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
  */
 public interface YamlNode extends Comparable<YamlNode> {
-    
-    /**
-     * Fetch the values.
-     * @return Collection of {@link YamlNode}
-     */
-    Collection<YamlNode> values();
-
 
     /**
      * Print this node with a specified indentation.
