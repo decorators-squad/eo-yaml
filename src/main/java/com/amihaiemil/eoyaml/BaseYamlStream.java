@@ -123,11 +123,6 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
     /**
      * Indent this YamlStream. It will take all elements and separate
      * them with "---". It also starts with "---".
@@ -196,5 +191,14 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
             }
         }
         return printed;
+    }
+
+    /**
+     * When printing a stream just indent it to 0, no need for other wrappers.
+     * @return Printed stream of YAML Documents
+     */
+    @Override
+    public final String toString() {
+        return this.indent(0);
     }
 }
