@@ -120,4 +120,22 @@ public final class PlainStringScalarTest {
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(first.compareTo(seq), Matchers.lessThan(0));
     }
+
+    /**
+     * Method toString should print it as a valid YAML document.
+     */
+    @Test
+    public void toStringPrintsYaml() {
+        final Scalar scalar = new PlainStringScalar("value");
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+            "---"
+                + System.lineSeparator()
+                + "value"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
 }

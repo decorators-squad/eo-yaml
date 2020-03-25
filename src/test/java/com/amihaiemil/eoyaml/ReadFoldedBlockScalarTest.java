@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -209,6 +210,42 @@ public final class ReadFoldedBlockScalarTest {
                 + "      63 Home Runs"
                 + System.lineSeparator()
                 + "    What a year!"
+            )
+        );
+    }
+
+    /**
+     * Method toString should print it as a valid YAML document.
+     * @todo #229:30min Fix method ReadFoldedBlockScalar.indent(...).
+     *  At the moment, it folds the scalar when indenting, but this is
+     *  not correct. Indentation is for printing and when we're printing
+     *  a Folded Scalar, it should be printed as a block. It is only
+     *  method value() that should return the folded version.
+     */
+    @Test
+    @Ignore
+    public void toStringPrintsYaml() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("First Line", 0));
+        lines.add(new RtYamlLine("Second Line", 1));
+        lines.add(new RtYamlLine("Third Line", 2));
+        final Scalar scalar =
+            new ReadFoldedBlockScalar(new AllYamlLines(lines));
+        System.out.print(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+            "---"
+                + System.lineSeparator()
+                + ">"
+                + System.lineSeparator()
+                + "  First Line"
+                + System.lineSeparator()
+                + "  Second Line"
+                + System.lineSeparator()
+                + "  Third Line"
+                + System.lineSeparator()
+                + "..."
             )
         );
     }

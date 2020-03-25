@@ -124,4 +124,53 @@ public final class BuiltBlockScalarTest {
         );
     }
 
+    /**
+     * Method toString should print it as a valid YAML document.
+     */
+    @Test
+    public void toStringPrintsYaml() {
+        final List<String> lines = new ArrayList<>();
+        lines.add("line1");
+        lines.add("line2");
+        lines.add("line3");
+        final Scalar folded = new RtYamlScalarBuilder.BuiltBlockScalar(
+            lines, true
+        );
+        MatcherAssert.assertThat(
+            folded.toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + ">"
+                + System.lineSeparator()
+                + "  line1"
+                + System.lineSeparator()
+                + "  line2"
+                + System.lineSeparator()
+                + "  line3"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        final Scalar literal = new RtYamlScalarBuilder.BuiltBlockScalar(
+            lines, false
+        );
+        MatcherAssert.assertThat(
+            literal.toString(),
+            Matchers.equalTo(
+            "---"
+                + System.lineSeparator()
+                + "|"
+                + System.lineSeparator()
+                + "  line1"
+                + System.lineSeparator()
+                + "  line2"
+                + System.lineSeparator()
+                + "  line3"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
+
 }

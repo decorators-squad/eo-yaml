@@ -144,4 +144,33 @@ public final class ReadLiteralBlockScalarTest {
             )
         );
     }
+
+    /**
+     * Method toString should print it as a valid YAML document.
+     */
+    @Test
+    public void toStringPrintsYaml() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("First Line", 0));
+        lines.add(new RtYamlLine("Second Line", 1));
+        lines.add(new RtYamlLine("Third Line", 2));
+        final Scalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+            "---"
+                + System.lineSeparator()
+                + "|"
+                + System.lineSeparator()
+                + "  First Line"
+                + System.lineSeparator()
+                + "  Second Line"
+                + System.lineSeparator()
+                + "  Third Line"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
 }

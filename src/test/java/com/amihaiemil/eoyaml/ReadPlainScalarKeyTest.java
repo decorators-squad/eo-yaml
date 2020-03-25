@@ -111,4 +111,15 @@ public final class ReadPlainScalarKeyTest {
         scalar.value();
         Assert.fail("IllegalStateException was expected.");
     }
+
+    /**
+     * Unit test for toString.
+     */
+    @Test
+    public void toStringWorks() {
+        final Scalar scalar = new ReadPlainScalarKey(
+            new RtYamlLine("key: value", 0)
+        );
+        MatcherAssert.assertThat(scalar.toString(), Matchers.equalTo("key"));
+    }
 }

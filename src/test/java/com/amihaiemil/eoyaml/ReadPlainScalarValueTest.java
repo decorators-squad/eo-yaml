@@ -82,4 +82,24 @@ public final class ReadPlainScalarValueTest {
         final Scalar scalar = new ReadPlainScalarValue(line);
         MatcherAssert.assertThat(scalar.value(), Matchers.isEmptyString());
     }
+
+    /**
+     * Unit test for toString.
+     */
+    @Test
+    public void toStringWorks() {
+        final Scalar scalar = new ReadPlainScalarValue(
+            new RtYamlLine("key: value", 0)
+        );
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+            "---"
+                + System.lineSeparator()
+                + "value"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
 }

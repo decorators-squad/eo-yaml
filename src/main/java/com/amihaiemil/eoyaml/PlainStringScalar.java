@@ -79,7 +79,7 @@ final class PlainStringScalar extends BaseScalar {
         final StringBuilder string = new StringBuilder();
         string
             .append("---").append(System.lineSeparator())
-            .append(this.indent(0))
+            .append(this.indent(0)).append(System.lineSeparator())
             .append("...");
         return string.toString();
     }
