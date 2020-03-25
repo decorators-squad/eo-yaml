@@ -66,4 +66,9 @@ final class ReadPlainScalarKey extends BaseScalar {
                 + "Instead, the line is: [" + this.line.trimmed() + "]."
         );
     }
+
+    @Override
+    public String toString() {
+        return this.indent(0);
+    }
 }

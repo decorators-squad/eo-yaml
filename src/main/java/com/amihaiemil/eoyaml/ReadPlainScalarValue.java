@@ -87,4 +87,25 @@ final class ReadPlainScalarValue extends BaseScalar {
         }
         return unescaped;
     }
+
+    /**
+     * When printing a plain scalar, we have to wrap it
+     * inside proper YAML elements, otherwise it won't make
+     * sense as a YAML document. It will look like this:
+     * <pre>
+     * ---
+     * scalar
+     * ...
+     * </pre>
+     * @return This scalar as a YAML document.
+     */
+    @Override
+    public String toString() {
+        final StringBuilder string = new StringBuilder();
+        string
+            .append("---").append(System.lineSeparator())
+            .append(this.indent(0))
+            .append("...");
+        return string.toString();
+    }
 }

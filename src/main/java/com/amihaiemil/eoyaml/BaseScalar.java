@@ -100,10 +100,14 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return this.indent(0);
-    }
+    /**
+     * This has to be overridden by all Scalars. When printing a single scalar,
+     * it is not enough to just print its value (this.indent(0)), it has to
+     * be wrapped in a YAML Document, otherwise the print
+     * won't be a valid YAML.
+     * @return String.
+     */
+    public abstract String toString();
 
     /**
      * Indent this scalar. Keep this method package-protected, it should

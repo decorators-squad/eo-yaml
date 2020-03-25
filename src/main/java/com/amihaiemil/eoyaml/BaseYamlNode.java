@@ -38,6 +38,13 @@ abstract class BaseYamlNode implements YamlNode {
 
     /**
      * Print this YAML node with the given indentation.
+     * When implementing this method, make sure to only use
+     * the indent(...) method on children node.
+     *
+     * Never use toString() when indenting. toString() is supposed
+     * to be the final printing method for any YamlNode. E.g. in the
+     * case of Scalars, toString() does more than just indentation.
+     *
      * @param indentation Indentation. Has to be >=0.
      * @throws IllegalStateException If the given indentation is < 0.
      * @return Indented String.

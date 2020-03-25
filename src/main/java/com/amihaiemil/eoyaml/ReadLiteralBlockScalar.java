@@ -87,4 +87,28 @@ final class ReadLiteralBlockScalar extends BaseScalar {
         return builder.toString();
     }
 
+    /**
+     * When printing a literal scalar, we have to wrap it
+     * inside proper YAML elements, otherwise it won't make
+     * sense as a YAML document. It will look like this:
+     * <pre>
+     * ---
+     * |
+     *   line1
+     *   line2
+     *   line3
+     * ...
+     * </pre>
+     * @return This scalar as a YAML document.
+     */
+    @Override
+    public String toString() {
+        final StringBuilder string = new StringBuilder();
+        string.append("---").append(System.lineSeparator())
+            .append("|").append(System.lineSeparator())
+            .append(this.indent(2))
+            .append(System.lineSeparator())
+            .append("...");
+        return string.toString();
+    }
 }
