@@ -70,6 +70,53 @@ final class RtYamlInput implements YamlInput {
         return new ReadYamlStream(this.readInput());
     }
 
+    @Override
+    public Scalar readPlainScalar() throws IOException {
+        final ReadPlainScalarValue read;
+        final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
+        if(lines.lines().size() == 0) {
+            read = new ReadPlainScalarValue(new YamlLine.NullYamlLine());
+        } else if (lines.lines().size() == 1) {
+            read = new ReadPlainScalarValue(lines.iterator().next());
+        } else {
+            throw new IllegalArgumentException(
+                "The provided input should be a plain scalar, "
+              + "on a single line (excluding YAML directives, "
+              + "Start/End Markers etc). Instead, the input "
+              + "has " + lines.lines() + " lines."
+            );
+        }
+        return read;
+    }
+
+    @Override
+    public Scalar readFoldedBlockScalar() throws IOException {
+        final ReadFoldedBlockScalar read;
+        final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
+        if(lines.lines().size() == 0) {
+            read = new ReadFoldedBlockScalar(lines);
+        } else {
+            read = (ReadFoldedBlockScalar) lines.toYamlNode(
+                lines.iterator().next()
+            );
+        }
+        return read;
+    }
+
+    @Override
+    public Scalar readLiteralBlockScalar() throws IOException {
+        final ReadLiteralBlockScalar read;
+        final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
+        if(lines.lines().size() == 0) {
+            read = new ReadLiteralBlockScalar(lines);
+        } else {
+            read = (ReadLiteralBlockScalar) lines.toYamlNode(
+                lines.iterator().next()
+            );
+        }
+        return read;
+    }
+
     /**
      * Read the input's lines.
      * @return All read YamlLines

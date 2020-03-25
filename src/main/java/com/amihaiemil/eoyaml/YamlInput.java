@@ -58,4 +58,45 @@ public interface YamlInput {
      */
     YamlStream readYamlStream() throws IOException;
 
+    /**
+     * Read the given input as a plain scalar. e.g.
+     * <pre>
+     * ---
+     * lonelyScalar
+     * ...
+     * </pre>
+     * @return Read Scalar.
+     * @throws IOException if the input cannot be read for some reason
+     */
+    Scalar readPlainScalar() throws IOException;
+
+    /**
+     * Read the given input as a folded block scalar. e.g.
+     * <pre>
+     * ---
+     * >
+     *   Long scalar which
+     *   has been folded for
+     *   readability
+     * ...
+     * </pre>
+     * @return Read Scalar.
+     * @throws IOException if the input cannot be read for some reason
+     */
+    Scalar readFoldedBlockScalar() throws IOException;
+
+    /**
+     * Read the given input as a literal block scalar. e.g.
+     * <pre>
+     * ---
+     * |
+     *   line1
+     *   line2
+     *   line3
+     * ...
+     * </pre>
+     * @return Read Scalar.
+     * @throws IOException if the input cannot be read for some reason
+     */
+    Scalar readLiteralBlockScalar() throws IOException;
 }

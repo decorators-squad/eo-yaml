@@ -73,7 +73,7 @@ interface YamlLine extends Comparable<YamlLine> {
 
         @Override
         public int number() {
-            return -1;
+            return 0;
         }
 
         @Override
