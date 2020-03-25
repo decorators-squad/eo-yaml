@@ -169,11 +169,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
         return value;
     }
 
-    @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
     /**
      * The YamlNode value associated with a String (scalar) key.
      * @param key String key.

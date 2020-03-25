@@ -109,11 +109,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
-    @Override
     public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new TreeSet<>();
         keys.addAll(this.mappings.keySet());

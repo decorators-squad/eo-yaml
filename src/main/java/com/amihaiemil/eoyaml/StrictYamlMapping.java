@@ -110,11 +110,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String toString() {
-        return this.decorated.toString();
-    }
-
-    @Override
     public Set<YamlNode> keys() {
         return this.decorated.keys();
     }

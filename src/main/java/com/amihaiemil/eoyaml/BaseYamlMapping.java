@@ -204,4 +204,14 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
         }
         return printed;
     }
+
+    /**
+     * When printing a YamlMapping we dimply call this.indent(0), no need
+     * to add other stuff.
+     * @return This printed mapping.
+     */
+    @Override
+    public final String toString() {
+        return this.indent(0);
+    }
 }
