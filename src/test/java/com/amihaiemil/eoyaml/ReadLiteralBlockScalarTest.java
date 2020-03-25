@@ -125,7 +125,7 @@ public final class ReadLiteralBlockScalarTest {
     }
 
     /**
-     * ReadPipeScalar can indent first line.
+     * Indentation works fine.
      */
     @Test
     public void indentsValue() {

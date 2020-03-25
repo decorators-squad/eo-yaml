@@ -59,13 +59,15 @@ final class ReadLiteralBlockScalar extends BaseScalar {
 
     @Override
     String indent(final int indentation) {
+        StringBuilder alignment = new StringBuilder();
+        int spaces = indentation;
+        while (spaces > 0) {
+            alignment.append(" ");
+            spaces--;
+        }
         StringBuilder printed = new StringBuilder();
         for(final YamlLine line: this.lines) {
-            int spaces = indentation;
-            while (spaces > 0) {
-                printed.append(" ");
-                spaces--;
-            }
+            printed.append(alignment);
             printed.append(line.trimmed());
             printed.append(System.lineSeparator());
         }

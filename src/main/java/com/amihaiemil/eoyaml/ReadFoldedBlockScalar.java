@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+
 /**
  * Read Yaml folded block Scalar. This is a Scalar spanning multiple lines.
  * This Scalar's newlines will be ignored ("folded"), the scalar's value
@@ -59,33 +60,20 @@ final class ReadFoldedBlockScalar extends BaseScalar {
 
     @Override
     String indent(final int indentation) {
-        StringBuilder builder = new StringBuilder();
-        final String newLine = System.lineSeparator();
-        for(final YamlLine line: this.lines) {
-            if(line.trimmed().length() == 0 || line.indentation() > 0) {
-                if(this.doNotEndWithNewLine(builder)) {
-                    builder.append(newLine);
-                }
-                int spaces = line.indentation();
-                if(spaces > 0) {
-                    for(int i = 0; i < spaces + indentation; i++) {
-                        builder.append(' ');
-                    }
-                }
-                builder.append(line.trimmed());
-                builder.append(newLine);
-            } else {
-                if(this.doNotEndWithNewLine(builder)) {
-                    builder.append(' ');
-                } else {
-                    for(int i = 0; i < indentation; i++) {
-                        builder.append(' ');
-                    }
-                }
-                builder.append(line.trimmed());
-            }
+        StringBuilder alignment = new StringBuilder();
+        int spaces = indentation;
+        while (spaces > 0) {
+            alignment.append(" ");
+            spaces--;
         }
-        return builder.toString();
+        StringBuilder printed = new StringBuilder();
+        for(final YamlLine line: this.lines) {
+            printed.append(alignment);
+            printed.append(line.trimmed());
+            printed.append(System.lineSeparator());
+        }
+        printed.delete(printed.length()-1, printed.length());
+        return printed.toString();
     }
 
     /**

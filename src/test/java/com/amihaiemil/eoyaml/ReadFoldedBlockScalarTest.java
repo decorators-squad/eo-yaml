@@ -33,7 +33,6 @@ import java.util.LinkedList;
 import java.util.List;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -169,61 +168,32 @@ public final class ReadFoldedBlockScalarTest {
             )
         );
     }
-    /**
-     * ReadPointedScalar can indent a simple folded scalar.
-     */
-    @Test
-    public void indentsFoldedValue() {
-        final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("Mark McGwire's", 1));
-        lines.add(new RtYamlLine("year was crippled", 2));
-        lines.add(new RtYamlLine("by an injury.", 3));
-        final ReadFoldedBlockScalar scalar =
-            new ReadFoldedBlockScalar(new AllYamlLines(lines));
-        MatcherAssert.assertThat(
-            scalar.indent(4),
-            Matchers.is("    Mark McGwire's year was crippled by an injury.")
-        );
-    }
 
     /**
-     * ReadPointedScalar can indent a scalar with
-     * preserved folded newlines and blank lines.
+     * Indentation works fine.
      */
     @Test
-    public void indentsFoldedNewlinesAndBlankLines() {
+    public void indentsValue() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("Sammy Sosa completed another", 1));
-        lines.add(new RtYamlLine("fine season with great stats.", 2));
-        lines.add(new RtYamlLine("", 3));
-        lines.add(new RtYamlLine("  63 Home Runs", 4));
-        lines.add(new RtYamlLine("What a year!", 5));
-        final ReadFoldedBlockScalar scalar =
-            new ReadFoldedBlockScalar(new AllYamlLines(lines));
+        lines.add(new RtYamlLine("First Line.", 1));
+        lines.add(new RtYamlLine("Second Line.", 2));
+        lines.add(new RtYamlLine("Third Line.", 3));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.indent(4),
             Matchers.is(
-                "    Sammy Sosa completed another "
-                + "fine season with great stats."
-                + System.lineSeparator()
-                + System.lineSeparator()
-                + "      63 Home Runs"
-                + System.lineSeparator()
-                + "    What a year!"
+                "    First Line." + System.lineSeparator()
+                    + "    Second Line." + System.lineSeparator()
+                    + "    Third Line."
             )
         );
     }
 
     /**
      * Method toString should print it as a valid YAML document.
-     * @todo #229:30min Fix method ReadFoldedBlockScalar.indent(...).
-     *  At the moment, it folds the scalar when indenting, but this is
-     *  not correct. Indentation is for printing and when we're printing
-     *  a Folded Scalar, it should be printed as a block. It is only
-     *  method value() that should return the folded version.
      */
     @Test
-    @Ignore
     public void toStringPrintsYaml() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("First Line", 0));
