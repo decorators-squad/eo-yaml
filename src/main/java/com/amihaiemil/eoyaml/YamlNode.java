@@ -37,19 +37,7 @@ import java.util.Collection;
  * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
  */
 public interface YamlNode extends Comparable<YamlNode> {
-
-    /**
-     * Fetch the child nodes of this node.
-     * @deprecated Please use method values() instead. It does
-     *  exactly the same thing, it's just a change for a more suitable
-     *  name. This method will be removed in one of the future releases.
-     * @return Collection of {@link YamlNode}
-     */
-    @Deprecated
-    default Collection<YamlNode> children() {
-        return this.values();
-    }
-
+    
     /**
      * Fetch the values.
      * @return Collection of {@link YamlNode}
