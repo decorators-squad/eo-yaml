@@ -154,7 +154,7 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
      *  be nested within a bigger YAML.
      * @return String.
      */
-    String indent(final int indentation) {
+    final String indent(final int indentation) {
         if(indentation < 0) {
             throw new IllegalArgumentException(
                 "Indentation level has to be >=0"

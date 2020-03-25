@@ -151,7 +151,7 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
      *  YamlNodes, this value may be greater than 0.
      * @return String indented YamlMapping, by the specified indentation.
      */
-    String indent(final int indentation) {
+    final String indent(final int indentation) {
         if(indentation < 0) {
             throw new IllegalArgumentException(
                 "Indentation level has to be >=0"
@@ -167,11 +167,12 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
         }
         for(final YamlNode key : this.keys()) {
             print.append(indent);
+            final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
-            if(key instanceof Scalar) {
-                print.append(key.toString()).append(": ");
+            if(indKey instanceof Scalar) {
+                print.append(indKey.indent(0)).append(": ");
                 if (value instanceof Scalar) {
-                    print.append(value.toString()).append(newLine);
+                    print.append(value.indent(0)).append(newLine);
                 } else  {
                     print
                         .append(newLine)
@@ -179,7 +180,6 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
                         .append(newLine);
                 }
             } else {
-                final BaseYamlNode indKey = (BaseYamlNode) key;
                 print
                     .append("?")
                     .append(newLine)
@@ -189,7 +189,7 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
                     .append(":");
                 if(value instanceof Scalar) {
                     print
-                        .append(" ").append(value);
+                        .append(" ").append(value.indent(0));
                 } else {
                     print
                         .append(newLine)

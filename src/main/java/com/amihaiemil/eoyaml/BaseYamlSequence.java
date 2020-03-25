@@ -134,7 +134,7 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
      *  YamlNodes, this value may be greater than 0.
      * @return String indented YamlSequence, by the specified indentation.
      */
-    String indent(final int indentation) {
+    final String indent(final int indentation) {
         if(indentation < 0) {
             throw new IllegalArgumentException(
                 "Indentation level has to be >=0"
@@ -152,8 +152,8 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
             final BaseYamlNode indentable = (BaseYamlNode) node;
             print.append(indent)
                 .append("- ");
-            if (node instanceof Scalar) {
-                print.append(node.toString()).append(newLine);
+            if (indentable instanceof Scalar) {
+                print.append(indentable.indent(0)).append(newLine);
             } else  {
                 print
                     .append(newLine)
