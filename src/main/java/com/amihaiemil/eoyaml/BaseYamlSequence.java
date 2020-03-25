@@ -31,17 +31,20 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Comparable YamlSequence implementing equals, hashcode and compareTo methods.
+ * Base YamlSequence which all implementations should extend.
+ * It implementing toString(), equals, hashcode and compareTo methods.
  * <br><br>
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
- * methods.
- *
+ * methods.<br><br>
+ * This class also offers the package-protected indent(...) method, which
+ * returns the indented value of the sequence, used in printing YAML. This
+ * method should NOT be visible to users.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 4.0.0
  */
-abstract class ComparableYamlSequence implements YamlSequence {
+abstract class BaseYamlSequence implements YamlSequence {
 
     @Override
     public int hashCode() {

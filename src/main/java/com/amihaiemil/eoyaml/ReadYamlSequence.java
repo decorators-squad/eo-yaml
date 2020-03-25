@@ -38,7 +38,7 @@ import java.util.List;
  * @version $Id$
  * @since 1.0.0
  */
-final class ReadYamlSequence extends ComparableYamlSequence {
+final class ReadYamlSequence extends BaseYamlSequence {
 
     /**
      * Lines read.
