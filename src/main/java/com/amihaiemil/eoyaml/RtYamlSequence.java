@@ -98,11 +98,6 @@ final class RtYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
-    @Override
     public int size() {
         return this.nodes.size();
     }

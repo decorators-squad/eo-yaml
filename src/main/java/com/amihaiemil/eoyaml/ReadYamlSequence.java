@@ -73,11 +73,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public String toString() {
-        return this.indent(0);
-    }
-
-    @Override
     public YamlMapping yamlMapping(final int index) {
         YamlMapping mapping = null;
         int count = 0;

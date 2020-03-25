@@ -108,11 +108,6 @@ public final class StrictYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public String toString() {
-        return this.decorated.toString();
-    }
-
-    @Override
     public int size() {
         return this.decorated.size();
     }

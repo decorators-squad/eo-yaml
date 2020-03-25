@@ -168,4 +168,13 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
         return printed;
     }
 
+    /**
+     * When printing a YamlSequence, just call this.indent(0), no need for
+     * other wrappers.
+     * @return This printed YamlSequence.
+     */
+    @Override
+    public final String toString() {
+        return this.indent(0);
+    }
 }
