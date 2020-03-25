@@ -54,7 +54,7 @@ public final class PlainStringScalarTest {
         final PlainStringScalar scl = new PlainStringScalar(val);
         MatcherAssert.assertThat(scl.value(), Matchers.equalTo(val));
     }
-    
+
     /**
      * Make sure that equals and hash code are reflexive
      * and symmetric.

@@ -165,7 +165,7 @@ public final class RtYamlInputTest {
             )
         ).readYamlSequence();
         MatcherAssert.assertThat(
-            actual.indent(0), Matchers.equalTo(expected.indent(0))
+            actual.toString(), Matchers.equalTo(expected.toString())
         );
     }
 

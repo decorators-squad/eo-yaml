@@ -28,10 +28,20 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * YAML node.
+ * Base YAML Node. This is the first class in the hierarchy
+ * for any kind of YAML node.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
+ * @since 4.0.0
  */
-public interface YamlNode extends Comparable<YamlNode> { }
+abstract class BaseYamlNode implements YamlNode {
+
+    /**
+     * Print this YAML node with the given indentation.
+     * @param indentation Indentation. Has to be >=0.
+     * @throws IllegalStateException If the given indentation is < 0.
+     * @return Indented String.
+     */
+    abstract String indent(final int indentation);
+
+}

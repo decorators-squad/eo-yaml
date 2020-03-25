@@ -45,7 +45,7 @@ import java.util.Set;
  * @version $Id$
  * @since 4.0.0
  */
-abstract class BaseYamlMapping implements YamlMapping {
+abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
 
     @Override
     public int hashCode() {
@@ -136,4 +136,72 @@ abstract class BaseYamlMapping implements YamlMapping {
         return result;
     }
 
+    /**
+     * Indent this YamlMapping. This is a base method since indentation
+     * logic should be identical for any kind of YamlMapping, regardless of
+     * its implementation.
+     *
+     * Keep this method package-protected, it should NOT be visible to users.
+     *
+     * @todo #227:30min Modify this method in order to properly indent Scalar
+     *  nodes. They are of multiple types (plain, folded, literal) and their
+     *  indentation differs. Don't forget to add unit tests.
+     * @param indentation Indentation to start with. Usually, it's 0, since we
+     *  don't want to have spaces at the beginning. But in the case of nested
+     *  YamlNodes, this value may be greater than 0.
+     * @return String indented YamlMapping, by the specified indentation.
+     */
+    String indent(final int indentation) {
+        if(indentation < 0) {
+            throw new IllegalArgumentException(
+                "Indentation level has to be >=0"
+            );
+        }
+        final String newLine = System.lineSeparator();
+        final StringBuilder print = new StringBuilder();
+        int spaces = indentation;
+        final StringBuilder indent = new StringBuilder();
+        while (spaces > 0) {
+            indent.append(" ");
+            spaces--;
+        }
+        for(final YamlNode key : this.keys()) {
+            print.append(indent);
+            final BaseYamlNode value = (BaseYamlNode) this.value(key);
+            if(key instanceof Scalar) {
+                print.append(key.toString()).append(": ");
+                if (value instanceof Scalar) {
+                    print.append(value.toString()).append(newLine);
+                } else  {
+                    print
+                        .append(newLine)
+                        .append(value.indent(indentation + 2))
+                        .append(newLine);
+                }
+            } else {
+                final BaseYamlNode indKey = (BaseYamlNode) key;
+                print
+                    .append("?")
+                    .append(newLine)
+                    .append(indKey.indent(indentation + 2))
+                    .append(newLine)
+                    .append(indent)
+                    .append(":");
+                if(value instanceof Scalar) {
+                    print
+                        .append(" ").append(value);
+                } else {
+                    print
+                        .append(newLine)
+                        .append(value.indent(indentation + 2));
+                }
+                print.append(newLine);
+            }
+        }
+        String printed = print.toString();
+        if(printed.length() > 0) {
+            printed = printed.substring(0, printed.length() - 1);
+        }
+        return printed;
+    }
 }

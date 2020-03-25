@@ -60,7 +60,7 @@ public final class BuiltBlockScalarTest {
             lines, true
         );
         MatcherAssert.assertThat(
-            folded.indent(2),
+            ((BaseYamlNode) folded).indent(2),
             Matchers.equalTo(
                 "  line1"
                 + System.lineSeparator()
@@ -73,7 +73,7 @@ public final class BuiltBlockScalarTest {
             lines, false
         );
         MatcherAssert.assertThat(
-            literal.indent(2),
+            ((BaseYamlNode) literal).indent(2),
             Matchers.equalTo(
                 "  line1"
                 + System.lineSeparator()
@@ -100,7 +100,7 @@ public final class BuiltBlockScalarTest {
             lines, true
         );
         MatcherAssert.assertThat(
-            folded.indent(2),
+            ((BaseYamlNode) folded).indent(2),
             Matchers.equalTo(
                 "  line1"
                     + System.lineSeparator()
@@ -113,7 +113,7 @@ public final class BuiltBlockScalarTest {
             lines, false
         );
         MatcherAssert.assertThat(
-            literal.indent(2),
+            ((BaseYamlNode) literal).indent(2),
             Matchers.equalTo(
                 "  line1"
                     + System.lineSeparator()

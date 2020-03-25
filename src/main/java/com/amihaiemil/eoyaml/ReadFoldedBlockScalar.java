@@ -58,7 +58,7 @@ final class ReadFoldedBlockScalar extends BaseScalar {
     }
 
     @Override
-    public String indent(final int indentation) {
+    String indent(final int indentation) {
         StringBuilder builder = new StringBuilder();
         final String newLine = System.lineSeparator();
         for(final YamlLine line: this.lines) {

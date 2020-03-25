@@ -113,68 +113,6 @@ public interface YamlMapping extends YamlNode {
     Collection<YamlNode> values();
 
     /**
-     * Indent this YamlMapping. This is a default method since indentation
-     * logic should be identical for any kind of YamlMapping, regardless of
-     * its implementation.
-     * @todo #227:30min Modify this method in order to properly indent Scalar
-     *  nodes. They are of multiple types (plain, folded, literal) and their
-     *  indentation differs. Don't forget to add unit tests.
-     * @param indentation Indentation to start with. Usually, it's 0, since we
-     *  don't want to have spaces at the beginning. But in the case of nested
-     *  YamlNodes, this value may be greater than 0.
-     * @return String indented YamlMapping, by the specified indentation.
-     */
-    default String indent(final int indentation) {
-        if(indentation < 0) {
-            throw new IllegalArgumentException(
-                "Indentation level has to be >=0"
-            );
-        }
-        final String newLine = System.lineSeparator();
-        final StringBuilder print = new StringBuilder();
-        int spaces = indentation;
-        final StringBuilder indent = new StringBuilder();
-        while (spaces > 0) {
-            indent.append(" ");
-            spaces--;
-        }
-        for(final YamlNode key : this.keys()) {
-            print.append(indent);
-            final YamlNode value = this.value(key);
-            if(key instanceof Scalar) {
-                print.append(key.toString()).append(": ");
-                if (value instanceof Scalar) {
-                    print.append(value.toString()).append(newLine);
-                } else  {
-                    print
-                        .append(newLine)
-                        .append(value.indent(indentation + 2))
-                        .append(newLine);
-                }
-            } else {
-                print
-                    .append("?").append(newLine)
-                    .append(key.indent(indentation + 2)).append(newLine)
-                    .append(indent).append(":");
-                if(value instanceof Scalar) {
-                    print
-                        .append(" ").append(value);
-                } else {
-                    print
-                        .append(newLine)
-                        .append(value.indent(indentation + 2));
-                }
-                print.append(newLine);
-            }
-        }
-        String printed = print.toString();
-        if(printed.length() > 0) {
-            printed = printed.substring(0, printed.length() - 1);
-        }
-        return printed;
-    }
-
-    /**
      * Convenience method to directly read an integer value
      * from this map. It is equivalent to:
      * <pre>

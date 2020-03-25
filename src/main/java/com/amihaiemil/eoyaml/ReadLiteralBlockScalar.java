@@ -58,7 +58,7 @@ final class ReadLiteralBlockScalar extends BaseScalar {
     }
 
     @Override
-    public String indent(final int indentation) {
+    String indent(final int indentation) {
         StringBuilder printed = new StringBuilder();
         for(final YamlLine line: this.lines) {
             int spaces = indentation;

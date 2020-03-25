@@ -46,19 +46,4 @@ public interface Scalar extends YamlNode {
      *  supposed to be.
      */
     String value();
-
-    /**
-     * Indent this scalar.
-     * @param indentation Number of preceding spaces of each line.
-     * @return Indented Scalar.
-     */
-    default String indent(final int indentation) {
-        int spaces = indentation;
-        StringBuilder printed = new StringBuilder();
-        while (spaces > 0) {
-            printed.append(" ");
-            spaces--;
-        }
-        return printed.append(this.value()).toString();
-    }
 }

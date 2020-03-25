@@ -115,11 +115,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String indent(final int indentation) {
-        return this.decorated.indent(indentation);
-    }
-
-    @Override
     public Set<YamlNode> keys() {
         return this.decorated.keys();
     }

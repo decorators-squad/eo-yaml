@@ -46,7 +46,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 4.0.0
  */
-abstract class BaseScalar implements Scalar {
+abstract class BaseScalar extends BaseYamlNode implements Scalar {
 
     /**
      * Equality of two objects.
@@ -103,5 +103,21 @@ abstract class BaseScalar implements Scalar {
     @Override
     public String toString() {
         return this.indent(0);
+    }
+
+    /**
+     * Indent this scalar. Keep this method package-protected, it should
+     * NOT be visible to users.
+     * @param indentation Number of preceding spaces of each line.
+     * @return Indented Scalar.
+     */
+    String indent(final int indentation) {
+        int spaces = indentation;
+        StringBuilder printed = new StringBuilder();
+        while (spaces > 0) {
+            printed.append(" ");
+            spaces--;
+        }
+        return printed.append(this.value()).toString();
     }
 }

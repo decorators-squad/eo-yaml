@@ -135,7 +135,8 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          * @param indentation Number of preceding spaces of each line.
          * @return Indented Scalar.
          */
-        public String indent(final int indentation) {
+        @Override
+        String indent(final int indentation) {
             int spaces = indentation;
             StringBuilder print = new StringBuilder();
             StringBuilder alignment = new StringBuilder();
