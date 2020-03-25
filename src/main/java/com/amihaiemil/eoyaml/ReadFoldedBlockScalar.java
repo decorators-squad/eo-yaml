@@ -42,7 +42,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 1.0.2
  */
-final class ReadFoldedBlockScalar extends ComparableScalar {
+final class ReadFoldedBlockScalar extends BaseScalar {
 
     /**
      * Lines to be represented as a wrapped scalar.

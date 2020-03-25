@@ -39,7 +39,7 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#scalar//
  */
-final class PlainStringScalar extends ComparableScalar {
+final class PlainStringScalar extends BaseScalar {
 
     /**
      * This scalar's value.

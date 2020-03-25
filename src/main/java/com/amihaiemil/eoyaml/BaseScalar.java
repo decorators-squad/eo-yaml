@@ -28,11 +28,14 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * Comparable Yaml Scalar implementing equals, hashcode and compareTo methods.
+ * Base Yaml Scalar implementing equals, hashcode and compareTo methods.
  * <br><br>
- * These methods should be default methods on the interface,
+ * These methods three should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
- * methods.
+ * methods.<br><br>
+ * This class also offers the package-protected indent(...) method, which
+ * returns the indented value of the Scalar, used in printing YAML. This
+ * method should NOT be visible to users.
  * @todo #227:30min Override the toString() method in each concrete type of
  *  Scalar to print it in context. At the moment calling toString() on a
  *  Scalar doesn't print a valid YAML. The printed YAML should contain a
@@ -40,9 +43,9 @@ package com.amihaiemil.eoyaml;
  *  Marker.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.1.3
+ * @since 4.0.0
  */
-abstract class ComparableScalar implements Scalar {
+abstract class BaseScalar implements Scalar {
 
     /**
      * Equality of two objects.

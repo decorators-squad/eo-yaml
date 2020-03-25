@@ -92,7 +92,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
      * @version $Id$
      * @since 4.0.0
      */
-    static class BuiltBlockScalar extends ComparableScalar {
+    static class BuiltBlockScalar extends BaseScalar {
 
         /**
          * Lines of this scalar.

@@ -33,7 +33,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 3.1.3
  */
-final class ReadPlainScalarValue extends ComparableScalar {
+final class ReadPlainScalarValue extends BaseScalar {
 
     /**
      * Line where the plain scalar value is supposed to be found.
