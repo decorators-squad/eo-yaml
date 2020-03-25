@@ -37,11 +37,6 @@ package com.amihaiemil.eoyaml;
  * This class also offers the package-protected indent(...) method, which
  * returns the indented value of the Scalar, used in printing YAML. This
  * method should NOT be visible to users.
- * @todo #227:30min Override the toString() method in each concrete type of
- *  Scalar to print it in context. At the moment calling toString() on a
- *  Scalar doesn't print a valid YAML. The printed YAML should contain a
- *  Start Marker, followed by the proper scalar mark and finally the End
- *  Marker.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
