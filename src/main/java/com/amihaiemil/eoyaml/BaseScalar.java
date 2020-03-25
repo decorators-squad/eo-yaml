@@ -28,9 +28,10 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * Base Yaml Scalar implementing equals, hashcode and compareTo methods.
+ * Base Yaml Scalar which all implementations of Scalar should extend.
+ * It implementing toString(), equals, hashcode and compareTo methods.
  * <br><br>
- * These methods three should be default methods on the interface,
+ * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
  * methods.<br><br>
  * This class also offers the package-protected indent(...) method, which

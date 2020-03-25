@@ -36,7 +36,7 @@ import java.util.*;
  * @since 1.0.0
  * @see http://yaml.org/spec/1.2/spec.html#mapping//
  */
-final class RtYamlMapping extends ComparableYamlMapping {
+final class RtYamlMapping extends BaseYamlMapping {
 
     /**
      * Key:value tree map (ordered keys).

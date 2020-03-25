@@ -30,18 +30,22 @@ package com.amihaiemil.eoyaml;
 import java.util.Iterator;
 import java.util.Set;
 
+
 /**
- * Comparable YamlMapping implementing equals, hashcode and compareTo methods.
+ * Base YamlMapping which all implementations of YamlMapping should extend.
+ * It implementing toString(), equals, hashcode and compareTo methods.
  * <br><br>
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
- * methods.
- *
+ * methods.<br><br>
+ * This class also offers the package-protected indent(...) method, which
+ * returns the indented value of the mapping, used in printing YAML. This
+ * method should NOT be visible to users.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 4.0.0
  */
-abstract class ComparableYamlMapping implements YamlMapping {
+abstract class BaseYamlMapping implements YamlMapping {
 
     @Override
     public int hashCode() {
@@ -99,7 +103,7 @@ abstract class ComparableYamlMapping implements YamlMapping {
         if (other == null || !(other instanceof YamlMapping)) {
             result = 1;
         } else if (this != other) {
-            final ComparableYamlMapping map = (ComparableYamlMapping) other;
+            final BaseYamlMapping map = (BaseYamlMapping) other;
             final Set<YamlNode> keys = this.keys();
             final Set<YamlNode> otherKeys = map.keys();
             if(keys.size() > otherKeys.size()) {

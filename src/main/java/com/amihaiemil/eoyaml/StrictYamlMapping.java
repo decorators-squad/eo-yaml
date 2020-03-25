@@ -41,7 +41,7 @@ import java.util.Set;
  * @version $Id$
  * @since 1.0.0
  */
-public final class StrictYamlMapping extends ComparableYamlMapping {
+public final class StrictYamlMapping extends BaseYamlMapping {
 
     /**
      * Original YamlMapping.

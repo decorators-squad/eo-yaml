@@ -37,7 +37,7 @@ import java.util.*;
  * @version $Id$
  * @since 1.0.0
  */
-final class ReadYamlMapping extends ComparableYamlMapping {
+final class ReadYamlMapping extends BaseYamlMapping {
 
     /**
      * Lines read.
