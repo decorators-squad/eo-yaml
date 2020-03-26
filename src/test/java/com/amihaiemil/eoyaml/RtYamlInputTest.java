@@ -563,13 +563,12 @@ public final class RtYamlInputTest {
      * @throws Exception If something goes wrong.
      */
     @Test
-    @Ignore
     public void readsFoldedBlockScalar() throws Exception {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 ">" + System.lineSeparator()
-              + "  some folded" + System.lineSeparator()
-              + "  block scalar"
+              + "some folded" + System.lineSeparator()
+              + "block scalar"
             ).readFoldedBlockScalar().value(),
             Matchers.equalTo("some folded block scalar")
         );
@@ -577,11 +576,37 @@ public final class RtYamlInputTest {
             Yaml.createYamlInput(
                 "---" + System.lineSeparator()
               + ">" + System.lineSeparator()
-              + "  some folded" + System.lineSeparator()
-              + "  block scalar" + System.lineSeparator()
+              + "some folded" + System.lineSeparator()
+              + "block scalar" + System.lineSeparator()
               + "..."
             ).readFoldedBlockScalar().value(),
             Matchers.equalTo("some folded block scalar")
+        );
+    }
+
+    /**
+     * RtYamlInput can read a folded block scalar.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsLiteralBlockScalar() throws Exception {
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput(
+                "|" + System.lineSeparator()
+              + "line1" + System.lineSeparator()
+              + "line2"
+            ).readLiteralBlockScalar().value(),
+            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+        );
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput(
+                "---" + System.lineSeparator()
+              + "|" + System.lineSeparator()
+              + "line1" + System.lineSeparator()
+              + "line2" + System.lineSeparator()
+              + "..."
+            ).readLiteralBlockScalar().value(),
+            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
         );
     }
 

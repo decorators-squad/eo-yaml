@@ -114,6 +114,15 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
             this.folded = folded;
         }
 
+        /**
+         * Return the value of this block scalar.
+         * @todo #224:30min This method is not correct in the case of folded
+         *  scalar. When returning the value we should indeed fold the
+         *  new lines, with the exception that we should preserve
+         *  the blank lines and new lines of more inner indented lines.
+         *  See how ReadFoldedBlockScalar.value() is implemented.
+         * @return String value.
+         */
         @Override
         public String value() {
             final String value;

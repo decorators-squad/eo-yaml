@@ -87,32 +87,24 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public Scalar readFoldedBlockScalar() throws IOException {
-        final ReadFoldedBlockScalar read;
-        final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
-        final Iterator<YamlLine> iterator = lines.iterator();
-        if(!iterator.hasNext()) {
-            read = new ReadFoldedBlockScalar(lines);
-        } else {
-            read = (ReadFoldedBlockScalar) lines.toYamlNode(
-                iterator.next()
-            );
-        }
-        return read;
+        return new ReadFoldedBlockScalar(
+            new NoScalarMarkers(
+                new NoDirectivesOrMarkers(
+                    this.readInput()
+                )
+            )
+        );
     }
 
     @Override
     public Scalar readLiteralBlockScalar() throws IOException {
-        final ReadLiteralBlockScalar read;
-        final YamlLines lines = new NoDirectivesOrMarkers(this.readInput());
-        final Iterator<YamlLine> iterator = lines.iterator();
-        if(!iterator.hasNext()) {
-            read = new ReadLiteralBlockScalar(lines);
-        } else {
-            read = (ReadLiteralBlockScalar) lines.toYamlNode(
-                iterator.next()
-            );
-        }
-        return read;
+        return new ReadLiteralBlockScalar(
+            new NoScalarMarkers(
+                new NoDirectivesOrMarkers(
+                    this.readInput()
+                )
+            )
+        );
     }
 
     /**
