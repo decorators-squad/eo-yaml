@@ -40,7 +40,7 @@ import java.util.List;
  * to ignore these markers as they are not part of the scalar itself.
  * This class can be used as follows:
  * <pre>
- *   YamlLines noDirs = new NoScalarMarkers(
+ *   YamlLines noScalarMarkers = new NoScalarMarkers(
  *     new AllYamlLines(lines)
  *   );
  * </pre>
@@ -65,7 +65,7 @@ final class NoScalarMarkers implements YamlLines {
 
     /**
      * Returns an iterator over these Yaml lines.
-     * It ignores the lines containing YAML Directives.
+     * It ignores the Scalar start markers ('>', '|' etc).
      * @return Iterator over these yaml lines.
      */
     @Override
