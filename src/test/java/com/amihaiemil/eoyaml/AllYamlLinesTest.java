@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -268,7 +269,7 @@ public final class AllYamlLinesTest {
         try {
             yamlLines.toYamlNode(new RtYamlLine("---", -1));
             Assert.fail("Expected IllegalStateException!");
-        } catch (final IllegalStateException ex) {
+        } catch (final YamlReadingException ex) {
             final String message = ex.getMessage();
             MatcherAssert.assertThat(
                 message,

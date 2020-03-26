@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -103,7 +104,7 @@ final class WellIndented implements YamlLines {
                 int lineIndent = line.indentation();
                 if(previous.requireNestedIndentation()) {
                     if(lineIndent != prevIndent+2) {
-                        throw new IllegalStateException(
+                        throw new YamlIndentationException(
                             "Indentation of line " + (line.number() + 1)
                              + " is not ok. It should be greater than the one"
                              + " of line " + (previous.number() + 1)
@@ -112,7 +113,7 @@ final class WellIndented implements YamlLines {
                     }
                 } else {
                     if(!"---".equals(previous.trimmed()) && lineIndent > prevIndent) {
-                        throw new IllegalStateException(
+                        throw new YamlIndentationException(
                             "Indentation of line " + (line.number() +1) + " is "
                             + "greater than the one of line "
                             + (previous.number() + 1) + ". "

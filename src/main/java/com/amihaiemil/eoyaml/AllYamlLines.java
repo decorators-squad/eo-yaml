@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -130,7 +131,7 @@ final class AllYamlLines implements YamlLines {
         } else if(this.lines().size() == 1) {
             node = new ReadPlainScalarValue(first);
         } else {
-            throw new IllegalStateException(
+            throw new YamlReadingException(
                 "Could not parse YAML starting at line " + (first.number() + 1)
               + " . It should be a sequence (line should start with '-'), "
               + "a mapping (line should contain ':') or it should be a plain "

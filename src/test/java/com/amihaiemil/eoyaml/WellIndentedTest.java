@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -98,7 +99,7 @@ public final class WellIndentedTest {
     /**
      * WellIndented complains on badly indented nested mapping.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = YamlIndentationException.class)
     public void complainsOnBadlyIndentedNestedMapping() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
@@ -111,13 +112,13 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(5)
         );
-        Assert.fail("IllegalStateException was expected!");
+        Assert.fail("YamlIndentationException was expected!");
     }
     
     /**
      * WellIndented complains on badly indented nested sequence.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = YamlIndentationException.class)
     public void complainsOnBadlyIndentedNestedSequence() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
@@ -130,13 +131,13 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(5)
         );
-        Assert.fail("IllegalStateException was expected!");
+        Assert.fail("YamlIndentationException was expected!");
     }
     
     /**
      * WellIndented complains on badly indented sequence.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = YamlIndentationException.class)
     public void complainsOnBadlyIndentedSequence() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("- first", 0));
@@ -147,13 +148,13 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(3)
         );
-        Assert.fail("IllegalStateException was expected!");
+        Assert.fail("YamlIndentationException was expected!");
     }
     
     /**
      * WellIndented complains on badly indented mapping.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = YamlIndentationException.class)
     public void complainsOnBadlyIndentedMapping() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
@@ -164,6 +165,6 @@ public final class WellIndentedTest {
             wiLines,
             Matchers.iterableWithSize(3)
         );
-        Assert.fail("IllegalStateException was expected!");
+        Assert.fail("YamlIndentationException was expected!");
     }
 }
