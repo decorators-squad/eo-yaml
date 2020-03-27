@@ -35,10 +35,17 @@ package com.amihaiemil.eoyaml.exceptions;
  */
 public final class YamlIndentationException extends RuntimeException {
 
+    /**
+     * Constructor without parameters.
+    */
     public YamlIndentationException() {
         this("Indentation is not ok.");
     }
 
+    /**
+     * Constructor with parameters.
+     * @param message Exception message.
+     */
     public YamlIndentationException(final String message) {
         super(message);
     }

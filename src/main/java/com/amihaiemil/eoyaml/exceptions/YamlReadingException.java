@@ -34,12 +34,18 @@ package com.amihaiemil.eoyaml.exceptions;
  * @since 3.1.5
  */
 public final class YamlReadingException extends RuntimeException {
-
-    
+ 
+    /**
+     * Constructor without parameters.
+    */
     public YamlReadingException() {
         this("Something went wrong while reading YAML.");
     }
 
+    /**
+     * Constructor with parameters.
+     * @param message Exception message.
+    */
     public YamlReadingException(final String message) {
         super(message);
     }
