@@ -247,7 +247,7 @@ public final class AllYamlLinesTest {
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
             yamlLines.toYamlNode(new RtYamlLine("---", 0)),
-            Matchers.instanceOf(ReadPlainScalarValue.class)
+            Matchers.instanceOf(ReadPlainScalar.class)
         );
     }
 

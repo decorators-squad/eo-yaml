@@ -145,7 +145,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                         break;
                     }
                     if(trimmed.startsWith(":")) {
-                        value = new ReadPlainScalarValue(line).value();
+                        value = new ReadPlainScalar(line).value();
                         break;
                     }
                 }
@@ -163,7 +163,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 continue;
             }
             if(trimmed.startsWith(key + ":")) {
-                value = new ReadPlainScalarValue(line).value();
+                value = new ReadPlainScalar(line).value();
             }
         }
         return value;

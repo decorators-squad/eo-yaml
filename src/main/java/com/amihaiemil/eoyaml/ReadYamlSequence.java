@@ -66,7 +66,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
             if("-".equals(line.trimmed())) {
                 kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
-                kids.add(new ReadPlainScalarValue(line));
+                kids.add(new ReadPlainScalar(line));
             }
         }
         return kids;

@@ -40,46 +40,46 @@ import org.junit.Test;
 public final class ReadPlainScalarValueTest {
 
     /**
-     * ReadPlainScalarValue can return the scalar's value from a mapping line.
+     * ReadPlainScalar can return the scalar's value from a mapping line.
      */
     @Test
     public void returnsValueFromMappingLine() {
-        final Scalar scalar = new ReadPlainScalarValue(
+        final Scalar scalar = new ReadPlainScalar(
             new RtYamlLine("key: value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
     }
 
     /**
-     * ReadPlainScalarValue can return the scalar's value from a sequence line.
+     * ReadPlainScalar can return the scalar's value from a sequence line.
      */
     @Test
     public void returnsValueFromSequenceLine() {
-        final Scalar scalar = new ReadPlainScalarValue(
+        final Scalar scalar = new ReadPlainScalar(
             new RtYamlLine("- value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
     }
 
     /**
-     * ReadPlainScalarValue will return the plain scalar.
+     * ReadPlainScalar will return the plain scalar.
      */
     @Test
     public void returnsPlainScalar() {
         final YamlLine line = new RtYamlLine("value", 0);
-        final Scalar scalar = new ReadPlainScalarValue(line);
+        final Scalar scalar = new ReadPlainScalar(line);
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
     }
 
     /**
-     * ReadPlainScalarValue will return empty string if the line is empty.
+     * ReadPlainScalar will return empty string if the line is empty.
      * Should never be the case in real practice, however, because empty
      * lines are omitted when read.
      */
     @Test
     public void returnsEmptyScalar() {
         final YamlLine line = new RtYamlLine("", 0);
-        final Scalar scalar = new ReadPlainScalarValue(line);
+        final Scalar scalar = new ReadPlainScalar(line);
         MatcherAssert.assertThat(scalar.value(), Matchers.isEmptyString());
     }
 
@@ -88,7 +88,7 @@ public final class ReadPlainScalarValueTest {
      */
     @Test
     public void toStringWorks() {
-        final Scalar scalar = new ReadPlainScalarValue(
+        final Scalar scalar = new ReadPlainScalar(
             new RtYamlLine("key: value", 0)
         );
         MatcherAssert.assertThat(
