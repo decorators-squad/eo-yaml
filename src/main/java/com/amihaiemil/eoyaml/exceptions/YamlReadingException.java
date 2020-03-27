@@ -37,7 +37,7 @@ final public class YamlReadingException extends RuntimeException {
 
     
     public YamlReadingException() {
-        this("");
+        this("Something went wrong while reading YAML.");
     }
 
     public YamlReadingException(final String message) {

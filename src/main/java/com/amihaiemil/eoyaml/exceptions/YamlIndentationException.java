@@ -36,7 +36,7 @@ package com.amihaiemil.eoyaml.exceptions;
 final public class YamlIndentationException extends RuntimeException {
 
     public YamlIndentationException() {
-        this("");
+        this("Indentation is not ok.");
     }
 
     public YamlIndentationException(final String message) {
