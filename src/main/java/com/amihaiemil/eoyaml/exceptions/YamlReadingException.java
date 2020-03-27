@@ -33,7 +33,7 @@ package com.amihaiemil.eoyaml.exceptions;
  * @version $Id$
  * @since 3.1.5
  */
-final public class YamlReadingException extends RuntimeException {
+public final class YamlReadingException extends RuntimeException {
 
     
     public YamlReadingException() {
