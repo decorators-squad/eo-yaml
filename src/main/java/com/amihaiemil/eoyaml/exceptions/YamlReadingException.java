@@ -47,6 +47,6 @@ public final class YamlReadingException extends RuntimeException {
      * @param message Exception message.
     */
     public YamlReadingException(final String message) {
-        super(message);
+        super(message); 
     }
 }
