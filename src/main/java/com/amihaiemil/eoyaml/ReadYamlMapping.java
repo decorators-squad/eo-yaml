@@ -119,11 +119,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final String key) {
-        return this.string(new PlainStringScalar(key));
-    }
-
-    @Override
     public String string(final YamlNode key) {
         String value = null;
         if(key instanceof Scalar) {

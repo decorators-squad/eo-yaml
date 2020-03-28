@@ -89,11 +89,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final String key) {
-        return this.string(new PlainStringScalar(key));
-    }
-
-    @Override
     public String string(final YamlNode key) {
         String found = this.decorated.string(key);
         if (found == null) {

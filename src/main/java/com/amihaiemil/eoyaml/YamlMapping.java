@@ -98,7 +98,9 @@ public interface YamlMapping extends YamlNode {
      * @return String or null if the key is missing, or not pointing
      *  to a scalar.
      */
-    String string(final String key);
+    default String string(final String key) {
+        return this.string(new PlainStringScalar(key));
+    }
 
     /**
      * Get the String associated with the given key.

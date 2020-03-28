@@ -84,11 +84,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final String key) {
-        return this.string(new PlainStringScalar(key));
-    }
-
-    @Override
     public String string(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final String found;
