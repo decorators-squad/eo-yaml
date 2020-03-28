@@ -28,6 +28,8 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hamcrest.MatcherAssert;
@@ -135,6 +137,42 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(
             sequence.foldedBlockScalar(2),
             Matchers.equalTo("first second")
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return the folded block scalar as a collection of
+     * string lines from a given index.
+     */
+    @Test
+    public void returnsLiteralBlockScalarFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- rultor", 0));
+        lines.add(new RtYamlLine("- 0pdd", 1));
+        lines.add(new RtYamlLine("- |", 2));
+        lines.add(new RtYamlLine("  first", 3));
+        lines.add(new RtYamlLine("  second", 4));
+        lines.add(new RtYamlLine("- another", 5));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final Collection<String> literalLines = sequence.literalBlockScalar(2);
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("first")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("second")
+        );
+        MatcherAssert.assertThat(
+            sequence.yamlMapping(2), Matchers.nullValue()
         );
     }
 

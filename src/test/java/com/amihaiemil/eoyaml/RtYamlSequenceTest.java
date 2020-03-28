@@ -144,6 +144,41 @@ public final class RtYamlSequenceTest {
     }
 
     /**
+     * RtYamlSequence can return a literal block Scalar as a
+     * Collection of string lines.
+     */
+    @Test
+    public void returnsLiteralBlockScalar() {
+        final List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new PlainStringScalar("test"));
+        nodes.add(
+            new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
+                Arrays.asList("first", "second")
+            )
+        );
+        nodes.add(new PlainStringScalar("mihai"));
+        final YamlSequence seq = new RtYamlSequence(nodes);
+        final Collection<String> literalLines = seq.literalBlockScalar(1);
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("first")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("second")
+        );
+
+        MatcherAssert.assertThat(
+            seq.yamlMapping(1), Matchers.nullValue()
+        );
+    }
+
+    /**
      * RtYamlSequence can return a YamlMapping.
      */
     @Test

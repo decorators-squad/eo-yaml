@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * YamlSequence read from somewhere.
@@ -123,6 +120,23 @@ final class ReadYamlSequence extends BaseYamlSequence {
         for (final YamlNode node : this.values()) {
             if(count == index && (node instanceof ReadFoldedBlockScalar)) {
                 value = ((Scalar) node).value();
+                break;
+            }
+            count++;
+        }
+        return value;
+    }
+
+    @Override
+    public Collection<String> literalBlockScalar(final int index) {
+        Collection<String> value = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if(count == index && (node instanceof ReadLiteralBlockScalar)) {
+                value = Arrays.asList(
+                    ((ReadLiteralBlockScalar) node)
+                        .value().split(System.lineSeparator())
+                );
                 break;
             }
             count++;

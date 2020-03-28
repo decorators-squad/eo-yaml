@@ -32,6 +32,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -126,6 +127,18 @@ public final class StrictYamlSequenceTest {
     }
 
     /**
+     * StringYamlSequence can throw YamlNodeNotFoundException
+     * when the demanded literal block scalar is not found.
+     */
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullLiteralBlockScalarString() {
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        Mockito.when(origin.literalBlockScalar(1)).thenReturn(null);
+        YamlSequence strict = new StrictYamlSequence(origin);
+        strict.literalBlockScalar(1);
+    }
+
+    /**
      * StrictYamlSequence can return the number of elements in a sequence.
      */
     @Test
@@ -195,6 +208,22 @@ public final class StrictYamlSequenceTest {
         YamlSequence strict = new StrictYamlSequence(origin);
         MatcherAssert.assertThat(
             strict.foldedBlockScalar(1), Matchers.equalTo("found")
+        );
+    }
+
+    /**
+     * StringYamlSequence can fetch a literal block scalar
+     * as String based in its index.
+     */
+    @Test
+    public void returnsLiteralBlockScalar() {
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        Collection<String> lines = Mockito.mock(Collection.class);
+        Mockito.when(origin.literalBlockScalar(1)).thenReturn(lines);
+        YamlSequence strict = new StrictYamlSequence(origin);
+        MatcherAssert.assertThat(
+            strict.literalBlockScalar(1),
+            Matchers.is(lines)
         );
     }
 

@@ -101,14 +101,14 @@ public final class StrictYamlSequence extends BaseYamlSequence {
         String found = this.decorated.string(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
-                "No String found for index " + index
+                "No String found at index " + index
             );
         }
         return found;
     }
 
     /**
-     * Get the folded bloc String from the given index.
+     * Get the folded block String from the given index.
      * @param index Integer index.
      * @return String
      */
@@ -117,7 +117,23 @@ public final class StrictYamlSequence extends BaseYamlSequence {
         String found = this.decorated.foldedBlockScalar(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
-                    "No String found for index " + index
+                "No folded block scalar found at index " + index
+            );
+        }
+        return found;
+    }
+
+    /**
+     * Get the literal block Strings from the given index.
+     * @param index Integer index.
+     * @return Collection of String lines of the literal.
+     */
+    @Override
+    public Collection<String> literalBlockScalar(final int index) {
+        Collection<String> found = this.decorated.literalBlockScalar(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No String found at index " + index
             );
         }
         return found;
