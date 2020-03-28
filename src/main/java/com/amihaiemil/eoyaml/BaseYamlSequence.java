@@ -143,14 +143,15 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
         final String newLine = System.lineSeparator();
         final StringBuilder print = new StringBuilder();
         int spaces = indentation;
-        final StringBuilder indent = new StringBuilder();
+        final StringBuilder alignment = new StringBuilder();
         while (spaces > 0) {
-            indent.append(" ");
+            alignment.append(" ");
             spaces--;
         }
         for (final YamlNode node : this.values()) {
             final BaseYamlNode indentable = (BaseYamlNode) node;
-            print.append(indent)
+            print
+                .append(alignment)
                 .append("- ");
             if (indentable instanceof Scalar) {
                 print.append(indentable.indent(0)).append(newLine);
