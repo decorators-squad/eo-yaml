@@ -100,11 +100,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String foldedBlockScalar(final String key) {
-        return this.foldedBlockScalar(new PlainStringScalar(key));
-    }
-
-    @Override
     public String foldedBlockScalar(final YamlNode key) {
         final String found = this.decorated.foldedBlockScalar(key);
         if (found == null) {

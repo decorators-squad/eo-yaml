@@ -96,11 +96,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String foldedBlockScalar(final String key) {
-        return this.foldedBlockScalar(new PlainStringScalar(key));
-    }
-
-    @Override
     public String foldedBlockScalar(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final String found;

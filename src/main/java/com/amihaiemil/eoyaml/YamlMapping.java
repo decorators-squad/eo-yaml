@@ -116,7 +116,9 @@ public interface YamlMapping extends YamlNode {
      * @return String or null if the key is missing, or not pointing
      *  to a folded block scalar.
      */
-    String foldedBlockScalar(final String key);
+    default String foldedBlockScalar(final String key) {
+        return this.foldedBlockScalar(new PlainStringScalar(key));
+    }
 
     /**
      * Get the String folded block scalar associated with the given key.
