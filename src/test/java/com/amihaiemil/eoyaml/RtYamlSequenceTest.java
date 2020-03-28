@@ -31,10 +31,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -98,22 +96,14 @@ public final class RtYamlSequenceTest {
         nodes.add(fourth);
         RtYamlSequence seq = new RtYamlSequence(nodes);
         Iterator<YamlNode> ordered = seq.values().iterator();
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(first)
-        );
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(sec)
-        );
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(third)
-        );
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(fourth)
-        );
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(first));
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(sec));
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(third));
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(fourth));
     }
 
     /**
-     * RtYamlSequence can return a Scalar as a string.
+     * RtYamlSequence can return a Plain Scalar as a string.
      */
     @Test
     public void returnsYamlScalarAsString() {
@@ -124,6 +114,29 @@ public final class RtYamlSequenceTest {
         YamlSequence seq = new RtYamlSequence(nodes);
         MatcherAssert.assertThat(
             seq.string(1), Matchers.equalTo("amber")
+        );
+        MatcherAssert.assertThat(
+            seq.yamlMapping(1), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * RtYamlSequence can return a folded block Scalar as a string.
+     */
+    @Test
+    public void returnsFoldedBlockScalarAsString() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new PlainStringScalar("test"));
+        nodes.add(
+            new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
+                Arrays.asList("first", "second")
+            )
+        );
+        nodes.add(new PlainStringScalar("mihai"));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(
+            seq.foldedBlockScalar(1),
+            Matchers.equalTo("first second")
         );
         MatcherAssert.assertThat(
             seq.yamlMapping(1), Matchers.nullValue()

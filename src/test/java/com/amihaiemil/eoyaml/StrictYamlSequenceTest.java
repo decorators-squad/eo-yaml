@@ -114,6 +114,18 @@ public final class StrictYamlSequenceTest {
     }
 
     /**
+     * StringYamlSequence can throw YamlNodeNotFoundException
+     * when the demanded folded block scalar is not found.
+     */
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullFoldedBlockScalarString() {
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        Mockito.when(origin.foldedBlockScalar(1)).thenReturn(null);
+        YamlSequence strict = new StrictYamlSequence(origin);
+        strict.foldedBlockScalar(1);
+    }
+
+    /**
      * StrictYamlSequence can return the number of elements in a sequence.
      */
     @Test
@@ -169,6 +181,20 @@ public final class StrictYamlSequenceTest {
         YamlSequence strict = new StrictYamlSequence(origin);
         MatcherAssert.assertThat(
                 strict.string(1), Matchers.equalTo("found")
+        );
+    }
+
+    /**
+     * StringYamlSequence can fetch a folded block scalar
+     * as String based in its index.
+     */
+    @Test
+    public void returnsFoldedBlockScalarString() {
+        YamlSequence origin = Mockito.mock(YamlSequence.class);
+        Mockito.when(origin.foldedBlockScalar(1)).thenReturn("found");
+        YamlSequence strict = new StrictYamlSequence(origin);
+        MatcherAssert.assertThat(
+            strict.foldedBlockScalar(1), Matchers.equalTo("found")
         );
     }
 
