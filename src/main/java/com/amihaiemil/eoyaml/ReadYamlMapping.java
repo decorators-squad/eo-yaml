@@ -33,6 +33,7 @@ import java.util.*;
  * YamlMapping read from somewhere. YAML directives and
  * document start/end markers are ignored. This is assumed
  * to be a plain YAML mapping.
+ * @checkstyle CyclomaticComplexity (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -124,40 +125,42 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public String string(final String key) {
+        return this.string(new PlainStringScalar(key));
+    }
+
+    @Override
     public String string(final YamlNode key) {
         String value = null;
         if(key instanceof Scalar) {
-            value = this.string(((Scalar) key).value());
+            for (final YamlLine line : this.lines) {
+                final String trimmed = line.trimmed();
+                final String stringKey = ((Scalar) key).value();
+                if(trimmed.startsWith(stringKey + ":")
+                    && !trimmed.endsWith(":")
+                ) {
+                    value = new ReadPlainScalarValue(line).value();
+                    break;
+                }
+            }
         } else {
             boolean foundComplexKey = false;
             for (final YamlLine line : this.lines) {
                 final String trimmed = line.trimmed();
-                if("?".equals(trimmed)) {
+                if ("?".equals(trimmed)) {
                     final YamlNode keyNode = this.lines.nested(line.number())
-                            .toYamlNode(line);
-                    if(keyNode.equals(key)) {
+                        .toYamlNode(line);
+                    if (keyNode.equals(key)) {
                         foundComplexKey = true;
                         continue;
                     }
                 }
-                if(foundComplexKey) {
-                    if(trimmed.startsWith(":") && !trimmed.endsWith(":")) {
+                if (foundComplexKey) {
+                    if (trimmed.startsWith(":") && !trimmed.endsWith(":")) {
                         value = new ReadPlainScalarValue(line).value();
                         break;
                     }
                 }
-            }
-        }
-        return value;
-    }
-
-    @Override
-    public String string(final String key) {
-        String value = null;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if(trimmed.startsWith(key + ":") && !trimmed.endsWith(":")) {
-                value = new ReadPlainScalarValue(line).value();
             }
         }
         return value;
