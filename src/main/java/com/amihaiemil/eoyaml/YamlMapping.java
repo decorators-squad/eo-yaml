@@ -49,7 +49,9 @@ public interface YamlMapping extends YamlNode {
      * @return Yaml mapping or null if the key is missing, or not pointing
      *  to a mapping.
      */
-    YamlMapping yamlMapping(final String key);
+    default YamlMapping yamlMapping(final String key) {
+        return this.yamlMapping(new PlainStringScalar(key));
+    }
 
     /**
      * Get the Yaml mapping associated with the given key.
