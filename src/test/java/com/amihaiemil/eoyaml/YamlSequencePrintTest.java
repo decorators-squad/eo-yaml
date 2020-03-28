@@ -28,6 +28,8 @@
 package com.amihaiemil.eoyaml;
 
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.io.File;
@@ -57,10 +59,58 @@ public final class YamlSequencePrintTest {
     @Test
     public void printsReadYamlSequenceWithAllNodes() throws Exception {
         final YamlSequence read = Yaml.createYamlInput(
-            new File("src/test/resources/printing_tests/yamlSequenceAllNodes.yml")
+            new File("src/test/resources/printing_tests/yamlSequenceAllNodes.txt")
         ).readYamlSequence();
-        System.out.print(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("yamlSequenceAllNodes.txt")
+            )
+        );
+    }
 
+    /**
+     * We build a YamlSequence containing all types of
+     * YamlNode we have so far and print it.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsBuiltYamlSequenceWithAllNodes() throws Exception {
+        final YamlSequence built = Yaml.createYamlSequenceBuilder()
+            .add("plain scalar")
+            .add(
+                Yaml.createYamlScalarBuilder()
+                    .addLine("literal")
+                    .addLine("block")
+                    .addLine("scalar")
+                    .buildLiteralBlockScalar()
+            )
+            .add(
+                Yaml.createYamlScalarBuilder()
+                    .addLine("a scalar folded")
+                    .addLine("on more lines")
+                    .addLine("for readability")
+                    .buildFoldedBlockScalar()
+            )
+            .add(
+                Yaml.createYamlMappingBuilder()
+                    .add("key", "value")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("a sequence")
+                    .add("of plain scalars")
+                    .add("as child")
+                    .build()
+            )
+            .build();
+        MatcherAssert.assertThat(
+            built.toString(),
+            Matchers.equalTo(
+                this.readExpected("yamlSequenceAllNodes.txt")
+            )
+        );
     }
 
     /**
@@ -70,12 +120,14 @@ public final class YamlSequencePrintTest {
      * @throws FileNotFoundException If something is wrong.
      * @throws IOException If something is wrong.
      */
-    private String readTestResource(final String fileName)
+    private String readExpected(final String fileName)
         throws FileNotFoundException, IOException {
         return new String(
             IOUtils.toByteArray(
                 new FileInputStream(
-                    new File("src/test/resources/printing_tests" + fileName)
+                    new File(
+                        "src/test/resources/printing_tests/" + fileName
+                    )
                 )
             )
         );
