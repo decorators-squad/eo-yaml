@@ -107,10 +107,15 @@ final class ReadYamlSequence extends BaseYamlSequence {
         String scalar = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof Scalar) {
-                scalar = ((Scalar) node).value();
+            if(count == index) {
+                if (node instanceof PlainStringScalar
+                    || node instanceof ReadPlainScalarValue
+                ) {
+                    scalar = ((Scalar) node).value();
+                }
+                break;
             }
-            count = count + 1;
+            count++;
         }
         return scalar;
     }
