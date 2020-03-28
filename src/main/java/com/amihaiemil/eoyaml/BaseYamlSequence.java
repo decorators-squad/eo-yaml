@@ -169,7 +169,10 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
     }
 
     /**
-     * Print a Scalar.
+     * Print a Scalar. We need to check what kind of Scalar is it.
+     * If it's a plain scalar, we print it on the same line. If it's
+     * a folded or literal scalar, we must first print a line containing
+     * '>' or '|', then print the Scalar's lines bellow, with a +2 indentation.
      * @checkstyle LineLength (50 lines)
      * @param scalar YamlNode scalar.
      * @param print Printer to add it to.
