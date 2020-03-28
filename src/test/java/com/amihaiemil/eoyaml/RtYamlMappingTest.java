@@ -31,12 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
@@ -216,6 +211,80 @@ public final class RtYamlMappingTest {
             map.yamlSequence("key1"), Matchers.nullValue()
         );
     }
+
+    /**
+     * RtYamlMapping can return a folded block Scalar as a string.
+     */
+    @Test
+    public void returnsFoldedBlockScalarAsString() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(
+            new PlainStringScalar("key3"),
+            Mockito.mock(YamlSequence.class)
+        );
+        mappings.put(
+            new PlainStringScalar("key1"),
+            Mockito.mock(YamlMapping.class)
+        );
+        mappings.put(
+            new PlainStringScalar("key2"),
+            new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
+                Arrays.asList("first", "second")
+            )
+        );
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        MatcherAssert.assertThat(
+            map.foldedBlockScalar("key2"),
+            Matchers.equalTo("first second")
+        );
+        MatcherAssert.assertThat(
+            map.foldedBlockScalar("key3"), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * RtYamlMapping can return a literal block Scalar as a
+     * Collection of string lines.
+     */
+    @Test
+    public void returnsLiteralBlockScalar() {
+        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        mappings.put(
+            new PlainStringScalar("key3"),
+            Mockito.mock(YamlSequence.class)
+        );
+        mappings.put(
+            new PlainStringScalar("key1"),
+            Mockito.mock(YamlMapping.class)
+        );
+        mappings.put(
+            new PlainStringScalar("key2"),
+            new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
+                Arrays.asList("first", "second")
+            )
+        );
+        RtYamlMapping map = new RtYamlMapping(mappings);
+        final Collection<String> literalLines = map.literalBlockScalar("key2");
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("first")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("second")
+        );
+        MatcherAssert.assertThat(
+            map.literalBlockScalar("key3"), Matchers.nullValue()
+        );
+    }
+
+
+
 
     /**
      * RtYamlMapping can return null if the specified key is missig.
