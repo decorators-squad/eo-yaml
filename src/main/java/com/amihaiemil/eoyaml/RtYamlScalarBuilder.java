@@ -78,21 +78,21 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
 
     @Override
     public Scalar buildFoldedBlockScalar() {
-        return new BuiltBlockScalar(this.lines, Boolean.TRUE);
+        return new BuiltFoldedBlockScalar(this.lines);
     }
 
     @Override
     public Scalar buildLiteralBlockScalar() {
-        return new BuiltBlockScalar(this.lines, Boolean.FALSE);
+        return new BuiltLiteralBlockScalar(this.lines);
     }
 
     /**
-     * A built block Scalar. It can be folded or literal.
+     * A built folded block Scalar.
      * @author Mihai Andronache (amihaiemil@gmail.com)
      * @version $Id$
      * @since 4.0.0
      */
-    static class BuiltBlockScalar extends BaseScalar {
+    static class BuiltFoldedBlockScalar extends BaseScalar {
 
         /**
          * Lines of this scalar.
@@ -100,42 +100,27 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
         private final List<String> lines;
 
         /**
-         * Folded or not (literal)?
-         */
-        private final boolean folded;
-
-        /**
          * Ctor.
          * @param lines Given string lines.
-         * @param folded Folded or not (literal).
          */
-        BuiltBlockScalar(final List<String> lines, final boolean folded) {
+        BuiltFoldedBlockScalar(final List<String> lines) {
             this.lines = lines;
-            this.folded = folded;
         }
 
         /**
-         * Return the value of this block scalar.
-         * @todo #224:30min This method is not correct in the case of folded
-         *  scalar. When returning the value we should indeed fold the
-         *  new lines, with the exception that we should preserve
-         *  the blank lines and new lines of more inner indented lines.
-         *  See how ReadFoldedBlockScalar.value() is implemented.
+         * Return the value of this folded block scalar.
+         * @todo #244:30min This method is not correct. When returning
+         *  the value we should indeed fold the new lines, with the exception
+         *  that we should preserve the blank lines and new lines of more inner
+         *  indented lines. See how ReadFoldedBlockScalar.value()
+         *  is implemented.
          * @return String value.
          */
         @Override
         public String value() {
-            final String value;
-            if(this.folded) {
-                value = this.lines.stream().map(
-                    line -> line.replaceAll(System.lineSeparator(), " ")
-                ).collect(Collectors.joining(" "));
-            } else {
-                value = this.lines.stream().collect(
-                    Collectors.joining(System.lineSeparator())
-                );
-            }
-            return value;
+            return this.lines.stream().map(
+                line -> line.replaceAll(System.lineSeparator(), " ")
+            ).collect(Collectors.joining(" "));
         }
 
         /**
@@ -180,7 +165,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
         /**
          * When printing a block scalar, we have to wrap it
          * inside proper YAML elements, otherwise it won't make
-         * sense as a YAML document. It will look like this (folded):
+         * sense as a YAML document. It will look like this:
          * <pre>
          * ---
          * >
@@ -188,7 +173,98 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          *   scalar on more lines
          * ...
          * </pre>
-         * and literal:
+         * @return This scalar as a YAML document.
+         */
+        @Override
+        public String toString() {
+            final StringBuilder string = new StringBuilder();
+            string
+                .append("---")
+                .append(System.lineSeparator())
+                .append(">")
+                .append(System.lineSeparator())
+                .append(this.indent(2))
+                .append(System.lineSeparator())
+                .append("...");
+            return string.toString();
+        }
+    }
+
+    /**
+     * A built literal block Scalar.
+     * @author Mihai Andronache (amihaiemil@gmail.com)
+     * @version $Id$
+     * @since 4.0.0
+     */
+    static class BuiltLiteralBlockScalar extends BaseScalar {
+
+        /**
+         * Lines of this scalar.
+         */
+        private final List<String> lines;
+
+        /**
+         * Ctor.
+         * @param lines Given string lines.
+         */
+        BuiltLiteralBlockScalar(final List<String> lines) {
+            this.lines = lines;
+        }
+
+        /**
+         * Return the value of this literal scalar.
+         * @return String value.
+         */
+        @Override
+        public String value() {
+            return this.lines.stream().collect(
+                Collectors.joining(System.lineSeparator())
+            );
+        }
+
+        /**
+         * Indent this block scalar. When indenting/printing, we're going to
+         * separate the lines.
+         * @param indentation Number of preceding spaces of each line.
+         * @return Indented Scalar.
+         */
+        @Override
+        String indent(final int indentation) {
+            int spaces = indentation;
+            StringBuilder print = new StringBuilder();
+            StringBuilder alignment = new StringBuilder();
+            while (spaces > 0) {
+                alignment.append(" ");
+                spaces--;
+            }
+            for(int idx = 0; idx < this.lines.size(); idx++) {
+                final String line = this.lines.get(idx);
+                if(line.contains(System.lineSeparator())) {
+                    final String[] hardcodedNewLines = line.split(
+                        System.lineSeparator()
+                    );
+                    for(final String subline : hardcodedNewLines) {
+                        print
+                            .append(alignment)
+                            .append(subline)
+                            .append(System.lineSeparator());
+                    }
+                } else {
+                    print
+                        .append(alignment)
+                        .append(line);
+                    if (idx < this.lines.size() - 1) {
+                        print.append(System.lineSeparator());
+                    }
+                }
+            }
+            return print.toString();
+        }
+
+        /**
+         * When printing a block scalar, we have to wrap it
+         * inside proper YAML elements, otherwise it won't make
+         * sense as a YAML document. It will look like this:
          * <pre>
          * ---
          * |
@@ -202,13 +278,10 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
         @Override
         public String toString() {
             final StringBuilder string = new StringBuilder();
-            string.append("---").append(System.lineSeparator());
-            if(this.folded) {
-                string.append(">");
-            } else {
-                string.append("|");
-            }
             string
+                .append("---")
+                .append(System.lineSeparator())
+                .append("|")
                 .append(System.lineSeparator())
                 .append(this.indent(2))
                 .append(System.lineSeparator())
