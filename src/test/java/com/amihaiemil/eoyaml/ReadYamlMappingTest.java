@@ -35,6 +35,7 @@ import java.util.Set;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -282,6 +283,124 @@ public final class ReadYamlMappingTest {
         final String value = map.string(key);
         MatcherAssert.assertThat(value, Matchers.notNullValue());
         MatcherAssert.assertThat(value, Matchers.equalTo("value"));
+    }
+
+    /**
+     * ReadYamlMapping can return the folded block string mapped to a
+     * YamlMapping key.
+     */
+    @Test
+    @Ignore
+    public void returnsFoldedStringWithYamlMappingKey(){
+        final YamlMapping key = new RtYamlMappingBuilder()
+                .add("complex1", "mapping1")
+                .add("complex2", "mapping2")
+                .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(": >", 4));
+        lines.add(new RtYamlLine("  folded block", 6));
+        lines.add(new RtYamlLine("  scalar here", 7));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final String value = map.foldedBlockScalar(key);
+        MatcherAssert.assertThat(value, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            value,
+            Matchers.equalTo("folded block scalar here")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the folded block string mapped to a
+     * String key.
+     */
+    @Test
+    @Ignore
+    public void returnsFoldedStringWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("key:> ", 1));
+        lines.add(new RtYamlLine("  folded block", 2));
+        lines.add(new RtYamlLine("  scalar here", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final String value = map.foldedBlockScalar("key");
+        MatcherAssert.assertThat(value, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            value,
+            Matchers.equalTo("folded block scalar here")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the literal block string mapped to a
+     * YamlMapping key.
+     */
+    @Test
+    public void returnsLiteralStringWithYamlMappingKey(){
+        final YamlMapping key = new RtYamlMappingBuilder()
+                .add("complex1", "mapping1")
+                .add("complex2", "mapping2")
+                .build();
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("? ", 1));
+        lines.add(new RtYamlLine("  complex1: mapping1", 2));
+        lines.add(new RtYamlLine("  complex2: mapping2", 3));
+        lines.add(new RtYamlLine(":|", 4));
+        lines.add(new RtYamlLine("  line1", 6));
+        lines.add(new RtYamlLine("  line2", 7));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final Collection<String> literalLines = map.literalBlockScalar(key);
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("line1")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("line2")
+        );
+        MatcherAssert.assertThat(
+            map.literalBlockScalar("notthere"), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the literal block string mapped to a
+     * String key.
+     */
+    @Test
+    public void returnsLiteralStringWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: something", 0));
+        lines.add(new RtYamlLine("key:| ", 1));
+        lines.add(new RtYamlLine("  line1", 2));
+        lines.add(new RtYamlLine("  line2", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final Collection<String> literalLines = map.literalBlockScalar("key");
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("line1")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("line2")
+        );
+        MatcherAssert.assertThat(
+            map.literalBlockScalar("notthere"), Matchers.nullValue()
+        );
     }
 
     /**

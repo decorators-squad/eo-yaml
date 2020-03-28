@@ -283,9 +283,6 @@ public final class RtYamlMappingTest {
         );
     }
 
-
-
-
     /**
      * RtYamlMapping can return null if the specified key is missig.
      */
