@@ -77,6 +77,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     String string(final int index);
 
     /**
+     * Get the folded block scalar from the given index.
+     * @param index Integer index.
+     * @return The folded block scalar as String.
+     */
+    String foldedBlockScalar(final int index);
+
+    /**
      * Returns this YamlSequence's children Iterator.<br><br>
      * It is equivalent to YamlSequence.values().iterator().
      * @return Iterator of YamlNode.

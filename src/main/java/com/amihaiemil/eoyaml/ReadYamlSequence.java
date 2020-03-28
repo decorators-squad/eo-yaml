@@ -104,16 +104,30 @@ final class ReadYamlSequence extends BaseYamlSequence {
 
     @Override
     public String string(final int index) {
-        String scalar = null;
+        String value = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
             if(count == index && (node instanceof ReadPlainScalarValue)) {
-                scalar = ((Scalar) node).value();
+                value = ((Scalar) node).value();
                 break;
             }
             count++;
         }
-        return scalar;
+        return value;
+    }
+
+    @Override
+    public String foldedBlockScalar(final int index) {
+        String value = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if(count == index && (node instanceof ReadFoldedBlockScalar)) {
+                value = ((Scalar) node).value();
+                break;
+            }
+            count++;
+        }
+        return value;
     }
 
     @Override

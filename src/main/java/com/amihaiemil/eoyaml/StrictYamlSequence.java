@@ -107,6 +107,22 @@ public final class StrictYamlSequence extends BaseYamlSequence {
         return found;
     }
 
+    /**
+     * Get the folded bloc String from the given index.
+     * @param index Integer index.
+     * @return String
+     */
+    @Override
+    public String foldedBlockScalar(final int index) {
+        String found = this.decorated.foldedBlockScalar(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                    "No String found for index " + index
+            );
+        }
+        return found;
+    }
+
     @Override
     public int size() {
         return this.decorated.size();
