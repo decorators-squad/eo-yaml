@@ -60,6 +60,22 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public Set<YamlNode> keys() {
+        final Set<YamlNode> keys = new TreeSet<>();
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if(trimmed.startsWith(":")) {
+                continue;
+            } else if ("?".equals(trimmed)) {
+                keys.add(this.lines.nested(line.number()).toYamlNode(line));
+            } else {
+                keys.add(new ReadPlainScalarKey(line));
+            }
+        }
+        return keys;
+    }
+
+    @Override
     public Collection<YamlNode> values() {
         final List<YamlNode> values = new LinkedList<>();
         for(final YamlNode key : this.keys()) {
@@ -154,6 +170,44 @@ final class ReadYamlMapping extends BaseYamlMapping {
         return value;
     }
 
+    @Override
+    public String foldedBlockScalar(final String key) {
+        return this.foldedBlockScalar(new PlainStringScalar(key));
+    }
+
+    @Override
+    public String foldedBlockScalar(final YamlNode key) {
+        final YamlNode value;
+        final Scalar found;
+        if(key instanceof Scalar) {
+            value = this.valueOfStringKey(((Scalar) key).value());
+        } else {
+            value = this.valueOfNodeKey(key);
+        }
+        if(value instanceof ReadFoldedBlockScalar) {
+            found = (ReadFoldedBlockScalar) value;
+        } else {
+            found = null;
+        }
+        return found.value();
+    }
+
+    @Override
+    public YamlNode value(final YamlNode key) {
+        YamlNode value = this.yamlMapping(key);
+        if(value == null) {
+            value = this.yamlSequence(key);
+            if(value == null) {
+                final String val = this.string(key);
+                if(val != null) {
+                    value = new PlainStringScalar(val);
+
+                }
+            }
+        }
+        return value;
+    }
+
     /**
      * The YamlNode value associated with a String (scalar) key.
      * @param key String key.
@@ -163,7 +217,10 @@ final class ReadYamlMapping extends BaseYamlMapping {
         YamlNode value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
-            if(trimmed.endsWith(key + ":")) {
+            if(trimmed.endsWith(key + ":")
+                || trimmed.matches("^" + key + "\\:[ ]*\\>$")
+                || trimmed.matches("^" + key + "\\:[ ]*\\|$")
+            ) {
                 value = this.lines.nested(line.number()).toYamlNode(line);
             }
         }
@@ -189,42 +246,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     final YamlLine colonLine = this.lines.line(
                         line.number() + keyLines.lines().size() + 1
                     );
-                    if(":".equals(colonLine.trimmed())) {
+                    if(":".equals(colonLine.trimmed())
+                        || colonLine.trimmed().matches("^\\:[ ]*\\>$")
+                        || colonLine.trimmed().matches("^\\:[ ]*\\|$")
+                    ) {
                         value = this.lines.nested(colonLine.number())
                                     .toYamlNode(colonLine);
                     }
-                }
-            }
-        }
-        return value;
-    }
-
-    @Override
-    public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new TreeSet<>();
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if(trimmed.startsWith(":")) {
-                continue;
-            } else if ("?".equals(trimmed)) {
-                keys.add(this.lines.nested(line.number()).toYamlNode(line));
-            } else {
-                keys.add(new ReadPlainScalarKey(line));
-            }
-        }
-        return keys;
-    }
-
-    @Override
-    public YamlNode value(final YamlNode key) {
-        YamlNode value = this.yamlMapping(key);
-        if(value == null) {
-            value = this.yamlSequence(key);
-            if(value == null) {
-                final String val = this.string(key);
-                if(val != null) {
-                    value = new PlainStringScalar(val);
-
                 }
             }
         }

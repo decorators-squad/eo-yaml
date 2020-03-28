@@ -95,7 +95,26 @@ final class RtYamlMapping extends BaseYamlMapping {
     public String string(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final String found;
-        if (value != null && value instanceof Scalar) {
+        if (value != null && value instanceof PlainStringScalar) {
+            found = ((Scalar) value).value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public String foldedBlockScalar(final String key) {
+        return this.foldedBlockScalar(new PlainStringScalar(key));
+    }
+
+    @Override
+    public String foldedBlockScalar(final YamlNode key) {
+        final YamlNode value = this.mappings.get(key);
+        final String found;
+        if (value != null
+            && value instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
+        ) {
             found = ((Scalar) value).value();
         } else {
             found = null;
