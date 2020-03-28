@@ -149,16 +149,15 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
             spaces--;
         }
         for (final YamlNode node : this.values()) {
-            final BaseYamlNode indentable = (BaseYamlNode) node;
             print
                 .append(alignment)
                 .append("- ");
-            if (indentable instanceof Scalar) {
-                print.append(indentable.indent(0)).append(newLine);
+            if (node instanceof Scalar) {
+                this.printScalar((Scalar) node, print, indentation);
             } else  {
                 print
                     .append(newLine)
-                    .append(indentable.indent(indentation + 2))
+                    .append(((BaseYamlNode) node).indent(indentation + 2))
                     .append(newLine);
             }
         }
@@ -167,6 +166,44 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+
+    /**
+     * Print a Scalar.
+     * @checkstyle LineLength (50 lines)
+     * @param scalar YamlNode scalar.
+     * @param print Printer to add it to.
+     * @param indentation How much to indent it?
+     */
+    private void printScalar(
+        final Scalar scalar,
+        final StringBuilder print,
+        final int indentation
+    ) {
+        final BaseScalar indentable = (BaseScalar) scalar;
+        if (indentable instanceof PlainStringScalar
+            || indentable instanceof ReadPlainScalarValue
+        ) {
+            print.append(indentable.indent(0)).append(System.lineSeparator());
+        } else if (indentable instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
+            || indentable instanceof ReadFoldedBlockScalar
+        ) {
+            print
+                .append(">")
+                .append(System.lineSeparator())
+                .append(
+                    indentable.indent(indentation + 2)
+                ).append(System.lineSeparator());
+        } else if (indentable instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
+            || indentable instanceof ReadLiteralBlockScalar
+        ) {
+            print
+                .append("|")
+                .append(System.lineSeparator())
+                .append(
+                    indentable.indent(indentation + 2)
+                ).append(System.lineSeparator());
+        }
     }
 
     /**
