@@ -101,11 +101,30 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the String folded block scalar associated with the given key.
-     * @param key String key
+     * @param key Yaml node key.
      * @return String or null if the key is missing, or not pointing
      *  to a folded block scalar.
      */
     String foldedBlockScalar(final YamlNode key);
+
+    /**
+     * Get the String lines of the literal block scalar associated
+     * with the given key.
+     * @param key String key
+     * @return Collection of string or null if the key is missing,
+     *  or not pointing to a literal block scalar.
+     */
+    default Collection<String> literalBlockScalar(final String key) {
+        return this.literalBlockScalar(new PlainStringScalar(key));
+    }
+
+    /**
+     * Get the String folded block scalar associated with the given key.
+     * @param key String key
+     * @return String or null if the key is missing, or not pointing
+     *  to a folded block scalar.
+     */
+    Collection<String> literalBlockScalar(final YamlNode key);
 
     /**
      * Get the YamlNode mapped to the specified key.

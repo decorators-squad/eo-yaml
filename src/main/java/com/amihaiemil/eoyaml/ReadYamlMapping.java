@@ -193,6 +193,27 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public Collection<String> literalBlockScalar(final YamlNode key) {
+        final YamlNode value;
+        final Collection<String> found;
+        if(key instanceof Scalar) {
+            value = this.valueOfStringKey(((Scalar) key).value());
+        } else {
+            value = this.valueOfNodeKey(key);
+        }
+        if(value instanceof ReadLiteralBlockScalar) {
+            found = Arrays.asList(
+                ((ReadLiteralBlockScalar) value)
+                    .value()
+                    .split(System.lineSeparator())
+            );
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
     public YamlNode value(final YamlNode key) {
         YamlNode value = this.yamlMapping(key);
         if(value == null) {

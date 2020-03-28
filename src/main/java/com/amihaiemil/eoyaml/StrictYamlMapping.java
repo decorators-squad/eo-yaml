@@ -126,6 +126,19 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public Collection<String> literalBlockScalar(final YamlNode key) {
+        final Collection<String> found = this.decorated.literalBlockScalar(
+            key
+        );
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No Literal Block Scalar found for key " + key
+            );
+        }
+        return found;
+    }
+
+    @Override
     public Set<YamlNode> keys() {
         return this.decorated.keys();
     }
