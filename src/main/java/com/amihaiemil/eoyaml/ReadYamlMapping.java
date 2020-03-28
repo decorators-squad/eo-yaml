@@ -141,10 +141,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     }
                 }
                 if(foundComplexKey) {
-                    if(trimmed.endsWith(":")) {
-                        break;
-                    }
-                    if(trimmed.startsWith(":")) {
+                    if(trimmed.startsWith(":") && !trimmed.endsWith(":")) {
                         value = new ReadPlainScalarValue(line).value();
                         break;
                     }
@@ -159,10 +156,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
         String value = null;
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
-            if(trimmed.endsWith(key + ":")) {
-                continue;
-            }
-            if(trimmed.startsWith(key + ":")) {
+            if(trimmed.startsWith(key + ":") && !trimmed.endsWith(":")) {
                 value = new ReadPlainScalarValue(line).value();
             }
         }
