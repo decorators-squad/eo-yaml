@@ -102,11 +102,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new PlainStringScalar(key));
-    }
-
-    @Override
     public YamlSequence yamlSequence(final YamlNode key) {
         final YamlNode value;
         final YamlSequence found;

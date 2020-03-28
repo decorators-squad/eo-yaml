@@ -53,6 +53,13 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public Set<YamlNode> keys() {
+        final Set<YamlNode> keys = new TreeSet<>();
+        keys.addAll(this.mappings.keySet());
+        return keys;
+    }
+
+    @Override
     public YamlMapping yamlMapping(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final YamlMapping found;
@@ -62,11 +69,6 @@ final class RtYamlMapping extends BaseYamlMapping {
             found = null;
         }
         return found;
-    }
-
-    @Override
-    public YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new PlainStringScalar(key));
     }
 
     @Override
@@ -138,13 +140,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     @Override
     public Collection<YamlNode> values() {
         return this.mappings.values();
-    }
-
-    @Override
-    public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new TreeSet<>();
-        keys.addAll(this.mappings.keySet());
-        return keys;
     }
 
     @Override

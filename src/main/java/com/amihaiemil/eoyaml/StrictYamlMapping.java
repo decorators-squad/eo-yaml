@@ -57,6 +57,11 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public Set<YamlNode> keys() {
+        return this.decorated.keys();
+    }
+
+    @Override
     public Collection<YamlNode> values() {
         return this.decorated.values();
     }
@@ -70,11 +75,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
             );
         }
         return found;
-    }
-
-    @Override
-    public YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new PlainStringScalar(key));
     }
 
     @Override
@@ -131,11 +131,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
             );
         }
         return found;
-    }
-
-    @Override
-    public Set<YamlNode> keys() {
-        return this.decorated.keys();
     }
 
     @Override
