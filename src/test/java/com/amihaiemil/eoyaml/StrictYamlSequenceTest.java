@@ -198,7 +198,7 @@ public final class StrictYamlSequenceTest {
     }
 
     /**
-     * StringYamlSequence can fetch a folded block scalar
+     * StrictYamlSequence can fetch a folded block scalar
      * as String based in its index.
      */
     @Test
@@ -212,7 +212,7 @@ public final class StrictYamlSequenceTest {
     }
 
     /**
-     * StringYamlSequence can fetch a literal block scalar
+     * StrictYamlSequence can fetch a literal block scalar
      * as String based in its index.
      */
     @Test
