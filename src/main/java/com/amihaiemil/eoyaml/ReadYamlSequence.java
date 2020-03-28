@@ -63,7 +63,11 @@ final class ReadYamlSequence extends BaseYamlSequence {
     public Collection<YamlNode> values() {
         final List<YamlNode> kids = new LinkedList<>();
         for(final YamlLine line : this.lines) {
-            if("-".equals(line.trimmed())) {
+            final String trimmed = line.trimmed();
+            if("-".equals(trimmed)
+                || trimmed.endsWith("|")
+                || trimmed.endsWith(">")
+            ) {
                 kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
                 kids.add(new ReadPlainScalarValue(line));
