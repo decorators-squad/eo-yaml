@@ -160,19 +160,22 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
         final String newLine = System.lineSeparator();
         final StringBuilder print = new StringBuilder();
         int spaces = indentation;
-        final StringBuilder indent = new StringBuilder();
+        final StringBuilder alignment = new StringBuilder();
         while (spaces > 0) {
-            indent.append(" ");
+            alignment.append(" ");
             spaces--;
         }
         for(final YamlNode key : this.keys()) {
-            print.append(indent);
+            print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
             if(indKey instanceof Scalar) {
-                print.append(indKey.indent(0)).append(": ");
+                print
+                    .append(indKey.indent(0))
+                    .append(":");
                 if (value instanceof Scalar) {
-                    print.append(value.indent(0)).append(newLine);
+                    print.append(" ");
+                    this.printScalar((Scalar) value, print, indentation);
                 } else  {
                     print
                         .append(newLine)
@@ -185,17 +188,17 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
                     .append(newLine)
                     .append(indKey.indent(indentation + 2))
                     .append(newLine)
-                    .append(indent)
+                    .append(alignment)
                     .append(":");
                 if(value instanceof Scalar) {
-                    print
-                        .append(" ").append(value.indent(0));
+                    print.append(" ");
+                    this.printScalar((Scalar) value, print, indentation);
                 } else {
                     print
                         .append(newLine)
-                        .append(value.indent(indentation + 2));
+                        .append(value.indent(indentation + 2))
+                        .append(newLine);
                 }
-                print.append(newLine);
             }
         }
         String printed = print.toString();
@@ -203,6 +206,47 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+
+    /**
+     * Print a Scalar. We need to check what kind of Scalar is it.
+     * If it's a plain scalar, we print it on the same line. If it's
+     * a folded or literal scalar, we must first print a line containing
+     * '>' or '|', then print the Scalar's lines bellow, with a +2 indentation.
+     * @checkstyle LineLength (50 lines)
+     * @param scalar YamlNode scalar.
+     * @param print Printer to add it to.
+     * @param indentation How much to indent it?
+     */
+    private void printScalar(
+        final Scalar scalar,
+        final StringBuilder print,
+        final int indentation
+    ) {
+        final BaseScalar indentable = (BaseScalar) scalar;
+        if (indentable instanceof PlainStringScalar
+            || indentable instanceof ReadPlainScalarValue
+        ) {
+            print.append(indentable.indent(0)).append(System.lineSeparator());
+        } else if (indentable instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
+            || indentable instanceof ReadFoldedBlockScalar
+        ) {
+            print
+                .append(">")
+                .append(System.lineSeparator())
+                .append(
+                    indentable.indent(indentation + 2)
+                ).append(System.lineSeparator());
+        } else if (indentable instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
+            || indentable instanceof ReadLiteralBlockScalar
+        ) {
+            print
+                .append("|")
+                .append(System.lineSeparator())
+                .append(
+                    indentable.indent(indentation + 2)
+                ).append(System.lineSeparator());
+        }
     }
 
     /**
