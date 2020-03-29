@@ -31,13 +31,17 @@ The releases are also available on [Github Packages](https://github.com/decorato
 The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to.
 Just start form the ``com.amihaiemil.eoyaml.Yaml`` class, it offers all the builders and readers you may need.
 
-## Features (ongoing work!)
+See the [Block Style Yaml](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML) wiki for a first glance.
+
+## Features detailed (ongoing work!)
 
 Since the library is quite young, it doesn't support all the features of YAML yet.
 
 Here is what we have so far:
 
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
+* Support for Folded and Literal Block Scalars ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Folded-and-Literal-Block-Scalars));
+* Convenience Type-Casting Methods ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Convenience-Type-Casting-Methods));
 * Building and Reading YAML Streams, integrated with Java 8's Stream API ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
 * Others:
@@ -46,7 +50,7 @@ Here is what we have so far:
 
 Also, you can have a look a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML that the library can read and handle so far.
 
-Here is what we're still missing and working on:
+Here is what we're **still missing and working on**:
 
 * Flow and Recursive representation
 * Aliases and anchors
