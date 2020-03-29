@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
+
 import java.util.*;
 
 /**
@@ -85,6 +87,17 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public YamlNode value(final YamlNode key) {
+        final YamlNode value;
+        if(key instanceof Scalar) {
+            value = this.valueOfStringKey(((Scalar) key).value());
+        } else {
+            value = this.valueOfNodeKey(key);
+        }
+        return value;
+    }
+
+    @Override
     public YamlMapping yamlMapping(final YamlNode key) {
         final YamlNode value;
         final YamlMapping found;
@@ -120,39 +133,19 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public String string(final YamlNode key) {
-        String value = null;
+        final YamlNode value;
+        final String found;
         if(key instanceof Scalar) {
-            for (final YamlLine line : this.lines) {
-                final String trimmed = line.trimmed();
-                final String stringKey = ((Scalar) key).value();
-                if(trimmed.startsWith(stringKey + ":")
-                    && !trimmed.endsWith(":")
-                ) {
-                    value = new ReadPlainScalarValue(line).value();
-                    break;
-                }
-            }
+            value = this.valueOfStringKey(((Scalar) key).value());
         } else {
-            boolean foundComplexKey = false;
-            for (final YamlLine line : this.lines) {
-                final String trimmed = line.trimmed();
-                if ("?".equals(trimmed)) {
-                    final YamlNode keyNode = this.lines.nested(line.number())
-                        .toYamlNode(line);
-                    if (keyNode.equals(key)) {
-                        foundComplexKey = true;
-                        continue;
-                    }
-                }
-                if (foundComplexKey) {
-                    if (trimmed.startsWith(":") && !trimmed.endsWith(":")) {
-                        value = new ReadPlainScalarValue(line).value();
-                        break;
-                    }
-                }
-            }
+            value = this.valueOfNodeKey(key);
         }
-        return value;
+        if(value instanceof ReadPlainScalarValue) {
+            found = ((ReadPlainScalarValue) value).value();
+        } else {
+            found = null;
+        }
+        return found;
     }
 
     @Override
@@ -193,22 +186,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
         return found;
     }
 
-    @Override
-    public YamlNode value(final YamlNode key) {
-        YamlNode value = this.yamlMapping(key);
-        if(value == null) {
-            value = this.yamlSequence(key);
-            if(value == null) {
-                final String val = this.string(key);
-                if(val != null) {
-                    value = new PlainStringScalar(val);
-
-                }
-            }
-        }
-        return value;
-    }
-
     /**
      * The YamlNode value associated with a String (scalar) key.
      * @param key String key.
@@ -223,6 +200,10 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 || trimmed.matches("^" + key + "\\:[ ]*\\|$")
             ) {
                 value = this.lines.nested(line.number()).toYamlNode(line);
+            } else if(trimmed.startsWith(key + ":")
+                && trimmed.length() > 1
+            ) {
+                value = new ReadPlainScalarValue(line);
             }
         }
         return value;
@@ -253,7 +234,18 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     ) {
                         value = this.lines.nested(colonLine.number())
                                     .toYamlNode(colonLine);
+                    } else if(colonLine.trimmed().startsWith(":")
+                        && (colonLine.trimmed().length() > 1)
+                    ){
+                        value = new ReadPlainScalarValue(colonLine);
+                    } else {
+                        throw new YamlReadingException(
+                            "No value found for existing complex key: "
+                          + System.lineSeparator()
+                          + ((BaseYamlNode) key).indent(0)
+                        );
                     }
+                    break;
                 }
             }
         }
