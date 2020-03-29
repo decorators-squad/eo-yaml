@@ -28,7 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.hamcrest.MatcherAssert;
@@ -50,7 +50,7 @@ public final class StrictYamlMappingTest {
      */
     @Test
     public void fetchesValues() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));
@@ -66,7 +66,7 @@ public final class StrictYamlMappingTest {
      */
     @Test
     public void fetchesKeys() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));

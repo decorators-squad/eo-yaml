@@ -39,10 +39,10 @@ import java.util.*;
 final class RtYamlMapping extends BaseYamlMapping {
 
     /**
-     * Key:value tree map (ordered keys).
+     * Key:value linked map (maintains the order of insertion).
      */
     private final Map<YamlNode, YamlNode> mappings =
-        new TreeMap<YamlNode, YamlNode>();
+        new LinkedHashMap<>();
 
     /**
      * Ctor.
@@ -54,9 +54,19 @@ final class RtYamlMapping extends BaseYamlMapping {
 
     @Override
     public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new TreeSet<>();
+        final Set<YamlNode> keys = new LinkedHashSet<>();
         keys.addAll(this.mappings.keySet());
         return keys;
+    }
+
+    @Override
+    public Collection<YamlNode> values() {
+        return this.mappings.values();
+    }
+
+    @Override
+    public YamlNode value(final YamlNode key) {
+        return this.mappings.get(key);
     }
 
     @Override
@@ -127,13 +137,4 @@ final class RtYamlMapping extends BaseYamlMapping {
         return found;
     }
 
-    @Override
-    public Collection<YamlNode> values() {
-        return this.mappings.values();
-    }
-
-    @Override
-    public YamlNode value(final YamlNode key) {
-        return this.mappings.get(key);
-    }
 }

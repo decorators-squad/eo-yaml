@@ -81,10 +81,10 @@ public final class RtYamlSequenceTest {
     }
 
     /**
-     * A Sequence maintains its order of reading.
+     * A Sequence maintains its order of insertion.
      */
     @Test
-    public void sequenceKeepsOrder() {
+    public void sequenceKeepsInsertionOrder() {
         List<YamlNode> nodes = new LinkedList<>();
         PlainStringScalar first = new PlainStringScalar("test");
         PlainStringScalar sec = new PlainStringScalar("mihai");
@@ -229,10 +229,8 @@ public final class RtYamlSequenceTest {
      */
     @Test
     public void comparesToMapping() {
-        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
-        RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
-        );
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<>());
+        RtYamlMapping map = new RtYamlMapping(new LinkedHashMap<>());
         MatcherAssert.assertThat(seq.compareTo(map), Matchers.lessThan(0));
     }
 

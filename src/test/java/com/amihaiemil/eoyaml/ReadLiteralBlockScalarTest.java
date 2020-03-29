@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -76,9 +73,7 @@ public final class ReadLiteralBlockScalarTest {
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadLiteralBlockScalar scalar =
             new ReadLiteralBlockScalar(new AllYamlLines(lines));
-        RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
-        );
+        RtYamlMapping map = new RtYamlMapping(new LinkedHashMap<>());
         MatcherAssert.assertThat(scalar.compareTo(map), Matchers.lessThan(0));
     }
 

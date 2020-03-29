@@ -27,7 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.hamcrest.MatcherAssert;
@@ -89,7 +89,7 @@ public final class YamlObjectDumpTest {
         private String lastName;
         private int age;
         private double gpa;
-        private Map<String, Integer> grades = new HashMap<>();
+        private Map<String, Integer> grades = new LinkedHashMap<>();
 
         public StudentSimplePojo(
             String firstName, String lastName, int age, double gpa

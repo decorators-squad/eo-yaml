@@ -48,8 +48,6 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the YamlMapping from a given index.
-     * Note that a YamlSequence is ordered, so the index might differ from
-     * the original found at read time.
      */
     @Test
     public void returnsYamlMappingFromIndex(){
@@ -75,8 +73,6 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the YamlSequence from a given index.
-     * Note that a YamlSequence is ordered, so the index might differ from
-     * the original found at read time.
      */
     @Test
     public void returnsYamlSequenceFromIndex(){
@@ -100,8 +96,6 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the plain scalar string from a given index.
-     * Note that a YamlSequence is ordered, so the index might differ from
-     * the original found at read time.
      */
     @Test
     public void returnsStringFromIndex(){

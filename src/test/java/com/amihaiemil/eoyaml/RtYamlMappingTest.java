@@ -50,11 +50,11 @@ import org.mockito.Mockito;
 public final class RtYamlMappingTest {
 
     /**
-     * RtYamlMapping can fetch its key-ordered values.
+     * RtYamlMapping can fetch its values.
      */
     @Test
-    public void fetchesOrderedValues() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+    public void fetchesValues() {
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key2"), new PlainStringScalar("value1"));
         mappings.put(new PlainStringScalar("key3"), new PlainStringScalar("value2"));
         mappings.put(new PlainStringScalar("key1"), new PlainStringScalar("value3"));
@@ -66,22 +66,22 @@ public final class RtYamlMappingTest {
         MatcherAssert.assertThat(children.size(), Matchers.equalTo(3));
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
-            iterator.next(), Matchers.equalTo(new PlainStringScalar("value3"))
-        );
-        MatcherAssert.assertThat(
             iterator.next(), Matchers.equalTo(new PlainStringScalar("value1"))
         );
         MatcherAssert.assertThat(
             iterator.next(), Matchers.equalTo(new PlainStringScalar("value2"))
         );
+        MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new PlainStringScalar("value3"))
+        );
     }
 
     /**
-     * RtYamlMapping can fetch its ordered keys.
+     * RtYamlMapping can fetch its keys.
      */
     @Test
-    public void fetchesOrderedKeys() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+    public void fetchesKeys() {
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
@@ -93,13 +93,13 @@ public final class RtYamlMappingTest {
         MatcherAssert.assertThat(keys.size(), Matchers.equalTo(3));
         final Iterator<YamlNode> iterator = keys.iterator();
         MatcherAssert.assertThat(
+            iterator.next(), Matchers.equalTo(new PlainStringScalar("key3"))
+        );
+        MatcherAssert.assertThat(
             iterator.next(), Matchers.equalTo(new PlainStringScalar("key1"))
         );
         MatcherAssert.assertThat(
             iterator.next(), Matchers.equalTo(new PlainStringScalar("key2"))
-        );
-        MatcherAssert.assertThat(
-            iterator.next(), Matchers.equalTo(new PlainStringScalar("key3"))
         );
 
     }
@@ -109,7 +109,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsYamlScalarAsString() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         String value = "value2";
         PlainStringScalar key = new PlainStringScalar("key2");
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
@@ -131,7 +131,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsNullOnMissingScalar() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         PlainStringScalar key = new PlainStringScalar("missing");
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new PlainStringScalar("key4"), Mockito.mock(YamlNode.class));
@@ -151,7 +151,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsYamlMapping() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
@@ -167,7 +167,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsNullOnMissingYamlMapping() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
@@ -185,7 +185,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsYamlSequence() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
@@ -200,7 +200,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsNullOnMissingYamlSequence() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
@@ -217,7 +217,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsFoldedBlockScalarAsString() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(
             new PlainStringScalar("key3"),
             Mockito.mock(YamlSequence.class)
@@ -248,7 +248,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsLiteralBlockScalar() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(
             new PlainStringScalar("key3"),
             Mockito.mock(YamlSequence.class)
@@ -288,7 +288,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsNullOnMissingKey() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlMapping.class));
         RtYamlMapping map = new RtYamlMapping(mappings);
@@ -312,7 +312,7 @@ public final class RtYamlMappingTest {
     @Test
     public void comparesToScalar() {
         RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
+            new LinkedHashMap<YamlNode, YamlNode>()
         );
         PlainStringScalar scalar = new PlainStringScalar("java");
         MatcherAssert.assertThat(
@@ -327,7 +327,7 @@ public final class RtYamlMappingTest {
     @Test
     public void comparesToSequence() {
         RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
+            new LinkedHashMap<YamlNode, YamlNode>()
         );
         RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
         MatcherAssert.assertThat(
@@ -341,7 +341,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void comparesToMapping() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key3"), new PlainStringScalar("value1"));
         mappings.put(new PlainStringScalar("key2"), new PlainStringScalar("value2"));
         mappings.put(new PlainStringScalar("key1"), new PlainStringScalar("value3"));
@@ -350,7 +350,7 @@ public final class RtYamlMappingTest {
         mappings.put(new PlainStringScalar("key4"), new PlainStringScalar("value4"));
         YamlMapping thirdmap = new RtYamlMapping(mappings);
 
-        Map<YamlNode, YamlNode> othermappings = new HashMap<>();
+        Map<YamlNode, YamlNode> othermappings = new LinkedHashMap<>();
         othermappings.put(
             new PlainStringScalar("architect"),
             Mockito.mock(YamlSequence.class)
@@ -389,7 +389,6 @@ public final class RtYamlMappingTest {
     @Test
     public void prettyPrintsSimpleYaml() throws Exception {
         YamlMapping yaml = Yaml.createYamlMappingBuilder()
-            .add("name", "eo-yaml")
             .add("architect", "mihai")
             .add("developers",
                 Yaml.createYamlSequenceBuilder()
@@ -397,7 +396,9 @@ public final class RtYamlMappingTest {
                     .add("salikjan")
                     .add("sherif")
                     .build()
-            ).build();
+            )
+            .add("name", "eo-yaml")
+            .build();
         String expected = this.readTestResource("simpleMapping.yml");
         MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
     }
@@ -411,15 +412,6 @@ public final class RtYamlMappingTest {
         YamlMapping yaml = Yaml.createYamlMappingBuilder()
             .add(
                 Yaml.createYamlSequenceBuilder()
-                    .add("Chicago cubs")
-                    .add("Detroit Tigers")
-                    .build(),
-                Yaml.createYamlSequenceBuilder()
-                    .add("2001-07-23")
-                    .build()
-            )
-            .add(
-                Yaml.createYamlSequenceBuilder()
                     .add("Atlanta Braves")
                     .add("New York Yankees")
                     .build(),
@@ -427,6 +419,15 @@ public final class RtYamlMappingTest {
                     .add("2001-07-02")
                     .add("2001-08-12")
                     .add("2001-08-14")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlSequenceBuilder()
+                    .add("Chicago cubs")
+                    .add("Detroit Tigers")
+                    .build(),
+                Yaml.createYamlSequenceBuilder()
+                    .add("2001-07-23")
                     .build()
             )
             .build();
@@ -449,7 +450,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsScalarValue() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         PlainStringScalar value = new PlainStringScalar("value2");
         PlainStringScalar key = new PlainStringScalar("key2");
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
@@ -465,7 +466,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsYamlMappingValue() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         YamlMapping value = Mockito.mock(YamlMapping.class);
         PlainStringScalar key = new PlainStringScalar("key2");
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
@@ -481,7 +482,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsYamlSequenceValue() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         YamlSequence value = Mockito.mock(YamlSequence.class);
         PlainStringScalar key = new PlainStringScalar("key2");
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
@@ -497,7 +498,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void returnsNullOnMissingValue() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         YamlSequence value = Mockito.mock(YamlSequence.class);
         PlainStringScalar key = new PlainStringScalar("key2");
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlSequence.class));
