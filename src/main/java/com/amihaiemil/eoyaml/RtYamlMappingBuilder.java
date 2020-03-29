@@ -27,7 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -49,7 +49,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
      * Default ctor.
      */
     RtYamlMappingBuilder() {
-        this(new HashMap<YamlNode, YamlNode>());
+        this(new LinkedHashMap<>());
     }
 
     /**
@@ -80,7 +80,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
 
     @Override
     public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
-        final Map<YamlNode, YamlNode> withAddedPair = new HashMap<>();
+        final Map<YamlNode, YamlNode> withAddedPair = new LinkedHashMap<>();
         withAddedPair.putAll(this.pairs);
         withAddedPair.put(key, value);
         return new RtYamlMappingBuilder(withAddedPair);
