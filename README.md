@@ -12,7 +12,7 @@ YAML for Java. A [user-friendly](http://www.baeldung.com/design-a-user-friendly-
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** is a human-friendly, cross language, Unicode based data serialization language.
 
-To get the latest release, simply add the following to your ``pom.xml`` (it's always the latest version): 
+To get the latest release from Maven Central, simply add the following to your ``pom.xml`` (it's always the latest version): 
 
 ```xml
 <dependency>
@@ -24,6 +24,7 @@ To get the latest release, simply add the following to your ``pom.xml`` (it's al
 
 or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/4.0.0/eo-yaml-4.0.0-jar-with-dependencies.jar">fat</a> jar.
 
+The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages)!
 
 ## Usage
 
