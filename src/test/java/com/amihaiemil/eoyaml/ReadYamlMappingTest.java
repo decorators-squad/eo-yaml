@@ -73,11 +73,10 @@ public final class ReadYamlMappingTest {
     }
 
     /**
-     * ReadYamlMapping can return its keys. The keys should
-     * be ordered.
+     * ReadYamlMapping can return its keys.
      */
     @Test
-    public void returnsOrderedKeys(){
+    public void returnsKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("zkey: somethingElse", 0));
         lines.add(new RtYamlLine("bkey: ", 1));
@@ -93,7 +92,7 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = keys.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new PlainStringScalar("akey"))
+            Matchers.equalTo(new PlainStringScalar("zkey"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -101,15 +100,15 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new PlainStringScalar("zkey"))
+            Matchers.equalTo(new PlainStringScalar("akey"))
         );
     }
 
     /**
-     * ReadYamlMapping can return its key-ordered children.
+     * ReadYamlMapping can return its children.
      */
     @Test
-    public void returnsOrderedValuesOfStringKeys(){
+    public void returnsValuesOfStringKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("zkey: somethingElse", 0));
         lines.add(new RtYamlLine("bkey: ", 1));
@@ -129,7 +128,7 @@ public final class ReadYamlMappingTest {
         final Iterator<YamlNode> iterator = children.iterator();
         MatcherAssert.assertThat(
             iterator.next(),
-            Matchers.equalTo(new PlainStringScalar("something"))
+            Matchers.equalTo(new PlainStringScalar("somethingElse"))
         );
         MatcherAssert.assertThat(
             iterator.next(),
@@ -142,6 +141,10 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
+            Matchers.equalTo(new PlainStringScalar("something"))
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
             Matchers.equalTo(
                 Yaml.createYamlSequenceBuilder()
                     .add("seq")
@@ -149,18 +152,15 @@ public final class ReadYamlMappingTest {
                     .build()
             )
         );
-        MatcherAssert.assertThat(
-            iterator.next(),
-            Matchers.equalTo(new PlainStringScalar("somethingElse"))
-        );
     }
 
     /**
-     * ReadYamlMapping can return its key-ordered children.
+     * ReadYamlMapping can return its values when there are both
+     * String and YamlNode keys.
      * @checkstyle ExecutableStatementCount (100 lines)
      */
     @Test
-    public void returnsOrderedValuesOfStringAndComplexKeys(){
+    public void returnsValuesOfStringAndComplexKeys(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("first: somethingElse", 0));
         lines.add(new RtYamlLine("? ", 1));
@@ -189,6 +189,14 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             iterator.next(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("map", "value")
+                    .build()
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next(),
             Matchers.equalTo(new PlainStringScalar("something"))
         );
         MatcherAssert.assertThat(
@@ -202,14 +210,6 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             iterator.next(),
             Matchers.equalTo(new PlainStringScalar("simpleValue"))
-        );
-        MatcherAssert.assertThat(
-            iterator.next(),
-            Matchers.equalTo(
-                Yaml.createYamlMappingBuilder()
-                    .add("map", "value")
-                    .build()
-            )
         );
     }
 

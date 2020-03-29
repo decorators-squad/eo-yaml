@@ -63,7 +63,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new TreeSet<>();
+        final Set<YamlNode> keys = new LinkedHashSet<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(":")) {

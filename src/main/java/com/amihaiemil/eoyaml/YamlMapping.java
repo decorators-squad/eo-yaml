@@ -45,7 +45,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Return the keys' set of this mapping.<br><br>
-     * <b>Pay attention: </b> the keys are ordered.
      * @return Set of YamlNode keys.
      */
     Set<YamlNode> keys();
