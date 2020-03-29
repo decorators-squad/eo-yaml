@@ -99,13 +99,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public YamlMapping yamlMapping(final YamlNode key) {
-        final YamlNode value;
         final YamlMapping found;
-        if(key instanceof Scalar) {
-            value = this.valueOfStringKey(((Scalar) key).value());
-        } else {
-            value = this.valueOfNodeKey(key);
-        }
+        final YamlNode value = this.value(key);
         if(value instanceof ReadYamlMapping) {
             found = (ReadYamlMapping) value;
         } else {
@@ -116,13 +111,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public YamlSequence yamlSequence(final YamlNode key) {
-        final YamlNode value;
         final YamlSequence found;
-        if(key instanceof Scalar) {
-            value = this.valueOfStringKey(((Scalar) key).value());
-        } else {
-            value = this.valueOfNodeKey(key);
-        }
+        final YamlNode value = this.value(key);
         if(value instanceof ReadYamlSequence) {
             found = (ReadYamlSequence) value;
         } else {
@@ -133,13 +123,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public String string(final YamlNode key) {
-        final YamlNode value;
         final String found;
-        if(key instanceof Scalar) {
-            value = this.valueOfStringKey(((Scalar) key).value());
-        } else {
-            value = this.valueOfNodeKey(key);
-        }
+        final YamlNode value = this.value(key);
         if(value instanceof ReadPlainScalarValue) {
             found = ((ReadPlainScalarValue) value).value();
         } else {
@@ -150,30 +135,20 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public String foldedBlockScalar(final YamlNode key) {
-        final YamlNode value;
-        final Scalar found;
-        if(key instanceof Scalar) {
-            value = this.valueOfStringKey(((Scalar) key).value());
-        } else {
-            value = this.valueOfNodeKey(key);
-        }
+        final String found;
+        final YamlNode value = this.value(key);
         if(value instanceof ReadFoldedBlockScalar) {
-            found = (ReadFoldedBlockScalar) value;
+            found = ((ReadFoldedBlockScalar) value).toString();
         } else {
             found = null;
         }
-        return found.value();
+        return found;
     }
 
     @Override
     public Collection<String> literalBlockScalar(final YamlNode key) {
-        final YamlNode value;
         final Collection<String> found;
-        if(key instanceof Scalar) {
-            value = this.valueOfStringKey(((Scalar) key).value());
-        } else {
-            value = this.valueOfNodeKey(key);
-        }
+        final YamlNode value = this.value(key);
         if(value instanceof ReadLiteralBlockScalar) {
             found = Arrays.asList(
                 ((ReadLiteralBlockScalar) value)
