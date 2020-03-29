@@ -47,6 +47,7 @@ Here is what we have so far:
 * Others:
     - Automatic validation of the input's indentation.
     - Clear and detailed Exceptions. For instance, in the case of bad indentation, it will tell you exactly which line is problematic and why.
+    - Fully encapsulated. The user works only with Java Interfaces which can be elegantly extended via decoration.
 
 Also, you can have a look a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML that the library can read and handle so far.
 
