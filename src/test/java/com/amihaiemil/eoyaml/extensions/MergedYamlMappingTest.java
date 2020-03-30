@@ -192,7 +192,7 @@ public final class MergedYamlMappingTest {
         final YamlMapping original = Yaml.createYamlMappingBuilder()
                 .add("key1", "value1")
                 .add("key2", "value2")
-                .build();;
+                .build();
         MatcherAssert.assertThat(
             new MergedYamlMapping(
                 original,

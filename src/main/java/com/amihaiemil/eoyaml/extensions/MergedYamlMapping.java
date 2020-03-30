@@ -83,7 +83,7 @@ public final class MergedYamlMapping extends BaseYamlMapping {
         final YamlMapping original,
         final Supplier<YamlMapping> changed
     ) {
-        this(original, changed.get(), false);
+        this(original, changed, false);
     }
 
     /**
