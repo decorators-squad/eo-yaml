@@ -45,7 +45,7 @@ import java.util.function.Supplier;
  *     //or, via the Supplier constructor:
  *     final YamlMapping merged = new MergedYamlMapping(
  *         original,
- *         () -> {
+ *         () -&gt; {
  *             //create the changed version on-the-fly, right here.
  *         },
  *         true|false

@@ -45,7 +45,7 @@ import java.util.function.Supplier;
  *     //or, via the Supplier constructor:
  *     final YamlSequence merged = new MergedYamlSequence(
  *         original,
- *         () -> {
+ *         () -&gt; {
  *             //create the changed version on-the-fly, right here.
  *         },
  *         true|false
