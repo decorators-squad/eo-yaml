@@ -180,22 +180,22 @@ public final class MergedYamlMapping extends BaseYamlMapping {
         } else if (changed == null || changed.keys().isEmpty()) {
             merged = original;
         } else {
-            final YamlMappingBuilder builder = Yaml.createYamlMappingBuilder();
+            YamlMappingBuilder builder = Yaml.createYamlMappingBuilder();
             final Set<YamlNode> changedKeys = changed.keys();
             for (final YamlNode key : original.keys()) {
                 if(changedKeys.contains(key)) {
                     if(overrideConflicts) {
-                        builder.add(key, changed.value(key));
+                        builder = builder.add(key, changed.value(key));
                     } else {
-                        builder.add(key, original.value(key));
+                        builder = builder.add(key, original.value(key));
                     }
                     changedKeys.remove(key);
                 } else {
-                    builder.add(key, original.value(key));
+                    builder = builder.add(key, original.value(key));
                 }
             }
             for(final YamlNode key : changedKeys) {
-                builder.add(key, changed.value(key));
+                builder = builder.add(key, changed.value(key));
             }
             merged = builder.build();
         }

@@ -90,7 +90,17 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
         } else if (other == null) {
             result = 1;
         } else if (other instanceof Scalar) {
-            result = this.value().compareTo(((Scalar) other).value());
+            final String value = this.value();
+            final String otherVal = ((Scalar) other).value();
+            if(value == null && otherVal == null) {
+                result = 0;
+            } else if(value != null && otherVal == null) {
+                result = 1;
+            } else if (value == null && otherVal != null) {
+                result = -1;
+            } else {
+                result = this.value().compareTo(otherVal);
+            }
         }
         return result;
     }
