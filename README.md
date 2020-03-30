@@ -35,8 +35,6 @@ See the [Block Style Yaml](https://github.com/decorators-squad/eo-yaml/wiki/Bloc
 
 ## Features detailed (ongoing work!)
 
-Since the library is quite young, it doesn't support all the features of YAML yet.
-
 Here is what we have so far:
 
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
