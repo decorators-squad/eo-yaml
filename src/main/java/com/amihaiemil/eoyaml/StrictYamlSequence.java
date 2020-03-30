@@ -35,10 +35,14 @@ import java.util.Iterator;
  * if any of the methods of the decorated YamlSequence returns null
  * (if the given index points to a YamlNode that is not a YamlMapping,
  * for instance).
+ * @deprecated This class will be moved to the extensions package in one
+ *  of the future releases. There will be no changes to it other than a
+ *  more suitable package.
  * @author Salavat.Yalalov (s.yalalov@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
+@Deprecated
 public final class StrictYamlSequence extends BaseYamlSequence {
 
     /**

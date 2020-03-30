@@ -25,10 +25,11 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-package com.amihaiemil.eoyaml;
+package com.amihaiemil.eoyaml.extensions;
+
+import com.amihaiemil.eoyaml.*;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -57,20 +58,9 @@ import java.util.function.Supplier;
 public final class MergedYamlMapping extends BaseYamlMapping {
 
     /**
-     * The original YamlMapping into which the changes
-     * will be merged.
+     * The merged YamlMapping.
      */
-    private YamlMapping original;
-
-    /**
-     * The YamlMapping containing the changes.
-     */
-    private YamlMapping changed;
-
-    /**
-     * Override the conflicting keys or complain?
-     */
-    private boolean overrideConflicts;
+    private YamlMapping merged;
 
     /**
      * Constructor. By default, conflicting keys will not be overriden.
@@ -123,52 +113,93 @@ public final class MergedYamlMapping extends BaseYamlMapping {
         final YamlMapping changed,
         final boolean overrideConflicts
     ) {
-        this.original = original;
-        this.changed = changed;
-        this.overrideConflicts = overrideConflicts;
+        if(original == null && changed == null) {
+            throw new IllegalArgumentException(
+                "Both mappings cannot be null!"
+            );
+        } else {
+            this.merged = merge(original, changed, overrideConflicts);
+        }
     }
 
     @Override
     public Set<YamlNode> keys() {
-        final Set<YamlNode> merged = new LinkedHashSet<>();
-        merged.addAll(this.original.keys());
-        merged.addAll(this.changed.keys());
-        return merged;
+        return this.merged.keys();
     }
 
     @Override
     public Collection<YamlNode> values() {
-        return null;
+        return this.merged.values();
     }
 
     @Override
     public YamlNode value(final YamlNode key) {
-        return null;
+        return this.merged.value(key);
     }
 
     @Override
     public YamlMapping yamlMapping(final YamlNode key) {
-        return null;
+        return this.merged.yamlMapping(key);
     }
 
     @Override
     public YamlSequence yamlSequence(final YamlNode key) {
-        return null;
+        return this.merged.yamlSequence(key);
     }
 
     @Override
     public String string(final YamlNode key) {
-        return null;
+        return this.merged.string(key);
     }
 
     @Override
     public String foldedBlockScalar(final YamlNode key) {
-        return null;
+        return this.merged.foldedBlockScalar(key);
     }
 
     @Override
     public Collection<String> literalBlockScalar(final YamlNode key) {
-        return null;
+        return this.merged.literalBlockScalar(key);
+    }
+
+    /**
+     * Merge the two mappings.
+     * @param original Original mapping.
+     * @param changed Changed mapping.
+     * @param overrideConflicts Should conflicting keys be overriden or not?
+     * @return Merged mapping.
+     */
+    private static YamlMapping merge(
+        final YamlMapping original,
+        final YamlMapping changed,
+        final boolean overrideConflicts
+    ) {
+        final YamlMapping merged;
+        if(original == null || original.keys().isEmpty()) {
+            merged = changed;
+        } else if (changed == null || changed.keys().isEmpty()) {
+            merged = original;
+        } else {
+            final YamlMappingBuilder builder = Yaml.createYamlMappingBuilder();
+            final Set<YamlNode> changedKeys = changed.keys();
+            for (final YamlNode key : original.keys()) {
+                if(changedKeys.contains(key)) {
+                    if(overrideConflicts) {
+                        builder.add(key, changed.value(key));
+                    } else {
+                        builder.add(key, original.value(key));
+                    }
+                    changedKeys.remove(key);
+                } else {
+                    builder.add(key, original.value(key));
+                }
+            }
+            for(final YamlNode key : changedKeys) {
+                builder.add(key, changed.value(key));
+            }
+            merged = builder.build();
+        }
+        return merged;
     }
 
 }

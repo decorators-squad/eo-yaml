@@ -45,10 +45,10 @@ import java.util.Set;
  * @version $Id$
  * @since 4.0.0
  */
-abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
-
+public abstract class BaseYamlMapping
+    extends BaseYamlNode implements YamlMapping {
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 0;
         for(final YamlNode key : this.keys()) {
             hash += key.hashCode();
@@ -66,7 +66,7 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
      * @return True or false.
      */
     @Override
-    public boolean equals(final Object other) {
+    public final boolean equals(final Object other) {
         final boolean result;
         if (other == null || !(other instanceof YamlMapping)) {
             result = false;
@@ -98,7 +98,7 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
      *   a value &gt; 0 if this &gt; other
      */
     @Override
-    public int compareTo(final YamlNode other) {
+    public final int compareTo(final YamlNode other) {
         int result = 0;
         if (other == null || !(other instanceof YamlMapping)) {
             result = 1;
