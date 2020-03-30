@@ -178,6 +178,34 @@ public final class MergedYamlMappingTest {
     }
 
     /**
+     * It should merge the original one with the changed one provided
+     * by a Supplier.
+     */
+    @Test
+    public void mergesFromSupplier() {
+        final YamlMapping expected = Yaml.createYamlMappingBuilder()
+                .add("key1", "value1")
+                .add("key2", "value2")
+                .add("key3", "value3")
+                .add("key4", "value4")
+                .build();
+        final YamlMapping original = Yaml.createYamlMappingBuilder()
+                .add("key1", "value1")
+                .add("key2", "value2")
+                .build();;
+        MatcherAssert.assertThat(
+            new MergedYamlMapping(
+                original,
+                () -> Yaml.createYamlMappingBuilder()
+                    .add("key3", "value3")
+                    .add("key4", "value4")
+                    .build()
+            ),
+            Matchers.equalTo(expected)
+        );
+    }
+
+    /**
      * It should override a conflicting key even if the new value is null.
      */
     @Test
