@@ -40,7 +40,7 @@ Here is what we have so far:
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
 * Support for Folded and Literal Block Scalars ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Folded-and-Literal-Block-Scalars));
 * Convenience Type-Casting Methods ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Convenience-Type-Casting-Methods));
-* Easy Extension Thanks to Interfaces ([wiki](#));
+* Easy Extension Thanks to Interfaces ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Easy-Extension-Via-Interfaces));
 * Building and Reading YAML Streams, integrated with Java 8's Stream API ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
 * Others:
