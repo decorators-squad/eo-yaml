@@ -44,10 +44,11 @@ import java.util.Iterator;
  * @version $Id$
  * @since 4.0.0
  */
-abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
+public abstract class BaseYamlSequence
+    extends BaseYamlNode implements YamlSequence {
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 0;
         for(final YamlNode node : this.values()) {
             hash += node.hashCode();
@@ -62,7 +63,7 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
      * @return True or false
      */
     @Override
-    public boolean equals(final Object other) {
+    public final boolean equals(final Object other) {
         final boolean result;
         if (other == null || !(other instanceof YamlSequence)) {
             result = false;
@@ -95,7 +96,7 @@ abstract class BaseYamlSequence extends BaseYamlNode implements YamlSequence {
      *   a value &gt; 0 if this &gt; other
      */
     @Override
-    public int compareTo(final YamlNode other) {
+    public final int compareTo(final YamlNode other) {
         int result = 0;
         if (other == null || other instanceof Scalar) {
             result = 1;

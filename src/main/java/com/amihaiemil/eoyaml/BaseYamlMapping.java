@@ -143,9 +143,6 @@ public abstract class BaseYamlMapping
      *
      * Keep this method package-protected, it should NOT be visible to users.
      *
-     * @todo #227:30min Modify this method in order to properly indent Scalar
-     *  nodes. They are of multiple types (plain, folded, literal) and their
-     *  indentation differs. Don't forget to add unit tests.
      * @param indentation Indentation to start with. Usually, it's 0, since we
      *  don't want to have spaces at the beginning. But in the case of nested
      *  YamlNodes, this value may be greater than 0.
