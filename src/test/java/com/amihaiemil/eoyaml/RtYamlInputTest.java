@@ -35,7 +35,6 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -412,7 +411,6 @@ public final class RtYamlInputTest {
      *  YamlLines.line(...) is not aware of these possible numbering diffs.
      */
     @Test
-    @Ignore
     public void readsStreamWithoutFirstStartMarkerAndComments()
         throws Exception {
         final YamlInput input = Yaml.createYamlInput(

@@ -76,12 +76,10 @@ interface YamlLines extends Iterable<YamlLine> {
      */
     default YamlLine line(final int number) {
         final Collection<YamlLine> lines = this.lines();
-        int index = 0;
         for(final YamlLine line : lines){
-            if(index == number) {
+            if(line.number() == number) {
                 return line;
             }
-            index++;
         }
         throw new IllegalArgumentException(
             "Couldn't find line " + number
