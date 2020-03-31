@@ -67,7 +67,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
             ) {
                 kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
-                kids.add(new ReadPlainScalarValue(line));
+                kids.add(new ReadPlainScalar(line));
             }
         }
         return kids;
@@ -104,7 +104,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
         String value = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof ReadPlainScalarValue)) {
+            if(count == index && (node instanceof ReadPlainScalar)) {
                 value = ((Scalar) node).value();
                 break;
             }

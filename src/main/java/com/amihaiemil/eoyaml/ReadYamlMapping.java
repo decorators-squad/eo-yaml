@@ -125,8 +125,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
     public String string(final YamlNode key) {
         final String found;
         final YamlNode value = this.value(key);
-        if(value instanceof ReadPlainScalarValue) {
-            found = ((ReadPlainScalarValue) value).value();
+        if(value instanceof ReadPlainScalar) {
+            found = ((ReadPlainScalar) value).value();
         } else {
             found = null;
         }
@@ -178,7 +178,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
             } else if(trimmed.startsWith(key + ":")
                 && trimmed.length() > 1
             ) {
-                value = new ReadPlainScalarValue(line);
+                value = new ReadPlainScalar(line);
             }
         }
         return value;
@@ -212,7 +212,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
                     ){
-                        value = new ReadPlainScalarValue(colonLine);
+                        value = new ReadPlainScalar(colonLine);
                     } else {
                         throw new YamlReadingException(
                             "No value found for existing complex key: "

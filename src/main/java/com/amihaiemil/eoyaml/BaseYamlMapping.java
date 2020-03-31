@@ -222,7 +222,7 @@ public abstract class BaseYamlMapping
     ) {
         final BaseScalar indentable = (BaseScalar) scalar;
         if (indentable instanceof PlainStringScalar
-            || indentable instanceof ReadPlainScalarValue
+            || indentable instanceof ReadPlainScalar
         ) {
             print.append(indentable.indent(0)).append(System.lineSeparator());
         } else if (indentable instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar

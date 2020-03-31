@@ -33,7 +33,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 3.1.3
  */
-final class ReadPlainScalarValue extends BaseScalar {
+final class ReadPlainScalar extends BaseScalar {
 
     /**
      * Line where the plain scalar value is supposed to be found.
@@ -48,7 +48,7 @@ final class ReadPlainScalarValue extends BaseScalar {
      * Constructor.
      * @param line Read YamlLine.
      */
-    ReadPlainScalarValue(final YamlLine line) {
+    ReadPlainScalar(final YamlLine line) {
         this.line = line;
     }
 
