@@ -405,10 +405,6 @@ public final class RtYamlInputTest {
      * A stream of YAML Documents, when the first Start Marker is missing,
      * can be read. The file also contains comments.
      * @throws Exception If something goes wrong.
-     * @todo #211:30min Fix this unit test. The YAML from the file is not
-     *  read properly, most likely because of line-numbering Issues. The first
-     *  actual line of YAML has number 3 because the comments are omitted.
-     *  YamlLines.line(...) is not aware of these possible numbering diffs.
      */
     @Test
     public void readsStreamWithoutFirstStartMarkerAndComments()
