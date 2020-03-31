@@ -45,10 +45,10 @@ import java.util.Set;
  * @version $Id$
  * @since 4.0.0
  */
-abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
-
+public abstract class BaseYamlMapping
+    extends BaseYamlNode implements YamlMapping {
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         int hash = 0;
         for(final YamlNode key : this.keys()) {
             hash += key.hashCode();
@@ -66,7 +66,7 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
      * @return True or false.
      */
     @Override
-    public boolean equals(final Object other) {
+    public final boolean equals(final Object other) {
         final boolean result;
         if (other == null || !(other instanceof YamlMapping)) {
             result = false;
@@ -98,7 +98,7 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
      *   a value &gt; 0 if this &gt; other
      */
     @Override
-    public int compareTo(final YamlNode other) {
+    public final int compareTo(final YamlNode other) {
         int result = 0;
         if (other == null || !(other instanceof YamlMapping)) {
             result = 1;
@@ -143,9 +143,6 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
      *
      * Keep this method package-protected, it should NOT be visible to users.
      *
-     * @todo #227:30min Modify this method in order to properly indent Scalar
-     *  nodes. They are of multiple types (plain, folded, literal) and their
-     *  indentation differs. Don't forget to add unit tests.
      * @param indentation Indentation to start with. Usually, it's 0, since we
      *  don't want to have spaces at the beginning. But in the case of nested
      *  YamlNodes, this value may be greater than 0.
@@ -160,19 +157,22 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
         final String newLine = System.lineSeparator();
         final StringBuilder print = new StringBuilder();
         int spaces = indentation;
-        final StringBuilder indent = new StringBuilder();
+        final StringBuilder alignment = new StringBuilder();
         while (spaces > 0) {
-            indent.append(" ");
+            alignment.append(" ");
             spaces--;
         }
         for(final YamlNode key : this.keys()) {
-            print.append(indent);
+            print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
             if(indKey instanceof Scalar) {
-                print.append(indKey.indent(0)).append(": ");
+                print
+                    .append(indKey.indent(0))
+                    .append(":");
                 if (value instanceof Scalar) {
-                    print.append(value.indent(0)).append(newLine);
+                    print.append(" ");
+                    this.printScalar((Scalar) value, print, indentation);
                 } else  {
                     print
                         .append(newLine)
@@ -185,17 +185,17 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
                     .append(newLine)
                     .append(indKey.indent(indentation + 2))
                     .append(newLine)
-                    .append(indent)
+                    .append(alignment)
                     .append(":");
                 if(value instanceof Scalar) {
-                    print
-                        .append(" ").append(value.indent(0));
+                    print.append(" ");
+                    this.printScalar((Scalar) value, print, indentation);
                 } else {
                     print
                         .append(newLine)
-                        .append(value.indent(indentation + 2));
+                        .append(value.indent(indentation + 2))
+                        .append(newLine);
                 }
-                print.append(newLine);
             }
         }
         String printed = print.toString();
@@ -203,6 +203,47 @@ abstract class BaseYamlMapping extends BaseYamlNode implements YamlMapping {
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+
+    /**
+     * Print a Scalar. We need to check what kind of Scalar is it.
+     * If it's a plain scalar, we print it on the same line. If it's
+     * a folded or literal scalar, we must first print a line containing
+     * '>' or '|', then print the Scalar's lines bellow, with a +2 indentation.
+     * @checkstyle LineLength (50 lines)
+     * @param scalar YamlNode scalar.
+     * @param print Printer to add it to.
+     * @param indentation How much to indent it?
+     */
+    private void printScalar(
+        final Scalar scalar,
+        final StringBuilder print,
+        final int indentation
+    ) {
+        final BaseScalar indentable = (BaseScalar) scalar;
+        if (indentable instanceof PlainStringScalar
+            || indentable instanceof ReadPlainScalarValue
+        ) {
+            print.append(indentable.indent(0)).append(System.lineSeparator());
+        } else if (indentable instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
+            || indentable instanceof ReadFoldedBlockScalar
+        ) {
+            print
+                .append(">")
+                .append(System.lineSeparator())
+                .append(
+                    indentable.indent(indentation + 2)
+                ).append(System.lineSeparator());
+        } else if (indentable instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
+            || indentable instanceof ReadLiteralBlockScalar
+        ) {
+            print
+                .append("|")
+                .append(System.lineSeparator())
+                .append(
+                    indentable.indent(indentation + 2)
+                ).append(System.lineSeparator());
+        }
     }
 
     /**

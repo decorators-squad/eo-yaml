@@ -54,7 +54,6 @@ public final class RtYamlInputTest {
     @Test
     public void readsMappingWithoutComments() throws Exception {
         YamlMapping expected = Yaml.createYamlMappingBuilder()
-            .add("name", "eo-yaml")
             .add("architect", "mihai")
             .add("developers",
                 Yaml.createYamlSequenceBuilder()
@@ -62,7 +61,9 @@ public final class RtYamlInputTest {
                     .add("salikjan")
                     .add("sherif")
                     .build()
-            ).build();
+            )
+            .add("name", "eo-yaml")
+            .build();
         YamlMapping read = new RtYamlInput(
             new FileInputStream(
                 new File("src/test/resources/commentedMapping.yml")

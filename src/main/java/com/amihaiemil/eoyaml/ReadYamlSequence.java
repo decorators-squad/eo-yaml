@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * YamlSequence read from somewhere.
@@ -63,7 +60,11 @@ final class ReadYamlSequence extends BaseYamlSequence {
     public Collection<YamlNode> values() {
         final List<YamlNode> kids = new LinkedList<>();
         for(final YamlLine line : this.lines) {
-            if("-".equals(line.trimmed())) {
+            final String trimmed = line.trimmed();
+            if("-".equals(trimmed)
+                || trimmed.endsWith("|")
+                || trimmed.endsWith(">")
+            ) {
                 kids.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
                 kids.add(new ReadPlainScalar(line));
@@ -100,15 +101,47 @@ final class ReadYamlSequence extends BaseYamlSequence {
 
     @Override
     public String string(final int index) {
-        String scalar = null;
+        String value = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof Scalar) {
-                scalar = ((Scalar) node).value();
+            if(count == index && (node instanceof ReadPlainScalarValue)) {
+                value = ((Scalar) node).value();
+                break;
             }
-            count = count + 1;
+            count++;
         }
-        return scalar;
+        return value;
+    }
+
+    @Override
+    public String foldedBlockScalar(final int index) {
+        String value = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if(count == index && (node instanceof ReadFoldedBlockScalar)) {
+                value = ((Scalar) node).value();
+                break;
+            }
+            count++;
+        }
+        return value;
+    }
+
+    @Override
+    public Collection<String> literalBlockScalar(final int index) {
+        Collection<String> value = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if(count == index && (node instanceof ReadLiteralBlockScalar)) {
+                value = Arrays.asList(
+                    ((ReadLiteralBlockScalar) node)
+                        .value().split(System.lineSeparator())
+                );
+                break;
+            }
+            count++;
+        }
+        return value;
     }
 
     @Override

@@ -31,10 +31,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -83,10 +81,10 @@ public final class RtYamlSequenceTest {
     }
 
     /**
-     * A Sequence maintains its order of reading.
+     * A Sequence maintains its order of insertion.
      */
     @Test
-    public void sequenceKeepsOrder() {
+    public void sequenceKeepsInsertionOrder() {
         List<YamlNode> nodes = new LinkedList<>();
         PlainStringScalar first = new PlainStringScalar("test");
         PlainStringScalar sec = new PlainStringScalar("mihai");
@@ -98,22 +96,14 @@ public final class RtYamlSequenceTest {
         nodes.add(fourth);
         RtYamlSequence seq = new RtYamlSequence(nodes);
         Iterator<YamlNode> ordered = seq.values().iterator();
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(first)
-        );
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(sec)
-        );
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(third)
-        );
-        MatcherAssert.assertThat(
-            (PlainStringScalar) ordered.next(), Matchers.equalTo(fourth)
-        );
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(first));
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(sec));
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(third));
+        MatcherAssert.assertThat(ordered.next(), Matchers.equalTo(fourth));
     }
 
     /**
-     * RtYamlSequence can return a Scalar as a string.
+     * RtYamlSequence can return a Plain Scalar as a string.
      */
     @Test
     public void returnsYamlScalarAsString() {
@@ -125,6 +115,64 @@ public final class RtYamlSequenceTest {
         MatcherAssert.assertThat(
             seq.string(1), Matchers.equalTo("amber")
         );
+        MatcherAssert.assertThat(
+            seq.yamlMapping(1), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * RtYamlSequence can return a folded block Scalar as a string.
+     */
+    @Test
+    public void returnsFoldedBlockScalarAsString() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new PlainStringScalar("test"));
+        nodes.add(
+            new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
+                Arrays.asList("first", "second")
+            )
+        );
+        nodes.add(new PlainStringScalar("mihai"));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(
+            seq.foldedBlockScalar(1),
+            Matchers.equalTo("first second")
+        );
+        MatcherAssert.assertThat(
+            seq.yamlMapping(1), Matchers.nullValue()
+        );
+    }
+
+    /**
+     * RtYamlSequence can return a literal block Scalar as a
+     * Collection of string lines.
+     */
+    @Test
+    public void returnsLiteralBlockScalar() {
+        final List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new PlainStringScalar("test"));
+        nodes.add(
+            new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
+                Arrays.asList("first", "second")
+            )
+        );
+        nodes.add(new PlainStringScalar("mihai"));
+        final YamlSequence seq = new RtYamlSequence(nodes);
+        final Collection<String> literalLines = seq.literalBlockScalar(1);
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("first")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("second")
+        );
+
         MatcherAssert.assertThat(
             seq.yamlMapping(1), Matchers.nullValue()
         );
@@ -181,10 +229,8 @@ public final class RtYamlSequenceTest {
      */
     @Test
     public void comparesToMapping() {
-        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
-        RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
-        );
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<>());
+        RtYamlMapping map = new RtYamlMapping(new LinkedHashMap<>());
         MatcherAssert.assertThat(seq.compareTo(map), Matchers.lessThan(0));
     }
 

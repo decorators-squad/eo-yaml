@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.amihaiemil.web</groupId>
 	<artifactId>eo-yaml</artifactId>
-	<version>3.1.5-SNAPSHOT</version><!--rrv-sed-flag-->
+	<version>4.1.1-SNAPSHOT</version><!--rrv-sed-flag-->
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -83,6 +83,27 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<finalName>eo-yaml-${project.version}</finalName>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<!-- bind to the packaging phase -->
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -156,7 +177,7 @@
             </build>
         </profile>
 		<profile>
-			<id>release</id>
+			<id>genDocs</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -184,40 +205,53 @@
 								</goals>
 							</execution>
 						</executions>
-                                                <configuration>
-                                                    <tags>
-                                                      <tag>
-                                                        <name>todo</name>
-                                                        <placement>X</placement>
-                                                      </tag>
-                                                      <tag>
-                                                        <name>checkstyle</name>
-                                                        <placement>X</placement>
-                                                      </tag>
-                                                    </tags>
-                                                </configuration>
+						<configuration>
+							<tags>
+								<tag>
+									<name>todo</name>
+									<placement>X</placement>
+								</tag>
+								<tag>
+									<name>checkstyle</name>
+									<placement>X</placement>
+								</tag>
+							</tags>
+						</configuration>
 					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>signArtifactsGpg</id>
+			<build>
+				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-assembly-plugin</artifactId>
-						<version>2.6</version>
-						<configuration>
-							<finalName>eo-yaml-${project.version}</finalName>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-						</configuration>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
 						<executions>
 							<execution>
-								<id>make-assembly</id>
-								<!-- bind to the packaging phase -->
-								<phase>package</phase>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
 								<goals>
-									<goal>single</goal>
+									<goal>sign</goal>
 								</goals>
+								<configuration>
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
 							</execution>
 						</executions>
 					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>releaseToMavenCentral</id>
+			<build>
+				<plugins>
 					<plugin>
 						<groupId>org.sonatype.plugins</groupId>
 						<artifactId>nexus-staging-maven-plugin</artifactId>
@@ -239,38 +273,28 @@
 							</execution>
 						</executions>
 					</plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                                <configuration>
-                                    <gpgArguments>
-                                        <arg>--pinentry-mode</arg>
-                                        <arg>loopback</arg>
-                                    </gpgArguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
 				</plugins>
 			</build>
+			<distributionManagement>
+				<repository>
+					<id>oss.sonatype.org</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+				</repository>
+				<snapshotRepository>
+					<id>oss.sonatype.org</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+				</snapshotRepository>
+			</distributionManagement>
+		</profile>
+		<profile>
+			<id>releaseToGithubPackages</id>
+			<distributionManagement>
+				<repository>
+					<id>github</id>
+					<name>GitHub decorators-squad Apache Maven Packages</name>
+					<url>https://maven.pkg.github.com/decorators-squad/eo-yaml</url>
+				</repository>
+			</distributionManagement>
 		</profile>
 	</profiles>
-	<distributionManagement>
-		<repository>
-			<id>oss.sonatype.org</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-		<snapshotRepository>
-			<id>oss.sonatype.org</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>

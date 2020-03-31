@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -61,7 +58,7 @@ public final class YamlMapDumpTest {
         StudentSimplePojo studentD =
             new StudentSimplePojo("Albert", "Einestien", 30, 4);
 
-        Map<Object, Object> map = new HashMap<>();
+        Map<Object, Object> map = new LinkedHashMap<>();
         map.put(studentA, studentB);
         map.put(studentC, studentD);
 
@@ -86,7 +83,7 @@ public final class YamlMapDumpTest {
             new StudentSimplePojo("John", "Doe", 25, 4);
         StudentSimplePojo studentB =
             new StudentSimplePojo("Albert", "Einestien", 30, 4);
-        Map<Object, Object> map = new HashMap<>();
+        Map<Object, Object> map = new LinkedHashMap<>();
         map.put("key1", studentA);
         map.put("key2", studentB);
 
@@ -107,7 +104,7 @@ public final class YamlMapDumpTest {
      */
     @Test
     public void representsMapOfStringsAndInteers() {
-        Map<Object, Object> map = new HashMap<>();
+        Map<Object, Object> map = new LinkedHashMap<>();
         map.put("key1", 12);
         map.put("key2", 13);
 

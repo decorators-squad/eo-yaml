@@ -37,10 +37,14 @@ import java.util.Set;
  * to a different type of node than the demanded one.<br><br>
  * It is based on the fail-fast and null-is-bad idea <br>
  * see here: http://www.yegor256.com/2014/05/13/why-null-is-bad.html
+ * @deprecated This class will be moved to the extensions package in one
+ *  of the future releases. There will be no changes to it other than a
+ *  more suitable package.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
+@Deprecated
 public final class StrictYamlMapping extends BaseYamlMapping {
 
     /**
@@ -57,13 +61,13 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> values() {
-        return this.decorated.values();
+    public Set<YamlNode> keys() {
+        return this.decorated.keys();
     }
 
     @Override
-    public YamlMapping yamlMapping(final String key) {
-        return this.yamlMapping(new PlainStringScalar(key));
+    public Collection<YamlNode> values() {
+        return this.decorated.values();
     }
 
     @Override
@@ -78,11 +82,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new PlainStringScalar(key));
-    }
-
-    @Override
     public YamlSequence yamlSequence(final YamlNode key) {
         YamlSequence found = this.decorated.yamlSequence(key);
         if (found == null) {
@@ -91,11 +90,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
             );
         }
         return found;
-    }
-
-    @Override
-    public String string(final String key) {
-        return this.string(new PlainStringScalar(key));
     }
 
     @Override
@@ -110,8 +104,27 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Set<YamlNode> keys() {
-        return this.decorated.keys();
+    public String foldedBlockScalar(final YamlNode key) {
+        final String found = this.decorated.foldedBlockScalar(key);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No Folded Block Scalar found for key " + key
+            );
+        }
+        return found;
+    }
+
+    @Override
+    public Collection<String> literalBlockScalar(final YamlNode key) {
+        final Collection<String> found = this.decorated.literalBlockScalar(
+            key
+        );
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No Literal Block Scalar found for key " + key
+            );
+        }
+        return found;
     }
 
     @Override

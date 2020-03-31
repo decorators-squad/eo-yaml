@@ -29,7 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import static org.hamcrest.CoreMatchers.is;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 import org.hamcrest.MatcherAssert;
@@ -105,9 +105,7 @@ public final class PlainStringScalarTest {
     @Test
     public void comparesToMapping() {
         PlainStringScalar first = new PlainStringScalar("java");
-        RtYamlMapping map = new RtYamlMapping(
-            new HashMap<YamlNode, YamlNode>()
-        );
+        RtYamlMapping map = new RtYamlMapping(new LinkedHashMap<>());
         MatcherAssert.assertThat(first.compareTo(map), Matchers.lessThan(0));
     }
 

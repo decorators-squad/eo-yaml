@@ -28,10 +28,13 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -45,8 +48,6 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the YamlMapping from a given index.
-     * Note that a YamlSequence is ordered, so the index might differ from
-     * the original found at read time.
      */
     @Test
     public void returnsYamlMappingFromIndex(){
@@ -72,8 +73,6 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the YamlSequence from a given index.
-     * Note that a YamlSequence is ordered, so the index might differ from
-     * the original found at read time.
      */
     @Test
     public void returnsYamlSequenceFromIndex(){
@@ -96,9 +95,7 @@ public final class ReadYamlSequenceTest {
     }
 
     /**
-     * ReadYamlSequence can return the YamlMapping from a given index.
-     * Note that a YamlSequence is ordered, so the index might differ from
-     * the original found at read time.
+     * ReadYamlSequence can return the plain scalar string from a given index.
      */
     @Test
     public void returnsStringFromIndex(){
@@ -111,6 +108,66 @@ public final class ReadYamlSequenceTest {
         System.out.println(devops);
         MatcherAssert.assertThat(devops.string(0), Matchers.equalTo("rultor"));
         MatcherAssert.assertThat(devops.string(1), Matchers.equalTo("0pdd"));
+    }
+
+    /**
+     * ReadYamlSequence can return the folded block scalar as a string,
+     * from a given index.
+     */
+    @Test
+    @Ignore
+    public void returnsFoldedBlockScalarStringFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- rultor", 0));
+        lines.add(new RtYamlLine("- 0pdd", 1));
+        lines.add(new RtYamlLine("- >", 2));
+        lines.add(new RtYamlLine("  first", 3));
+        lines.add(new RtYamlLine("  second", 4));
+        lines.add(new RtYamlLine("- another", 5));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        MatcherAssert.assertThat(
+            sequence.foldedBlockScalar(2),
+            Matchers.equalTo("first second")
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return the folded block scalar as a collection of
+     * string lines from a given index.
+     */
+    @Test
+    public void returnsLiteralBlockScalarFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- rultor", 0));
+        lines.add(new RtYamlLine("- 0pdd", 1));
+        lines.add(new RtYamlLine("- |", 2));
+        lines.add(new RtYamlLine("  first", 3));
+        lines.add(new RtYamlLine("  second", 4));
+        lines.add(new RtYamlLine("- another", 5));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final Collection<String> literalLines = sequence.literalBlockScalar(2);
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("first")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("second")
+        );
+        MatcherAssert.assertThat(
+            sequence.yamlMapping(2), Matchers.nullValue()
+        );
     }
 
     /**

@@ -1,0 +1,15 @@
+- plain scalar
+- |
+  literal
+  block
+  scalar
+- >
+  a scalar folded
+  on more lines
+  for readability
+- 
+  key: value
+- 
+  - a sequence
+  - of plain scalars
+  - as child

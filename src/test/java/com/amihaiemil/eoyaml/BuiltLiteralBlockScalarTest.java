@@ -36,13 +36,12 @@ import java.util.List;
 
 /**
  * Unit tests for
- * {@link com.amihaiemil.eoyaml.RtYamlScalarBuilder.BuiltBlockScalar}.
+ * {@link com.amihaiemil.eoyaml.RtYamlScalarBuilder.BuiltLiteralBlockScalar}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
  */
-public final class BuiltBlockScalarTest {
-
+public final class BuiltLiteralBlockScalarTest {
     /**
      * Indentation works when the user did not hardcode NewLines
      * in the provided strings.
@@ -56,26 +55,13 @@ public final class BuiltBlockScalarTest {
         lines.add("line1");
         lines.add("line2");
         lines.add("line3");
-        final Scalar folded = new RtYamlScalarBuilder.BuiltBlockScalar(
-            lines, true
-        );
-        MatcherAssert.assertThat(
-            ((BaseYamlNode) folded).indent(2),
-            Matchers.equalTo(
-                "  line1"
-                + System.lineSeparator()
-                + "  line2"
-                + System.lineSeparator()
-                + "  line3"
-            )
-        );
-        final Scalar literal = new RtYamlScalarBuilder.BuiltBlockScalar(
-            lines, false
+        final Scalar literal = new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
+            lines
         );
         MatcherAssert.assertThat(
             ((BaseYamlNode) literal).indent(2),
             Matchers.equalTo(
-                "  line1"
+            "  line1"
                 + System.lineSeparator()
                 + "  line2"
                 + System.lineSeparator()
@@ -96,30 +82,17 @@ public final class BuiltBlockScalarTest {
         final List<String> lines = new ArrayList<>();
         lines.add("line1" + System.lineSeparator() + "line2");
         lines.add("line3");
-        final Scalar folded = new RtYamlScalarBuilder.BuiltBlockScalar(
-            lines, true
-        );
-        MatcherAssert.assertThat(
-            ((BaseYamlNode) folded).indent(2),
-            Matchers.equalTo(
-                "  line1"
-                    + System.lineSeparator()
-                    + "  line2"
-                    + System.lineSeparator()
-                    + "  line3"
-            )
-        );
-        final Scalar literal = new RtYamlScalarBuilder.BuiltBlockScalar(
-            lines, false
+        final Scalar literal = new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
+            lines
         );
         MatcherAssert.assertThat(
             ((BaseYamlNode) literal).indent(2),
             Matchers.equalTo(
-                "  line1"
-                    + System.lineSeparator()
-                    + "  line2"
-                    + System.lineSeparator()
-                    + "  line3"
+            "  line1"
+                + System.lineSeparator()
+                + "  line2"
+                + System.lineSeparator()
+                + "  line3"
             )
         );
     }
@@ -133,27 +106,8 @@ public final class BuiltBlockScalarTest {
         lines.add("line1");
         lines.add("line2");
         lines.add("line3");
-        final Scalar folded = new RtYamlScalarBuilder.BuiltBlockScalar(
-            lines, true
-        );
-        MatcherAssert.assertThat(
-            folded.toString(),
-            Matchers.equalTo(
-                "---"
-                + System.lineSeparator()
-                + ">"
-                + System.lineSeparator()
-                + "  line1"
-                + System.lineSeparator()
-                + "  line2"
-                + System.lineSeparator()
-                + "  line3"
-                + System.lineSeparator()
-                + "..."
-            )
-        );
-        final Scalar literal = new RtYamlScalarBuilder.BuiltBlockScalar(
-            lines, false
+        final Scalar literal = new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
+            lines
         );
         MatcherAssert.assertThat(
             literal.toString(),

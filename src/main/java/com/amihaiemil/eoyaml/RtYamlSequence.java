@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * YAML sequence implementation (rt means runtime).
@@ -82,8 +79,37 @@ final class RtYamlSequence extends BaseYamlSequence {
     public String string(final int index) {
         final YamlNode value = this.nodes.get(index);
         final String found;
-        if (value instanceof Scalar) {
-            found = ((Scalar) value).value();
+        if (value instanceof PlainStringScalar) {
+            found = ((PlainStringScalar) value).value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public String foldedBlockScalar(final int index) {
+        final YamlNode value = this.nodes.get(index);
+        final String found;
+        if (value instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar) {
+            found = ((RtYamlScalarBuilder.BuiltFoldedBlockScalar) value)
+                .value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public Collection<String> literalBlockScalar(final int index) {
+        final YamlNode value = this.nodes.get(index);
+        final Collection<String> found;
+        if (value instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar) {
+            found = Arrays.asList(
+                ((RtYamlScalarBuilder.BuiltLiteralBlockScalar) value)
+                    .value()
+                    .split(System.lineSeparator())
+            );
         } else {
             found = null;
         }

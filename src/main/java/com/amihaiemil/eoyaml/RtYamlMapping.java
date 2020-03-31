@@ -39,10 +39,10 @@ import java.util.*;
 final class RtYamlMapping extends BaseYamlMapping {
 
     /**
-     * Key:value tree map (ordered keys).
+     * Key:value linked map (maintains the order of insertion).
      */
     private final Map<YamlNode, YamlNode> mappings =
-        new TreeMap<YamlNode, YamlNode>();
+        new LinkedHashMap<>();
 
     /**
      * Ctor.
@@ -53,8 +53,20 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlMapping yamlMapping(final String key) {
-        return this.yamlMapping(new PlainStringScalar(key));
+    public Set<YamlNode> keys() {
+        final Set<YamlNode> keys = new LinkedHashSet<>();
+        keys.addAll(this.mappings.keySet());
+        return keys;
+    }
+
+    @Override
+    public Collection<YamlNode> values() {
+        return this.mappings.values();
+    }
+
+    @Override
+    public YamlNode value(final YamlNode key) {
+        return this.mappings.get(key);
     }
 
     @Override
@@ -70,11 +82,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new PlainStringScalar(key));
-    }
-
-    @Override
     public YamlSequence yamlSequence(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final YamlSequence found;
@@ -87,15 +94,10 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final String key) {
-        return this.string(new PlainStringScalar(key));
-    }
-
-    @Override
     public String string(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final String found;
-        if (value != null && value instanceof Scalar) {
+        if (value != null && value instanceof PlainStringScalar) {
             found = ((Scalar) value).value();
         } else {
             found = null;
@@ -104,19 +106,35 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> values() {
-        return this.mappings.values();
+    public String foldedBlockScalar(final YamlNode key) {
+        final YamlNode value = this.mappings.get(key);
+        final String found;
+        if (value != null
+            && value instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
+        ) {
+            found = ((Scalar) value).value();
+        } else {
+            found = null;
+        }
+        return found;
     }
 
     @Override
-    public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new TreeSet<>();
-        keys.addAll(this.mappings.keySet());
-        return keys;
+    public Collection<String> literalBlockScalar(final YamlNode key) {
+        final YamlNode value = this.mappings.get(key);
+        final Collection<String> found;
+        if (value != null
+            && value instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
+        ) {
+            found = Arrays.asList(
+                ((RtYamlScalarBuilder.BuiltLiteralBlockScalar) value)
+                    .value()
+                    .split(System.lineSeparator())
+            );
+        } else {
+            found = null;
+        }
+        return found;
     }
 
-    @Override
-    public YamlNode value(final YamlNode key) {
-        return this.mappings.get(key);
-    }
 }

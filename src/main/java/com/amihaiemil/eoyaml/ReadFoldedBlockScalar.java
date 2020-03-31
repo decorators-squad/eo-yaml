@@ -54,7 +54,11 @@ final class ReadFoldedBlockScalar extends BaseScalar {
      * @param lines Given lines to represent.
      */
     ReadFoldedBlockScalar(final YamlLines lines) {
-        this.lines = lines;
+        this.lines = new NoScalarMarkers(
+            new NoDirectivesOrMarkers(
+                lines
+            )
+        );
     }
 
     @Override

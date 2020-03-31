@@ -62,7 +62,7 @@ public interface YamlScalarBuilder {
      * the created YAML:
      * <pre>
      *     plain: a very long scalar which should have been built as Folded
-     *     folded:>
+     *     folded:&gt;
      *       a very long scalar which
      *       has been folded for readability
      * </pre>

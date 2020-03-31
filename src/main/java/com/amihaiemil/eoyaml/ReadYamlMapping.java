@@ -34,6 +34,7 @@ import java.util.*;
  * YamlMapping read from somewhere. YAML directives and
  * document start/end markers are ignored. This is assumed
  * to be a plain YAML mapping.
+ * @checkstyle CyclomaticComplexity (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -60,164 +61,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> values() {
-        final List<YamlNode> values = new LinkedList<>();
-        for(final YamlNode key : this.keys()) {
-            values.add(this.value(key));
-        }
-        return values;
-    }
-
-    @Override
-    public YamlMapping yamlMapping(final YamlNode key) {
-        final YamlMapping found;
-        if(key instanceof Scalar) {
-            found = this.yamlMapping(((Scalar) key).value());
-        } else {
-            final YamlNode value = this.valueOfNodeKey(key);
-            if(value instanceof YamlMapping) {
-                found = (YamlMapping) value;
-            } else {
-                found = null;
-            }
-        }
-        return found;
-    }
-
-    @Override
-    public YamlMapping yamlMapping(final String key) {
-        final YamlMapping found;
-        final YamlNode value = this.valueOfStringKey(key);
-        if(value instanceof YamlMapping) {
-            found = (YamlMapping) value;
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
-    public YamlSequence yamlSequence(final YamlNode key) {
-        final YamlSequence found;
-        if(key instanceof Scalar) {
-            found = this.yamlSequence(((Scalar) key).value());
-        } else {
-            final YamlNode value = this.valueOfNodeKey(key);
-            if(value instanceof YamlSequence) {
-                found = (YamlSequence) value;
-            } else {
-                found = null;
-            }
-        }
-        return found;
-    }
-
-    @Override
-    public YamlSequence yamlSequence(final String key) {
-        final YamlSequence found;
-        final YamlNode value = this.valueOfStringKey(key);
-        if(value instanceof YamlSequence) {
-            found = (YamlSequence) value;
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
-    public String string(final YamlNode key) {
-        String value = null;
-        if(key instanceof Scalar) {
-            value = this.string(((Scalar) key).value());
-        } else {
-            boolean foundComplexKey = false;
-            for (final YamlLine line : this.lines) {
-                final String trimmed = line.trimmed();
-                if("?".equals(trimmed)) {
-                    final YamlNode keyNode = this.lines.nested(line.number())
-                            .toYamlNode(line);
-                    if(keyNode.equals(key)) {
-                        foundComplexKey = true;
-                        continue;
-                    }
-                }
-                if(foundComplexKey) {
-                    if(trimmed.endsWith(":")) {
-                        break;
-                    }
-                    if(trimmed.startsWith(":")) {
-                        value = new ReadPlainScalar(line).value();
-                        break;
-                    }
-                }
-            }
-        }
-        return value;
-    }
-
-    @Override
-    public String string(final String key) {
-        String value = null;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if(trimmed.endsWith(key + ":")) {
-                continue;
-            }
-            if(trimmed.startsWith(key + ":")) {
-                value = new ReadPlainScalar(line).value();
-            }
-        }
-        return value;
-    }
-
-    /**
-     * The YamlNode value associated with a String (scalar) key.
-     * @param key String key.
-     * @return YamlNode.
-     */
-    private YamlNode valueOfStringKey(final String key) {
-        YamlNode value = null;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if(trimmed.endsWith(key + ":")) {
-                value = this.lines.nested(line.number()).toYamlNode(line);
-            }
-        }
-        return value;
-    }
-
-    /**
-     * The YamlNode value associated with a YamlNode key
-     * (a "complex" key starting with '?').
-     * @param key YamlNode key.
-     * @return YamlNode.
-     */
-    private YamlNode valueOfNodeKey(final YamlNode key) {
-        YamlNode value = null;
-        for (final YamlLine line : this.lines) {
-            final String trimmed = line.trimmed();
-            if("?".equals(trimmed)) {
-                final YamlLines keyLines = this.lines.nested(
-                    line.number()
-                );
-                final YamlNode keyNode = keyLines.toYamlNode(line);
-                if(keyNode.equals(key)) {
-                    final YamlLine colonLine = this.lines.line(
-                        line.number() + keyLines.lines().size() + 1
-                    );
-                    if(":".equals(colonLine.trimmed())) {
-                        value = this.lines.nested(colonLine.number())
-                                    .toYamlNode(colonLine);
-                    }
-                }
-            }
-        }
-        return value;
-    }
-
-    @Override
     public Set<YamlNode> keys() {
-        final Set<YamlNode> keys = new TreeSet<>();
+        final Set<YamlNode> keys = new LinkedHashSet<>();
         for (final YamlLine line : this.lines) {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(":")) {
@@ -246,14 +91,149 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
+    public Collection<YamlNode> values() {
+        final List<YamlNode> values = new LinkedList<>();
+        for(final YamlNode key : this.keys()) {
+            values.add(this.value(key));
+        }
+        return values;
+    }
+
+    @Override
     public YamlNode value(final YamlNode key) {
-        YamlNode value = this.yamlMapping(key);
-        if(value == null) {
-            value = this.yamlSequence(key);
-            if(value == null) {
-                final String val = this.string(key);
-                if(val != null) {
-                    value = new PlainStringScalar(val);
+        final YamlNode value;
+        if(key instanceof Scalar) {
+            value = this.valueOfStringKey(((Scalar) key).value());
+        } else {
+            value = this.valueOfNodeKey(key);
+        }
+        return value;
+    }
+
+    @Override
+    public YamlMapping yamlMapping(final YamlNode key) {
+        final YamlMapping found;
+        final YamlNode value = this.value(key);
+        if(value instanceof ReadYamlMapping) {
+            found = (ReadYamlMapping) value;
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public YamlSequence yamlSequence(final YamlNode key) {
+        final YamlSequence found;
+        final YamlNode value = this.value(key);
+        if(value instanceof ReadYamlSequence) {
+            found = (ReadYamlSequence) value;
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public String string(final YamlNode key) {
+        final String found;
+        final YamlNode value = this.value(key);
+        if(value instanceof ReadPlainScalarValue) {
+            found = ((ReadPlainScalarValue) value).value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public String foldedBlockScalar(final YamlNode key) {
+        final String found;
+        final YamlNode value = this.value(key);
+        if(value instanceof ReadFoldedBlockScalar) {
+            found = ((ReadFoldedBlockScalar) value).toString();
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    @Override
+    public Collection<String> literalBlockScalar(final YamlNode key) {
+        final Collection<String> found;
+        final YamlNode value = this.value(key);
+        if(value instanceof ReadLiteralBlockScalar) {
+            found = Arrays.asList(
+                ((ReadLiteralBlockScalar) value)
+                    .value()
+                    .split(System.lineSeparator())
+            );
+        } else {
+            found = null;
+        }
+        return found;
+    }
+
+    /**
+     * The YamlNode value associated with a String (scalar) key.
+     * @param key String key.
+     * @return YamlNode.
+     */
+    private YamlNode valueOfStringKey(final String key) {
+        YamlNode value = null;
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if(trimmed.endsWith(key + ":")
+                || trimmed.matches("^" + key + "\\:[ ]*\\>$")
+                || trimmed.matches("^" + key + "\\:[ ]*\\|$")
+            ) {
+                value = this.lines.nested(line.number()).toYamlNode(line);
+            } else if(trimmed.startsWith(key + ":")
+                && trimmed.length() > 1
+            ) {
+                value = new ReadPlainScalarValue(line);
+            }
+        }
+        return value;
+    }
+
+    /**
+     * The YamlNode value associated with a YamlNode key
+     * (a "complex" key starting with '?').
+     * @param key YamlNode key.
+     * @return YamlNode.
+     */
+    private YamlNode valueOfNodeKey(final YamlNode key) {
+        YamlNode value = null;
+        for (final YamlLine line : this.lines) {
+            final String trimmed = line.trimmed();
+            if("?".equals(trimmed)) {
+                final YamlLines keyLines = this.lines.nested(
+                    line.number()
+                );
+                final YamlNode keyNode = keyLines.toYamlNode(line);
+                if(keyNode.equals(key)) {
+                    final YamlLine colonLine = this.lines.line(
+                        line.number() + keyLines.lines().size() + 1
+                    );
+                    if(":".equals(colonLine.trimmed())
+                        || colonLine.trimmed().matches("^\\:[ ]*\\>$")
+                        || colonLine.trimmed().matches("^\\:[ ]*\\|$")
+                    ) {
+                        value = this.lines.nested(colonLine.number())
+                                    .toYamlNode(colonLine);
+                    } else if(colonLine.trimmed().startsWith(":")
+                        && (colonLine.trimmed().length() > 1)
+                    ){
+                        value = new ReadPlainScalarValue(colonLine);
+                    } else {
+                        throw new YamlReadingException(
+                            "No value found for existing complex key: "
+                          + System.lineSeparator()
+                          + ((BaseYamlNode) key).indent(0)
+                        );
+                    }
+                    break;
                 }
             }
         }

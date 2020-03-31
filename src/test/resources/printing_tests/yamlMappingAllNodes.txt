@@ -1,0 +1,25 @@
+key1: plain scalar
+key2: |
+  literal
+  block
+  scalar
+key3: >
+  a scalar folded
+  on more lines
+  for readability
+key4:
+  key: value
+key5:
+  - a sequence
+  - of plain scalars
+  - as value
+?
+  - Atlanta Braves
+  - New York Yankees
+:
+  - 2001-07-02
+  - 2001-08-12
+  - 2001-08-14
+?
+  map: asKey
+: scalar

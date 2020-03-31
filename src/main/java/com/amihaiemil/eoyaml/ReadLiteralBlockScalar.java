@@ -54,7 +54,11 @@ final class ReadLiteralBlockScalar extends BaseScalar {
      * @param lines Given lines to represent.
      */
     ReadLiteralBlockScalar(final YamlLines lines) {
-        this.lines = lines;
+        this.lines = new NoScalarMarkers(
+            new NoDirectivesOrMarkers(
+                lines
+            )
+        );
     }
 
     @Override

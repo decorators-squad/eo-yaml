@@ -27,7 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.hamcrest.MatcherAssert;
@@ -49,7 +50,7 @@ public final class StrictYamlMappingTest {
      */
     @Test
     public void fetchesValues() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));
@@ -65,7 +66,7 @@ public final class StrictYamlMappingTest {
      */
     @Test
     public void fetchesKeys() {
-        Map<YamlNode, YamlNode> mappings = new HashMap<>();
+        Map<YamlNode, YamlNode> mappings = new LinkedHashMap<>();
         mappings.put(new PlainStringScalar("key1"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key2"), Mockito.mock(YamlNode.class));
         mappings.put(new PlainStringScalar("key3"), Mockito.mock(YamlNode.class));
@@ -126,6 +127,32 @@ public final class StrictYamlMappingTest {
     }
 
     /**
+     * StringYamlMapping can throw YamlNodeNotFoundException
+     * when the demanded folded block scalar is not found.
+     */
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullFoldedBlockScalarString() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        PlainStringScalar key = new PlainStringScalar("key");
+        Mockito.when(origin.foldedBlockScalar(key)).thenReturn(null);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        strict.foldedBlockScalar(key);
+    }
+
+    /**
+     * StringYamlMapping can throw YamlNodeNotFoundException
+     * when the demanded literal block scalar is not found.
+     */
+    @Test (expected = YamlNodeNotFoundException.class)
+    public void exceptionOnNullLiteralBlockScalarString() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        PlainStringScalar key = new PlainStringScalar("key");
+        Mockito.when(origin.literalBlockScalar(key)).thenReturn(null);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        strict.literalBlockScalar(key);
+    }
+
+    /**
      * StringYamlMapping can fetch a YamlMapping based in its key.
      */
     @Test
@@ -166,6 +193,39 @@ public final class StrictYamlMappingTest {
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.string("key"), Matchers.equalTo("found")
+        );
+    }
+
+    /**
+     * StrictYamlSequence can fetch a folded block scalar
+     * as String based in its key.
+     */
+    @Test
+    public void returnsFoldedBlockScalarString() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        YamlNode key = new PlainStringScalar("key");
+        Mockito.when(origin.foldedBlockScalar(key)).thenReturn("found");
+        YamlMapping strict = new StrictYamlMapping(origin);
+        MatcherAssert.assertThat(
+            strict.foldedBlockScalar(key),
+            Matchers.equalTo("found")
+        );
+    }
+
+    /**
+     * StringYamlMapping can fetch a literal block scalar
+     * as String based in its key.
+     */
+    @Test
+    public void returnsLiteralBlockScalar() {
+        YamlMapping origin = Mockito.mock(YamlMapping.class);
+        YamlNode key = new PlainStringScalar("key");
+        Collection<String> lines = Mockito.mock(Collection.class);
+        Mockito.when(origin.literalBlockScalar(key)).thenReturn(lines);
+        YamlMapping strict = new StrictYamlMapping(origin);
+        MatcherAssert.assertThat(
+            strict.literalBlockScalar(key),
+            Matchers.is(lines)
         );
     }
 

@@ -35,10 +35,14 @@ import java.util.Iterator;
  * if any of the methods of the decorated YamlSequence returns null
  * (if the given index points to a YamlNode that is not a YamlMapping,
  * for instance).
+ * @deprecated This class will be moved to the extensions package in one
+ *  of the future releases. There will be no changes to it other than a
+ *  more suitable package.
  * @author Salavat.Yalalov (s.yalalov@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
+@Deprecated
 public final class StrictYamlSequence extends BaseYamlSequence {
 
     /**
@@ -101,7 +105,39 @@ public final class StrictYamlSequence extends BaseYamlSequence {
         String found = this.decorated.string(index);
         if (found == null) {
             throw new YamlNodeNotFoundException(
-                "No String found for index " + index
+                "No String found at index " + index
+            );
+        }
+        return found;
+    }
+
+    /**
+     * Get the folded block String from the given index.
+     * @param index Integer index.
+     * @return String
+     */
+    @Override
+    public String foldedBlockScalar(final int index) {
+        String found = this.decorated.foldedBlockScalar(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No folded block scalar found at index " + index
+            );
+        }
+        return found;
+    }
+
+    /**
+     * Get the literal block Strings from the given index.
+     * @param index Integer index.
+     * @return Collection of String lines of the literal.
+     */
+    @Override
+    public Collection<String> literalBlockScalar(final int index) {
+        Collection<String> found = this.decorated.literalBlockScalar(index);
+        if (found == null) {
+            throw new YamlNodeNotFoundException(
+                "No String found at index " + index
             );
         }
         return found;

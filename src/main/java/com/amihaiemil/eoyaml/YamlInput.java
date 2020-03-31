@@ -74,7 +74,7 @@ public interface YamlInput {
      * Read the given input as a folded block scalar. e.g.
      * <pre>
      * ---
-     * >
+     * &gt;
      *   Long scalar which
      *   has been folded for
      *   readability

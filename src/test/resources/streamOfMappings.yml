@@ -1,13 +1,13 @@
 ---
   architect: mihai
-  developers: 
+  developers:
     - rultor
     - salikjan
     - sherif
   name: eo-yaml
 ---
   architect: vlad
-  developers: 
+  developers:
     - andrei
   name: eo-json-impl
 ---

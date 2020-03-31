@@ -44,12 +44,26 @@ import java.util.Set;
 public interface YamlMapping extends YamlNode {
 
     /**
+     * Return the keys' set of this mapping.<br><br>
+     * @return Set of YamlNode keys.
+     */
+    Set<YamlNode> keys();
+
+    /**
+     * Fetch the values of this mapping.
+     * @return Collection of {@link YamlNode}
+     */
+    Collection<YamlNode> values();
+
+    /**
      * Get the Yaml mapping associated with the given key.
      * @param key String key
      * @return Yaml mapping or null if the key is missing, or not pointing
      *  to a mapping.
      */
-    YamlMapping yamlMapping(final String key);
+    default YamlMapping yamlMapping(final String key) {
+        return this.yamlMapping(new PlainStringScalar(key));
+    }
 
     /**
      * Get the Yaml mapping associated with the given key.
@@ -65,7 +79,9 @@ public interface YamlMapping extends YamlNode {
      * @return Yaml sequence or null if the key is missing, or not pointing
      *  to a sequence.
      */
-    YamlSequence yamlSequence(final String key);
+    default YamlSequence yamlSequence(final String key) {
+        return this.yamlSequence(new PlainStringScalar(key));
+    }
 
     /**
      * Get the Yaml sequence associated with the given key.
@@ -81,15 +97,63 @@ public interface YamlMapping extends YamlNode {
      * @return String or null if the key is missing, or not pointing
      *  to a scalar.
      */
-    String string(final String key);
+    default String string(final String key) {
+        return this.string(new PlainStringScalar(key));
+    }
 
     /**
      * Get the String associated with the given key.
-     * @param key Yaml node (mapping or sequence) key
+     * @param key Yaml node key
      * @return String or null if the key is missing, or not pointing
      *  to a scalar.
      */
     String string(final YamlNode key);
+
+    /**
+     * Get the String folded block scalar associated with the given key.
+     * @param key String key
+     * @return String or null if the key is missing, or not pointing
+     *  to a folded block scalar.
+     */
+    default String foldedBlockScalar(final String key) {
+        return this.foldedBlockScalar(new PlainStringScalar(key));
+    }
+
+    /**
+     * Get the String folded block scalar associated with the given key.
+     * @param key Yaml node key.
+     * @return String or null if the key is missing, or not pointing
+     *  to a folded block scalar.
+     */
+    String foldedBlockScalar(final YamlNode key);
+
+    /**
+     * Get the String lines of the literal block scalar associated
+     * with the given key.
+     * @param key String key
+     * @return Collection of string or null if the key is missing,
+     *  or not pointing to a literal block scalar.
+     */
+    default Collection<String> literalBlockScalar(final String key) {
+        return this.literalBlockScalar(new PlainStringScalar(key));
+    }
+
+    /**
+     * Get the String folded block scalar associated with the given key.
+     * @param key String key
+     * @return String or null if the key is missing, or not pointing
+     *  to a folded block scalar.
+     */
+    Collection<String> literalBlockScalar(final YamlNode key);
+
+    /**
+     * Get the YamlNode mapped to the specified key.
+     * @param key String key.
+     * @return The found YamlNode or null if nothing is found.
+     */
+    default YamlNode value(final String key) {
+        return this.value(new PlainStringScalar(key));
+    }
 
     /**
      * Get the YamlNode mapped to the specified key.
@@ -98,19 +162,6 @@ public interface YamlMapping extends YamlNode {
      * @return The found YamlNode or null if nothing is found.
      */
     YamlNode value(final YamlNode key);
-
-    /**
-     * Return the keys' set of this mapping.<br><br>
-     * <b>Pay attention: </b> the keys are ordered.
-     * @return Set of YamlNode keys.
-     */
-    Set<YamlNode> keys();
-
-    /**
-     * Fetch the values of this mapping.
-     * @return Collection of {@link YamlNode}
-     */
-    Collection<YamlNode> values();
 
     /**
      * Convenience method to directly read an integer value
