@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.*;
 
 /**
@@ -224,7 +225,21 @@ final class ReadYamlMapping extends BaseYamlMapping {
             } else if ("?".equals(trimmed)) {
                 keys.add(this.lines.nested(line.number()).toYamlNode(line));
             } else {
-                keys.add(new ReadPlainScalarKey(line));
+                if(!trimmed.contains(":")) {
+                    throw new YamlReadingException(
+                        "Expected scalar key on line " 
+                        + (line.number() + 1) + "."
+                        + " The line should have the format " 
+                        + "'key: value' or 'key:'. "
+                        + "Instead, the line is: "
+                        + "[" + line.trimmed() + "]."
+                    );
+                }
+                final String key = trimmed.substring(
+                        0, trimmed.indexOf(":")).trim();
+                if(!key.isEmpty()) {
+                    keys.add(new PlainStringScalar(key));
+                }
             }
         }
         return keys;
@@ -239,7 +254,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 final String val = this.string(key);
                 if(val != null) {
                     value = new PlainStringScalar(val);
-
                 }
             }
         }
