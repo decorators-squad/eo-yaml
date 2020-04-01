@@ -28,6 +28,8 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,18 +48,28 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     private final Map<YamlNode, YamlNode> pairs;
 
     /**
+     * Comments on top of the key:value pairs.
+     */
+    private final List<Comment> comments;
+
+    /**
      * Default ctor.
      */
     RtYamlMappingBuilder() {
-        this(new LinkedHashMap<>());
+        this(new LinkedHashMap<>(), new LinkedList<>());
     }
 
     /**
      * Constructor.
      * @param pairs Pairs used in building the YamlMapping.
+     * @param comments Comments on top of the key:value pairs.
      */
-    RtYamlMappingBuilder(final Map<YamlNode, YamlNode> pairs) {
+    RtYamlMappingBuilder(
+        final Map<YamlNode, YamlNode> pairs,
+        final List<Comment> comments
+    ) {
         this.pairs = pairs;
+        this.comments = comments;
     }
 
     @Override
@@ -69,7 +81,22 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
         final Map<YamlNode, YamlNode> withAddedPair = new LinkedHashMap<>();
         withAddedPair.putAll(this.pairs);
         withAddedPair.put(key, value);
-        return new RtYamlMappingBuilder(withAddedPair);
+
+        final List<Comment> withAddedComment = new LinkedList<>();
+        withAddedComment.addAll(this.comments);
+        withAddedComment.add(
+            new Comment() {
+                @Override
+                public YamlNode yamlNode() {
+                    return key;
+                }
+                @Override
+                public String toString() {
+                    return comment;
+                }
+            }
+        );
+        return new RtYamlMappingBuilder(withAddedPair, withAddedComment);
     }
 
     @Override
