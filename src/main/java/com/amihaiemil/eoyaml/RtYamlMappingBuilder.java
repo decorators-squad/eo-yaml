@@ -84,24 +84,13 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
 
         final List<Comment> withAddedComment = new LinkedList<>();
         withAddedComment.addAll(this.comments);
-        withAddedComment.add(
-            new Comment() {
-                @Override
-                public YamlNode yamlNode() {
-                    return key;
-                }
-                @Override
-                public String toString() {
-                    return comment;
-                }
-            }
-        );
+        withAddedComment.add(new BuiltComment(key, comment));
         return new RtYamlMappingBuilder(withAddedPair, withAddedComment);
     }
 
     @Override
     public YamlMapping build(final String comment) {
-        return new RtYamlMapping(this.pairs);
+        return new RtYamlMapping(this.pairs, this.comments, comment);
     }
 
 }

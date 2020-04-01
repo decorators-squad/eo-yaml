@@ -49,7 +49,7 @@ class BuiltComment implements Comment {
     /**
      * Constructor.
      * @param node Yaml node to which this comment refers.
-     * @param value
+     * @param value The String comment.
      */
     BuiltComment(final YamlNode node, final String value) {
         this.node = node;
