@@ -51,7 +51,10 @@ final class ReadYamlStream extends BaseYamlStream {
     ReadYamlStream(final AllYamlLines lines) {
         this.lines = new WellIndented(
             new StartMarkers(
-                new NoDirectives(lines)
+                new Skip(
+                    lines,
+                    line -> line.trimmed().startsWith("%")
+                )
             )
         );
     }
