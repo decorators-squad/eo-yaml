@@ -61,7 +61,11 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     }
 
     @Override
-    public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
+    public YamlMappingBuilder add(
+        final YamlNode key,
+        final YamlNode value,
+        final String comment
+    ) {
         final Map<YamlNode, YamlNode> withAddedPair = new LinkedHashMap<>();
         withAddedPair.putAll(this.pairs);
         withAddedPair.put(key, value);
@@ -69,7 +73,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     }
 
     @Override
-    public YamlMapping build() {
+    public YamlMapping build(final String comment) {
         return new RtYamlMapping(this.pairs);
     }
 

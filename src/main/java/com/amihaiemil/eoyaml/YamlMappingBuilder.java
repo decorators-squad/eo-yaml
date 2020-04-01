@@ -42,9 +42,25 @@ public interface YamlMappingBuilder {
      * @return This builder
      */
     default YamlMappingBuilder add(final String key, final String value) {
+        return this.add(key, value, "");
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value String
+     * @param comment Comment that will appear on top of the pair.
+     * @return This builder
+     */
+    default YamlMappingBuilder add(
+        final String key,
+        final String value,
+        final String comment
+    ) {
         return this.add(
             Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar(),
-            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar()
+            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar(),
+            comment
         );
     }
 
@@ -55,9 +71,25 @@ public interface YamlMappingBuilder {
      * @return This builder
      */
     default YamlMappingBuilder add(final YamlNode key, final String value) {
+        return this.add(key, value, "");
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key YamlNode (sequence or mapping)
+     * @param value String
+     * @param comment Comment that will appear on top of the pair.
+     * @return This builder
+     */
+    default YamlMappingBuilder add(
+        final YamlNode key,
+        final String value,
+        final String comment
+    ) {
         return this.add(
             key,
-            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar()
+            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar(),
+            comment
         );
     }
 
@@ -68,9 +100,25 @@ public interface YamlMappingBuilder {
      * @return This builder
      */
     default YamlMappingBuilder add(final String key, final YamlNode value) {
+        return this.add(key, value, "");
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value YamlNode (sequence or mapping)
+     * @param comment Comment that will appear on top of the pair.
+     * @return This builder
+     */
+    default YamlMappingBuilder add(
+        final String key,
+        final YamlNode value,
+        final String comment
+    ) {
         return this.add(
             Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar(),
-            value
+            value,
+            comment
         );
     }
 
@@ -80,11 +128,35 @@ public interface YamlMappingBuilder {
      * @param value YamlNode (sequence or mapping)
      * @return This builder
      */
-    YamlMappingBuilder add(final YamlNode key, final YamlNode value);
+    default YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
+        return this.add(key, value, "");
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key YamlNode (sequence or mapping)
+     * @param value YamlNode (sequence or mapping)
+     * @param comment Comment that will appear on top of this pair.
+     * @return This builder
+     */
+    YamlMappingBuilder add(
+        final YamlNode key,
+        final YamlNode value,
+        final String comment
+    );
 
     /**
      * Build the YamlMapping.
      * @return Built YamlMapping.
      */
-    YamlMapping build();
+    default YamlMapping build() {
+        return this.build("");
+    }
+
+    /**
+     * Build the YamlMapping.
+     * @param comment Comment on top of the YamlMapping.
+     * @return Built YamlMapping.
+     */
+    YamlMapping build(final String comment);
 }
