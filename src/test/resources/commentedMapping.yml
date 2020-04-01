@@ -1,7 +1,10 @@
-# Yaml for test
+# YamlMapping for test
+# the Dictator
 architect: mihai
-developers: # all the contributors here
-  - rultor # bot used for devops
+# all the contributors here
+developers:
+  - rultor
   - salikjan
   - sherif
+# name of the project
 name: eo-yaml

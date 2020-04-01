@@ -195,7 +195,9 @@ public abstract class BaseYamlMapping
             alignment.append(" ");
             spaces--;
         }
+        this.printPossibleComment(this.comment(), print, alignment.toString());
         for(final YamlNode key : this.keys()) {
+            this.printPossibleKeyComment(key, print, alignment.toString());
             print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
@@ -236,6 +238,52 @@ public abstract class BaseYamlMapping
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+
+    /**
+     * Add the comment referring to the mapping key, if any,
+     * to the print.
+     * @param key Key in the YamlMapping.
+     * @param print Print.
+     * @param alignment Alignment
+     */
+    private void printPossibleKeyComment(
+        final YamlNode key,
+        final StringBuilder print,
+        final String alignment
+    ) {
+        for(final Comment comment : this.keyComments) {
+            if(key.equals(comment.yamlNode())) {
+                this.printPossibleComment(comment, print, alignment);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Print a comment. Make sure to split the lines if there are more
+     * lines separated by NewLine and also add a '# ' in front of each
+     * line.
+     * @param comment Comment.
+     * @param print Printer StringBuilder.
+     * @param alignment Indentation.
+     */
+    private void printPossibleComment(
+        final Comment comment,
+        final StringBuilder print,
+        final String alignment
+    ) {
+        final String com = comment.value();
+        if(com.trim().length()!=0) {
+            String[] lines = com.split(System.lineSeparator());
+            for(final String line : lines) {
+                print
+                    .append(alignment)
+                    .append("# ")
+                    .append(line)
+                    .append(System.lineSeparator());
+            }
+        }
     }
 
     /**

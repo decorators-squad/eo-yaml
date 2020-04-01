@@ -119,7 +119,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     @Override
     public Comment comment() {
-        return null;
+        final Comment empty = new BuiltComment(this, "");
+        return empty;
     }
 
     @Override
