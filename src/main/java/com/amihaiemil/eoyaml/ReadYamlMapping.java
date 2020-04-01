@@ -53,8 +53,12 @@ final class ReadYamlMapping extends BaseYamlMapping {
     ReadYamlMapping(final AllYamlLines lines) {
         this.lines = new SameIndentationLevel(
             new WellIndented(
-                new NoDirectivesOrMarkers(
-                    lines
+                new Skip(
+                    lines,
+                    line -> "---".equals(line.trimmed()),
+                    line -> "...".equals(line.trimmed()),
+                    line -> line.trimmed().startsWith("%"),
+                    line -> line.trimmed().startsWith("!!")
                 )
             )
         );

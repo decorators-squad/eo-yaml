@@ -55,8 +55,12 @@ final class ReadLiteralBlockScalar extends BaseScalar {
      */
     ReadLiteralBlockScalar(final YamlLines lines) {
         this.lines = new NoScalarMarkers(
-            new NoDirectivesOrMarkers(
-                lines
+            new Skip(
+                lines,
+                line -> "---".equals(line.trimmed()),
+                line -> "...".equals(line.trimmed()),
+                line -> line.trimmed().startsWith("%"),
+                line -> line.trimmed().startsWith("!!")
             )
         );
     }
