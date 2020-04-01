@@ -31,9 +31,9 @@ package com.amihaiemil.eoyaml;
  * A YAML comment.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 5.0.0
+ * @since 4.2.0
  */
-interface Comment {
+public interface Comment {
     /**
      * Yaml node to which this comment refers.
      * @return YamlNode.

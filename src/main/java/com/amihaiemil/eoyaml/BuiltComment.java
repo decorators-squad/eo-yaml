@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.

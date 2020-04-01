@@ -51,6 +51,10 @@ import java.util.function.Supplier;
  *         true|false
  *     );
  * </pre>
+ * @todo #261:30min Find a way to also "merge" the comments from the mappings'
+ *  key:value pairs. The comment referring to the YamlMapping itself will
+ *  either be taken from the original YamlMapping or a new one can be accepted
+ *  via the constructor.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.1.0
@@ -135,6 +139,11 @@ public final class MergedYamlMapping extends BaseYamlMapping {
     @Override
     public YamlNode value(final YamlNode key) {
         return this.merged.value(key);
+    }
+
+    @Override
+    public Comment comment() {
+        return this.merged.comment();
     }
 
     @Override

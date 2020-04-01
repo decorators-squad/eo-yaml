@@ -39,6 +39,11 @@ import java.util.*;
 final class RtYamlMapping extends BaseYamlMapping {
 
     /**
+     * Comments on top of this mapping.
+     */
+    private Comment comment;
+
+    /**
      * Key:value linked map (maintains the order of insertion).
      */
     private final Map<YamlNode, YamlNode> mappings =
@@ -49,7 +54,7 @@ final class RtYamlMapping extends BaseYamlMapping {
      * @param entries Entries contained in this mapping.
      */
     RtYamlMapping(final Map<YamlNode, YamlNode> entries) {
-        this(entries, new ArrayList<>(), null);
+        this(entries, new ArrayList<>(), "");
     }
 
     /**
@@ -63,8 +68,9 @@ final class RtYamlMapping extends BaseYamlMapping {
         final List<Comment> keyComments,
         final String comment
     ) {
-        super(comment, keyComments);
+        super(keyComments);
         this.mappings.putAll(entries);
+        this.comment = new BuiltComment(this, comment);
     }
 
     @Override
@@ -82,6 +88,11 @@ final class RtYamlMapping extends BaseYamlMapping {
     @Override
     public YamlNode value(final YamlNode key) {
         return this.mappings.get(key);
+    }
+
+    @Override
+    public Comment comment() {
+        return this.comment;
     }
 
     @Override

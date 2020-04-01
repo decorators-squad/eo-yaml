@@ -137,4 +137,9 @@ public final class StrictYamlMapping extends BaseYamlMapping {
         }
         return found;
     }
+
+    @Override
+    public Comment comment() {
+        return this.decorated.comment();
+    }
 }

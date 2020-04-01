@@ -110,6 +110,18 @@ final class ReadYamlMapping extends BaseYamlMapping {
         return value;
     }
 
+    /**
+     * Return this mapping's comment.
+     * @todo #261:30min Continue with the support for comments by implementing
+     *  the reading of comments in the case of a YamlMapping. Comments for
+     *  key:value pairs are already implemented in BaseYamlMapping.
+     * @return Comment.
+     */
+    @Override
+    public Comment comment() {
+        return null;
+    }
+
     @Override
     public YamlMapping yamlMapping(final YamlNode key) {
         final YamlMapping found;

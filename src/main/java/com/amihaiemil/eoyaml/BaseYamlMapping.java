@@ -51,11 +51,6 @@ public abstract class BaseYamlMapping
     extends BaseYamlNode implements YamlMapping {
 
     /**
-     * Comments on top of this mapping.
-     */
-    private Comment comment;
-
-    /**
      * Comments on top of the key:value pairs.
      */
     private List<Comment> keyComments;
@@ -64,19 +59,14 @@ public abstract class BaseYamlMapping
      * Default ctor.
      */
     public BaseYamlMapping() {
-        this("", new ArrayList<>());
+        this(new ArrayList<>());
     }
 
     /**
      * Constructor.
-     * @param comment Comment on top of this YamlMapping.
      * @param keyComments Comment on top of the key: value entries.
      */
-    public BaseYamlMapping(
-        final String comment,
-        final List<Comment> keyComments
-    ) {
-        this.comment = new BuiltComment(this, comment);
+    public BaseYamlMapping(final List<Comment> keyComments) {
         this.keyComments = keyComments;
     }
 
@@ -177,14 +167,6 @@ public abstract class BaseYamlMapping
         final List<Comment> comments = new ArrayList<>();
         comments.addAll(this.keyComments);
         return comments;
-    }
-
-    /**
-     * Return the comment on top of this mapping.
-     * @return Comment.
-     */
-    final Comment comment() {
-        return this.comment;
     }
 
     /**

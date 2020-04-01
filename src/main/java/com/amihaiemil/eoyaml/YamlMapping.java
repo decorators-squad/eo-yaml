@@ -386,4 +386,10 @@ public interface YamlMapping extends YamlNode {
         }
         return null;
     }
+
+    /**
+     * Comment referring to this YamlMapping.
+     * @return Comment.
+     */
+    Comment comment();
 }
