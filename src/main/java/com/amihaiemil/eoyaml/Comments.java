@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * These are all the comments within a YAML node.<br><br>
  * For example, in the case of a mapping, they are the comments
@@ -57,5 +60,25 @@ public interface Comments extends Iterable<Comment> {
      * @return Comment.
      */
     Comment referringTo(final YamlNode node);
+
+    /**
+     * Empty comments. Use this as an alternative to null, when you have no
+     * Comments to give.
+     * @author Mihai Andronache (amihaiemil@gmail.com)
+     * @version $Id$
+     * @since 4.2.0
+     */
+    class Empty implements Comments {
+
+        @Override
+        public Comment referringTo(final YamlNode node) {
+            return new BuiltComment(node, "");
+        }
+
+        @Override
+        public Iterator<Comment> iterator() {
+            return new ArrayList<Comment>().iterator();
+        }
+    }
 
 }

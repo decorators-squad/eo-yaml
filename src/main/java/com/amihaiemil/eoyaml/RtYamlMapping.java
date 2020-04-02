@@ -68,7 +68,7 @@ final class RtYamlMapping extends BaseYamlMapping {
         final List<Comment> keyComments,
         final String comment
     ) {
-        super(keyComments);
+        super(new BuiltComments(keyComments));
         this.mappings.putAll(entries);
         this.comment = new BuiltComment(this, comment);
     }

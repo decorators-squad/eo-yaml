@@ -50,21 +50,21 @@ public abstract class BaseYamlMapping
     /**
      * Comments referring the key:value pairs.
      */
-    private List<Comment> keyComments;
+    private Comments comments;
 
     /**
      * Default ctor.
      */
     public BaseYamlMapping() {
-        this(new LinkedList<>());
+        this(new Comments.Empty());
     }
 
     /**
      * Constructor.
-     * @param keyComments Comment referring to the key: value entries.
+     * @param comments Comments referring to the key: value entries.
      */
-    public BaseYamlMapping(final List<Comment> keyComments) {
-        this.keyComments = keyComments;
+    public BaseYamlMapping(final Comments comments) {
+        this.comments = comments;
     }
 
     @Override
@@ -157,10 +157,8 @@ public abstract class BaseYamlMapping
     }
 
     @Override
-    public final List<Comment> keyComments() {
-        final List<Comment> comments = new ArrayList<>();
-        comments.addAll(this.keyComments);
-        return comments;
+    public final Comments comments() {
+        return this.comments;
     }
 
     /**
@@ -191,7 +189,9 @@ public abstract class BaseYamlMapping
         }
         this.printPossibleComment(this.comment(), print, alignment.toString());
         for(final YamlNode key : this.keys()) {
-            this.printPossibleKeyComment(key, print, alignment.toString());
+            this.printPossibleComment(
+                this.comments().referringTo(key), print, alignment.toString()
+            );
             print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
@@ -232,26 +232,6 @@ public abstract class BaseYamlMapping
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
-    }
-
-    /**
-     * Add the comment referring to the mapping key, if any,
-     * to the print.
-     * @param key Key in the YamlMapping.
-     * @param print Print.
-     * @param alignment Alignment
-     */
-    private void printPossibleKeyComment(
-        final YamlNode key,
-        final StringBuilder print,
-        final String alignment
-    ) {
-        for(final Comment comment : this.keyComments) {
-            if(key.equals(comment.yamlNode())) {
-                this.printPossibleComment(comment, print, alignment);
-                break;
-            }
-        }
     }
 
     /**
