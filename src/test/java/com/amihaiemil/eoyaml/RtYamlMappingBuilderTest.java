@@ -122,4 +122,22 @@ public final class RtYamlMappingBuilderTest {
             Matchers.equalTo(2)
         );
     }
+
+    /**
+     * RtYamlMappingBuilder can build a YamlMapping with a comment
+     * referring to it.
+     */
+    @Test
+    public void buildsYamlMappingWithComment() {
+        final YamlMapping mapping = new RtYamlMappingBuilder()
+            .add("key", "value")
+            .add("key1", "value1")
+            .build("some test mapping");
+        final Comment com = mapping.comment();
+        MatcherAssert.assertThat(com.yamlNode(), Matchers.is(mapping));
+        MatcherAssert.assertThat(
+            com.value(),
+            Matchers.equalTo("some test mapping")
+        );
+    }
 }

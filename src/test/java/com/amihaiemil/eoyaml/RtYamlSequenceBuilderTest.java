@@ -92,4 +92,21 @@ public final class RtYamlSequenceBuilderTest {
             Matchers.equalTo(2)
         );
     }
+    /**
+     * RtYamlSequenceBuilder can build a YamlSequence with a comment
+     * referring to it.
+     */
+    @Test
+    public void buildsYamlMappingWithComment() {
+        final YamlSequence seq = new RtYamlSequenceBuilder()
+            .add("element 1")
+            .add("element 2")
+            .build("some test sequence");
+        final Comment com = seq.comment();
+        MatcherAssert.assertThat(com.yamlNode(), Matchers.is(seq));
+        MatcherAssert.assertThat(
+            com.value(),
+            Matchers.equalTo("some test sequence")
+        );
+    }
 }
