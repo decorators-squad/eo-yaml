@@ -48,7 +48,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     private final Map<YamlNode, YamlNode> pairs;
 
     /**
-     * Comments on top of the key:value pairs.
+     * Comments referring to the key:value pairs.
      */
     private final List<Comment> comments;
 
@@ -62,7 +62,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     /**
      * Constructor.
      * @param pairs Pairs used in building the YamlMapping.
-     * @param comments Comments on top of the key:value pairs.
+     * @param comments Comments referring to the key:value pairs.
      */
     RtYamlMappingBuilder(
         final Map<YamlNode, YamlNode> pairs,

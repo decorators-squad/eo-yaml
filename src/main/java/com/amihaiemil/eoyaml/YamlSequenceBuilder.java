@@ -34,14 +34,26 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.0
  */
 public interface YamlSequenceBuilder {
+
     /**
      * Add a value to the sequence.
      * @param value String
      * @return This builder
      */
     default YamlSequenceBuilder add(final String value) {
+        return this.add(value, "");
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value String
+     * @param comment Comment referring to the added value.
+     * @return This builder
+     */
+    default YamlSequenceBuilder add(final String value, final String comment) {
         return this.add(
-            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar()
+            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar(),
+            comment
         );
     }
 
@@ -50,11 +62,30 @@ public interface YamlSequenceBuilder {
      * @param node YamlNode
      * @return This builder
      */
-    YamlSequenceBuilder add(final YamlNode node);
+    default YamlSequenceBuilder add(final YamlNode node) {
+        return this.add(node, "");
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param node YamlNode
+     * @param comment Comment referring to the added YamlNode.
+     * @return This builder
+     */
+    YamlSequenceBuilder add(final YamlNode node, final String comment);
 
     /**
      * Build the YamlSequence.
      * @return Built YamlSequence
      */
-    YamlSequence build();
+    default YamlSequence build() {
+        return this.build("");
+    }
+
+    /**
+     * Build the YamlSequence and specify a comment referring to it.
+     * @param comment Comment about the built YamlSequence.
+     * @return Built YamlSequence
+     */
+    YamlSequence build(final String comment);
 }
