@@ -39,7 +39,7 @@ import java.util.List;
  * Unit tests for {@link Skip}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 4.0.2
+ * @since 4.2.0
  */
 public final class SkipTest {
 

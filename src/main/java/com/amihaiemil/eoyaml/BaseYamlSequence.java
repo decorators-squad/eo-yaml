@@ -176,10 +176,12 @@ public abstract class BaseYamlSequence
             alignment.append(" ");
             spaces--;
         }
+        this.printPossibleComment(this.comment(), print, alignment.toString());
         for (final YamlNode node : this.values()) {
+            this.printPossibleElementComment(node, print, alignment.toString());
             print
                 .append(alignment)
-                .append("- ");
+                .append("-");
             if (node instanceof Scalar) {
                 this.printScalar((Scalar) node, print, indentation);
             } else  {
@@ -194,6 +196,52 @@ public abstract class BaseYamlSequence
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
+    }
+
+    /**
+     * Add the comment referring to the sequence element, if any,
+     * to the print.
+     * @param key Key in the YamlMapping.
+     * @param print Print.
+     * @param alignment Alignment
+     */
+    private void printPossibleElementComment(
+        final YamlNode key,
+        final StringBuilder print,
+        final String alignment
+    ) {
+        for(final Comment comment : this.comments) {
+            if(key.equals(comment.yamlNode())) {
+                this.printPossibleComment(comment, print, alignment);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Print a comment. Make sure to split the lines if there are more
+     * lines separated by NewLine and also add a '# ' in front of each
+     * line.
+     * @param comment Comment.
+     * @param print Printer StringBuilder.
+     * @param alignment Indentation.
+     */
+    private void printPossibleComment(
+        final Comment comment,
+        final StringBuilder print,
+        final String alignment
+    ) {
+        final String com = comment.value();
+        if(com.trim().length()!=0) {
+            String[] lines = com.split(System.lineSeparator());
+            for(final String line : lines) {
+                print
+                    .append(alignment)
+                    .append("# ")
+                    .append(line)
+                    .append(System.lineSeparator());
+            }
+        }
     }
 
     /**
@@ -215,12 +263,15 @@ public abstract class BaseYamlSequence
         if (indentable instanceof PlainStringScalar
             || indentable instanceof ReadPlainScalar
         ) {
-            print.append(indentable.indent(0)).append(System.lineSeparator());
+            print
+                .append(" ")
+                .append(indentable.indent(0))
+                .append(System.lineSeparator());
         } else if (indentable instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
             || indentable instanceof ReadFoldedBlockScalar
         ) {
             print
-                .append(">")
+                .append(" >")
                 .append(System.lineSeparator())
                 .append(
                     indentable.indent(indentation + 2)
@@ -229,7 +280,7 @@ public abstract class BaseYamlSequence
             || indentable instanceof ReadLiteralBlockScalar
         ) {
             print
-                .append("|")
+                .append(" |")
                 .append(System.lineSeparator())
                 .append(
                     indentable.indent(indentation + 2)
