@@ -76,8 +76,8 @@ final class RtYamlInput implements YamlInput {
         final ReadPlainScalar read;
         final Iterator<YamlLine> iterator = new Skip(
             this.readInput(),
-            line -> "---".equals(line.trimmed()),
-            line -> "...".equals(line.trimmed()),
+            line -> line.trimmed().startsWith("---"),
+            line -> line.trimmed().startsWith("..."),
             line -> line.trimmed().startsWith("%"),
             line -> line.trimmed().startsWith("!!")
         ).iterator();

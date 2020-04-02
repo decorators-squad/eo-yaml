@@ -58,8 +58,8 @@ final class ReadLiteralBlockScalar extends BaseScalar {
             lines,
             line -> line.trimmed().endsWith(">"),
             line -> line.trimmed().endsWith("|"),
-            line -> "---".equals(line.trimmed()),
-            line -> "...".equals(line.trimmed()),
+            line -> line.trimmed().startsWith("---"),
+            line -> line.trimmed().startsWith("..."),
             line -> line.trimmed().startsWith("%"),
             line -> line.trimmed().startsWith("!!")
         );

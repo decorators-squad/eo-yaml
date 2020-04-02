@@ -51,8 +51,8 @@ final class ReadYamlSequence extends BaseYamlSequence {
             new WellIndented(
                 new Skip(
                     lines,
-                    line -> "---".equals(line.trimmed()),
-                    line -> "...".equals(line.trimmed()),
+                    line -> line.trimmed().startsWith("---"),
+                    line -> line.trimmed().startsWith("..."),
                     line -> line.trimmed().startsWith("%"),
                     line -> line.trimmed().startsWith("!!")
                 )
