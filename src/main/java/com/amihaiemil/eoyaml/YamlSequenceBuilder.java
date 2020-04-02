@@ -39,7 +39,11 @@ public interface YamlSequenceBuilder {
      * @param value String
      * @return This builder
      */
-    YamlSequenceBuilder add(final String value);
+    default YamlSequenceBuilder add(final String value) {
+        return this.add(
+            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar()
+        );
+    }
 
     /**
      * Add a value to the sequence.

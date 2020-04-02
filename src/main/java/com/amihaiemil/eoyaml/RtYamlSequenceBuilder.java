@@ -57,12 +57,7 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     RtYamlSequenceBuilder(final List<YamlNode> nodes) {
         this.nodes = nodes;
     }
-
-    @Override
-    public YamlSequenceBuilder add(final String value) {
-        return this.add(new PlainStringScalar(value));
-    }
-
+    
     @Override
     public YamlSequenceBuilder add(final YamlNode node) {
         final List<YamlNode> list = new LinkedList<>();
