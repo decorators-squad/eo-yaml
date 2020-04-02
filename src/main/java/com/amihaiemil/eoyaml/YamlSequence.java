@@ -32,7 +32,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * A Yaml sequence.
@@ -106,10 +105,10 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Comments referring to the elements of this sequence.
-     * @return List of Comment which is empty if there are
-     *  no comments.
+     * @return Comments or Comments.Empty if there are no comments
+     *  to return.
      */
-    List<Comment> comments();
+    Comments comments();
 
     /**
      * Convenience method to directly read an integer value

@@ -67,7 +67,7 @@ final class RtYamlSequence extends BaseYamlSequence {
         final List<Comment> comments,
         final String comment
     ) {
-        super(comments);
+        super(new BuiltComments(comments));
         this.nodes.addAll(elements);
         this.comment = new BuiltComment(this, comment);
     }

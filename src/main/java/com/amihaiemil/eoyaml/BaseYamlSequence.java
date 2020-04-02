@@ -49,20 +49,20 @@ public abstract class BaseYamlSequence
     /**
      * Comments referring the elements of this YamlSequence.
      */
-    private List<Comment> comments;
+    private Comments comments;
 
     /**
      * Default ctor.
      */
     public BaseYamlSequence() {
-        this(new LinkedList<>());
+        this(new Comments.Empty());
     }
 
     /**
      * Constructor.
      * @param comments Comments referring to the elements of the sequence.
      */
-    public BaseYamlSequence(final List<Comment> comments) {
+    public BaseYamlSequence(final Comments comments) {
         this.comments = comments;
     }
 
@@ -144,10 +144,8 @@ public abstract class BaseYamlSequence
     }
 
     @Override
-    public final List<Comment> comments() {
-        final List<Comment> all = new ArrayList<>();
-        all.addAll(this.comments);
-        return all;
+    public final Comments comments() {
+        return this.comments;
     }
 
     /**
@@ -178,7 +176,11 @@ public abstract class BaseYamlSequence
         }
         this.printPossibleComment(this.comment(), print, alignment.toString());
         for (final YamlNode node : this.values()) {
-            this.printPossibleElementComment(node, print, alignment.toString());
+            this.printPossibleComment(
+                this.comments.referringTo(node),
+                print,
+                alignment.toString()
+            );
             print
                 .append(alignment)
                 .append("-");
@@ -196,26 +198,6 @@ public abstract class BaseYamlSequence
             printed = printed.substring(0, printed.length() - 1);
         }
         return printed;
-    }
-
-    /**
-     * Add the comment referring to the sequence element, if any,
-     * to the print.
-     * @param key Key in the YamlMapping.
-     * @param print Print.
-     * @param alignment Alignment
-     */
-    private void printPossibleElementComment(
-        final YamlNode key,
-        final StringBuilder print,
-        final String alignment
-    ) {
-        for(final Comment comment : this.comments) {
-            if(key.equals(comment.yamlNode())) {
-                this.printPossibleComment(comment, print, alignment);
-                break;
-            }
-        }
     }
 
     /**
