@@ -164,6 +164,11 @@ public final class MergedYamlSequence extends BaseYamlSequence {
         return this.merged.iterator();
     }
 
+    @Override
+    public Comment comment() {
+        return this.merged.comment();
+    }
+
     /**
      * Merge the two sequences.
      * @checkstyle CyclomaticComplexity (100 lines)

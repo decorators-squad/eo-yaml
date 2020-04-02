@@ -154,4 +154,9 @@ final class RtYamlSequence extends BaseYamlSequence {
         return this.nodes.iterator();
     }
 
+    @Override
+    public Comment comment() {
+        return this.comment;
+    }
+
 }

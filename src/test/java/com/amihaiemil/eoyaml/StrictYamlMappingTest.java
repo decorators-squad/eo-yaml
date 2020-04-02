@@ -243,4 +243,18 @@ public final class StrictYamlMappingTest {
             strict.value(key), Matchers.equalTo(value)
         );
     }
+
+    /**
+     * StrictYamlMapping can return the Comment.
+     */
+    @Test
+    public void returnsComment() {
+        final Comment com = Mockito.mock(Comment.class);
+        final YamlMapping original = Mockito.mock(YamlMapping.class);
+        Mockito.when(original.comment()).thenReturn(com);
+        MatcherAssert.assertThat(
+            new StrictYamlMapping(original).comment(),
+            Matchers.is(com)
+        );
+    }
 }

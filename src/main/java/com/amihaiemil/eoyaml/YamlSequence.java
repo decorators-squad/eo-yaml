@@ -99,6 +99,12 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     Iterator<YamlNode> iterator();
 
     /**
+     * Comment referring to this YamlSequence.
+     * @return Comment.
+     */
+    Comment comment();
+
+    /**
      * Comments referring to the elements of this sequence.
      * @return List of Comment which is empty if there are
      *  no comments.

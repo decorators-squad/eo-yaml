@@ -152,4 +152,9 @@ public final class StrictYamlSequence extends BaseYamlSequence {
     public Iterator<YamlNode> iterator() {
         return this.decorated.iterator();
     }
+
+    @Override
+    public Comment comment() {
+        return this.decorated.comment();
+    }
 }

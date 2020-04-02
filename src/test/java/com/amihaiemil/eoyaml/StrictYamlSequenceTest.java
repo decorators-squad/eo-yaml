@@ -227,4 +227,18 @@ public final class StrictYamlSequenceTest {
         );
     }
 
+    /**
+     * StrictYamlSequence can return the Comment.
+     */
+    @Test
+    public void returnsComment() {
+        final Comment com = Mockito.mock(Comment.class);
+        final YamlSequence original = Mockito.mock(YamlSequence.class);
+        Mockito.when(original.comment()).thenReturn(com);
+        MatcherAssert.assertThat(
+            new StrictYamlSequence(original).comment(),
+            Matchers.is(com)
+        );
+    }
+
 }
