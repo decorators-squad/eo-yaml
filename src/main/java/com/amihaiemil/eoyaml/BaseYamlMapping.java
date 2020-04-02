@@ -156,10 +156,7 @@ public abstract class BaseYamlMapping
         return result;
     }
 
-    /**
-     * Return the comments on top of the key:value pairs.
-     * @return List of Comment.
-     */
+    @Override
     public final List<Comment> keyComments() {
         final List<Comment> comments = new ArrayList<>();
         comments.addAll(this.keyComments);

@@ -143,10 +143,7 @@ public abstract class BaseYamlSequence
         return result;
     }
 
-    /**
-     * Return the comments referring to the elements in this sequence.
-     * @return List of Comment.
-     */
+    @Override
     public final List<Comment> comments() {
         final List<Comment> all = new ArrayList<>();
         all.addAll(this.comments);

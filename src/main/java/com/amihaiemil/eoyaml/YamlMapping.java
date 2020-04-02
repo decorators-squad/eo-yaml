@@ -397,7 +397,8 @@ public interface YamlMapping extends YamlNode {
     /**
      * Comments referring to the key:value pairs of this
      * mapping.
-     * @return List of Comment.
+     * @return List of Comment which is empty if there are
+     *  no comments.
      */
     List<Comment> keyComments();
 }
