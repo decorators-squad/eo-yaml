@@ -27,8 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Base YamlSequence which all implementations should extend.
@@ -46,6 +45,27 @@ import java.util.Iterator;
  */
 public abstract class BaseYamlSequence
     extends BaseYamlNode implements YamlSequence {
+
+    /**
+     * Comments referring the elements of this YamlSequence.
+     */
+    private List<Comment> comments;
+
+    /**
+     * Default ctor.
+     */
+    public BaseYamlSequence() {
+        this(new LinkedList<>());
+    }
+
+    /**
+     * Constructor.
+     * @param comments Comments referring to the elements of the sequence.
+     */
+    public BaseYamlSequence(final List<Comment> comments) {
+        this.comments = comments;
+    }
+
 
     @Override
     public final int hashCode() {
@@ -121,6 +141,16 @@ public abstract class BaseYamlSequence
             }
         }
         return result;
+    }
+
+    /**
+     * Return the comments referring to the elements in this sequence.
+     * @return List of Comment.
+     */
+    public final List<Comment> comments() {
+        final List<Comment> all = new ArrayList<>();
+        all.addAll(this.comments);
+        return all;
     }
 
     /**

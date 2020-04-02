@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -51,7 +48,7 @@ public abstract class BaseYamlMapping
     extends BaseYamlNode implements YamlMapping {
 
     /**
-     * Comments on top of the key:value pairs.
+     * Comments referring the key:value pairs.
      */
     private List<Comment> keyComments;
 
@@ -59,12 +56,12 @@ public abstract class BaseYamlMapping
      * Default ctor.
      */
     public BaseYamlMapping() {
-        this(new ArrayList<>());
+        this(new LinkedList<>());
     }
 
     /**
      * Constructor.
-     * @param keyComments Comment on top of the key: value entries.
+     * @param keyComments Comment referring to the key: value entries.
      */
     public BaseYamlMapping(final List<Comment> keyComments) {
         this.keyComments = keyComments;

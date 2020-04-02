@@ -39,6 +39,11 @@ import java.util.*;
 final class RtYamlSequence extends BaseYamlSequence {
 
     /**
+     * Comments referring to this sequence.
+     */
+    private Comment comment;
+
+    /**
      * Nodes in this sequence.
      */
     private final List<YamlNode> nodes = new LinkedList<>();
@@ -48,7 +53,23 @@ final class RtYamlSequence extends BaseYamlSequence {
      * @param elements Elements of this sequence.
      */
     RtYamlSequence(final Collection<YamlNode> elements) {
+        this(elements, new ArrayList<>(), "");
+    }
+
+    /**
+     * Constructor.
+     * @param elements Elements of this sequence.
+     * @param comments Comments referring to the elements of this sequence.
+     * @param comment Comment referring to this sequence itself.
+     */
+    RtYamlSequence(
+        final Collection<YamlNode> elements,
+        final List<Comment> comments,
+        final String comment
+    ) {
+        super(comments);
         this.nodes.addAll(elements);
+        this.comment = new BuiltComment(this, comment);
     }
 
     @Override

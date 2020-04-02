@@ -39,7 +39,7 @@ import java.util.*;
 final class RtYamlMapping extends BaseYamlMapping {
 
     /**
-     * Comments on top of this mapping.
+     * Comments referring to this mapping.
      */
     private Comment comment;
 

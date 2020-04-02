@@ -83,6 +83,6 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
 
     @Override
     public YamlSequence build(final String comment) {
-        return new RtYamlSequence(this.nodes);
+        return new RtYamlSequence(this.nodes, this.comments, comment);
     }
 }
