@@ -53,6 +53,7 @@ final class ReadYamlStream extends BaseYamlStream {
             new StartMarkers(
                 new Skip(
                     lines,
+                    line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("%")
                 )
             )

@@ -55,6 +55,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
             new WellIndented(
                 new Skip(
                     lines,
+                    line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("---"),
                     line -> line.trimmed().startsWith("..."),
                     line -> line.trimmed().startsWith("%"),

@@ -57,7 +57,7 @@ final class ReadFoldedBlockScalar extends BaseScalar {
         this.lines = new Skip(
             lines,
             line -> line.trimmed().endsWith(">"),
-            line -> line.trimmed().endsWith("|"),
+            line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("---"),
             line -> line.trimmed().startsWith("..."),
             line -> line.trimmed().startsWith("%"),

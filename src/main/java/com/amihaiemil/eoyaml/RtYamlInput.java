@@ -76,6 +76,7 @@ final class RtYamlInput implements YamlInput {
         final ReadPlainScalar read;
         final Iterator<YamlLine> iterator = new Skip(
             this.readInput(),
+            line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("---"),
             line -> line.trimmed().startsWith("..."),
             line -> line.trimmed().startsWith("%"),
@@ -114,11 +115,9 @@ final class RtYamlInput implements YamlInput {
             String line;
             int number = 0;
             while ((line = reader.readLine()) != null) {
-                final YamlLine current = new NoCommentsYamlLine(
-                    new RtYamlLine(line, number)
-                );
+                final YamlLine current = new RtYamlLine(line, number);
                 if(!current.trimmed().isEmpty()) {
-                    lines.add(new CachedYamlLine(current));
+                    lines.add(current);
                 }
                 number++;
             }

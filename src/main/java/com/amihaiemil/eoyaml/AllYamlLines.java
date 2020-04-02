@@ -123,7 +123,14 @@ final class AllYamlLines implements YamlLines {
      */
     private YamlNode mappingSequenceOrPlainScalar() {
         final YamlNode node;
-        final YamlLine first = this.iterator().next();
+        final YamlLine first = new Skip(
+            this,
+            line -> line.trimmed().startsWith("#"),
+            line -> line.trimmed().startsWith("---"),
+            line -> line.trimmed().startsWith("..."),
+            line -> line.trimmed().startsWith("%"),
+            line -> line.trimmed().startsWith("!!")
+        ).iterator().next();
         if(first.trimmed().startsWith("-")) {
             node = new ReadYamlSequence(this);
         } else if (first.trimmed().contains(":")){

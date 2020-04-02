@@ -56,7 +56,6 @@ final class ReadLiteralBlockScalar extends BaseScalar {
     ReadLiteralBlockScalar(final YamlLines lines) {
         this.lines = new Skip(
             lines,
-            line -> line.trimmed().endsWith(">"),
             line -> line.trimmed().endsWith("|"),
             line -> line.trimmed().startsWith("---"),
             line -> line.trimmed().startsWith("..."),
