@@ -40,16 +40,21 @@ import java.util.List;
 final class ReadYamlStream extends BaseYamlStream {
 
     /**
+     * All the lines of this YamlStream.
+     */
+    private final YamlLines all;
+
+    /**
      * Read lines of this YAML Stream.
      */
-    private final YamlLines lines;
+    private final YamlLines startMarkers;
 
     /**
      * Constructor.
      * @param lines All YAML lines as they are read from the input.
      */
     ReadYamlStream(final AllYamlLines lines) {
-        this.lines = new WellIndented(
+        this.startMarkers = new WellIndented(
             new StartMarkers(
                 new Skip(
                     lines,
@@ -58,19 +63,47 @@ final class ReadYamlStream extends BaseYamlStream {
                 )
             )
         );
+        this.all = new Skip(
+            lines,
+            line -> line.trimmed().startsWith("#"),
+            line -> line.trimmed().startsWith("%")
+        );
     }
 
     @Override
     public Collection<YamlNode> values() {
         final List<YamlNode> values = new ArrayList<>();
-        for(final YamlLine startDoc : this.lines) {
-            final YamlLines document = this.lines.nested(startDoc.number());
+        for(final YamlLine startDoc : this.startMarkers) {
+            final YamlLines document = this.readDocument(startDoc);
             if(!document.lines().isEmpty()) {
                 values.add(document.toYamlNode(startDoc));
             }
         }
         return values;
+    }
 
+    /**
+     * Read a document from this Stream.
+     * @param start Start marker of the document.
+     * @return YamlLines of the read document.
+     */
+    private YamlLines readDocument(final YamlLine start) {
+        final List<YamlLine> yamlDocLines = new ArrayList<>();
+        final YamlLine startLine = this.all.line(start.number());
+        if(!"---".equals(startLine.trimmed())) {
+            yamlDocLines.add(startLine);
+        }
+        for(final YamlLine line : this.all.lines()) {
+            if(line.number() > start.number()) {
+                final String current = line.trimmed();
+                if("---".equals(current) || "...".equals(current)) {
+                    break;
+                } else {
+                    yamlDocLines.add(line);
+                }
+            }
+        }
+        return new AllYamlLines(yamlDocLines);
     }
 
 }
