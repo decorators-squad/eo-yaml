@@ -38,6 +38,23 @@ import java.util.*;
 final class ReadYamlSequence extends BaseYamlSequence {
 
     /**
+     * Yaml line just previous to the one where this sequence starts. E.g.
+     * <pre>
+     * 0  sequence:
+     * 1    - elem1
+     * 2    - elem2
+     * </pre>
+     * In the above example the sequence consists of elem1 and elem2, while
+     * "previous" is line 0. If the sequence starts at the root, then line
+     * "previous" is {@link com.amihaiemil.eoyaml.YamlLine.NullYamlLine}; E.g.
+     * <pre>
+     * 0  - elem1
+     * 1  - elem2
+     * </pre>
+     */
+    private YamlLine previous;
+
+    /**
      * Lines read.
      */
     private YamlLines lines;
@@ -47,10 +64,21 @@ final class ReadYamlSequence extends BaseYamlSequence {
      * @param lines Given lines.
      */
     ReadYamlSequence(final AllYamlLines lines) {
+        this(new YamlLine.NullYamlLine(), lines);
+    }
+
+    /**
+     * Ctor.
+     * @param previous Line just before the start of this sequence.
+     * @param lines Given lines.
+     */
+    ReadYamlSequence(final YamlLine previous, final AllYamlLines lines) {
+        this.previous = previous;
         this.lines = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
                     lines,
+                    line -> line.number() <= previous.number(),
                     line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("---"),
                     line -> line.trimmed().startsWith("..."),
@@ -70,7 +98,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                 || trimmed.endsWith("|")
                 || trimmed.endsWith(">")
             ) {
-                kids.add(this.lines.nested(line.number()).toYamlNode(line));
+                kids.add(this.lines.toYamlNode(line));
             } else {
                 kids.add(new ReadPlainScalar(line));
             }

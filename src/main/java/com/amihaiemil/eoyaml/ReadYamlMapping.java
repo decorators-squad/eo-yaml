@@ -42,6 +42,23 @@ import java.util.*;
 final class ReadYamlMapping extends BaseYamlMapping {
 
     /**
+     * Yaml line just previous to the one where this mapping starts. E.g.
+     * <pre>
+     * 0  mapping:
+     * 1    key1: elem1
+     * 2    key2: elem2
+     * </pre>
+     * In the above example the mapping consists of keys key1 and key2, while
+     * "previous" is line 0. If the mapping starts at the root, then line
+     * "previous" is {@link com.amihaiemil.eoyaml.YamlLine.NullYamlLine}; E.g.
+     * <pre>
+     * 0  key1: elem1
+     * 1  key2: elem2
+     * </pre>
+     */
+    private YamlLine previous;
+
+    /**
      * Lines read.
      */
     private YamlLines lines;
@@ -51,10 +68,21 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * @param lines Given lines.
      */
     ReadYamlMapping(final AllYamlLines lines) {
+        this(new YamlLine.NullYamlLine(), lines);
+    }
+
+    /**
+     * Ctor.
+     * @param previous Line just before the start of this mapping.
+     * @param lines Given lines.
+     */
+    ReadYamlMapping(final YamlLine previous, final AllYamlLines lines) {
+        this.previous = previous;
         this.lines = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
                     lines,
+                    line -> line.number() <= previous.number(),
                     line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("---"),
                     line -> line.trimmed().startsWith("..."),

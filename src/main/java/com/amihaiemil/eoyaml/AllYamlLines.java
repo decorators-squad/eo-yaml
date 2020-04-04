@@ -109,9 +109,9 @@ final class AllYamlLines implements YamlLines {
         } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
             node = new ReadFoldedBlockScalar(this);
         } else if(prevLine.matches(Follows.FOLDED_SEQUENCE)) {
-            node = new ReadYamlSequence(this);
+            node = new ReadYamlSequence(prev, this);
         } else {
-            node = this.mappingSequenceOrPlainScalar();
+            node = this.mappingSequenceOrPlainScalar(prev);
         }
         return node;
     }
@@ -119,12 +119,14 @@ final class AllYamlLines implements YamlLines {
     /**
      * Try to figure out what YAML node (mapping, sequence or scalar) do these
      * lines represent.
+     * @param prev YamlLine just previous to the node we're trying to find.
      * @return Found YamlNode.
      */
-    private YamlNode mappingSequenceOrPlainScalar() {
+    private YamlNode mappingSequenceOrPlainScalar(final YamlLine prev) {
         final YamlNode node;
         final YamlLine first = new Skip(
             this,
+            line -> line.number() <= prev.number(),
             line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("---"),
             line -> line.trimmed().startsWith("..."),
@@ -132,18 +134,18 @@ final class AllYamlLines implements YamlLines {
             line -> line.trimmed().startsWith("!!")
         ).iterator().next();
         if(first.trimmed().startsWith("-")) {
-            node = new ReadYamlSequence(this);
+            node = new ReadYamlSequence(prev, this);
         } else if (first.trimmed().contains(":")){
-            node = new ReadYamlMapping(this);
+            node = new ReadYamlMapping(prev, this);
         } else if(this.lines().size() == 1) {
             node = new ReadPlainScalar(first);
         } else {
             throw new YamlReadingException(
                 "Could not parse YAML starting at line " + (first.number() + 1)
-              + " . It should be a sequence (line should start with '-'), "
-              + "a mapping (line should contain ':') or it should be a plain "
-              + "scalar, but it has " + this.lines.size() + " lines, "
-              + "while a plain scalar should be only 1 line!"
+                + " . It should be a sequence (line should start with '-'), "
+                + "a mapping (line should contain ':') or it should be a plain "
+                + "scalar, but it has " + this.lines.size() + " lines, "
+                + "while a plain scalar should be only 1 line!"
             );
         }
         return node;

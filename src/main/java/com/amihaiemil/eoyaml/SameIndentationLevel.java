@@ -78,6 +78,8 @@ final class SameIndentationLevel implements YamlLines {
                 YamlLine current = iterator.next();
                 if(current.indentation() == first.indentation()) {
                     sameIndentation.add(current);
+                } else if (current.indentation() < first.indentation()) {
+                    break;
                 }
             }
             iterator = sameIndentation.iterator();
