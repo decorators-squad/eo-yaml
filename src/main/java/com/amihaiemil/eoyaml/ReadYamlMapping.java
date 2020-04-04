@@ -251,17 +251,14 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     private YamlNode valueOfNodeKey(final YamlNode key) {
         YamlNode value = null;
-        for (final YamlLine line : this.lines) {
+        final Iterator<YamlLine> linesIt = this.lines.iterator();
+        while(linesIt.hasNext()) {
+            final YamlLine line = linesIt.next();
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final YamlLines keyLines = this.lines.nested(
-                    line.number()
-                );
-                final YamlNode keyNode = keyLines.toYamlNode(line);
+                final YamlNode keyNode = this.lines.toYamlNode(line);
                 if(keyNode.equals(key)) {
-                    final YamlLine colonLine = this.lines.line(
-                        line.number() + keyLines.lines().size() + 1
-                    );
+                    final YamlLine colonLine = linesIt.next();
                     if(":".equals(colonLine.trimmed())
                         || colonLine.trimmed().matches("^\\:[ ]*\\>$")
                         || colonLine.trimmed().matches("^\\:[ ]*\\|$")
