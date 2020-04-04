@@ -78,7 +78,7 @@ interface YamlLine extends Comparable<YamlLine> {
 
         @Override
         public int indentation() {
-            return 0;
+            return -1;
         }
 
         @Override

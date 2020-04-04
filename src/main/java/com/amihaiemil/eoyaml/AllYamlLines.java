@@ -105,9 +105,9 @@ final class AllYamlLines implements YamlLines {
         final String lastChar = prevLine.substring(prevLine.length()-1);
 
         if(lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
-            node = new ReadLiteralBlockScalar(this);
+            node = new ReadLiteralBlockScalar(prev,this);
         } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
-            node = new ReadFoldedBlockScalar(this);
+            node = new ReadFoldedBlockScalar(prev, this);
         } else if(prevLine.matches(Follows.FOLDED_SEQUENCE)) {
             node = new ReadYamlSequence(prev, this);
         } else {

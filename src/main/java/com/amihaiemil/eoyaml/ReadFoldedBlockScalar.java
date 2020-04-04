@@ -45,6 +45,19 @@ package com.amihaiemil.eoyaml;
 final class ReadFoldedBlockScalar extends BaseScalar {
 
     /**
+     * Yaml line just previous to the one where this scalar starts. E.g.
+     * <pre>
+     * 0  folded:>
+     * 1    folded scalar on more
+     * 2    lines for more
+     * 3    readability
+     * </pre>
+     * In the above example the scalar consists of line1 and line2, while
+     * "previous" is line 0.
+     */
+    private YamlLine previous;
+
+    /**
      * Lines to be represented as a wrapped scalar.
      */
     private YamlLines lines;
@@ -54,10 +67,21 @@ final class ReadFoldedBlockScalar extends BaseScalar {
      * @param lines Given lines to represent.
      */
     ReadFoldedBlockScalar(final YamlLines lines) {
+        this(new YamlLine.NullYamlLine(), lines);
+    }
+
+    /**
+     * Ctor.
+     * @param previous Previous YAML line.
+     * @param lines Given lines to represent.
+     */
+    ReadFoldedBlockScalar(final YamlLine previous, final YamlLines lines) {
+        this.previous = previous;
         this.lines = new Skip(
             lines,
+            line -> line.number() <= previous.number(),
+            line -> line.indentation() <= previous.indentation(),
             line -> line.trimmed().endsWith(">"),
-            line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("---"),
             line -> line.trimmed().startsWith("..."),
             line -> line.trimmed().startsWith("%"),
