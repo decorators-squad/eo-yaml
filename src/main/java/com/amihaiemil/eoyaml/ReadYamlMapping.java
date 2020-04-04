@@ -42,20 +42,36 @@ import java.util.*;
 final class ReadYamlMapping extends BaseYamlMapping {
 
     /**
-     * Lines read.
+     * Significant lines of this mapping.
      */
-    private YamlLines lines;
+    private final YamlLines significant;
+
+    /**
+     * Significant lines, with comments.
+     */
+    private final YamlLines withComments;
 
     /**
      * Ctor.
      * @param lines Given lines.
      */
     ReadYamlMapping(final AllYamlLines lines) {
-        this.lines = new SameIndentationLevel(
+        this.significant = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
                     lines,
                     line -> line.trimmed().startsWith("#"),
+                    line -> line.trimmed().startsWith("---"),
+                    line -> line.trimmed().startsWith("..."),
+                    line -> line.trimmed().startsWith("%"),
+                    line -> line.trimmed().startsWith("!!")
+                )
+            )
+        );
+        this.withComments = new SameIndentationLevel(
+            new WellIndented(
+                new Skip(
+                    lines,
                     line -> line.trimmed().startsWith("---"),
                     line -> line.trimmed().startsWith("..."),
                     line -> line.trimmed().startsWith("%"),
@@ -68,12 +84,15 @@ final class ReadYamlMapping extends BaseYamlMapping {
     @Override
     public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new LinkedHashSet<>();
-        for (final YamlLine line : this.lines) {
+        for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(":")) {
                 continue;
             } else if ("?".equals(trimmed)) {
-                keys.add(this.lines.nested(line.number()).toYamlNode(line));
+                keys.add(
+                    this.significant.nested(line.number())
+                        .toYamlNode(line)
+                );
             } else {
                 if(!trimmed.contains(":")) {
                     throw new YamlReadingException(
@@ -86,7 +105,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     );
                 }
                 final String key = trimmed.substring(
-                        0, trimmed.indexOf(":")).trim();
+                    0, trimmed.indexOf(":")
+                ).trim();
                 if(!key.isEmpty()) {
                     keys.add(new PlainStringScalar(key));
                 }
@@ -116,7 +136,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     /**
-     * Return this mapping's comment.
+     * Return this mapping's comment. Basically iterate over its lines and
+     * stop when a line doesn't start with "#" anymore -- that's where we
+     * assume the comment is over and the first significant line of the mapping
+     * is.
+     *
+     * Other special lines such as Start/End markers, directives etc are
+     * declared to be ignored in the constructor.
      * @todo #261:30min Continue with the support for comments by implementing
      *  the reading of comments in the case of a YamlMapping. Comments for
      *  key:value pairs are already implemented in BaseYamlMapping.
@@ -124,8 +150,15 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     @Override
     public Comment comment() {
-        final Comment empty = new BuiltComment(this, "");
-        return empty;
+        final List<YamlLine> comment = new ArrayList<>();
+        for(final YamlLine line : this.withComments) {
+            if(line.trimmed().startsWith("#")) {
+                comment.add(line);
+            } else {
+                break;
+            }
+        }
+        return new ReadComment(comment, this);
     }
 
     @Override
@@ -199,13 +232,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     private YamlNode valueOfStringKey(final String key) {
         YamlNode value = null;
-        for (final YamlLine line : this.lines) {
+        for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if(trimmed.endsWith(key + ":")
                 || trimmed.matches("^" + key + "\\:[ ]*\\>$")
                 || trimmed.matches("^" + key + "\\:[ ]*\\|$")
             ) {
-                value = this.lines.nested(line.number()).toYamlNode(line);
+                value = this.significant.nested(line.number()).toYamlNode(line);
             } else if(trimmed.startsWith(key + ":")
                 && trimmed.length() > 1
             ) {
@@ -223,22 +256,22 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     private YamlNode valueOfNodeKey(final YamlNode key) {
         YamlNode value = null;
-        for (final YamlLine line : this.lines) {
+        for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final YamlLines keyLines = this.lines.nested(
+                final YamlLines keyLines = this.significant.nested(
                     line.number()
                 );
                 final YamlNode keyNode = keyLines.toYamlNode(line);
                 if(keyNode.equals(key)) {
-                    final YamlLine colonLine = this.lines.line(
+                    final YamlLine colonLine = this.significant.line(
                         line.number() + keyLines.lines().size() + 1
                     );
                     if(":".equals(colonLine.trimmed())
                         || colonLine.trimmed().matches("^\\:[ ]*\\>$")
                         || colonLine.trimmed().matches("^\\:[ ]*\\|$")
                     ) {
-                        value = this.lines.nested(colonLine.number())
+                        value = this.significant.nested(colonLine.number())
                                     .toYamlNode(colonLine);
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
