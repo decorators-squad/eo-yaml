@@ -208,8 +208,8 @@ public final class StartMarkersTest {
         );
         final Iterator<YamlLine> iterator = smLines.iterator();
         MatcherAssert.assertThat(
-            iterator.next().trimmed(),
-            Matchers.equalTo("time: 12:00")
+            iterator.next(),
+            Matchers.instanceOf(YamlLine.NullYamlLine.class)
         );
         MatcherAssert.assertThat(
             iterator.next().trimmed(),

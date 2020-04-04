@@ -76,6 +76,9 @@ interface YamlLines extends Iterable<YamlLine> {
      */
     default YamlLine line(final int number) {
         final Collection<YamlLine> lines = this.lines();
+        if(number < 0 && lines.size() > 0) {
+            return lines.iterator().next();
+        }
         for(final YamlLine line : lines){
             if(line.number() == number) {
                 return line;

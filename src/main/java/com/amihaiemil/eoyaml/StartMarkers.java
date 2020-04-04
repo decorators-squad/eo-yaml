@@ -57,8 +57,8 @@ final class StartMarkers implements YamlLines {
 
     /**
      * Returns an iterator containing only the Start Marker lines (---),
-     * with the possible exception of the FIRST line, which can be the first
-     * line of the first document (in YAML Streams, the Start Marker
+     * with the possible exception of the FIRST line, which can also be
+     * the NullYamlLine (in YAML Streams, the Start Marker
      * of the first document can be missing). e.g. Both are valid:
      * <pre>
      * ---
@@ -79,7 +79,12 @@ final class StartMarkers implements YamlLines {
         Iterator<YamlLine> iterator = this.yamlLines.iterator();
         if (iterator.hasNext()) {
             final List<YamlLine> docsStart = new ArrayList<>();
-            docsStart.add(iterator.next());
+            final YamlLine first = iterator.next();
+            if("---".equals(first.trimmed())) {
+                docsStart.add(first);
+            } else {
+                docsStart.add(new YamlLine.NullYamlLine());
+            }
             while (iterator.hasNext()) {
                 final YamlLine current = iterator.next();
                 final String currentLine = current.trimmed();

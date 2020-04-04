@@ -102,16 +102,20 @@ final class AllYamlLines implements YamlLines {
     public YamlNode toYamlNode(final YamlLine prev) {
         final YamlNode node;
         final String prevLine = prev.trimmed();
-        final String lastChar = prevLine.substring(prevLine.length()-1);
-
-        if(lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
-            node = new ReadLiteralBlockScalar(prev,this);
-        } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
-            node = new ReadFoldedBlockScalar(prev, this);
-        } else if(prevLine.matches(Follows.FOLDED_SEQUENCE)) {
-            node = new ReadYamlSequence(prev, this);
-        } else {
+        if(prevLine.isEmpty()) {
             node = this.mappingSequenceOrPlainScalar(prev);
+        } else {
+            final String lastChar = prevLine.substring(prevLine.length() - 1);
+
+            if (lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
+                node = new ReadLiteralBlockScalar(prev, this);
+            } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
+                node = new ReadFoldedBlockScalar(prev, this);
+            } else if (prevLine.matches(Follows.FOLDED_SEQUENCE)) {
+                node = new ReadYamlSequence(prev, this);
+            } else {
+                node = this.mappingSequenceOrPlainScalar(prev);
+            }
         }
         return node;
     }

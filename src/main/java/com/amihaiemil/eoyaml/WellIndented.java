@@ -100,6 +100,10 @@ final class WellIndented implements YamlLines {
             wellIndented.add(previous);
             while(iterator.hasNext()) {
                 YamlLine line = iterator.next();
+                if(previous instanceof YamlLine.NullYamlLine) {
+                    previous = line;
+                    continue;
+                }
                 int prevIndent = previous.indentation();
                 int lineIndent = line.indentation();
                 if(previous.requireNestedIndentation()) {
