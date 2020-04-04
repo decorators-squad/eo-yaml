@@ -96,11 +96,6 @@ final class GreaterIndentation implements YamlLines {
     }
 
     @Override
-    public AllYamlLines nested(final int after) {
-        return this.yamlLines.nested(after);
-    }
-
-    @Override
     public YamlNode toYamlNode(final YamlLine prev) {
         return this.yamlLines.toYamlNode(prev);
     }

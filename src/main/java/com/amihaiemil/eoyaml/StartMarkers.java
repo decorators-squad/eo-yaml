@@ -97,33 +97,6 @@ final class StartMarkers implements YamlLines {
         return iterator;
     }
 
-    /**
-     * Lines which are nested after the given YamlLine. "Nested lines" means
-     * all the lines which are after it, until a Start Marker,
-     * an End Marker (...) or end-of-file is met.
-     * @param after Number of a YamlLine
-     * @return YamlLines
-     */
-    @Override
-    public AllYamlLines nested(final int after) {
-        final List<YamlLine> yamlDocLines = new ArrayList<>();
-        final YamlLine startLine = this.yamlLines.line(after);
-        if(!"---".equals(startLine.trimmed())) {
-            yamlDocLines.add(startLine);
-        }
-        for(final YamlLine line : this.lines()) {
-            if(line.number() > after) {
-                final String current = line.trimmed();
-                if("---".equals(current) || "...".equals(current)) {
-                    break;
-                } else {
-                    yamlDocLines.add(line);
-                }
-            }
-        }
-        return new AllYamlLines(yamlDocLines);
-    }
-
     @Override
     public Collection<YamlLine> lines() {
         return this.yamlLines.lines();

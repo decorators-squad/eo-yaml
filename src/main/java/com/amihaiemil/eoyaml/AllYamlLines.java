@@ -28,9 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * YamlLines default implementation. "All" refers to the fact that
@@ -71,31 +69,6 @@ final class AllYamlLines implements YamlLines {
     @Override
     public Collection<YamlLine> lines() {
         return this.lines;
-    }
-
-    /**
-     * Lines which are nested after the given YamlLine (lines which are
-     * <br> indented by 2 or more spaces beneath it).
-     * @param after Number of a YamlLine
-     * @return YamlLines
-     */
-    @Override
-    public AllYamlLines nested(final int after) {
-        final List<YamlLine> nestedLines = new ArrayList<YamlLine>();
-        YamlLine start = null;
-        for(final YamlLine line : this.lines()) {
-            if(line.number() == after) {
-                start = line;
-            }
-            if(line.number() > after) {
-                if(line.indentation() > start.indentation()) {
-                    nestedLines.add(line);
-                } else {
-                    break;
-                }
-            }
-        }
-        return new AllYamlLines(nestedLines);
     }
 
     @Override

@@ -63,13 +63,6 @@ interface YamlLines extends Iterable<YamlLine> {
     }
 
     /**
-     * Lines which are nested after the given YamlLine.
-     * @param after Number of a YamlLine
-     * @return YamlLines
-     */
-    AllYamlLines nested(final int after);
-
-    /**
      * Get a certain YamlLine.
      * @checkstyle ReturnCount (50 lines)
      * @param number Number of the line.
