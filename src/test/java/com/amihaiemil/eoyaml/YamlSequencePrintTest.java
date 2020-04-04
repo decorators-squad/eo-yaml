@@ -61,6 +61,7 @@ public final class YamlSequencePrintTest {
         final YamlSequence read = Yaml.createYamlInput(
             new File("src/test/resources/printing_tests/yamlSequenceAllNodes.txt")
         ).readYamlSequence();
+        System.out.print(read);
         MatcherAssert.assertThat(
             read.toString(),
             Matchers.equalTo(

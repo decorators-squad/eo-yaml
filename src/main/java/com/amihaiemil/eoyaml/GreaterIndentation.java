@@ -33,20 +33,19 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * SameIndentationLevel. Decorates some YamlLines
- * and iterates only over those which are at the same
- * indentation level with the first one.
- * Use this class as follows:
- * <pre>
- *  YamlLines noDirs = new SameIndentationLevel(
- *      new AllYamlLines(lines)
- *  ); //Iterates only over the lines which have the same indentation.
- * </pre>
+ * YamlLines implementation that looks for the lines which have
+ * an indentation level greater the one of a given reference line.
+ * The lines "nested" after the given reference line.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 3.0.2
+ * @since 4.2.0
  */
-final class SameIndentationLevel implements YamlLines {
+final class GreaterIndentation implements YamlLines {
+
+    /**
+     * Reference YAML line.
+     */
+    private YamlLine reference;
 
     /**
      * YamlLines.
@@ -55,36 +54,36 @@ final class SameIndentationLevel implements YamlLines {
 
     /**
      * Ctor.
+     * @param reference Reference YAML Line.
      * @param yamlLines The Yaml lines.
      */
-    SameIndentationLevel(final YamlLines yamlLines) {
+    GreaterIndentation(final YamlLine reference, final YamlLines yamlLines) {
+        this.reference = reference;
         this.yamlLines = yamlLines;
     }
 
     /**
      * Returns an iterator over these Yaml lines.
-     * It <b>only</b> iterates over the lines which are at the same
-     * level of indentation with the first! It breaks iteration
-     * when a line with smaller indentation is met since that is the
-     * beginning of another YAML object.
+     * It <b>only</b> iterates over the lines which have a greater
+     * indentation than the reference line. It breaks iteration when
+     * a line with a lesser or equal indentation is met, since that should
+     * be the beginning of another YAML object.
      * @return Iterator over these yaml lines.
      */
     @Override
     public Iterator<YamlLine> iterator() {
         Iterator<YamlLine> iterator = this.yamlLines.iterator();
         if (iterator.hasNext()) {
-            final List<YamlLine> sameIndentation = new ArrayList<>();
-            final YamlLine first = iterator.next();
-            sameIndentation.add(first);
+            final List<YamlLine> greater = new ArrayList<>();
             while (iterator.hasNext()) {
                 YamlLine current = iterator.next();
-                if(current.indentation() == first.indentation()) {
-                    sameIndentation.add(current);
-                } else if (current.indentation() < first.indentation()) {
+                if(current.indentation() > this.reference.indentation()) {
+                    greater.add(current);
+                } else if (current.indentation() <= this.reference.indentation()) {
                     break;
                 }
             }
-            iterator = sameIndentation.iterator();
+            iterator = greater.iterator();
         }
         return iterator;
     }
@@ -103,5 +102,4 @@ final class SameIndentationLevel implements YamlLines {
     public YamlNode toYamlNode(final YamlLine prev) {
         return this.yamlLines.toYamlNode(prev);
     }
-
 }

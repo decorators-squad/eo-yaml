@@ -76,15 +76,17 @@ final class ReadLiteralBlockScalar extends BaseScalar {
      */
     ReadLiteralBlockScalar(final YamlLine previous, final YamlLines lines) {
         this.previous = previous;
-        this.lines = new Skip(
-            lines,
-            line -> line.number() <= previous.number(),
-            line -> line.indentation() <= previous.indentation(),
-            line -> line.trimmed().endsWith("|"),
-            line -> line.trimmed().startsWith("---"),
-            line -> line.trimmed().startsWith("..."),
-            line -> line.trimmed().startsWith("%"),
-            line -> line.trimmed().startsWith("!!")
+        this.lines = new GreaterIndentation(
+            previous,
+            new Skip(
+                lines,
+                line -> line.number() <= previous.number(),
+                line -> line.trimmed().endsWith("|"),
+                line -> line.trimmed().startsWith("---"),
+                line -> line.trimmed().startsWith("..."),
+                line -> line.trimmed().startsWith("%"),
+                line -> line.trimmed().startsWith("!!")
+            )
         );
     }
 
