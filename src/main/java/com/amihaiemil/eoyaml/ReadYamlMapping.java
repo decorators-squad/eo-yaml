@@ -101,7 +101,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
             if(trimmed.startsWith(":")) {
                 continue;
             } else if ("?".equals(trimmed)) {
-                keys.add(this.lines.nested(line.number()).toYamlNode(line));
+                keys.add(this.lines.toYamlNode(line));
             } else {
                 if(!trimmed.contains(":")) {
                     throw new YamlReadingException(
@@ -233,7 +233,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 || trimmed.matches("^" + key + "\\:[ ]*\\>$")
                 || trimmed.matches("^" + key + "\\:[ ]*\\|$")
             ) {
-                value = this.lines.nested(line.number()).toYamlNode(line);
+                value = this.lines.toYamlNode(line);
             } else if(trimmed.startsWith(key + ":")
                 && trimmed.length() > 1
             ) {
@@ -266,8 +266,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                         || colonLine.trimmed().matches("^\\:[ ]*\\>$")
                         || colonLine.trimmed().matches("^\\:[ ]*\\|$")
                     ) {
-                        value = this.lines.nested(colonLine.number())
-                                    .toYamlNode(colonLine);
+                        value = this.lines.toYamlNode(colonLine);
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
                     ){
