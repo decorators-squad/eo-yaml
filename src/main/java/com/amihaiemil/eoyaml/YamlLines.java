@@ -71,6 +71,7 @@ interface YamlLines extends Iterable<YamlLine> {
 
     /**
      * Get a certain YamlLine.
+     * @checkstyle ReturnCount (50 lines)
      * @param number Number of the line.
      * @return YamlLine or throws {@link IndexOutOfBoundsException}.
      */

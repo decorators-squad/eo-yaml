@@ -79,7 +79,9 @@ final class GreaterIndentation implements YamlLines {
                 YamlLine current = iterator.next();
                 if(current.indentation() > this.reference.indentation()) {
                     greater.add(current);
-                } else if (current.indentation() <= this.reference.indentation()) {
+                } else if (
+                    current.indentation() <= this.reference.indentation()
+                ) {
                     break;
                 }
             }
