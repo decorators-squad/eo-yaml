@@ -55,9 +55,14 @@ final class ReadYamlSequence extends BaseYamlSequence {
     private YamlLine previous;
 
     /**
-     * Lines read.
+     * Lines of this mapping also containing the comments.
      */
-    private YamlLines lines;
+    private YamlLines comments;
+
+    /**
+     * Only the significant lines of this sequence.
+     */
+    private YamlLines significant;
 
     /**
      * Ctor.
@@ -74,7 +79,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
      */
     ReadYamlSequence(final YamlLine previous, final AllYamlLines lines) {
         this.previous = previous;
-        this.lines = new SameIndentationLevel(
+        this.significant = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
                     lines,
@@ -87,18 +92,41 @@ final class ReadYamlSequence extends BaseYamlSequence {
                 )
             )
         );
+        this.comments = new WellIndented(
+            new Skip(
+                lines,
+                line -> {
+                    final boolean skip;
+                    if(previous.number() < 0) {
+                        if(this.significant.iterator().hasNext()) {
+                            skip = line.number() >= this.significant
+                                    .iterator().next().number();
+                        } else {
+                            skip = false;
+                        }
+                    } else {
+                        skip = line.number() >= previous.number();
+                    }
+                    return skip;
+                },
+                line -> line.trimmed().startsWith("---"),
+                line -> line.trimmed().startsWith("..."),
+                line -> line.trimmed().startsWith("%"),
+                line -> line.trimmed().startsWith("!!")
+            )
+        );
     }
 
     @Override
     public Collection<YamlNode> values() {
         final List<YamlNode> kids = new LinkedList<>();
-        for(final YamlLine line : this.lines) {
+        for(final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if("-".equals(trimmed)
                 || trimmed.endsWith("|")
                 || trimmed.endsWith(">")
             ) {
-                kids.add(this.lines.toYamlNode(line));
+                kids.add(this.significant.toYamlNode(line));
             } else {
                 kids.add(new ReadPlainScalar(line));
             }
@@ -181,7 +209,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
     @SuppressWarnings("unused")
     public int size() {
         int size = 0;
-        for(final YamlLine line : this.lines) {
+        for(final YamlLine line : this.significant) {
             size = size + 1;
         }
         return size;
@@ -201,7 +229,14 @@ final class ReadYamlSequence extends BaseYamlSequence {
      */
     @Override
     public Comment comment() {
-        return new BuiltComment(this, "");
+        return new ReadComment(
+            new FirstCommentFound(
+                new Backwards(
+                    this.comments
+                )
+            ),
+            this
+        );
     }
 
 }
