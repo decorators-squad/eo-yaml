@@ -62,7 +62,9 @@ public interface YamlMapping extends YamlNode {
      *  to a mapping.
      */
     default YamlMapping yamlMapping(final String key) {
-        return this.yamlMapping(new PlainStringScalar(key));
+        return this.yamlMapping(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -80,7 +82,9 @@ public interface YamlMapping extends YamlNode {
      *  to a sequence.
      */
     default YamlSequence yamlSequence(final String key) {
-        return this.yamlSequence(new PlainStringScalar(key));
+        return this.yamlSequence(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -98,7 +102,9 @@ public interface YamlMapping extends YamlNode {
      *  to a scalar.
      */
     default String string(final String key) {
-        return this.string(new PlainStringScalar(key));
+        return this.string(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -116,7 +122,9 @@ public interface YamlMapping extends YamlNode {
      *  to a folded block scalar.
      */
     default String foldedBlockScalar(final String key) {
-        return this.foldedBlockScalar(new PlainStringScalar(key));
+        return this.foldedBlockScalar(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -135,7 +143,9 @@ public interface YamlMapping extends YamlNode {
      *  or not pointing to a literal block scalar.
      */
     default Collection<String> literalBlockScalar(final String key) {
-        return this.literalBlockScalar(new PlainStringScalar(key));
+        return this.literalBlockScalar(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -152,7 +162,9 @@ public interface YamlMapping extends YamlNode {
      * @return The found YamlNode or null if nothing is found.
      */
     default YamlNode value(final String key) {
-        return this.value(new PlainStringScalar(key));
+        return this.value(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -177,7 +189,9 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable integer.
      */
     default int integer(final String key) {
-        return this.integer(new PlainStringScalar(key));
+        return this.integer(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -215,7 +229,9 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable float.
      */
     default float floatNumber(final String key) {
-        return this.floatNumber(new PlainStringScalar(key));
+        return this.floatNumber(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -253,7 +269,9 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable double.
      */
     default double doubleNumber(final String key) {
-        return this.doubleNumber(new PlainStringScalar(key));
+        return this.doubleNumber(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -291,7 +309,9 @@ public interface YamlMapping extends YamlNode {
      *  is not a parsable long.
      */
     default long longNumber(final String key) {
-        return this.longNumber(new PlainStringScalar(key));
+        return this.longNumber(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -328,7 +348,9 @@ public interface YamlMapping extends YamlNode {
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDate date(final String key) {
-        return this.date(new PlainStringScalar(key));
+        return this.date(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
@@ -364,7 +386,9 @@ public interface YamlMapping extends YamlNode {
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDateTime dateTime(final String key) {
-        return this.dateTime(new PlainStringScalar(key));
+        return this.dateTime(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
     }
 
     /**
