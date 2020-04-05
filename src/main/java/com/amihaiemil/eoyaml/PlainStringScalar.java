@@ -32,7 +32,7 @@ package com.amihaiemil.eoyaml;
  * built YAML or in the unit tests.
  *
  * DO NOT use it when READING yaml. For reading use
- * {@link ReadPlainScalarValue}!
+ * {@link ReadPlainScalar}!
  *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
@@ -42,16 +42,31 @@ package com.amihaiemil.eoyaml;
 final class PlainStringScalar extends BaseScalar {
 
     /**
+     * Comments referring to this mapping.
+     */
+    private final Comment comment;
+
+    /**
      * This scalar's value.
      */
-    private String value;
+    private final String value;
 
     /**
      * Ctor.
      * @param value Given value for this scalar.
      */
     PlainStringScalar(final String value) {
+        this(value, "");
+    }
+
+    /**
+     * Ctor.
+     * @param comment Comment referring to this Scalar.
+     * @param value Given value for this scalar.
+     */
+    PlainStringScalar(final String value, final String comment) {
         this.value = value;
+        this.comment = new BuiltComment(this, comment);
     }
 
     /**
@@ -61,6 +76,11 @@ final class PlainStringScalar extends BaseScalar {
     @Override
     public String value() {
         return this.value;
+    }
+
+    @Override
+    public Comment comment() {
+        return this.comment;
     }
 
     /**
