@@ -42,7 +42,7 @@ package com.amihaiemil.eoyaml;
 final class PlainStringScalar extends BaseScalar {
 
     /**
-     * Comments referring to this mapping.
+     * Comments referring to this scalar.
      */
     private final Comment comment;
 

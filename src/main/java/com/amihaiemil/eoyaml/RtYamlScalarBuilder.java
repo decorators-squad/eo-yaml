@@ -95,6 +95,11 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
     static class BuiltFoldedBlockScalar extends BaseScalar {
 
         /**
+         * Comments referring to this scalar.
+         */
+        private final Comment comment;
+
+        /**
          * Lines of this scalar.
          */
         private final List<String> lines;
@@ -104,7 +109,19 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          * @param lines Given string lines.
          */
         BuiltFoldedBlockScalar(final List<String> lines) {
+            this(lines, "");
+        }
+
+        /**
+         * Ctor.
+         * @param comment Comment referring to this scalar.
+         * @param lines Given string lines.
+         */
+        BuiltFoldedBlockScalar(
+            final List<String> lines, final String comment
+        ) {
             this.lines = lines;
+            this.comment = new BuiltComment(this, comment);
         }
 
         /**
@@ -121,6 +138,11 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
             return this.lines.stream().map(
                 line -> line.replaceAll(System.lineSeparator(), " ")
             ).collect(Collectors.joining(" "));
+        }
+
+        @Override
+        public Comment comment() {
+            return this.comment;
         }
 
         /**
@@ -199,6 +221,11 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
     static class BuiltLiteralBlockScalar extends BaseScalar {
 
         /**
+         * Comments referring to this scalar.
+         */
+        private final Comment comment;
+
+        /**
          * Lines of this scalar.
          */
         private final List<String> lines;
@@ -208,8 +235,21 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          * @param lines Given string lines.
          */
         BuiltLiteralBlockScalar(final List<String> lines) {
-            this.lines = lines;
+            this(lines, "");
         }
+
+        /**
+         * Ctor.
+         * @param lines Given string lines.
+         * @param comment Comment referring to this scalar.
+         */
+        BuiltLiteralBlockScalar(
+            final List<String> lines, final String comment
+        ) {
+            this.lines = lines;
+            this.comment = new BuiltComment(this, comment);
+        }
+
 
         /**
          * Return the value of this literal scalar.
@@ -220,6 +260,11 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
             return this.lines.stream().collect(
                 Collectors.joining(System.lineSeparator())
             );
+        }
+
+        @Override
+        public Comment comment() {
+            return this.comment;
         }
 
         /**
