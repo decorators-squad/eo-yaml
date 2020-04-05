@@ -30,6 +30,11 @@ package com.amihaiemil.eoyaml;
 /**
  * Base YAML Node. This is the first class in the hierarchy
  * for any kind of YAML node.
+ *
+ * So far, the purpose of this base class is to hide methods that should
+ * be applicable to all types of YamlNode and which we do not want
+ * to make public on the YamlNode interface.
+ *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
