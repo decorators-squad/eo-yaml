@@ -31,6 +31,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 /**
  * Unit tests for {@ling ReadPlainScalarValue}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -45,6 +47,7 @@ public final class ReadPlainScalarValueTest {
     @Test
     public void returnsValueFromMappingLine() {
         final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
             new RtYamlLine("key: value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
@@ -56,6 +59,7 @@ public final class ReadPlainScalarValueTest {
     @Test
     public void returnsValueFromSequenceLine() {
         final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
             new RtYamlLine("- value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
@@ -67,7 +71,10 @@ public final class ReadPlainScalarValueTest {
     @Test
     public void returnsPlainScalar() {
         final YamlLine line = new RtYamlLine("value", 0);
-        final Scalar scalar = new ReadPlainScalar(line);
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            line
+        );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
     }
 
@@ -79,7 +86,10 @@ public final class ReadPlainScalarValueTest {
     @Test
     public void returnsEmptyScalar() {
         final YamlLine line = new RtYamlLine("", 0);
-        final Scalar scalar = new ReadPlainScalar(line);
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            line
+        );
         MatcherAssert.assertThat(scalar.value(), Matchers.isEmptyString());
     }
 
@@ -89,6 +99,7 @@ public final class ReadPlainScalarValueTest {
     @Test
     public void toStringWorks() {
         final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
             new RtYamlLine("key: value", 0)
         );
         MatcherAssert.assertThat(

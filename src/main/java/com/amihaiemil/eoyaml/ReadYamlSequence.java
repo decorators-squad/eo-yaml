@@ -52,17 +52,17 @@ final class ReadYamlSequence extends BaseYamlSequence {
      * 1  - elem2
      * </pre>
      */
-    private YamlLine previous;
+    private final YamlLine previous;
 
     /**
-     * Lines of this mapping also containing the comments.
+     * All lines of the YAML document.
      */
-    private YamlLines comments;
+    private final AllYamlLines all;
 
     /**
      * Only the significant lines of this sequence.
      */
-    private YamlLines significant;
+    private final YamlLines significant;
 
     /**
      * Ctor.
@@ -79,6 +79,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
      */
     ReadYamlSequence(final YamlLine previous, final AllYamlLines lines) {
         this.previous = previous;
+        this.all = lines;
         this.significant = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
@@ -90,29 +91,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     line -> line.trimmed().startsWith("%"),
                     line -> line.trimmed().startsWith("!!")
                 )
-            )
-        );
-        this.comments = new WellIndented(
-            new Skip(
-                lines,
-                line -> {
-                    final boolean skip;
-                    if(previous.number() < 0) {
-                        if(this.significant.iterator().hasNext()) {
-                            skip = line.number() >= this.significant
-                                    .iterator().next().number();
-                        } else {
-                            skip = false;
-                        }
-                    } else {
-                        skip = line.number() >= previous.number();
-                    }
-                    return skip;
-                },
-                line -> line.trimmed().startsWith("---"),
-                line -> line.trimmed().startsWith("..."),
-                line -> line.trimmed().startsWith("%"),
-                line -> line.trimmed().startsWith("!!")
             )
         );
     }
@@ -128,7 +106,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
             ) {
                 kids.add(this.significant.toYamlNode(line));
             } else {
-                kids.add(new ReadPlainScalar(line));
+                kids.add(new ReadPlainScalar(this.all, line));
             }
         }
         return kids;
@@ -232,7 +210,27 @@ final class ReadYamlSequence extends BaseYamlSequence {
         return new ReadComment(
             new FirstCommentFound(
                 new Backwards(
-                    this.comments
+                    new Skip(
+                        this.all,
+                        line -> {
+                            final boolean skip;
+                            if(this.previous.number() < 0) {
+                                if(this.significant.iterator().hasNext()) {
+                                    skip = line.number() >= this.significant
+                                            .iterator().next().number();
+                                } else {
+                                    skip = false;
+                                }
+                            } else {
+                                skip = line.number() >= this.previous.number();
+                            }
+                            return skip;
+                        },
+                        line -> line.trimmed().startsWith("---"),
+                        line -> line.trimmed().startsWith("..."),
+                        line -> line.trimmed().startsWith("%"),
+                        line -> line.trimmed().startsWith("!!")
+                    )
                 )
             ),
             this

@@ -36,26 +36,33 @@ package com.amihaiemil.eoyaml;
 final class ReadPlainScalar extends BaseScalar {
 
     /**
+     * All YAML Lines of the document.
+     */
+    private final AllYamlLines all;
+
+    /**
      * Line where the plain scalar value is supposed to be found.
      * The Scalar can be either after the ":" character, if this
      * line is from a mapping, or after the "-" character, if
      * this line is from a sequence, or it represents the whole line,
      * if no "-" or ":" are found.
      */
-    private YamlLine line;
+    private final YamlLine scalar;
 
     /**
      * Constructor.
-     * @param line Read YamlLine.
+     * @param all All lines of the document.
+     * @param scalar YamlLine containing the scalar.
      */
-    ReadPlainScalar(final YamlLine line) {
-        this.line = line;
+    ReadPlainScalar(final AllYamlLines all, final YamlLine scalar) {
+        this.all = all;
+        this.scalar = scalar;
     }
 
     @Override
     public String value() {
         final String value;
-        final String trimmed = this.line.trimmed();
+        final String trimmed = this.scalar.trimmed();
         if(trimmed.startsWith("-") && trimmed.length() > 1) {
             value = trimmed.substring(trimmed.indexOf('-')+1).trim();
         } else if(trimmed.contains(":") && !trimmed.endsWith(":")) {

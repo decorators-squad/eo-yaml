@@ -74,8 +74,9 @@ final class RtYamlInput implements YamlInput {
     @Override
     public Scalar readPlainScalar() throws IOException {
         final ReadPlainScalar read;
+        final AllYamlLines all = this.readInput();
         final Iterator<YamlLine> iterator = new Skip(
-            this.readInput(),
+            all,
             line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("---"),
             line -> line.trimmed().startsWith("..."),
@@ -83,9 +84,9 @@ final class RtYamlInput implements YamlInput {
             line -> line.trimmed().startsWith("!!")
         ).iterator();
         if(!iterator.hasNext()) {
-            read = new ReadPlainScalar(new YamlLine.NullYamlLine());
+            read = new ReadPlainScalar(all, new YamlLine.NullYamlLine());
         } else {
-            read = new ReadPlainScalar(iterator.next());
+            read = new ReadPlainScalar(all, iterator.next());
         }
         return read;
     }

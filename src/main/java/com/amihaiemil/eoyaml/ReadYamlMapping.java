@@ -59,14 +59,14 @@ final class ReadYamlMapping extends BaseYamlMapping {
     private YamlLine previous;
 
     /**
-     * Lines of this mapping also containing the comments.
+     * All the lines of this YAML document.
      */
-    private YamlLines comments;
+    private final AllYamlLines all;
 
     /**
      * Only the significant lines of this YamlMapping.
      */
-    private YamlLines significant;
+    private final YamlLines significant;
 
     /**
      * Ctor.
@@ -83,6 +83,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     ReadYamlMapping(final YamlLine previous, final AllYamlLines lines) {
         this.previous = previous;
+        this.all = lines;
         this.significant = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
@@ -94,29 +95,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     line -> line.trimmed().startsWith("%"),
                     line -> line.trimmed().startsWith("!!")
                 )
-            )
-        );
-        this.comments = new WellIndented(
-            new Skip(
-                lines,
-                line -> {
-                    final boolean skip;
-                    if(previous.number() < 0) {
-                        if(this.significant.iterator().hasNext()) {
-                            skip = line.number() >= this.significant
-                                    .iterator().next().number();
-                        } else {
-                            skip = false;
-                        }
-                    } else {
-                        skip = line.number() >= previous.number();
-                    }
-                    return skip;
-                },
-                line -> line.trimmed().startsWith("---"),
-                line -> line.trimmed().startsWith("..."),
-                line -> line.trimmed().startsWith("%"),
-                line -> line.trimmed().startsWith("!!")
             )
         );
     }
@@ -183,7 +161,27 @@ final class ReadYamlMapping extends BaseYamlMapping {
         return new ReadComment(
             new FirstCommentFound(
                 new Backwards(
-                    this.comments
+                    new Skip(
+                        this.all,
+                        line -> {
+                            final boolean skip;
+                            if(this.previous.number() < 0) {
+                                if(this.significant.iterator().hasNext()) {
+                                    skip = line.number() >= this.significant
+                                            .iterator().next().number();
+                                } else {
+                                    skip = false;
+                                }
+                            } else {
+                                skip = line.number() >= this.previous.number();
+                            }
+                            return skip;
+                        },
+                        line -> line.trimmed().startsWith("---"),
+                        line -> line.trimmed().startsWith("..."),
+                        line -> line.trimmed().startsWith("%"),
+                        line -> line.trimmed().startsWith("!!")
+                    )
                 )
             ),
             this
@@ -271,7 +269,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
             } else if(trimmed.startsWith(key + ":")
                 && trimmed.length() > 1
             ) {
-                value = new ReadPlainScalar(line);
+                value = new ReadPlainScalar(this.all, line);
             }
         }
         return value;
@@ -301,7 +299,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
                     ){
-                        value = new ReadPlainScalar(colonLine);
+                        value = new ReadPlainScalar(this.all, colonLine);
                     } else {
                         throw new YamlReadingException(
                             "No value found for existing complex key: "
