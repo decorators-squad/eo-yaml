@@ -39,12 +39,13 @@ import java.util.Iterator;
 interface YamlLines extends Iterable<YamlLine> {
 
     /**
-     * All the YAML lines, as a collection.<br>
-     * This method should always return all the lines
-     * there are, irrespective of iteration logic!
-     * @return These YamlLines as a Collection.
+     * Return all the original underlying lines. No matter what
+     * decorators are added on top of the base YamlLines implementation,
+     * the call to this method should always be delegated down to the
+     * base method, with no changes.
+     * @return The original YamlLines as a Collection.
      */
-    Collection<YamlLine> lines();
+    Collection<YamlLine> original();
 
     /**
      * Turn these lines into a YamlNode.
@@ -59,7 +60,7 @@ interface YamlLines extends Iterable<YamlLine> {
      * @return Iterator of YamlLine.
      */
     default Iterator<YamlLine> iterator() {
-        return this.lines().iterator();
+        return this.original().iterator();
     }
 
     /**
@@ -69,7 +70,7 @@ interface YamlLines extends Iterable<YamlLine> {
      * @return YamlLine or throws {@link IndexOutOfBoundsException}.
      */
     default YamlLine line(final int number) {
-        final Collection<YamlLine> lines = this.lines();
+        final Collection<YamlLine> lines = this.original();
         if(number < 0 && lines.size() > 0) {
             return lines.iterator().next();
         }
@@ -81,7 +82,7 @@ interface YamlLines extends Iterable<YamlLine> {
         throw new IllegalArgumentException(
             "Couldn't find line " + number
           + ". Pay attention, there are "
-          + this.lines().size() + " lines!");
+          + this.original().size() + " lines!");
     }
 
 }

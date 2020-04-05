@@ -55,9 +55,9 @@ public final class WellIndentedTest {
     public void returnsLines() {
         final YamlLines lines = Mockito.mock(YamlLines.class);
         final Collection<YamlLine> collection = Mockito.mock(Collection.class);
-        Mockito.when(lines.lines()).thenReturn(collection);
+        Mockito.when(lines.original()).thenReturn(collection);
         MatcherAssert.assertThat(
-            new WellIndented(lines).lines(),
+            new WellIndented(lines).original(),
             Matchers.is(collection)
         );
     }

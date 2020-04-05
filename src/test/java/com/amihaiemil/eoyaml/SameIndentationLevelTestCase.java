@@ -59,7 +59,7 @@ public final class SameIndentationLevelTestCase {
             new AllYamlLines(lines)
         );
         MatcherAssert.assertThat(
-            yaml.lines().size(),
+            yaml.original().size(),
             Matchers.equalTo(lines.size())
         );
     }

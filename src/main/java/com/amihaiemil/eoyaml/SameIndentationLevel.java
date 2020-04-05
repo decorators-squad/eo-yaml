@@ -90,8 +90,8 @@ final class SameIndentationLevel implements YamlLines {
     }
 
     @Override
-    public Collection<YamlLine> lines() {
-        return this.yamlLines.lines();
+    public Collection<YamlLine> original() {
+        return this.yamlLines.original();
     }
 
     @Override
