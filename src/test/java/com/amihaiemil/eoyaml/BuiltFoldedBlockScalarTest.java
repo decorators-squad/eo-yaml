@@ -128,4 +128,22 @@ public final class BuiltFoldedBlockScalarTest {
         );
     }
 
+    /**
+     * BuiltFoldedBlockScalar can return its comment.
+     */
+    @Test
+    public void returnsComment() {
+        final Scalar scl = new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
+            new ArrayList<>(), "comment"
+        );
+        MatcherAssert.assertThat(
+            scl.comment().value(),
+            Matchers.equalTo("comment")
+        );
+        MatcherAssert.assertThat(
+            scl.comment().yamlNode(),
+            Matchers.is(scl)
+        );
+    }
+
 }

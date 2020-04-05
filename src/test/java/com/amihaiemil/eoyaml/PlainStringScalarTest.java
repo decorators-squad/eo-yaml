@@ -56,6 +56,23 @@ public final class PlainStringScalarTest {
     }
 
     /**
+     * Scalar can return its comment.
+     */
+    @Test
+    public void returnsComment() {
+        final String val = "test scalar value";
+        final PlainStringScalar scl = new PlainStringScalar(val, "comment");
+        MatcherAssert.assertThat(
+            scl.comment().value(),
+            Matchers.equalTo("comment")
+        );
+        MatcherAssert.assertThat(
+            scl.comment().yamlNode(),
+            Matchers.is(scl)
+        );
+    }
+
+    /**
      * Make sure that equals and hash code are reflexive
      * and symmetric.
      */
