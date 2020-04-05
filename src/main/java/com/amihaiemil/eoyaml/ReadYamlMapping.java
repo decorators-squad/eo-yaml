@@ -59,9 +59,14 @@ final class ReadYamlMapping extends BaseYamlMapping {
     private YamlLine previous;
 
     /**
-     * Lines read.
+     * Lines of this mapping also containing the comments.
      */
-    private YamlLines lines;
+    private YamlLines comments;
+
+    /**
+     * Only the significant lines of this YamlMapping.
+     */
+    private YamlLines significant;
 
     /**
      * Ctor.
@@ -78,7 +83,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     ReadYamlMapping(final YamlLine previous, final AllYamlLines lines) {
         this.previous = previous;
-        this.lines = new SameIndentationLevel(
+        this.significant = new SameIndentationLevel(
             new WellIndented(
                 new Skip(
                     lines,
@@ -91,17 +96,40 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 )
             )
         );
+        this.comments = new WellIndented(
+            new Skip(
+                lines,
+                line -> {
+                    final boolean skip;
+                    if(previous.number() < 0) {
+                        if(this.significant.iterator().hasNext()) {
+                            skip = line.number() >= this.significant
+                                    .iterator().next().number();
+                        } else {
+                            skip = false;
+                        }
+                    } else {
+                        skip = line.number() >= previous.number();
+                    }
+                    return skip;
+                },
+                line -> line.trimmed().startsWith("---"),
+                line -> line.trimmed().startsWith("..."),
+                line -> line.trimmed().startsWith("%"),
+                line -> line.trimmed().startsWith("!!")
+            )
+        );
     }
 
     @Override
     public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new LinkedHashSet<>();
-        for (final YamlLine line : this.lines) {
+        for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if(trimmed.startsWith(":")) {
                 continue;
             } else if ("?".equals(trimmed)) {
-                keys.add(this.lines.toYamlNode(line));
+                keys.add(this.significant.toYamlNode(line));
             } else {
                 if(!trimmed.contains(":")) {
                     throw new YamlReadingException(
@@ -152,8 +180,14 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     @Override
     public Comment comment() {
-        final Comment empty = new BuiltComment(this, "");
-        return empty;
+        return new ReadComment(
+            new FirstCommentFound(
+                new Backwards(
+                    this.comments
+                )
+            ),
+            this
+        );
     }
 
     @Override
@@ -227,13 +261,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     private YamlNode valueOfStringKey(final String key) {
         YamlNode value = null;
-        for (final YamlLine line : this.lines) {
+        for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if(trimmed.endsWith(key + ":")
                 || trimmed.matches("^" + key + "\\:[ ]*\\>$")
                 || trimmed.matches("^" + key + "\\:[ ]*\\|$")
             ) {
-                value = this.lines.toYamlNode(line);
+                value = this.significant.toYamlNode(line);
             } else if(trimmed.startsWith(key + ":")
                 && trimmed.length() > 1
             ) {
@@ -251,19 +285,19 @@ final class ReadYamlMapping extends BaseYamlMapping {
      */
     private YamlNode valueOfNodeKey(final YamlNode key) {
         YamlNode value = null;
-        final Iterator<YamlLine> linesIt = this.lines.iterator();
+        final Iterator<YamlLine> linesIt = this.significant.iterator();
         while(linesIt.hasNext()) {
             final YamlLine line = linesIt.next();
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final YamlNode keyNode = this.lines.toYamlNode(line);
+                final YamlNode keyNode = this.significant.toYamlNode(line);
                 if(keyNode.equals(key)) {
                     final YamlLine colonLine = linesIt.next();
                     if(":".equals(colonLine.trimmed())
                         || colonLine.trimmed().matches("^\\:[ ]*\\>$")
                         || colonLine.trimmed().matches("^\\:[ ]*\\|$")
                     ) {
-                        value = this.lines.toYamlNode(colonLine);
+                        value = this.significant.toYamlNode(colonLine);
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
                     ){

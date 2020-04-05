@@ -27,11 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * YamlLines which are being iterated backwards.
@@ -66,9 +62,10 @@ final class Backwards implements YamlLines {
 
     @Override
     public Iterator<YamlLine> iterator() {
-        final List<YamlLine> original = this.original().stream().collect(
-            Collectors.toList()
-        );
+        final List<YamlLine> original = new ArrayList<>();
+        for(final YamlLine line : this.lines) {
+            original.add(line);
+        }
         Collections.reverse(original);
         return original.iterator();
     }

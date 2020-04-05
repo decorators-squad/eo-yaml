@@ -27,47 +27,63 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 /**
- * A comment which has been read from somewhere.
+ * Iterate over the lines which are YAML comments (begin with "#") and break
+ * iteration when a non-comment line is found. In essence, this reads the lines
+ * of the first comment from a given YamlLines.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since  4.2.0
+ * @since 4.2.0
  */
-final class ReadComment implements Comment {
+final class FirstCommentFound implements YamlLines {
 
     /**
-     * Lines of this comment.
+     * Lines where we look for the comment.
      */
     private final YamlLines lines;
 
     /**
-     * Node to which this comment refers.
+     * Ctor.
+     * @param lines The Yaml lines where we look for the comment.
      */
-    private final YamlNode node;
+    FirstCommentFound(final YamlLines lines) {
+        this.lines = lines;
+    }
 
     /**
-     * Constructor.
-     * @param lines Lines of this comment.
-     * @param node Node to which it refers.
+     * Returns an iterator over the lines of the first found comment.
+     * @return Iterator over these yaml lines.
      */
-    ReadComment(final YamlLines lines, final YamlNode node) {
-        this.lines = lines;
-        this.node = node;
-    }
-
     @Override
-    public YamlNode yamlNode() {
-        return this.node;
-    }
-
-    @Override
-    public String value() {
-        final StringBuilder comment = new StringBuilder();
-        for(final YamlLine line : this.lines) {
-            comment
-                .append(line.trimmed().substring(1).trim())
-                .append(System.lineSeparator());
+    public Iterator<YamlLine> iterator() {
+        Iterator<YamlLine> iterator = this.lines.iterator();
+        if (iterator.hasNext()) {
+            final List<YamlLine> comment = new ArrayList<>();
+            while (iterator.hasNext()) {
+                YamlLine line = iterator.next();
+                if(line.trimmed().startsWith("#")) {
+                    comment.add(line);
+                } else {
+                    break;
+                }
+            }
+            iterator = comment.iterator();
         }
-        return comment.toString().trim();
+        return iterator;
+    }
+
+    @Override
+    public Collection<YamlLine> original() {
+        return this.lines.original();
+    }
+
+    @Override
+    public YamlNode toYamlNode(final YamlLine prev) {
+        return this.lines.toYamlNode(prev);
     }
 }

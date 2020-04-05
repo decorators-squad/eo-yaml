@@ -50,7 +50,9 @@ public final class ReadCommentTest {
     public void returnsYamlNode() {
         final YamlNode node = Mockito.mock(YamlNode.class);
         MatcherAssert.assertThat(
-            new ReadComment(new ArrayList<>(), node).yamlNode(),
+            new ReadComment(
+                new AllYamlLines(new ArrayList<>()), node
+            ).yamlNode(),
             Matchers.is(node)
         );
     }
@@ -62,7 +64,7 @@ public final class ReadCommentTest {
     public void returnsValueFromEmptyLines() {
         MatcherAssert.assertThat(
             new ReadComment(
-                new ArrayList<>(),
+                new AllYamlLines(new ArrayList<>()),
                 Mockito.mock(YamlNode.class)
             ).value(),
             Matchers.isEmptyString()
@@ -78,7 +80,7 @@ public final class ReadCommentTest {
         lines.add(new RtYamlLine("# comment line", 0));
         MatcherAssert.assertThat(
             new ReadComment(
-                lines,
+                new AllYamlLines(lines),
                 Mockito.mock(YamlNode.class)
             ).value(),
             Matchers.equalTo("comment line")
@@ -101,7 +103,7 @@ public final class ReadCommentTest {
             .append("lines");
         MatcherAssert.assertThat(
             new ReadComment(
-                lines,
+                new AllYamlLines(lines),
                 Mockito.mock(YamlNode.class)
             ).value(),
             Matchers.equalTo(expected.toString())
@@ -129,7 +131,7 @@ public final class ReadCommentTest {
             .append("lines");
         MatcherAssert.assertThat(
             new ReadComment(
-                lines,
+                new AllYamlLines(lines),
                 Mockito.mock(YamlNode.class)
             ).value(),
             Matchers.equalTo(expected.toString())
@@ -146,7 +148,7 @@ public final class ReadCommentTest {
         lines.add(new RtYamlLine("#", 0));
         MatcherAssert.assertThat(
             new ReadComment(
-                lines,
+                new AllYamlLines(lines),
                 Mockito.mock(YamlNode.class)
             ).value(),
             Matchers.isEmptyString()
