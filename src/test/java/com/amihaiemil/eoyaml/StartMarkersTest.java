@@ -53,9 +53,9 @@ public final class StartMarkersTest {
     public void returnsLines() {
         final YamlLines lines = Mockito.mock(YamlLines.class);
         final Collection<YamlLine> collection = Mockito.mock(Collection.class);
-        Mockito.when(lines.lines()).thenReturn(collection);
+        Mockito.when(lines.original()).thenReturn(collection);
         MatcherAssert.assertThat(
-            new StartMarkers(lines).lines(),
+            new StartMarkers(lines).original(),
             Matchers.is(collection)
         );
     }

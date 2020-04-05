@@ -75,7 +75,7 @@ final class ReadYamlStream extends BaseYamlStream {
         final List<YamlNode> values = new ArrayList<>();
         for(final YamlLine startDoc : this.startMarkers) {
             final YamlLines document = this.readDocument(startDoc);
-            if(!document.lines().isEmpty()) {
+            if(!document.original().isEmpty()) {
                 values.add(document.toYamlNode(startDoc));
             }
         }
@@ -93,7 +93,7 @@ final class ReadYamlStream extends BaseYamlStream {
         if(!"---".equals(startLine.trimmed())) {
             yamlDocLines.add(startLine);
         }
-        for(final YamlLine line : this.all.lines()) {
+        for(final YamlLine line : this.all.original()) {
             if(line.number() > start.number()) {
                 final String current = line.trimmed();
                 if("---".equals(current) || "...".equals(current)) {

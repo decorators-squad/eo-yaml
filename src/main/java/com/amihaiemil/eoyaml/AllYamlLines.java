@@ -67,7 +67,7 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-    public Collection<YamlLine> lines() {
+    public Collection<YamlLine> original() {
         return this.lines;
     }
 
@@ -114,7 +114,7 @@ final class AllYamlLines implements YamlLines {
             node = new ReadYamlSequence(prev, this);
         } else if (first.trimmed().contains(":")){
             node = new ReadYamlMapping(prev, this);
-        } else if(this.lines().size() == 1) {
+        } else if(this.original().size() == 1) {
             node = new ReadPlainScalar(first);
         } else {
             throw new YamlReadingException(
