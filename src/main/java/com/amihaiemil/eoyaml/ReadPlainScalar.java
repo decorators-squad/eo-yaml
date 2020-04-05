@@ -73,6 +73,31 @@ final class ReadPlainScalar extends BaseScalar {
         return this.unescape(value);
     }
 
+    @Override
+    public Comment comment() {
+        final Comment comment;
+        if(this.scalar instanceof YamlLine.NullYamlLine) {
+            comment = new BuiltComment(this, "");
+        } else {
+            comment = new ReadComment(
+                new FirstCommentFound(
+                    new Backwards(
+                        new Skip(
+                            this.all,
+                            line -> line.number() > this.scalar.number(),
+                            line -> line.trimmed().startsWith("---"),
+                            line -> line.trimmed().startsWith("..."),
+                            line -> line.trimmed().startsWith("%"),
+                            line -> line.trimmed().startsWith("!!")
+                        )
+                    )
+                ),
+                this
+            );
+        }
+        return comment;
+    }
+
     /**
      * Remove the possible escaping quotes or apostrophes surrounding the
      * given value.
