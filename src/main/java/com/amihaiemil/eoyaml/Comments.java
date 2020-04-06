@@ -39,7 +39,7 @@ import java.util.Iterator;
  * @version $Id$
  * @since 4.2.0
  */
-public interface Comments extends Iterable<Comment> {
+interface Comments extends Iterable<Comment> {
 
     /**
      * Get the Comment referring to the specified YamlNode.
