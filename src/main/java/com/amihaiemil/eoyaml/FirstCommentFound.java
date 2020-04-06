@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Iterate over the lines which are YAML comments (begin with "#") and break
  * iteration when a non-comment line is found. In essence, this reads the lines
- * of the first comment from a given YamlLines.
+ * of the first comment from a given YamlLines, if it exists.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.2.0
