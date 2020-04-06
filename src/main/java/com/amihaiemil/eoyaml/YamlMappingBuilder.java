@@ -34,35 +34,13 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.0
  */
 public interface YamlMappingBuilder {
-
     /**
      * Add a pair to the mapping.
      * @param key String
      * @param value String
      * @return This builder
      */
-    default YamlMappingBuilder add(final String key, final String value) {
-        return this.add(key, value, "");
-    }
-
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value String
-     * @param comment Comment that will appear on top of the pair.
-     * @return This builder
-     */
-    default YamlMappingBuilder add(
-        final String key,
-        final String value,
-        final String comment
-    ) {
-        return this.add(
-            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar(),
-            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar(),
-            comment
-        );
-    }
+    YamlMappingBuilder add(final String key, final String value);
 
     /**
      * Add a pair to the mapping.
@@ -70,28 +48,15 @@ public interface YamlMappingBuilder {
      * @param value String
      * @return This builder
      */
-    default YamlMappingBuilder add(final YamlNode key, final String value) {
-        return this.add(key, value, "");
-    }
+    YamlMappingBuilder add(final YamlNode key, final String value);
 
     /**
      * Add a pair to the mapping.
      * @param key YamlNode (sequence or mapping)
-     * @param value String
-     * @param comment Comment that will appear on top of the pair.
+     * @param value YamlNode (sequence or mapping)
      * @return This builder
      */
-    default YamlMappingBuilder add(
-        final YamlNode key,
-        final String value,
-        final String comment
-    ) {
-        return this.add(
-            key,
-            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar(),
-            comment
-        );
-    }
+    YamlMappingBuilder add(final YamlNode key, final YamlNode value);
 
     /**
      * Add a pair to the mapping.
@@ -99,51 +64,7 @@ public interface YamlMappingBuilder {
      * @param value YamlNode (sequence or mapping)
      * @return This builder
      */
-    default YamlMappingBuilder add(final String key, final YamlNode value) {
-        return this.add(key, value, "");
-    }
-
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value YamlNode (sequence or mapping)
-     * @param comment Comment that will appear on top of the pair.
-     * @return This builder
-     */
-    default YamlMappingBuilder add(
-        final String key,
-        final YamlNode value,
-        final String comment
-    ) {
-        return this.add(
-            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar(),
-            value,
-            comment
-        );
-    }
-
-    /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
-    default YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
-        return this.add(key, value, "");
-    }
-
-    /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value YamlNode (sequence or mapping)
-     * @param comment Comment that will appear on top of this pair.
-     * @return This builder
-     */
-    YamlMappingBuilder add(
-        final YamlNode key,
-        final YamlNode value,
-        final String comment
-    );
+    YamlMappingBuilder add(final String key, final YamlNode value);
 
     /**
      * Build the YamlMapping.

@@ -28,8 +28,6 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,49 +46,49 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     private final Map<YamlNode, YamlNode> pairs;
 
     /**
-     * Comments referring to the key:value pairs.
-     */
-    private final List<Comment> comments;
-
-    /**
      * Default ctor.
      */
     RtYamlMappingBuilder() {
-        this(new LinkedHashMap<>(), new LinkedList<>());
+        this(new LinkedHashMap<>());
     }
 
     /**
      * Constructor.
      * @param pairs Pairs used in building the YamlMapping.
-     * @param comments Comments referring to the key:value pairs.
      */
-    RtYamlMappingBuilder(
-        final Map<YamlNode, YamlNode> pairs,
-        final List<Comment> comments
-    ) {
+    RtYamlMappingBuilder(final Map<YamlNode, YamlNode> pairs) {
         this.pairs = pairs;
-        this.comments = comments;
     }
 
     @Override
-    public YamlMappingBuilder add(
-        final YamlNode key,
-        final YamlNode value,
-        final String comment
-    ) {
+    public YamlMappingBuilder add(final String key, final String value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(value)
+        );
+    }
+
+    @Override
+    public YamlMappingBuilder add(final YamlNode key, final String value) {
+        return this.add(key, new PlainStringScalar(value));
+    }
+
+    @Override
+    public YamlMappingBuilder add(final String key, final YamlNode value) {
+        return this.add(new PlainStringScalar(key), value);
+    }
+
+    @Override
+    public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
         final Map<YamlNode, YamlNode> withAddedPair = new LinkedHashMap<>();
         withAddedPair.putAll(this.pairs);
         withAddedPair.put(key, value);
-
-        final List<Comment> withAddedComment = new LinkedList<>();
-        withAddedComment.addAll(this.comments);
-        withAddedComment.add(new BuiltComment(key, comment));
-        return new RtYamlMappingBuilder(withAddedPair, withAddedComment);
+        return new RtYamlMappingBuilder(withAddedPair);
     }
 
     @Override
     public YamlMapping build(final String comment) {
-        return new RtYamlMapping(this.pairs, this.comments, comment);
+        return new RtYamlMapping(this.pairs, comment);
     }
 
 }

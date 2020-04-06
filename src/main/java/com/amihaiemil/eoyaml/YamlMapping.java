@@ -410,12 +410,4 @@ public interface YamlMapping extends YamlNode {
         }
         return null;
     }
-
-    /**
-     * Comments referring to the key:value pairs of this
-     * mapping.
-     * @return Comments or Comments.Empty() if there are no
-     *  comments to be returned.
-     */
-    Comments comments();
 }
