@@ -63,6 +63,28 @@ public final class ReadLiteralBlockScalarTest {
     }
 
     /**
+     * ReadLiteralBlockScalar can return the value referring to it.
+     */
+    @Test
+    public void returnsComment() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("key: value", 0));
+        lines.add(new RtYamlLine("# Literal scalar as value in map", 1));
+        lines.add(new RtYamlLine("literal: |", 2));
+        lines.add(new RtYamlLine("  line 1", 3));
+        lines.add(new RtYamlLine("  line 2", 4));
+        lines.add(new RtYamlLine("  line 3", 5));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(lines.get(2), new AllYamlLines(lines));
+        final Comment comment = scalar.comment();
+        MatcherAssert.assertThat(
+            comment.value(),
+            Matchers.equalTo("Literal scalar as value in map")
+        );
+        MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
+    }
+
+    /**
      * ReadPipeScalar can compare itself to a Mapping.
      */
     @Test

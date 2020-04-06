@@ -115,7 +115,7 @@ final class AllYamlLines implements YamlLines {
         } else if (first.trimmed().contains(":")){
             node = new ReadYamlMapping(prev, this);
         } else if(this.original().size() == 1) {
-            node = new ReadPlainScalar(first);
+            node = new ReadPlainScalar(this, first);
         } else {
             throw new YamlReadingException(
                 "Could not parse YAML starting at line " + (first.number() + 1)

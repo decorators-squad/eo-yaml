@@ -132,6 +132,28 @@ public final class ReadFoldedBlockScalarTest {
     }
 
     /**
+     * ReadFoldedBlockScalar can return the value referring to it.
+     */
+    @Test
+    public void returnsComment() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("key: value", 0));
+        lines.add(new RtYamlLine("# Folded scalar as value in map", 1));
+        lines.add(new RtYamlLine("folded: >", 2));
+        lines.add(new RtYamlLine("  Mark McGwire's", 3));
+        lines.add(new RtYamlLine("  year was crippled", 4));
+        lines.add(new RtYamlLine("  by a knee injury.", 5));
+        final ReadFoldedBlockScalar scalar =
+            new ReadFoldedBlockScalar(lines.get(2), new AllYamlLines(lines));
+        final Comment comment = scalar.comment();
+        MatcherAssert.assertThat(
+            comment.value(),
+            Matchers.equalTo("Folded scalar as value in map")
+        );
+        MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
+    }
+
+    /**
      * ReadPointedScalar works with Spec Example 2.15:
      * Folded newlines are preserved for "more indented"
      * and blank lines.

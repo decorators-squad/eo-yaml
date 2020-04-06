@@ -55,18 +55,23 @@ final class ReadFoldedBlockScalar extends BaseScalar {
      * In the above example the scalar consists of line1 and line2, while
      * "previous" is line 0.
      */
-    private YamlLine previous;
+    private final YamlLine previous;
 
     /**
-     * Lines to be represented as a wrapped scalar.
+     * All lines of the YAML document.
      */
-    private YamlLines lines;
+    private final AllYamlLines all;
+
+    /**
+     * The significant lines of this folded block scalar.
+     */
+    private final YamlLines significant;
 
     /**
      * Ctor.
-     * @param lines Given lines to represent.
+     * @param lines All lines.
      */
-    ReadFoldedBlockScalar(final YamlLines lines) {
+    ReadFoldedBlockScalar(final AllYamlLines lines) {
         this(new YamlLine.NullYamlLine(), lines);
     }
 
@@ -75,9 +80,10 @@ final class ReadFoldedBlockScalar extends BaseScalar {
      * @param previous Previous YAML line.
      * @param lines Given lines to represent.
      */
-    ReadFoldedBlockScalar(final YamlLine previous, final YamlLines lines) {
+    ReadFoldedBlockScalar(final YamlLine previous, final AllYamlLines lines) {
         this.previous = previous;
-        this.lines = new GreaterIndentation(
+        this.all = lines;
+        this.significant = new GreaterIndentation(
             previous,
             new Skip(
                 lines,
@@ -100,7 +106,7 @@ final class ReadFoldedBlockScalar extends BaseScalar {
             spaces--;
         }
         StringBuilder printed = new StringBuilder();
-        for(final YamlLine line: this.lines) {
+        for(final YamlLine line: this.significant) {
             printed.append(alignment);
             printed.append(line.trimmed());
             printed.append(System.lineSeparator());
@@ -125,7 +131,7 @@ final class ReadFoldedBlockScalar extends BaseScalar {
     public String value() {
         StringBuilder builder = new StringBuilder();
         final String newLine = System.lineSeparator();
-        for(final YamlLine line: this.lines) {
+        for(final YamlLine line: this.significant) {
             if(line.trimmed().length() == 0 || line.indentation() > 0) {
                 if(this.doNotEndWithNewLine(builder)) {
                     builder.append(newLine);
@@ -144,6 +150,38 @@ final class ReadFoldedBlockScalar extends BaseScalar {
             }
         }
         return builder.toString();
+    }
+
+    @Override
+    public Comment comment() {
+        return new ReadComment(
+            new FirstCommentFound(
+                new Backwards(
+                    new Skip(
+                        this.all,
+                        line -> {
+                            final boolean skip;
+                            if(this.previous.number() < 0) {
+                                if(this.significant.iterator().hasNext()) {
+                                    skip = line.number() >= this.significant
+                                            .iterator().next().number();
+                                } else {
+                                    skip = false;
+                                }
+                            } else {
+                                skip = line.number() >= this.previous.number();
+                            }
+                            return skip;
+                        },
+                        line -> line.trimmed().startsWith("---"),
+                        line -> line.trimmed().startsWith("..."),
+                        line -> line.trimmed().startsWith("%"),
+                        line -> line.trimmed().startsWith("!!")
+                    )
+                )
+            ),
+            this
+        );
     }
 
     /**
