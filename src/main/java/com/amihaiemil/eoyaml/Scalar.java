@@ -46,10 +46,4 @@ public interface Scalar extends YamlNode {
      *  supposed to be.
      */
     String value();
-
-    /**
-     * Comment referring to this Scalar.
-     * @return Comment.
-     */
-    Comment comment();
 }

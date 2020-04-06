@@ -53,21 +53,18 @@ final class RtYamlSequence extends BaseYamlSequence {
      * @param elements Elements of this sequence.
      */
     RtYamlSequence(final Collection<YamlNode> elements) {
-        this(elements, new ArrayList<>(), "");
+        this(elements, "");
     }
 
     /**
      * Constructor.
      * @param elements Elements of this sequence.
-     * @param comments Comments referring to the elements of this sequence.
      * @param comment Comment referring to this sequence itself.
      */
     RtYamlSequence(
         final Collection<YamlNode> elements,
-        final List<Comment> comments,
         final String comment
     ) {
-        super(new BuiltComments(comments));
         this.nodes.addAll(elements);
         this.comment = new BuiltComment(this, comment);
     }

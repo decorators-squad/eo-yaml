@@ -55,14 +55,16 @@ public final class YamlSequenceCommentsPrintTest {
     public void printsBuiltYamlSequenceWithComments() throws Exception {
         final YamlSequence commented = Yaml.createYamlSequenceBuilder()
             .add("element1")
-            .add("element2", "a plain scalar string in a sequence")
+            .add(
+                Yaml.createYamlScalarBuilder()
+                    .addLine("element2")
+                    .buildPlainScalar("a plain scalar string in a sequence"))
             .add("element3")
             .add(
                 Yaml.createYamlMappingBuilder()
                     .add("key", "value")
                     .add("key2", "value2")
-                    .build(),
-                "a mapping as an element of a sequence"
+                    .build("a mapping as an element of a sequence")
             )
             .build("a sequence with comments");
         System.out.println(commented);
