@@ -130,11 +130,4 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
         return printed.append(this.value()).toString();
     }
 
-    /**
-     * Get the Comment referring to this YamlNode.
-     * @return Comment.
-     */
-    public Comment comment() {
-        return null;
-    }
 }
