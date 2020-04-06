@@ -32,14 +32,15 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Unit tests for {@ling ReadPlainScalarValue}.
+ * Unit tests for {@ling ReadPlainScalar}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3
  */
-public final class ReadPlainScalarValueTest {
+public final class ReadPlainScalarTest {
 
     /**
      * ReadPlainScalar can return the scalar's value from a mapping line.
@@ -63,6 +64,50 @@ public final class ReadPlainScalarValueTest {
             new RtYamlLine("- value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+    }
+
+    /**
+     * ReadPlainScalar can return the comment referring to a scalar
+     * in a sequence.
+     */
+    @Test
+    public void returnsCommentFromSequenceLine() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- value1", 0));
+        lines.add(new RtYamlLine("# Comment about value 2", 1));
+        lines.add(new RtYamlLine("- value2", 2));
+        lines.add(new RtYamlLine("- value3", 3));
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(lines), lines.get(2)
+        );
+        final Comment comment = scalar.comment();
+        MatcherAssert.assertThat(
+            comment.value(),
+            Matchers.equalTo("Comment about value 2")
+        );
+        MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
+    }
+
+    /**
+     * ReadPlainScalar can return the comment referring to a scalar
+     * in a mapping.
+     */
+    @Test
+    public void returnsCommentFromMappingLine() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("key1: value1", 0));
+        lines.add(new RtYamlLine("# Comment about value 2", 1));
+        lines.add(new RtYamlLine("key2: value2", 2));
+        lines.add(new RtYamlLine("key3: value3", 3));
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(lines), lines.get(2)
+        );
+        final Comment comment = scalar.comment();
+        MatcherAssert.assertThat(
+            comment.value(),
+            Matchers.equalTo("Comment about value 2")
+        );
+        MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
     }
 
     /**

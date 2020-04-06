@@ -84,7 +84,7 @@ final class ReadPlainScalar extends BaseScalar {
                     new Backwards(
                         new Skip(
                             this.all,
-                            line -> line.number() > this.scalar.number(),
+                            line -> line.number() >= this.scalar.number(),
                             line -> line.trimmed().startsWith("---"),
                             line -> line.trimmed().startsWith("..."),
                             line -> line.trimmed().startsWith("%"),
