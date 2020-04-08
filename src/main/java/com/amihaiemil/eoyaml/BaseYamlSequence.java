@@ -148,8 +148,8 @@ public abstract class BaseYamlSequence
             alignment.append(" ");
             spaces--;
         }
-        this.printPossibleComment(this.comment(), print, alignment.toString());
         for (final YamlNode node : this.values()) {
+            this.printPossibleComment(node.comment(), print, alignment.toString());
             print
                 .append(alignment)
                 .append("-");
@@ -246,6 +246,9 @@ public abstract class BaseYamlSequence
      */
     @Override
     public final String toString() {
-        return this.indent(0);
+        final StringBuilder print = new StringBuilder();
+        this.printPossibleComment(this.comment(), print, "");
+        print.append(this.indent(0));
+        return print.toString();
     }
 }

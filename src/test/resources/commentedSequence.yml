@@ -1,8 +1,9 @@
 # a sequence with comments
 - element1
+# a plain scalar string in a sequence
 - element2
 - element3
+# a mapping as an element of a sequence
 -
-  # a mapping as an element of a sequence
   key: value
   key2: value2

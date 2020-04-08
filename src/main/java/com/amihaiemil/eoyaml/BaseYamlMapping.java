@@ -162,7 +162,6 @@ public abstract class BaseYamlMapping
             alignment.append(" ");
             spaces--;
         }
-        this.printPossibleComment(this.comment(), print, alignment.toString());
         for(final YamlNode key : this.keys()) {
             this.printPossibleComment(
                 key.comment(), print, alignment.toString()
@@ -170,6 +169,9 @@ public abstract class BaseYamlMapping
             print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
+            this.printPossibleComment(
+                value.comment(), print, alignment.toString()
+            );
             if(indKey instanceof Scalar) {
                 print
                     .append(indKey.indent(0))
@@ -283,6 +285,9 @@ public abstract class BaseYamlMapping
      */
     @Override
     public final String toString() {
-        return this.indent(0);
+        final StringBuilder print = new StringBuilder();
+        this.printPossibleComment(this.comment(), print, "");
+        print.append(this.indent(0));
+        return print.toString();
     }
 }

@@ -65,7 +65,9 @@ public final class YamlMappingCommentsPrintTest {
             )
             .add(
                 "name",
-                "eo-yaml"
+                Yaml.createYamlScalarBuilder()
+                    .addLine("eo-yaml")
+                    .buildPlainScalar("name of the project")
             ).build("YamlMapping for test");
         System.out.println(commented);
         MatcherAssert.assertThat(
