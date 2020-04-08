@@ -76,10 +76,106 @@ public final class RtYamlLineTest {
      * RtYamlLine can trim itself.
      */
     @Test
-    public void trimmsItself() {
+    public void trimsItself() {
         YamlLine line = new RtYamlLine("   this: line   ", 10);
         MatcherAssert.assertThat(
             line.trimmed(), Matchers.equalTo("this: line")
+        );
+    }
+
+    /**
+     * RtYamlLine can trim off the comments.
+     */
+    @Test
+    public void trimsCommentsOff() {
+        YamlLine line = new RtYamlLine("this: line  #has a comment ", 0);
+        MatcherAssert.assertThat(
+            line.trimmed(), Matchers.equalTo("this: line")
+        );
+    }
+
+    /**
+     * RtYamlLine will not trim the '#' because it is escaped and part
+     * of a value.
+     */
+    @Test
+    public void doesNotTrimEscapedHash() {
+        YamlLine line = new RtYamlLine("color: '#404040' # comment here", 0);
+        MatcherAssert.assertThat(
+                line.trimmed(), Matchers.equalTo("color: '#404040'")
+        );
+    }
+
+    /**
+     * RtYamlLine returns the contained comment.
+     */
+    @Test
+    public void returnsComment() {
+        YamlLine line = new RtYamlLine("color: '#404040' # comment here", 0);
+        MatcherAssert.assertThat(
+            line.comment(), Matchers.equalTo("comment here")
+        );
+    }
+
+    /**
+     * RtYamlLine returns the comment which is the whole line.
+     */
+    @Test
+    public void returnsCommentWholeLine() {
+        YamlLine line = new RtYamlLine(
+            "# line containing only a comment", 0
+        );
+        MatcherAssert.assertThat(
+            line.comment(),
+            Matchers.equalTo("line containing only a comment")
+        );
+    }
+
+    /**
+     * RtYamlLine returns an empty comment as the line is only a hash.
+     */
+    @Test
+    public void returnsEmptyLineComment() {
+        YamlLine line = new RtYamlLine("#", 0);
+        MatcherAssert.assertThat(
+            line.comment(),
+            Matchers.isEmptyString()
+        );
+    }
+
+    /**
+     * RtYamlLine returns an empty comment.
+     */
+    @Test
+    public void returnsEmptyComment() {
+        YamlLine line = new RtYamlLine("test: value #", 0);
+        MatcherAssert.assertThat(
+            line.comment(),
+            Matchers.isEmptyString()
+        );
+    }
+
+    /**
+     * RtYamlLine returns an empty comment from an empty line.
+     */
+    @Test
+    public void returnsEmptyCommentFromEmptyLine() {
+        YamlLine line = new RtYamlLine("", 0);
+        MatcherAssert.assertThat(
+            line.comment(),
+            Matchers.isEmptyString()
+        );
+    }
+
+
+    /**
+     * RtYamlLine can trim off the anchors.
+     */
+    @Test
+    public void trimsAnchorOff() {
+        YamlLine line = new RtYamlLine("this: line  &anc ", 0);
+        MatcherAssert.assertThat(
+                line.trimmed(), Matchers.equalTo("this: line")
         );
     }
 
