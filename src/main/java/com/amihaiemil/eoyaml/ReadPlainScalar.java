@@ -81,15 +81,9 @@ final class ReadPlainScalar extends BaseScalar {
         } else {
             comment = new ReadComment(
                 new FirstCommentFound(
-                    new Backwards(
-                        new Skip(
-                            this.all,
-                            line -> line.number() >= this.scalar.number(),
-                            line -> line.trimmed().startsWith("---"),
-                            line -> line.trimmed().startsWith("..."),
-                            line -> line.trimmed().startsWith("%"),
-                            line -> line.trimmed().startsWith("!!")
-                        )
+                    new Skip(
+                        this.all,
+                        line -> line.number() != this.scalar.number()
                     )
                 ),
                 this

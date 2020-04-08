@@ -74,16 +74,15 @@ public final class ReadPlainScalarTest {
     public void returnsCommentFromSequenceLine() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("- value1", 0));
-        lines.add(new RtYamlLine("# Comment about value 2", 1));
-        lines.add(new RtYamlLine("- value2", 2));
-        lines.add(new RtYamlLine("- value3", 3));
+        lines.add(new RtYamlLine("- value2 # Comment here", 1));
+        lines.add(new RtYamlLine("- value3", 2));
         final Scalar scalar = new ReadPlainScalar(
-            new AllYamlLines(lines), lines.get(2)
+            new AllYamlLines(lines), lines.get(1)
         );
         final Comment comment = scalar.comment();
         MatcherAssert.assertThat(
             comment.value(),
-            Matchers.equalTo("Comment about value 2")
+            Matchers.equalTo("Comment here")
         );
         MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
     }
@@ -96,16 +95,15 @@ public final class ReadPlainScalarTest {
     public void returnsCommentFromMappingLine() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("key1: value1", 0));
-        lines.add(new RtYamlLine("# Comment about value 2", 1));
-        lines.add(new RtYamlLine("key2: value2", 2));
-        lines.add(new RtYamlLine("key3: value3", 3));
+        lines.add(new RtYamlLine("key2: value2 # Comment here", 1));
+        lines.add(new RtYamlLine("key3: value3", 2));
         final Scalar scalar = new ReadPlainScalar(
-            new AllYamlLines(lines), lines.get(2)
+            new AllYamlLines(lines), lines.get(1)
         );
         final Comment comment = scalar.comment();
         MatcherAssert.assertThat(
             comment.value(),
-            Matchers.equalTo("Comment about value 2")
+            Matchers.equalTo("Comment here")
         );
         MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
     }
