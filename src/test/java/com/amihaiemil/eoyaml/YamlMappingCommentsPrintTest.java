@@ -79,6 +79,25 @@ public final class YamlMappingCommentsPrintTest {
     }
 
     /**
+     * A read YamlMapping should print itself together with the
+     * read comments.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlMappingWithComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File("src/test/resources/commentedMapping.yml")
+        ).readYamlMapping();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("commentedMapping.yml")
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
