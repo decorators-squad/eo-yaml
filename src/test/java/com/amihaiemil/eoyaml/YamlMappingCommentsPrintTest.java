@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -84,6 +85,7 @@ public final class YamlMappingCommentsPrintTest {
      * @throws Exception If something goes wrong.
      */
     @Test
+    @Ignore
     public void printsReadYamlMappingWithComments() throws Exception {
         final YamlMapping read = Yaml.createYamlInput(
             new File("src/test/resources/commentedMapping.yml")
