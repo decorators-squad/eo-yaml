@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 /**
  * Default implementation of {@link YamlLine}.
  * "Rt" stands for "Runtime".
+ * @checkstyle CyclomaticComplexity (200 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -56,13 +57,31 @@ final class RtYamlLine implements YamlLine {
         this.number = number;
     }
 
-    /**
-     * Trim the spaces off.
-     * @return String
-     */
     @Override
     public String trimmed() {
-        return this.value.trim();
+        String trimmed = this.value.trim();
+        int i = 0;
+        while(i < trimmed.length()) {
+            if((i > 0 && trimmed.charAt(i) == '#')
+                || trimmed.charAt(i) == '&'
+            ) {
+                trimmed = trimmed.substring(0, i);
+                break;
+            }
+            else if(trimmed.charAt(i) == '"') {
+                i++;
+                while(i < trimmed.length() && trimmed.charAt(i) != '"') {
+                    i++;
+                }
+            } else if(trimmed.charAt(i) == '\'') {
+                i++;
+                while(i < trimmed.length() && trimmed.charAt(i) != '\'') {
+                    i++;
+                }
+            }
+            i++;
+        }
+        return trimmed.trim();
     }
 
     @Override

@@ -117,7 +117,7 @@ final class RtYamlInput implements YamlInput {
             int number = 0;
             while ((line = reader.readLine()) != null) {
                 final YamlLine current = new RtYamlLine(line, number);
-                if(!current.trimmed().isEmpty()) {
+                if(!current.toString().trim().isEmpty()) {
                     lines.add(current);
                 }
                 number++;
