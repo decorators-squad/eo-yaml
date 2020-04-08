@@ -67,8 +67,7 @@ final class RtYamlLine implements YamlLine {
             ) {
                 trimmed = trimmed.substring(0, i);
                 break;
-            }
-            else if(trimmed.charAt(i) == '"') {
+            } else if(trimmed.charAt(i) == '"') {
                 i++;
                 while(i < trimmed.length() && trimmed.charAt(i) != '"') {
                     i++;
