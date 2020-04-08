@@ -54,20 +54,20 @@ public final class YamlMappingCommentsPrintTest {
     @Test
     public void printsBuiltYamlMappingWithComments() throws Exception {
         final YamlMapping commented = Yaml.createYamlMappingBuilder()
-            .add("architect", "mihai", "the Dictator")
+            .add("architect", "mihai")
             .add(
                 "developers",
                 Yaml.createYamlSequenceBuilder()
                     .add("rultor")
                     .add("salikjan")
                     .add("sherif")
-                    .build(),
-                "all the contributors here"
+                    .build("all the contributors here")
             )
             .add(
                 "name",
-                "eo-yaml",
-                "name of the project"
+                Yaml.createYamlScalarBuilder()
+                    .addLine("eo-yaml")
+                    .buildPlainScalar("name of the project")
             ).build("YamlMapping for test");
         System.out.println(commented);
         MatcherAssert.assertThat(

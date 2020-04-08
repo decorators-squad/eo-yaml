@@ -47,26 +47,6 @@ import java.util.*;
 public abstract class BaseYamlMapping
     extends BaseYamlNode implements YamlMapping {
 
-    /**
-     * Comments referring the key:value pairs.
-     */
-    private Comments comments;
-
-    /**
-     * Default ctor.
-     */
-    public BaseYamlMapping() {
-        this(new Comments.Empty());
-    }
-
-    /**
-     * Constructor.
-     * @param comments Comments referring to the key: value entries.
-     */
-    public BaseYamlMapping(final Comments comments) {
-        this.comments = comments;
-    }
-
     @Override
     public final int hashCode() {
         int hash = 0;
@@ -156,11 +136,6 @@ public abstract class BaseYamlMapping
         return result;
     }
 
-    @Override
-    public final Comments comments() {
-        return this.comments;
-    }
-
     /**
      * Indent this YamlMapping. This is a base method since indentation
      * logic should be identical for any kind of YamlMapping, regardless of
@@ -187,14 +162,16 @@ public abstract class BaseYamlMapping
             alignment.append(" ");
             spaces--;
         }
-        this.printPossibleComment(this.comment(), print, alignment.toString());
         for(final YamlNode key : this.keys()) {
             this.printPossibleComment(
-                this.comments().referringTo(key), print, alignment.toString()
+                key.comment(), print, alignment.toString()
             );
             print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
+            this.printPossibleComment(
+                value.comment(), print, alignment.toString()
+            );
             if(indKey instanceof Scalar) {
                 print
                     .append(indKey.indent(0))
@@ -308,6 +285,9 @@ public abstract class BaseYamlMapping
      */
     @Override
     public final String toString() {
-        return this.indent(0);
+        final StringBuilder print = new StringBuilder();
+        this.printPossibleComment(this.comment(), print, "");
+        print.append(this.indent(0));
+        return print.toString();
     }
 }

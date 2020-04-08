@@ -44,45 +44,35 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     private final List<YamlNode> nodes;
 
     /**
-     * Comments referring to the elements of the YamlSequence.
-     */
-    private final List<Comment> comments;
-
-    /**
      * Default ctor.
      */
     RtYamlSequenceBuilder() {
-        this(new LinkedList<>(), new LinkedList<>());
+        this(new LinkedList<>());
     }
 
     /**
      * Constructor.
      * @param nodes Nodes used in building the YamlSequence
-     * @param comments Comments referring to the elements of the YamlSequence.
      */
-    RtYamlSequenceBuilder(
-        final List<YamlNode> nodes,
-        final List<Comment> comments
-    ) {
+    RtYamlSequenceBuilder(final List<YamlNode> nodes) {
         this.nodes = nodes;
-        this.comments = comments;
     }
 
     @Override
-    public YamlSequenceBuilder add(final YamlNode node, final String comment) {
-        final List<YamlNode> elements = new LinkedList<>();
-        elements.addAll(this.nodes);
-        elements.add(node);
+    public YamlSequenceBuilder add(final String value) {
+        return this.add(new PlainStringScalar(value));
+    }
 
-        final List<Comment> withComments = new LinkedList<>();
-        withComments.addAll(this.comments);
-        withComments.add(new BuiltComment(node, comment));
-
-        return new RtYamlSequenceBuilder(elements, withComments);
+    @Override
+    public YamlSequenceBuilder add(final YamlNode node) {
+        final List<YamlNode> list = new LinkedList<>();
+        list.addAll(this.nodes);
+        list.add(node);
+        return new RtYamlSequenceBuilder(list);
     }
 
     @Override
     public YamlSequence build(final String comment) {
-        return new RtYamlSequence(this.nodes, this.comments, comment);
+        return new RtYamlSequence(this.nodes, comment);
     }
 }

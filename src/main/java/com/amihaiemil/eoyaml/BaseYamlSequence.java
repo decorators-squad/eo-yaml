@@ -46,27 +46,6 @@ import java.util.*;
 public abstract class BaseYamlSequence
     extends BaseYamlNode implements YamlSequence {
 
-    /**
-     * Comments referring the elements of this YamlSequence.
-     */
-    private Comments comments;
-
-    /**
-     * Default ctor.
-     */
-    public BaseYamlSequence() {
-        this(new Comments.Empty());
-    }
-
-    /**
-     * Constructor.
-     * @param comments Comments referring to the elements of the sequence.
-     */
-    public BaseYamlSequence(final Comments comments) {
-        this.comments = comments;
-    }
-
-
     @Override
     public final int hashCode() {
         int hash = 0;
@@ -143,11 +122,6 @@ public abstract class BaseYamlSequence
         return result;
     }
 
-    @Override
-    public final Comments comments() {
-        return this.comments;
-    }
-
     /**
      * Indent this YamlSequence. This is a base method since indentation
      * logic should be identical for any kind of YamlSequence, regardless of
@@ -174,13 +148,8 @@ public abstract class BaseYamlSequence
             alignment.append(" ");
             spaces--;
         }
-        this.printPossibleComment(this.comment(), print, alignment.toString());
         for (final YamlNode node : this.values()) {
-            this.printPossibleComment(
-                this.comments.referringTo(node),
-                print,
-                alignment.toString()
-            );
+            this.printPossibleComment(node.comment(), print, alignment.toString());
             print
                 .append(alignment)
                 .append("-");
@@ -277,6 +246,9 @@ public abstract class BaseYamlSequence
      */
     @Override
     public final String toString() {
-        return this.indent(0);
+        final StringBuilder print = new StringBuilder();
+        this.printPossibleComment(this.comment(), print, "");
+        print.append(this.indent(0));
+        return print.toString();
     }
 }

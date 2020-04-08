@@ -54,6 +54,10 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
      */
     Collection<YamlNode> values();
 
+    default Comment comment() {
+        return new BuiltComment(this, "");
+    }
+
     default Iterator<YamlNode> iterator() {
         return this.values().stream().iterator();
     }

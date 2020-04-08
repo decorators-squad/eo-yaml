@@ -40,39 +40,14 @@ public interface YamlSequenceBuilder {
      * @param value String
      * @return This builder
      */
-    default YamlSequenceBuilder add(final String value) {
-        return this.add(value, "");
-    }
-
-    /**
-     * Add a value to the sequence.
-     * @param value String
-     * @param comment Comment referring to the added value.
-     * @return This builder
-     */
-    default YamlSequenceBuilder add(final String value, final String comment) {
-        return this.add(
-            Yaml.createYamlScalarBuilder().addLine(value).buildPlainScalar(),
-            comment
-        );
-    }
+    YamlSequenceBuilder add(final String value);
 
     /**
      * Add a value to the sequence.
      * @param node YamlNode
      * @return This builder
      */
-    default YamlSequenceBuilder add(final YamlNode node) {
-        return this.add(node, "");
-    }
-
-    /**
-     * Add a value to the sequence.
-     * @param node YamlNode
-     * @param comment Comment referring to the added YamlNode.
-     * @return This builder
-     */
-    YamlSequenceBuilder add(final YamlNode node, final String comment);
+    YamlSequenceBuilder add(final YamlNode node);
 
     /**
      * Build the YamlSequence.

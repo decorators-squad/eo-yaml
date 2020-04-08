@@ -34,4 +34,14 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.0
  * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
  */
-public interface YamlNode extends Comparable<YamlNode> { }
+public interface YamlNode extends Comparable<YamlNode> {
+
+    /**
+     * Comment referring to this Node.
+     * @return Comment. If there is no comment, it will return
+     *  an "empty" comment (an instance of Comment with empty-string value()).
+     */
+    Comment comment();
+
+
+}

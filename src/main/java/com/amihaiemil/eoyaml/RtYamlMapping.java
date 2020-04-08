@@ -54,21 +54,18 @@ final class RtYamlMapping extends BaseYamlMapping {
      * @param entries Entries contained in this mapping.
      */
     RtYamlMapping(final Map<YamlNode, YamlNode> entries) {
-        this(entries, new ArrayList<>(), "");
+        this(entries, "");
     }
 
     /**
      * Ctor.
      * @param entries Entries contained in this mapping.
-     * @param keyComments Comments on top of the key: value pairs.
      * @param comment Comment on top of this YamlMapping.
      */
     RtYamlMapping(
         final Map<YamlNode, YamlNode> entries,
-        final List<Comment> keyComments,
         final String comment
     ) {
-        super(new BuiltComments(keyComments));
         this.mappings.putAll(entries);
         this.comment = new BuiltComment(this, comment);
     }
