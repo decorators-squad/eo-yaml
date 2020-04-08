@@ -66,7 +66,7 @@ final class FirstCommentFound implements YamlLines {
             final List<YamlLine> comment = new ArrayList<>();
             while (iterator.hasNext()) {
                 YamlLine line = iterator.next();
-                if(line.trimmed().startsWith("#")) {
+                if(!line.comment().isEmpty()) {
                     comment.add(line);
                 } else {
                     break;

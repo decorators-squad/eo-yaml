@@ -84,6 +84,31 @@ final class RtYamlLine implements YamlLine {
     }
 
     @Override
+    public String comment() {
+        String comment = "";
+        String trimmed = this.value.trim();
+        int i = 0;
+        while(i < trimmed.length()) {
+            if(trimmed.charAt(i) == '#') {
+                comment = trimmed.substring(i + 1);
+                break;
+            } else if(trimmed.charAt(i) == '"') {
+                i++;
+                while(i < trimmed.length() && trimmed.charAt(i) != '"') {
+                    i++;
+                }
+            } else if(trimmed.charAt(i) == '\'') {
+                i++;
+                while(i < trimmed.length() && trimmed.charAt(i) != '\'') {
+                    i++;
+                }
+            }
+            i++;
+        }
+        return comment.trim();
+    }
+
+    @Override
     public int number() {
         return this.number;
     }

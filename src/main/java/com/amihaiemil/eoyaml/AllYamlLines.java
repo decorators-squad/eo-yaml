@@ -117,6 +117,7 @@ final class AllYamlLines implements YamlLines {
         } else if(this.original().size() == 1) {
             node = new ReadPlainScalar(this, first);
         } else {
+            System.out.println("LINE IS: [" + first.trimmed() + "]");
             throw new YamlReadingException(
                 "Could not parse YAML starting at line " + (first.number() + 1)
                 + " . It should be a sequence (line should start with '-'), "

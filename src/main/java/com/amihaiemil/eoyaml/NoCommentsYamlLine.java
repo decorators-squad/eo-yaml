@@ -83,6 +83,11 @@ final class NoCommentsYamlLine implements YamlLine {
     }
 
     @Override
+    public String comment() {
+        return "";
+    }
+
+    @Override
     public int number() {
         return this.line.number();
     }

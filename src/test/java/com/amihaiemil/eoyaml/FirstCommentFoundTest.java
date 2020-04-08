@@ -106,12 +106,12 @@ public final class FirstCommentFoundTest {
         MatcherAssert.assertThat(comment, Matchers.iterableWithSize(2));
         final Iterator<YamlLine> commIt = comment.iterator();
         MatcherAssert.assertThat(
-            commIt.next().trimmed(),
-            Matchers.equalTo("# YAML document for")
+            commIt.next().comment(),
+            Matchers.equalTo("YAML document for")
         );
         MatcherAssert.assertThat(
-            commIt.next().trimmed(),
-            Matchers.equalTo("# test purposes:")
+            commIt.next().comment(),
+            Matchers.equalTo("test purposes:")
         );
     }
 

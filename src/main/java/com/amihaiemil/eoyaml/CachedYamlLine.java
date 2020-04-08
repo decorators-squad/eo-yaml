@@ -79,6 +79,11 @@ final class CachedYamlLine implements YamlLine {
     }
 
     @Override
+    public String comment() {
+        return this.line.comment();
+    }
+
+    @Override
     public int number() {
         return this.line.number();
     }

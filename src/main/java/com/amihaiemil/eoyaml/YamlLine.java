@@ -36,10 +36,16 @@ package com.amihaiemil.eoyaml;
 interface YamlLine extends Comparable<YamlLine> {
 
     /**
-     * The line's trimmed contents.
+     * The line's trimmed contents with comments, aliases etc removed.
      * @return String contents.
      */
     String trimmed();
+
+    /**
+     * Return the comment, if any, from this line.
+     * @return Comment of empty string.
+     */
+    String comment();
 
     /**
      * Number of the line (count start from 0).
@@ -68,6 +74,11 @@ interface YamlLine extends Comparable<YamlLine> {
 
         @Override
         public String trimmed() {
+            return "";
+        }
+
+        @Override
+        public String comment() {
             return "";
         }
 
