@@ -99,6 +99,30 @@ public final class YamlMappingCommentsPrintTest {
     }
 
     /**
+     * A read YamlMapping can access its comments.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File("src/test/resources/commentedMapping.yml")
+        ).readYamlMapping();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.comment().value(),
+            Matchers.equalTo("YamlMapping for test")
+        );
+        MatcherAssert.assertThat(
+            read.yamlSequence("developers").comment().value(),
+            Matchers.equalTo("all the contributors here")
+        );
+        MatcherAssert.assertThat(
+            read.value("name").comment().value(),
+            Matchers.equalTo("name of the project")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * Test cases for printing a YamlSequence together with its
@@ -92,6 +93,39 @@ public final class YamlSequenceCommentsPrintTest {
             Matchers.equalTo(
                 this.readExpected("commentedSequence.yml")
             )
+        );
+    }
+
+    /**
+     * A read YamlSequence can access its comments.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsComments() throws Exception {
+        final YamlSequence read = Yaml.createYamlInput(
+            new File("src/test/resources/commentedSequence.yml")
+        ).readYamlSequence();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.comment().value(),
+            Matchers.equalTo("a sequence with comments")
+        );
+        final Iterator<YamlNode> values = read.values().iterator();
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.equalTo("a plain scalar string in a sequence")
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.equalTo("a mapping as an element of a sequence")
         );
     }
 
