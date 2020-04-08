@@ -169,22 +169,15 @@ public abstract class BaseYamlMapping
             print.append(alignment);
             final BaseYamlNode indKey = (BaseYamlNode) key;
             final BaseYamlNode value = (BaseYamlNode) this.value(key);
-            this.printPossibleComment(
-                value.comment(), print, alignment.toString()
-            );
+            if(!(value instanceof Scalar)) {
+                this.printPossibleComment(
+                        value.comment(), print, alignment.toString()
+                );
+            }
             if(indKey instanceof Scalar) {
                 print
                     .append(indKey.indent(0))
                     .append(":");
-                if (value instanceof Scalar) {
-                    print.append(" ");
-                    this.printScalar((Scalar) value, print, indentation);
-                } else  {
-                    print
-                        .append(newLine)
-                        .append(value.indent(indentation + 2))
-                        .append(newLine);
-                }
             } else {
                 print
                     .append("?")
@@ -193,15 +186,15 @@ public abstract class BaseYamlMapping
                     .append(newLine)
                     .append(alignment)
                     .append(":");
-                if(value instanceof Scalar) {
-                    print.append(" ");
-                    this.printScalar((Scalar) value, print, indentation);
-                } else {
-                    print
-                        .append(newLine)
-                        .append(value.indent(indentation + 2))
-                        .append(newLine);
-                }
+            }
+            if (value instanceof Scalar) {
+                print.append(" ");
+                this.printScalar((Scalar) value, print, indentation);
+            } else  {
+                print
+                    .append(newLine)
+                    .append(value.indent(indentation + 2))
+                    .append(newLine);
             }
         }
         String printed = print.toString();

@@ -149,14 +149,16 @@ public abstract class BaseYamlSequence
             spaces--;
         }
         for (final YamlNode node : this.values()) {
-            this.printPossibleComment(node.comment(), print, alignment.toString());
-            print
-                .append(alignment)
-                .append("-");
             if (node instanceof Scalar) {
+                print
+                    .append(alignment)
+                    .append("-");
                 this.printScalar((Scalar) node, print, indentation);
             } else  {
+                this.printPossibleComment(node.comment(), print, alignment.toString());
                 print
+                    .append(alignment)
+                    .append("-")
                     .append(newLine)
                     .append(((BaseYamlNode) node).indent(indentation + 2))
                     .append(newLine);

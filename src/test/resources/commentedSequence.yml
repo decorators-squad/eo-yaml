@@ -1,7 +1,6 @@
 # a sequence with comments
 - element1
-# a plain scalar string in a sequence
-- element2
+- element2 # a plain scalar string in a sequence
 - element3
 # a mapping as an element of a sequence
 -

@@ -5,5 +5,4 @@ developers:
   - rultor
   - salikjan
   - sherif
-# name of the project
-name: eo-yaml
+name: eo-yaml # name of the project
