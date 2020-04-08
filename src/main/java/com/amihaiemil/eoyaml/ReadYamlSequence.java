@@ -198,13 +198,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
         return this.values().iterator();
     }
 
-    /**
-     * Return the comment referring to this YamlSequence.
-     * @todo #276:30min Continue implementing support for Comments into the
-     *  read version of YamlMapping. Comments for the elements of a sequence
-     *  are already implemented in BaseYamlSequence.
-     * @return Comment.
-     */
     @Override
     public Comment comment() {
         return new ReadComment(
