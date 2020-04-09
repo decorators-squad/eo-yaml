@@ -258,7 +258,7 @@
 						</executions>
 						<configuration>
 							<source>8</source>
-							<javadocExecutable>${java.home}/../bin/javadoc</javadocExecutable>
+							<javadocExecutable>${JAVA_HOME}/bin/javadoc</javadocExecutable>
 							<tags>
 								<tag>
 									<name>todo</name>
