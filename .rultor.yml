@@ -1,20 +1,9 @@
 docker:
-  # image: g4s8/rultor:alpine3.10
   image: g4s8/rultor-jdk11:alpine3.10
 architect:
   - amihaiemil
 env:
   MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
-deploy:
-  script: |-
-    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-    echo "JAVA HOME -----"
-    echo ${JAVA_HOME}
-    echo "---------------"
-    echo "---------------"
-    mvn --version
-    echo "---------------"
-    mvn clean install -PgenDocs
 merge:
   script: |-
     mvn clean install -Pcheckstyle
