@@ -10,7 +10,10 @@ deploy:
     echo "JAVA HOME -----"
     echo ${JAVA_HOME}
     echo "---------------"
-    mvn clean install -PgenDocs
+    echo "---------------"
+    mvn --version
+    echo "---------------"
+    # mvn clean install -PgenDocs
 merge:
   script: |-
     mvn clean install -Pcheckstyle
