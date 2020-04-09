@@ -14,7 +14,7 @@ deploy:
     echo "---------------"
     mvn --version
     echo "---------------"
-    # mvn clean install -PgenDocs
+    mvn clean install -PgenDocs
 merge:
   script: |-
     mvn clean install -Pcheckstyle
