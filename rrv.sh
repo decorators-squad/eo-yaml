@@ -16,7 +16,7 @@
 set -e
 set -o pipefail
 
-export PATH=$JAVA_HOME/bin:$HOME
+export PATH=$JAVA_HOME/bin:$PATH
 
 CURRENT_VERSION=$(grep -o '[0-9]*\.[0-9]*\.[0-9]*-SNAPSHOT' -m 1 pom.xml)
 
