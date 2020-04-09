@@ -7,6 +7,9 @@ env:
   MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
 deploy:
   script: |-
+    echo "JAVA HOME -----"
+    echo ${JAVA_HOME}
+    echo "---------------"
     mvn clean install -PgenDocs
 merge:
   script: |-
