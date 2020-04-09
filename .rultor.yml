@@ -24,5 +24,6 @@ decrypt:
   secring.gpg: "repo/rcfg/secring.gpg.asc"
 release:
   script: |-
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
     chmod +x ./rrv.sh
     ./rrv.sh
