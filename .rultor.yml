@@ -5,6 +5,9 @@ architect:
   - amihaiemil
 env:
   MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
+deploy:
+  script: |-
+    mvn clean install -PgenDocs
 merge:
   script: |-
     mvn clean install -Pcheckstyle
