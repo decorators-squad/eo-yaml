@@ -48,6 +48,7 @@ Here is what we have so far:
     - Automatic validation of the input's indentation.
     - Clear and detailed Exceptions. For instance, in the case of bad indentation, it will tell you exactly which line is problematic and why.
     - Fully encapsulated. The user works only with a few Java Interfaces.
+    - All objects are immutable and thread-safe.
     - It can be used as a **Java Module** (if you're on JDK 9+).
     - It is **lightweight**! It has [only one dependency](https://github.com/decorators-squad/eo-yaml/blob/master/pom.xml#L46) used in parsing Java Beans to YAML. You can safely exclude it if you're only interested in building or reading YAML.
 
