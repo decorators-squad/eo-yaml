@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -37,10 +35,7 @@ import java.util.*;
  * <br><br>
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
- * methods.<br><br>
- * This class also offers the package-protected indent(...) method, which
- * returns the indented value of the sequence, used in printing YAML. This
- * method should NOT be visible to users.
+ * methods.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
@@ -122,25 +117,6 @@ public abstract class BaseYamlSequence
             }
         }
         return result;
-    }
-
-    /**
-     * When printing a YamlSequence, just call this.indent(0), no need for
-     * other wrappers.
-     * @return This printed YamlSequence.
-     */
-    @Override
-    public final String toString() {
-        final StringWriter writer = new StringWriter();
-        final YamlPrinter printer = new RtYamlPrinter(writer);
-        try {
-            printer.print(this);
-            return writer.toString();
-        } catch (final IOException ex) {
-            throw new IllegalStateException(
-                    "IOException when printing YAML", ex
-            );
-        }
     }
 
     @Override

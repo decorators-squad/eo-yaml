@@ -27,6 +27,11 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlPrintException;
+
+import java.io.IOException;
+import java.io.StringWriter;
+
 /**
  * Base YAML Node. This is the first class in the hierarchy
  * for any kind of YAML node.
@@ -46,5 +51,27 @@ abstract class BaseYamlNode implements YamlNode {
      * @return True or false.
      */
     abstract boolean isEmpty();
+
+    /**
+     * Print this YamlNode using a StringWriter to create its
+     * String representation.
+     * @return String print of this YamlNode.
+     * @throws YamlPrintException If there is any I/O problem
+     *  when printing the YAML.
+     *
+     */
+    @Override
+    public final String toString() {
+        final StringWriter writer = new StringWriter();
+        final YamlPrinter printer = new RtYamlPrinter(writer);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new YamlPrintException(
+                "IOException when printing YAML", ex
+            );
+        }
+    }
 
 }

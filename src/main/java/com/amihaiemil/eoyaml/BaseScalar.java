@@ -27,19 +27,13 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.IOException;
-import java.io.StringWriter;
-
 /**
  * Base Yaml Scalar which all implementations of Scalar should extend.
  * It implementing toString(), equals, hashcode and compareTo methods.
  * <br><br>
  * These methods should be default methods on the interface,
  * but we are not allowed to have default implementations of java.lang.Object
- * methods.<br><br>
- * This class also offers the package-protected indent(...) method, which
- * returns the indented value of the Scalar, used in printing YAML. This
- * method should NOT be visible to users.
+ * methods.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
@@ -106,26 +100,6 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
             }
         }
         return result;
-    }
-
-    /**
-     * This has to be overridden by all Scalars. When printing a single scalar,
-     * it is not enough to just print its value (this.indent(0)), it has to
-     * be wrapped in a YAML Document, otherwise the print
-     * won't be a valid YAML.
-     * @return String.
-     */
-    public final String toString() {
-        final StringWriter writer = new StringWriter();
-        final YamlPrinter printer = new RtYamlPrinter(writer);
-        try {
-            printer.print(this);
-            return writer.toString();
-        } catch (final IOException ex) {
-            throw new IllegalStateException(
-                "IOException when printing YAML", ex
-            );
-        }
     }
 
     @Override
