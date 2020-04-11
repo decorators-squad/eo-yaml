@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Read Yaml folded block Scalar. This is a Scalar spanning multiple lines.
  * This Scalar's newlines will be ignored ("folded"), the scalar's value
@@ -42,7 +45,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 1.0.2
  */
-final class ReadFoldedBlockScalar extends BaseScalar {
+final class ReadFoldedBlockScalar extends BaseFoldedScalar {
 
     /**
      * Yaml line just previous to the one where this scalar starts. E.g.
@@ -184,27 +187,13 @@ final class ReadFoldedBlockScalar extends BaseScalar {
         );
     }
 
-    /**
-     * When printing a folded scalar, we have to wrap it
-     * inside proper YAML elements, otherwise it won't make
-     * sense as a YAML document. It will look like this:
-     * <pre>
-     * ---
-     * >
-     *   some folded
-     *   scalar on more lines
-     * ...
-     * </pre>
-     * @return This scalar as a YAML document.
-     */
     @Override
-    public String toString() {
-        final StringBuilder string = new StringBuilder();
-        string.append("---").append(System.lineSeparator())
-            .append(">").append(System.lineSeparator())
-            .append(this.indent(2))
-            .append(System.lineSeparator())
-            .append("...");
-        return string.toString();
+    List<String> unfolded() {
+        final List<String> unfolded = new ArrayList<>();
+        for(final YamlLine line : this.significant) {
+            unfolded.add(line.toString());
+        }
+        return unfolded;
     }
+
 }

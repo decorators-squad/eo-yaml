@@ -27,60 +27,24 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
+
 /**
- * YAML Plain scalar from String. Use this class when dealing with
- * built YAML or in the unit tests.
- *
- * DO NOT use it when READING yaml. For reading use
- * {@link ReadPlainScalar}!
- *
+ * YAML Printer.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 4.3.1
  */
-final class PlainStringScalar extends BaseScalar {
+public interface YamlPrinter {
 
     /**
-     * Comments referring to this scalar.
+     * Print a YAML Node. YamlNode is the base interface for all types
+     * of YAML.
+     * @param node YAML node to print.
+     * @throws IOException If any I/O problem is encountered. It will also
+     *  throw an exception if you call this method more than once (because
+     *  the underlying stream is closed at the end of the printing).
      */
-    private final Comment comment;
-
-    /**
-     * This scalar's value.
-     */
-    private final String value;
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     */
-    PlainStringScalar(final String value) {
-        this(value, "");
-    }
-
-    /**
-     * Ctor.
-     * @param comment Comment referring to this Scalar.
-     * @param value Given value for this scalar.
-     */
-    PlainStringScalar(final String value, final String comment) {
-        this.value = value;
-        this.comment = new BuiltComment(this, comment);
-    }
-
-    /**
-     * Value of this scalar.
-     * @return Value of type T.
-     */
-    @Override
-    public String value() {
-        return this.value;
-    }
-
-    @Override
-    public Comment comment() {
-        return this.comment;
-    }
+    void print(final YamlNode node) throws IOException;
 
 }

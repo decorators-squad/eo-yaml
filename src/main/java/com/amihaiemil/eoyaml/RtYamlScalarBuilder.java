@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,7 +93,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
      * @version $Id$
      * @since 4.0.0
      */
-    static class BuiltFoldedBlockScalar extends BaseScalar {
+    static class BuiltFoldedBlockScalar extends BaseFoldedScalar {
 
         /**
          * Comments referring to this scalar.
@@ -184,31 +185,11 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
             return print.toString();
         }
 
-        /**
-         * When printing a block scalar, we have to wrap it
-         * inside proper YAML elements, otherwise it won't make
-         * sense as a YAML document. It will look like this:
-         * <pre>
-         * ---
-         * >
-         *   some folded
-         *   scalar on more lines
-         * ...
-         * </pre>
-         * @return This scalar as a YAML document.
-         */
         @Override
-        public String toString() {
-            final StringBuilder string = new StringBuilder();
-            string
-                .append("---")
-                .append(System.lineSeparator())
-                .append(">")
-                .append(System.lineSeparator())
-                .append(this.indent(2))
-                .append(System.lineSeparator())
-                .append("...");
-            return string.toString();
+        final List<String> unfolded() {
+            final List<String> unfolded = new ArrayList<>();
+            unfolded.addAll(this.lines);
+            return unfolded;
         }
     }
 
@@ -304,34 +285,6 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
                 }
             }
             return print.toString();
-        }
-
-        /**
-         * When printing a block scalar, we have to wrap it
-         * inside proper YAML elements, otherwise it won't make
-         * sense as a YAML document. It will look like this:
-         * <pre>
-         * ---
-         * |
-         *   line 1
-         *   line 2
-         *   line 3
-         * ...
-         * </pre>
-         * @return This scalar as a YAML document.
-         */
-        @Override
-        public String toString() {
-            final StringBuilder string = new StringBuilder();
-            string
-                .append("---")
-                .append(System.lineSeparator())
-                .append("|")
-                .append(System.lineSeparator())
-                .append(this.indent(2))
-                .append(System.lineSeparator())
-                .append("...");
-            return string.toString();
         }
     }
 }

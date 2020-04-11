@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
 /**
  * Base Yaml Scalar which all implementations of Scalar should extend.
  * It implementing toString(), equals, hashcode and compareTo methods.
@@ -112,7 +115,18 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
      * won't be a valid YAML.
      * @return String.
      */
-    public abstract String toString();
+    public final String toString() {
+        final StringWriter writer = new StringWriter();
+        final YamlPrinter printer = new RtYamlPrinter(writer);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new IllegalStateException(
+                "IOException when printing YAML", ex
+            );
+        }
+    }
 
     /**
      * Indent this scalar. Keep this method package-protected, it should
