@@ -133,7 +133,7 @@ final class RtYamlPrinter implements YamlPrinter {
                 );
             }
             if(key instanceof Scalar) {
-                this.printNode(key, false, 0);
+                this.printScalar((Scalar) key, 0);
                 this.writer
                     .append(":");
             } else {
@@ -145,7 +145,6 @@ final class RtYamlPrinter implements YamlPrinter {
                     .append(":");
             }
             if (value instanceof Scalar) {
-                this.writer.append(" ");
                 this.printNode(value, false, 0);
             } else  {
                 this.printNode(value, true, indentation + 2);
@@ -179,7 +178,7 @@ final class RtYamlPrinter implements YamlPrinter {
             if (node instanceof Scalar) {
                 this.writer
                     .append(alignment)
-                    .append("- ");
+                    .append("-");
                 this.printNode(node, false, 0);
             } else  {
                 this.printPossibleComment(node.comment(), alignment.toString());
@@ -260,17 +259,23 @@ final class RtYamlPrinter implements YamlPrinter {
         final boolean onNewLine,
         final int indentation
     ) throws IOException {
-        if(onNewLine) {
-            this.writer.append(System.lineSeparator());
-        }
-        if(node instanceof Scalar) {
-            this.printScalar((Scalar) node, indentation);
-        } else if (node instanceof YamlSequence) {
-            this.printSequence((YamlSequence) node, indentation);
-        } else if (node instanceof YamlMapping) {
-            this.printMapping((YamlMapping) node, indentation);
-        } else if (node instanceof YamlStream) {
-            this.printStream((YamlStream) node, indentation);
+        if(node == null || ((BaseYamlNode) node).isEmpty()) {
+            this.writer.append(" ").append("null");
+        } else {
+            if (onNewLine) {
+                this.writer.append(System.lineSeparator());
+            } else {
+                this.writer.append(" ");
+            }
+            if (node instanceof Scalar) {
+                this.printScalar((Scalar) node, indentation);
+            } else if (node instanceof YamlSequence) {
+                this.printSequence((YamlSequence) node, indentation);
+            } else if (node instanceof YamlMapping) {
+                this.printMapping((YamlMapping) node, indentation);
+            } else if (node instanceof YamlStream) {
+                this.printStream((YamlStream) node, indentation);
+            }
         }
     }
 
