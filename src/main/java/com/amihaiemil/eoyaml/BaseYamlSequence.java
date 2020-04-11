@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -248,10 +250,20 @@ public abstract class BaseYamlSequence
      */
     @Override
     public final String toString() {
-        final StringBuilder print = new StringBuilder();
-        this.printPossibleComment(this.comment(), print, "");
-        print.append(this.indent(0));
-        return print.toString();
+//        final StringBuilder print = new StringBuilder();
+//        this.printPossibleComment(this.comment(), print, "");
+//        print.append(this.indent(0));
+//        return print.toString();
+        final StringWriter writer = new StringWriter();
+        final YamlPrinter printer = new RtYamlPrinter(writer);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new IllegalStateException(
+                    "IOException when printing YAML", ex
+            );
+        }
     }
 
     @Override

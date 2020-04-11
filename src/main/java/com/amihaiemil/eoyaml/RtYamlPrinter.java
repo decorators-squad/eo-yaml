@@ -29,6 +29,8 @@ package com.amihaiemil.eoyaml;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Base implementation of YamlPrinter. "Rt" stands for "Runtime".
@@ -56,7 +58,49 @@ final class RtYamlPrinter implements YamlPrinter {
         if(node instanceof Scalar) {
             this.writer.append("---").append(System.lineSeparator());
             this.printScalar((Scalar) node, 0);
-            this.writer.append("...");
+            this.writer.append(System.lineSeparator()).append("...");
+        } else if(node instanceof YamlSequence) {
+            this.printPossibleComment(node.comment(), "");
+            this.printSequence((YamlSequence) node, 0);
+        }
+    }
+
+    /**
+     * Print a YAML Sequence.
+     * @param sequence Given YamlSequence.
+     * @param indentation Level of indentation of the printed Scalar.
+     * @throws IOException If an I/O problem occurs.
+     */
+    private void printSequence (
+        final YamlSequence sequence,
+        final int indentation
+    ) throws IOException {
+        final String newLine = System.lineSeparator();
+        int spaces = indentation;
+        final StringBuilder alignment = new StringBuilder();
+        while (spaces > 0) {
+            alignment.append(" ");
+            spaces--;
+        }
+        final Iterator<YamlNode> valuesIt = sequence.values().iterator();
+        while(valuesIt.hasNext()) {
+            final YamlNode node = valuesIt.next();
+            if (node instanceof Scalar) {
+                this.writer
+                    .append(alignment)
+                    .append("- ");
+                this.printScalar((Scalar) node, indentation);
+            } else  {
+                this.printPossibleComment(node.comment(), alignment.toString());
+                this.writer
+                    .append(alignment)
+                    .append("-")
+                    .append(newLine);
+                this.printNode(node, indentation + 2);
+            }
+            if(valuesIt.hasNext()) {
+                this.writer.append(newLine);
+            }
         }
     }
 
@@ -73,17 +117,24 @@ final class RtYamlPrinter implements YamlPrinter {
         if (scalar instanceof PlainStringScalar
             || scalar instanceof ReadPlainScalar
         ) {
-            this.writer.append(this.indent(scalar.value(), indentation))
-                  .append(System.lineSeparator());
+            this.writer.append(this.indent(scalar.value(), indentation));
         } else if (scalar instanceof BaseFoldedScalar) {
             final BaseFoldedScalar foldedScalar = (BaseFoldedScalar) scalar;
             this.writer
                 .append(">")
                 .append(System.lineSeparator());
-            for(final String line : foldedScalar.unfolded()) {
+            final List<String> unfolded = foldedScalar.unfolded();
+            for(int idx = 0; idx < unfolded.size(); idx++) {
                 this.writer
-                    .append(this.indent(line, indentation + 2))
-                    .append(System.lineSeparator());
+                    .append(
+                        this.indent(
+                            unfolded.get(idx),
+                            indentation + 2
+                        )
+                    );
+                if(idx < unfolded.size() - 1) {
+                    this.writer.append(System.lineSeparator());
+                }
             }
         } else if (scalar instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
             || scalar instanceof ReadLiteralBlockScalar
@@ -93,7 +144,51 @@ final class RtYamlPrinter implements YamlPrinter {
                 .append(System.lineSeparator())
                 .append(
                     this.indent(scalar.value(), indentation + 2)
-                ).append(System.lineSeparator());
+                );
+        }
+    }
+
+    /**
+     * Convenience method to chose the right printer by looking at the
+     * type of the YamlNode. This method should be used when printing children
+     * nodes of a complex Node (mapping, scalar, stream etc).
+     * @param node YAML Node to print.
+     * @param indentation Indentation of the print.
+     * @throws IOException If any I/O error occurs.
+     */
+    private void printNode(
+        final YamlNode node,
+        final int indentation
+    ) throws IOException {
+        if(node instanceof Scalar) {
+            this.printScalar((Scalar) node, indentation);
+        } else if (node instanceof YamlSequence) {
+            this.printSequence((YamlSequence) node, indentation);
+        }
+    }
+
+    /**
+     * Print a comment. Make sure to split the lines if there are more
+     * lines separated by NewLine and also add a '# ' in front of each
+     * line.
+     * @param comment Comment.
+     * @param alignment Indentation.
+     * @throws IOException If any I/O problem occurs.
+     */
+    private void printPossibleComment (
+        final Comment comment,
+        final String alignment
+    ) throws IOException {
+        final String com = comment.value();
+        if(com.trim().length()!=0) {
+            String[] lines = com.split(System.lineSeparator());
+            for(final String line : lines) {
+                this.writer
+                    .append(alignment)
+                    .append("# ")
+                    .append(line)
+                    .append(System.lineSeparator());
+            }
         }
     }
 
