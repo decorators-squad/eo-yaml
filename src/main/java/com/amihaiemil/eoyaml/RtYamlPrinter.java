@@ -62,10 +62,10 @@ final class RtYamlPrinter implements YamlPrinter {
             this.printScalar((Scalar) node, 0);
             this.writer.append(System.lineSeparator()).append("...");
         } else if(node instanceof YamlSequence) {
-            this.printPossibleComment(node.comment(), "");
+            this.printPossibleComment(node, "");
             this.printSequence((YamlSequence) node, 0);
         } else if(node instanceof YamlMapping) {
-            this.printPossibleComment(node.comment(), "");
+            this.printPossibleComment(node, "");
             this.printMapping((YamlMapping) node, 0);
         } else if(node instanceof YamlStream) {
             this.printStream((YamlStream) node, 0);
@@ -122,15 +122,11 @@ final class RtYamlPrinter implements YamlPrinter {
         final Iterator<YamlNode> keysIt = mapping.keys().iterator();
         while(keysIt.hasNext()) {
             final YamlNode key = keysIt.next();
-            this.printPossibleComment(
-                key.comment(), alignment.toString()
-            );
+            this.printPossibleComment(key, alignment.toString());
             this.writer.append(alignment);
             final YamlNode value = mapping.value(key);
             if(!(value instanceof Scalar)) {
-                this.printPossibleComment(
-                    value.comment(), alignment.toString()
-                );
+                this.printPossibleComment(value, alignment.toString());
             }
             if(key instanceof Scalar) {
                 this.printScalar((Scalar) key, 0);
@@ -181,7 +177,7 @@ final class RtYamlPrinter implements YamlPrinter {
                     .append("-");
                 this.printNode(node, false, 0);
             } else  {
-                this.printPossibleComment(node.comment(), alignment.toString());
+                this.printPossibleComment(node, alignment.toString());
                 this.writer
                     .append(alignment)
                     .append("-");
@@ -283,23 +279,25 @@ final class RtYamlPrinter implements YamlPrinter {
      * Print a comment. Make sure to split the lines if there are more
      * lines separated by NewLine and also add a '# ' in front of each
      * line.
-     * @param comment Comment.
+     * @param node Node containing the Comment.
      * @param alignment Indentation.
      * @throws IOException If any I/O problem occurs.
      */
     private void printPossibleComment(
-        final Comment comment,
+        final YamlNode node,
         final String alignment
     ) throws IOException {
-        final String com = comment.value();
-        if(com.trim().length()!=0) {
-            String[] lines = com.split(System.lineSeparator());
-            for(final String line : lines) {
-                this.writer
-                    .append(alignment)
-                    .append("# ")
-                    .append(line)
-                    .append(System.lineSeparator());
+        if(node != null) {
+            final String com = node.comment().value();
+            if (com.trim().length() != 0) {
+                String[] lines = com.split(System.lineSeparator());
+                for (final String line : lines) {
+                    this.writer
+                            .append(alignment)
+                            .append("# ")
+                            .append(line)
+                            .append(System.lineSeparator());
+                }
             }
         }
     }

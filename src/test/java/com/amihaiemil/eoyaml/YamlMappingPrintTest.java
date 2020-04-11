@@ -134,17 +134,132 @@ public final class YamlMappingPrintTest {
     }
 
     /**
-     * YamlMapping can be printed properly when it
-     * contains an empty YamlSequence value.
+     * An empty YamlSequence value is printed as null.
      */
     @Test
-    public void printsWithEmptySequence() {
+    public void printsEmptySequenceAsNull() {
         final YamlMapping map = Yaml.createYamlMappingBuilder()
             .add("key", "value1")
             .add("seq", Yaml.createYamlSequenceBuilder().build())
             .add("anotherKey", "value2")
             .build();
-        System.out.print(map);
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("key: value1").append(System.lineSeparator())
+            .append("seq: null").append(System.lineSeparator())
+            .append("anotherKey: value2");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An null YamlSequence value is printed as null.
+     */
+    @Test
+    public void printsNullSequenceAsNull() {
+        final YamlSequence seq = null;
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("key", "value1")
+            .add("seq", seq)
+            .add("anotherKey", "value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("key: value1").append(System.lineSeparator())
+            .append("seq: null").append(System.lineSeparator())
+            .append("anotherKey: value2");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An empty YamlMapping value is printed as null.
+     */
+    @Test
+    public void printsEmptyMappingAsNull() {
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("key", "value1")
+            .add("map", Yaml.createYamlMappingBuilder().build())
+            .add("anotherKey", "value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("key: value1").append(System.lineSeparator())
+            .append("map: null").append(System.lineSeparator())
+            .append("anotherKey: value2");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An null YamlMapping value is printed as null.
+     */
+    @Test
+    public void printsNullMappingAsNull() {
+        final YamlMapping nullMap = null;
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("key", "value1")
+            .add("map", nullMap)
+            .add("anotherKey", "value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("key: value1").append(System.lineSeparator())
+            .append("map: null").append(System.lineSeparator())
+            .append("anotherKey: value2");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An empty Scalar value is printed as null.
+     */
+    @Test
+    public void printsEmptyScalarAsNull() {
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("key", "value1")
+            .add("scalar", Yaml.createYamlScalarBuilder().buildPlainScalar())
+            .add("anotherKey", "value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("key: value1").append(System.lineSeparator())
+            .append("scalar: null").append(System.lineSeparator())
+            .append("anotherKey: value2");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An null Scalar value is printed as null.
+     */
+    @Test
+    public void printsNullScalarAsNull() {
+        final Scalar nullScalar = null;
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("key", "value1")
+            .add("scalar", nullScalar)
+            .add("anotherKey", "value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("key: value1").append(System.lineSeparator())
+            .append("scalar: null").append(System.lineSeparator())
+            .append("anotherKey: value2");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
     }
 
     /**
