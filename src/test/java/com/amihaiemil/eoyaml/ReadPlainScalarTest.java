@@ -55,6 +55,22 @@ public final class ReadPlainScalarTest {
     }
 
     /**
+     * ReadPlainScalar can return the scalar's unescaped value
+     * from a mapping line.
+     */
+    @Test
+    public void returnsUnescapedValueFromMappingLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("password: \"Password!@#\"", 0)
+        );
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo("Password!@#")
+        );
+    }
+
+    /**
      * ReadPlainScalar can return the scalar's null value from a mapping line.
      */
     @Test
