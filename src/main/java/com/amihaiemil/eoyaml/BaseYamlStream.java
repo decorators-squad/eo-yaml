@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -123,84 +125,18 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
         return result;
     }
 
-    /**
-     * Indent this YamlStream. It will take all elements and separate
-     * them with "---". It also starts with "---".
-     *
-     * Keep this method package-protected, it should NOT be visible
-     * to users.
-     *
-     * If the YamlStream is empty, it will just print:
-     * <pre>
-     * ---
-     * ...
-     * </pre>
-     *
-     * Here is an example of printed YamlStream:
-     * <pre>
-     * ---
-     *   architect: amihaiemil
-     *   developers:
-     *     - amihaiemil
-     *     - salikjan
-     * ---
-     *   architect: yegor256
-     *   developers:
-     *     - paolo
-     *     - mario
-     * </pre>
-     * @param indentation Integer specifying the root indentation level.
-     *  Usually 0, but it may be greater than 0 if this YamlNode should
-     *  be nested within a bigger YAML.
-     * @return String.
-     */
-    final String indent(final int indentation) {
-        return "";
-//        if(indentation < 0) {
-//            throw new IllegalArgumentException(
-//                "Indentation level has to be >=0"
-//            );
-//        }
-//        final StringBuilder print = new StringBuilder();
-//        final String newLine = System.lineSeparator();
-//        int spaces = indentation;
-//        final StringBuilder indent = new StringBuilder();
-//        while (spaces > 0) {
-//            indent.append(" ");
-//            spaces--;
-//        }
-//        final Collection<YamlNode> values = this.values();
-//        String printed;
-//        if(values.size() == 0) {
-//            print
-//                .append(indent).append("---")
-//                .append(newLine)
-//                .append(indent).append("...");
-//            printed = print.toString();
-//        } else {
-//            for (final YamlNode node : values) {
-//                final BaseYamlNode indentable = (BaseYamlNode) node;
-//                print.append(indent)
-//                    .append("---")
-//                    .append(newLine);
-//                print.append(indentable.indent(indentation + 2));
-//                print.append(newLine);
-//            }
-//            printed = print.toString();
-//            if(printed.length() > 0) {
-//                printed = printed.substring(0, printed.length() - 1);
-//            }
-//        }
-//        return printed;
-    }
-
-    /**
-     * When printing a stream just indent it to 0, no need for other wrappers.
-     * @return Printed stream of YAML Documents
-     */
     @Override
     public final String toString() {
-        return this.indent(0);
+        final StringWriter writer = new StringWriter();
+        final YamlPrinter printer = new RtYamlPrinter(writer);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new IllegalStateException(
+                "IOException when printing YAML", ex
+            );
+        }
     }
 
     @Override

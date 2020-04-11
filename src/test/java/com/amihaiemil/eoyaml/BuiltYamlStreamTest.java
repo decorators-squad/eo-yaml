@@ -378,7 +378,7 @@ public final class BuiltYamlStreamTest {
         );
         MatcherAssert.assertThat(
             mappings.toString(),
-            Matchers.equalTo("---" + System.lineSeparator() + "...")
+            Matchers.isEmptyString()
         );
     }
 

@@ -34,6 +34,8 @@ import java.util.List;
 
 /**
  * Base implementation of YamlPrinter. "Rt" stands for "Runtime".
+ * @checkstyle ExecutableStatementCount (400 lines)
+ * @checkstyle CyclomaticComplexity (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.3.1
@@ -65,6 +67,38 @@ final class RtYamlPrinter implements YamlPrinter {
         } else if(node instanceof YamlMapping) {
             this.printPossibleComment(node.comment(), "");
             this.printMapping((YamlMapping) node, 0);
+        } else if(node instanceof YamlStream) {
+            this.printStream((YamlStream) node, 0);
+        }
+    }
+
+    /**
+     * Print a YAML Stream of documents.
+     * @param stream Given YamlStream.
+     * @param indentation Level of indentation of the printed stream.
+     * @throws IOException If an I/O problem occurs.
+     */
+    private void printStream(
+        final YamlStream stream,
+        final int indentation
+    ) throws IOException {
+        final String newLine = System.lineSeparator();
+        int spaces = indentation;
+        final StringBuilder indent = new StringBuilder();
+        while (spaces > 0) {
+            indent.append(" ");
+            spaces--;
+        }
+        final Iterator<YamlNode> valuesIt = stream.values().iterator();
+        while(valuesIt.hasNext()) {
+            final YamlNode document = valuesIt.next();
+            this.writer.append(indent)
+                    .append("---")
+                    .append(newLine);
+            this.printNode(document, indentation + 2);
+            if(valuesIt.hasNext()) {
+                this.writer.append(newLine);
+            }
         }
     }
 
@@ -74,7 +108,7 @@ final class RtYamlPrinter implements YamlPrinter {
      * @param indentation Level of indentation of the printed mapping.
      * @throws IOException If an I/O problem occurs.
      */
-    private void printMapping (
+    private void printMapping(
         final YamlMapping mapping,
         final int indentation
     ) throws IOException {
@@ -132,7 +166,7 @@ final class RtYamlPrinter implements YamlPrinter {
      * @param indentation Level of indentation of the printed Scalar.
      * @throws IOException If an I/O problem occurs.
      */
-    private void printSequence (
+    private void printSequence(
         final YamlSequence sequence,
         final int indentation
     ) throws IOException {
@@ -192,13 +226,12 @@ final class RtYamlPrinter implements YamlPrinter {
             this.writer.append(System.lineSeparator());
             final List<String> unfolded = foldedScalar.unfolded();
             for(int idx = 0; idx < unfolded.size(); idx++) {
-                this.writer
-                    .append(
-                        this.indent(
-                            unfolded.get(idx).trim(),
-                            indentation + 2
-                        )
-                    );
+                this.writer.append(
+                    this.indent(
+                        unfolded.get(idx).trim(),
+                        indentation + 2
+                    )
+                );
                 if(idx < unfolded.size() - 1) {
                     this.writer.append(System.lineSeparator());
                 }
@@ -237,6 +270,8 @@ final class RtYamlPrinter implements YamlPrinter {
             this.printSequence((YamlSequence) node, indentation);
         } else if (node instanceof YamlMapping) {
             this.printMapping((YamlMapping) node, indentation);
+        } else if (node instanceof YamlStream) {
+            this.printStream((YamlStream) node, indentation);
         }
     }
 
@@ -248,7 +283,7 @@ final class RtYamlPrinter implements YamlPrinter {
      * @param alignment Indentation.
      * @throws IOException If any I/O problem occurs.
      */
-    private void printPossibleComment (
+    private void printPossibleComment(
         final Comment comment,
         final String alignment
     ) throws IOException {

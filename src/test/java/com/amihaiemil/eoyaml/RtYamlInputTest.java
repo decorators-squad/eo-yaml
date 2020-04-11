@@ -486,13 +486,13 @@ public final class RtYamlInputTest {
         ).readYamlStream();
         MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
         MatcherAssert.assertThat(
-            read.toString(), Matchers.equalTo("---" + newLine + "...")
+            read.toString(), Matchers.isEmptyString()
         );
 
         read = Yaml.createYamlInput("").readYamlStream();
         MatcherAssert.assertThat(read.values(), Matchers.emptyIterable());
         MatcherAssert.assertThat(
-            read.toString(), Matchers.equalTo("---" + newLine + "...")
+            read.toString(), Matchers.isEmptyString()
         );
     }
 
