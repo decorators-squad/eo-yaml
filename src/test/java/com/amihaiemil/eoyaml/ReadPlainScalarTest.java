@@ -55,6 +55,31 @@ public final class ReadPlainScalarTest {
     }
 
     /**
+     * ReadPlainScalar can return the scalar's null value from a mapping line.
+     */
+    @Test
+    public void returnsNullValueFromMappingLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("key: null", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.nullValue());
+    }
+
+    /**
+     * ReadPlainScalar can return the "null" String value from a mapping line,
+     * because it is escaped.
+     */
+    @Test
+    public void returnsEscapedNullStringFromMappingLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("key: 'null'", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("null"));
+    }
+
+    /**
      * ReadPlainScalar can return the scalar's value from a sequence line.
      */
     @Test
@@ -64,6 +89,31 @@ public final class ReadPlainScalarTest {
             new RtYamlLine("- value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+    }
+
+    /**
+     * ReadPlainScalar can return the scalar's null value from a sequence line.
+     */
+    @Test
+    public void returnsNullValueFromSequenceLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("- null", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.nullValue());
+    }
+
+    /**
+     * ReadPlainScalar can return the "null" String, because
+     * it is escaped.
+     */
+    @Test
+    public void returnsEscapedNullStringFromSequenceLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("- \"null\"", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("null"));
     }
 
     /**
@@ -119,6 +169,33 @@ public final class ReadPlainScalarTest {
             line
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+    }
+
+    /**
+     * ReadPlainScalar will return the null scalar.
+     */
+    @Test
+    public void returnsNullScalar() {
+        final YamlLine line = new RtYamlLine("null", 0);
+        final Scalar scalar = new ReadPlainScalar(
+                new AllYamlLines(new ArrayList<>()),
+                line
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.nullValue());
+    }
+
+    /**
+     * ReadPlainScalar will return the "null" String scalar, not null,
+     * because it is escaped.
+     */
+    @Test
+    public void returnsEscapedNullScalar() {
+        final YamlLine line = new RtYamlLine("'null'", 0);
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            line
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("null"));
     }
 
     /**

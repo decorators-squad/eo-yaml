@@ -59,6 +59,13 @@ final class ReadPlainScalar extends BaseScalar {
         this.scalar = scalar;
     }
 
+    /**
+     * Unescaped String value of this scalar. Pay attention, if the
+     * scalar's value is the "null" String, then we return null, because
+     * "null" is a reserved keyword in YAML, indicating a null Scalar.
+     * @checkstyle ReturnCount (50 lines)
+     * @return String or null if the Strings value is "null".
+     */
     @Override
     public String value() {
         final String value;
@@ -70,7 +77,11 @@ final class ReadPlainScalar extends BaseScalar {
         } else {
             value = trimmed;
         }
-        return this.unescape(value);
+        if("null".equals(value)) {
+            return null;
+        } else {
+            return this.unescape(value);
+        }
     }
 
     @Override
