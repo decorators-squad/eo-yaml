@@ -212,6 +212,103 @@ public final class ReadYamlSequenceTest {
     }
 
     /**
+     * ReadYamlSequence can return null on a misread scalar.
+     */
+    @Test
+    public void returnsNullOnMisreadScalar(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  beta: somethingElse", 1));
+        lines.add(new RtYamlLine("- scalar", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  alfa: ", 4));
+        lines.add(new RtYamlLine("    fourth: some", 5));
+        lines.add(new RtYamlLine("    key: value", 6));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        MatcherAssert.assertThat(
+            sequence.string(0),
+            Matchers.nullValue()
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return null on a misread sequence.
+     */
+    @Test
+    public void returnsNullOnMisreadSequence(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  beta: somethingElse", 1));
+        lines.add(new RtYamlLine("- scalar", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  alfa: ", 4));
+        lines.add(new RtYamlLine("    fourth: some", 5));
+        lines.add(new RtYamlLine("    key: value", 6));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        MatcherAssert.assertThat(
+            sequence.yamlSequence(0),
+            Matchers.nullValue()
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return null on a misread sequence.
+     */
+    @Test
+    public void returnsNullOnMisreadMapping(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  beta: somethingElse", 1));
+        lines.add(new RtYamlLine("- scalar", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  alfa: ", 4));
+        lines.add(new RtYamlLine("    fourth: some", 5));
+        lines.add(new RtYamlLine("    key: value", 6));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        MatcherAssert.assertThat(
+            sequence.yamlMapping(1),
+            Matchers.nullValue()
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return null if the specified index does not
+     * exist.
+     */
+    @Test
+    public void returnsNullOnOutOfIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  beta: somethingElse", 1));
+        lines.add(new RtYamlLine("- scalar", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  alfa: ", 4));
+        lines.add(new RtYamlLine("    fourth: some", 5));
+        lines.add(new RtYamlLine("    key: value", 6));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        MatcherAssert.assertThat(
+            sequence.yamlMapping(10),
+            Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            sequence.string(10),
+            Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            sequence.yamlSequence(10),
+            Matchers.nullValue()
+        );
+    }
+
+    /**
      * An empty ReadYamlSequence can be printed.
      * @throws Exception if something goes wrong
      */

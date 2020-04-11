@@ -40,7 +40,7 @@ import org.junit.Test;
 
 /**
  * Unit tests for {@link ReadYamlMapping}.
- * @checkstyle MethodName (1000 lines)
+ * @checkstyle MethodName (1500 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -494,8 +494,22 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("  some: mapping", 2));
         lines.add(new RtYamlLine("third: something", 3));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        final YamlNode missing = map.value(new PlainStringScalar("notthere"));
-        MatcherAssert.assertThat(missing, Matchers.nullValue());
+        MatcherAssert.assertThat(
+            map.value(new PlainStringScalar("notthere")),
+            Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.string("notthere"),
+            Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.yamlMapping("notthere"),
+            Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.yamlSequence("notthere"),
+            Matchers.nullValue()
+        );
     }
 
     /**
