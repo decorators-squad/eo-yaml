@@ -27,11 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 
 /**
  * Yaml.
@@ -110,4 +106,20 @@ public final class Yaml {
         return new RtYamlInput(input);
     }
 
+    /**
+     * Create a YamlPrinter to write a YamlNode somewhere. If you want to
+     * print a YamlNode to String, just use YamlNode.toString() -- it is a
+     * convenience equivalent to:
+     * <pre>
+     *   final YamlNode yaml = ...;
+     *   final StringWriter stgWriter = new StringWriter();
+     *   Yaml.createYamlPrinter(stgWriter).print(yaml);
+     *   System.out.println(stgWriter.toString());
+     * </pre>
+     * @param destination Writer where the YamlNode will be printed.
+     * @return YamlPrinter.
+     */
+    public static YamlPrinter createYamlPrinter(final Writer destination) {
+        return new RtYamlPrinter(destination);
+    }
 }
