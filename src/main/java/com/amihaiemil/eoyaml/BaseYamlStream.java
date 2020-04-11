@@ -201,4 +201,9 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
     public final String toString() {
         return this.indent(0);
     }
+
+    @Override
+    final boolean isEmpty() {
+        return this.values().isEmpty();
+    }
 }

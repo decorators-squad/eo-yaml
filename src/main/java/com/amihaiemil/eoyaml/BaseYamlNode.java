@@ -42,6 +42,12 @@ package com.amihaiemil.eoyaml;
 abstract class BaseYamlNode implements YamlNode {
 
     /**
+     * Is this YamlNode empty?
+     * @return True or false.
+     */
+    abstract boolean isEmpty();
+
+    /**
      * Print this YAML node with the given indentation.
      * When implementing this method, make sure to only use
      * the indent(...) method on children node.

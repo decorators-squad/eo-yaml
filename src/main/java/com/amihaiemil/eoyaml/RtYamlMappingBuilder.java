@@ -80,10 +80,15 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
 
     @Override
     public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
-        final Map<YamlNode, YamlNode> withAddedPair = new LinkedHashMap<>();
-        withAddedPair.putAll(this.pairs);
-        withAddedPair.put(key, value);
-        return new RtYamlMappingBuilder(withAddedPair);
+        if(key == null || ((BaseYamlNode) key).isEmpty()) {
+            throw new IllegalArgumentException(
+                "The key in YamlMapping cannot be null or empty!"
+            );
+        }
+        final Map<YamlNode, YamlNode> withAdded = new LinkedHashMap<>();
+        withAdded.putAll(this.pairs);
+        withAdded.put(key, value);
+        return new RtYamlMappingBuilder(withAdded);
     }
 
     @Override

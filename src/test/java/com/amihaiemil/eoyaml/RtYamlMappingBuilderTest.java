@@ -32,7 +32,9 @@ import java.util.List;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Unit tests for {@link RtYamlMappingBuilder}.
@@ -140,4 +142,48 @@ public final class RtYamlMappingBuilderTest {
             Matchers.equalTo("some test mapping")
         );
     }
+
+    /**
+     * RtYamlMappingBuilder should complain when a null key is provided.
+     */
+    @Test
+    public void complainsOnNullKey() {
+        final YamlNode key = null;
+        try {
+            final YamlMapping mapping = new RtYamlMappingBuilder()
+                .add(key, "value")
+                .build("some test mapping");
+            Assert.fail("IAE was expected!");
+        } catch (final IllegalArgumentException ex) {
+            MatcherAssert.assertThat(
+                ex.getMessage(),
+                Matchers.equalTo(
+                    "The key in YamlMapping cannot be null or empty!"
+                )
+            );
+        }
+    }
+
+    /**
+     * RtYamlMappingBuilder should complain when an empty key is provided.
+     */
+    @Test
+    public void complainsOnEmptyKey() {
+        final BaseYamlNode key = Mockito.mock(BaseYamlNode.class);
+        Mockito.when(key.isEmpty()).thenReturn(true);
+        try {
+            final YamlMapping mapping = new RtYamlMappingBuilder()
+                .add(key, "value")
+                .build("some test mapping");
+            Assert.fail("IAE was expected!");
+        } catch (final IllegalArgumentException ex) {
+            MatcherAssert.assertThat(
+                ex.getMessage(),
+                Matchers.equalTo(
+                    "The key in YamlMapping cannot be null or empty!"
+                )
+            );
+        }
+    }
+
 }

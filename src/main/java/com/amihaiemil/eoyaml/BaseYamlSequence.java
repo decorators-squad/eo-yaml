@@ -253,4 +253,9 @@ public abstract class BaseYamlSequence
         print.append(this.indent(0));
         return print.toString();
     }
+
+    @Override
+    final boolean isEmpty() {
+        return this.values().isEmpty();
+    }
 }

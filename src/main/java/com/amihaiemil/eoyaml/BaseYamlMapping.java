@@ -283,4 +283,9 @@ public abstract class BaseYamlMapping
         print.append(this.indent(0));
         return print.toString();
     }
+
+    @Override
+    final boolean isEmpty() {
+        return this.keys().isEmpty();
+    }
 }
