@@ -115,6 +115,135 @@ public final class YamlSequencePrintTest {
     }
 
     /**
+     * An empty YamlSequence value is printed as null.
+     */
+    @Test
+    public void printsEmptySequenceAsNull() {
+        final YamlSequence sequence = Yaml.createYamlSequenceBuilder()
+            .add("value1")
+            .add(Yaml.createYamlSequenceBuilder().build())
+            .add("value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- value1").append(System.lineSeparator())
+            .append("- null").append(System.lineSeparator())
+            .append("- value2");
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An null YamlSequence value is printed as null.
+     */
+    @Test
+    public void printsNullSequenceAsNull() {
+        final YamlSequence seq = null;
+        final YamlSequence sequence = Yaml.createYamlSequenceBuilder()
+            .add("value1")
+            .add(seq)
+            .add("value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- value1").append(System.lineSeparator())
+            .append("- null").append(System.lineSeparator())
+            .append("- value2");
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An empty YamlMapping value is printed as null.
+     */
+    @Test
+    public void printsEmptyMappingAsNull() {
+        final YamlSequence sequence = Yaml.createYamlSequenceBuilder()
+            .add("value1")
+            .add(Yaml.createYamlMappingBuilder().build())
+            .add("value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- value1").append(System.lineSeparator())
+            .append("- null").append(System.lineSeparator())
+            .append("- value2");
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An null YamlMapping value is printed as null.
+     */
+    @Test
+    public void printsNullMappingAsNull() {
+        final YamlMapping nullMap = null;
+        final YamlSequence sequence = Yaml.createYamlSequenceBuilder()
+            .add("value1")
+            .add(nullMap)
+            .add("value2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- value1").append(System.lineSeparator())
+            .append("- null").append(System.lineSeparator())
+            .append("- value2");
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An empty Scalar value is printed as null.
+     */
+    @Test
+    public void printsEmptyScalarAsNull() {
+        final YamlSequence sequence = Yaml.createYamlSequenceBuilder()
+            .add("scalar1")
+            .add(Yaml.createYamlScalarBuilder().buildPlainScalar())
+            .add("scalar2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- scalar1").append(System.lineSeparator())
+            .append("- null").append(System.lineSeparator())
+            .append("- scalar2");
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * An null Scalar value is printed as null.
+     */
+    @Test
+    public void printsNullScalarAsNull() {
+        final Scalar nullScalar = null;
+        final YamlSequence sequence = Yaml.createYamlSequenceBuilder()
+            .add("scalar1")
+            .add(nullScalar)
+            .add("scalar2")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- scalar1").append(System.lineSeparator())
+            .append("- null").append(System.lineSeparator())
+            .append("- scalar2");
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
