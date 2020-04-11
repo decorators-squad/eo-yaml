@@ -96,24 +96,6 @@ final class ReadLiteralBlockScalar extends BaseScalar {
         );
     }
 
-    @Override
-    String indent(final int indentation) {
-        StringBuilder alignment = new StringBuilder();
-        int spaces = indentation;
-        while (spaces > 0) {
-            alignment.append(" ");
-            spaces--;
-        }
-        StringBuilder printed = new StringBuilder();
-        for(final YamlLine line: this.significant) {
-            printed.append(alignment);
-            printed.append(line.trimmed());
-            printed.append(System.lineSeparator());
-        }
-        printed.delete(printed.length()-1, printed.length());
-        return printed.toString();
-    }
-
     /**
      * Value of this scalar.
      * @return String

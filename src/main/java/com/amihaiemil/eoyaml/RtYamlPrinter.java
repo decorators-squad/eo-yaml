@@ -62,6 +62,67 @@ final class RtYamlPrinter implements YamlPrinter {
         } else if(node instanceof YamlSequence) {
             this.printPossibleComment(node.comment(), "");
             this.printSequence((YamlSequence) node, 0);
+        } else if(node instanceof YamlMapping) {
+            this.printPossibleComment(node.comment(), "");
+            this.printMapping((YamlMapping) node, 0);
+        }
+    }
+
+    /**
+     * Print a YAML Mapping.
+     * @param mapping Given YamlMapping.
+     * @param indentation Level of indentation of the printed mapping.
+     * @throws IOException If an I/O problem occurs.
+     */
+    private void printMapping (
+        final YamlMapping mapping,
+        final int indentation
+    ) throws IOException {
+        final String newLine = System.lineSeparator();
+        int spaces = indentation;
+        final StringBuilder alignment = new StringBuilder();
+        while (spaces > 0) {
+            alignment.append(" ");
+            spaces--;
+        }
+        final Iterator<YamlNode> keysIt = mapping.keys().iterator();
+        while(keysIt.hasNext()) {
+            final YamlNode key = keysIt.next();
+            this.printPossibleComment(
+                key.comment(), alignment.toString()
+            );
+            this.writer.append(alignment);
+            final BaseYamlNode indKey = (BaseYamlNode) key;
+            final BaseYamlNode value = (BaseYamlNode) mapping.value(key);
+            if(!(value instanceof Scalar)) {
+                this.printPossibleComment(
+                    value.comment(), alignment.toString()
+                );
+            }
+            if(indKey instanceof Scalar) {
+                this.printScalar((Scalar) indKey, 0);
+                this.writer
+                    .append(":");
+            } else {
+                this.writer
+                    .append("?")
+                    .append(newLine);
+                this.printNode(indKey, indentation + 2);
+                this.writer.append(newLine)
+                    .append(alignment)
+                    .append(":");
+            }
+            if (value instanceof Scalar) {
+                this.writer.append(" ");
+                this.printScalar((Scalar) value, 0);
+            } else  {
+                this.writer
+                    .append(newLine);
+                this.printNode(value, indentation + 2);
+            }
+            if(keysIt.hasNext()) {
+                this.writer.append(newLine);
+            }
         }
     }
 
@@ -89,7 +150,7 @@ final class RtYamlPrinter implements YamlPrinter {
                 this.writer
                     .append(alignment)
                     .append("- ");
-                this.printScalar((Scalar) node, indentation);
+                this.printScalar((Scalar) node, 0);
             } else  {
                 this.printPossibleComment(node.comment(), alignment.toString());
                 this.writer
@@ -118,17 +179,23 @@ final class RtYamlPrinter implements YamlPrinter {
             || scalar instanceof ReadPlainScalar
         ) {
             this.writer.append(this.indent(scalar.value(), indentation));
+            if(!scalar.comment().value().isEmpty()) {
+                this.writer.append(" # ").append(scalar.comment().value());
+            }
         } else if (scalar instanceof BaseFoldedScalar) {
             final BaseFoldedScalar foldedScalar = (BaseFoldedScalar) scalar;
             this.writer
-                .append(">")
-                .append(System.lineSeparator());
+                .append(">");
+            if(!scalar.comment().value().isEmpty()) {
+                this.writer.append(" # ").append(scalar.comment().value());
+            }
+            this.writer.append(System.lineSeparator());
             final List<String> unfolded = foldedScalar.unfolded();
             for(int idx = 0; idx < unfolded.size(); idx++) {
                 this.writer
                     .append(
                         this.indent(
-                            unfolded.get(idx),
+                            unfolded.get(idx).trim(),
                             indentation + 2
                         )
                     );
@@ -140,7 +207,11 @@ final class RtYamlPrinter implements YamlPrinter {
             || scalar instanceof ReadLiteralBlockScalar
         ) {
             this.writer
-                .append("|")
+                .append("|");
+            if(!scalar.comment().value().isEmpty()) {
+                this.writer.append(" # ").append(scalar.comment().value());
+            }
+            this.writer
                 .append(System.lineSeparator())
                 .append(
                     this.indent(scalar.value(), indentation + 2)
@@ -164,6 +235,8 @@ final class RtYamlPrinter implements YamlPrinter {
             this.printScalar((Scalar) node, indentation);
         } else if (node instanceof YamlSequence) {
             this.printSequence((YamlSequence) node, indentation);
+        } else if (node instanceof YamlMapping) {
+            this.printMapping((YamlMapping) node, indentation);
         }
     }
 

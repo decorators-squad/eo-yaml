@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.*;
 
 
@@ -137,151 +139,22 @@ public abstract class BaseYamlMapping
     }
 
     /**
-     * Indent this YamlMapping. This is a base method since indentation
-     * logic should be identical for any kind of YamlMapping, regardless of
-     * its implementation.
-     *
-     * Keep this method package-protected, it should NOT be visible to users.
-     *
-     * @param indentation Indentation to start with. Usually, it's 0, since we
-     *  don't want to have spaces at the beginning. But in the case of nested
-     *  YamlNodes, this value may be greater than 0.
-     * @return String indented YamlMapping, by the specified indentation.
-     */
-    final String indent(final int indentation) {
-        if(indentation < 0) {
-            throw new IllegalArgumentException(
-                "Indentation level has to be >=0"
-            );
-        }
-        final String newLine = System.lineSeparator();
-        final StringBuilder print = new StringBuilder();
-        int spaces = indentation;
-        final StringBuilder alignment = new StringBuilder();
-        while (spaces > 0) {
-            alignment.append(" ");
-            spaces--;
-        }
-        for(final YamlNode key : this.keys()) {
-            this.printPossibleComment(
-                key.comment(), print, alignment.toString()
-            );
-            print.append(alignment);
-            final BaseYamlNode indKey = (BaseYamlNode) key;
-            final BaseYamlNode value = (BaseYamlNode) this.value(key);
-            if(!(value instanceof Scalar)) {
-                this.printPossibleComment(
-                        value.comment(), print, alignment.toString()
-                );
-            }
-            if(indKey instanceof Scalar) {
-                print
-                    .append(indKey.indent(0))
-                    .append(":");
-            } else {
-                print
-                    .append("?")
-                    .append(newLine)
-                    .append(indKey.indent(indentation + 2))
-                    .append(newLine)
-                    .append(alignment)
-                    .append(":");
-            }
-            if (value instanceof Scalar) {
-                print.append(" ");
-                this.printScalar((Scalar) value, print, indentation);
-            } else  {
-                print
-                    .append(newLine)
-                    .append(value.indent(indentation + 2))
-                    .append(newLine);
-            }
-        }
-        String printed = print.toString();
-        if(printed.length() > 0) {
-            printed = printed.substring(0, printed.length() - 1);
-        }
-        return printed;
-    }
-
-    /**
-     * Print a comment. Make sure to split the lines if there are more
-     * lines separated by NewLine and also add a '# ' in front of each
-     * line.
-     * @param comment Comment.
-     * @param print Printer StringBuilder.
-     * @param alignment Indentation.
-     */
-    private void printPossibleComment(
-        final Comment comment,
-        final StringBuilder print,
-        final String alignment
-    ) {
-        final String com = comment.value();
-        if(com.trim().length()!=0) {
-            String[] lines = com.split(System.lineSeparator());
-            for(final String line : lines) {
-                print
-                    .append(alignment)
-                    .append("# ")
-                    .append(line)
-                    .append(System.lineSeparator());
-            }
-        }
-    }
-
-    /**
-     * Print a Scalar. We need to check what kind of Scalar is it.
-     * If it's a plain scalar, we print it on the same line. If it's
-     * a folded or literal scalar, we must first print a line containing
-     * '>' or '|', then print the Scalar's lines bellow, with a +2 indentation.
-     * @checkstyle LineLength (50 lines)
-     * @param scalar YamlNode scalar.
-     * @param print Printer to add it to.
-     * @param indentation How much to indent it?
-     */
-    private void printScalar(
-        final Scalar scalar,
-        final StringBuilder print,
-        final int indentation
-    ) {
-        final BaseScalar indentable = (BaseScalar) scalar;
-        if (indentable instanceof PlainStringScalar
-            || indentable instanceof ReadPlainScalar
-        ) {
-            print.append(indentable.indent(0)).append(System.lineSeparator());
-        } else if (indentable instanceof RtYamlScalarBuilder.BuiltFoldedBlockScalar
-            || indentable instanceof ReadFoldedBlockScalar
-        ) {
-            print
-                .append(">")
-                .append(System.lineSeparator())
-                .append(
-                    indentable.indent(indentation + 2)
-                ).append(System.lineSeparator());
-        } else if (indentable instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
-            || indentable instanceof ReadLiteralBlockScalar
-        ) {
-            print
-                .append("|")
-                .append(System.lineSeparator())
-                .append(
-                    indentable.indent(indentation + 2)
-                ).append(System.lineSeparator());
-        }
-    }
-
-    /**
      * When printing a YamlMapping we dimply call this.indent(0), no need
      * to add other stuff.
      * @return This printed mapping.
      */
     @Override
     public final String toString() {
-        final StringBuilder print = new StringBuilder();
-        this.printPossibleComment(this.comment(), print, "");
-        print.append(this.indent(0));
-        return print.toString();
+        final StringWriter writer = new StringWriter();
+        final YamlPrinter printer = new RtYamlPrinter(writer);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new IllegalStateException(
+                    "IOException when printing YAML", ex
+            );
+        }
     }
 
     @Override

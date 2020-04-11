@@ -146,45 +146,6 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
             return this.comment;
         }
 
-        /**
-         * Indent this block scalar. When indenting/printing, we're going to
-         * separate the lines.
-         * @param indentation Number of preceding spaces of each line.
-         * @return Indented Scalar.
-         */
-        @Override
-        String indent(final int indentation) {
-            int spaces = indentation;
-            StringBuilder print = new StringBuilder();
-            StringBuilder alignment = new StringBuilder();
-            while (spaces > 0) {
-                alignment.append(" ");
-                spaces--;
-            }
-            for(int idx = 0; idx < this.lines.size(); idx++) {
-                final String line = this.lines.get(idx);
-                if(line.contains(System.lineSeparator())) {
-                    final String[] hardcodedNewLines = line.split(
-                        System.lineSeparator()
-                    );
-                    for(final String subline : hardcodedNewLines) {
-                        print
-                            .append(alignment)
-                            .append(subline)
-                            .append(System.lineSeparator());
-                    }
-                } else {
-                    print
-                        .append(alignment)
-                        .append(line);
-                    if (idx < this.lines.size() - 1) {
-                        print.append(System.lineSeparator());
-                    }
-                }
-            }
-            return print.toString();
-        }
-
         @Override
         final List<String> unfolded() {
             final List<String> unfolded = new ArrayList<>();
@@ -246,45 +207,6 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
         @Override
         public Comment comment() {
             return this.comment;
-        }
-
-        /**
-         * Indent this block scalar. When indenting/printing, we're going to
-         * separate the lines.
-         * @param indentation Number of preceding spaces of each line.
-         * @return Indented Scalar.
-         */
-        @Override
-        String indent(final int indentation) {
-            int spaces = indentation;
-            StringBuilder print = new StringBuilder();
-            StringBuilder alignment = new StringBuilder();
-            while (spaces > 0) {
-                alignment.append(" ");
-                spaces--;
-            }
-            for(int idx = 0; idx < this.lines.size(); idx++) {
-                final String line = this.lines.get(idx);
-                if(line.contains(System.lineSeparator())) {
-                    final String[] hardcodedNewLines = line.split(
-                        System.lineSeparator()
-                    );
-                    for(final String subline : hardcodedNewLines) {
-                        print
-                            .append(alignment)
-                            .append(subline)
-                            .append(System.lineSeparator());
-                    }
-                } else {
-                    print
-                        .append(alignment)
-                        .append(line);
-                    if (idx < this.lines.size() - 1) {
-                        print.append(System.lineSeparator());
-                    }
-                }
-            }
-            return print.toString();
         }
     }
 }

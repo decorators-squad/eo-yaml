@@ -155,42 +155,43 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
      * @return String.
      */
     final String indent(final int indentation) {
-        if(indentation < 0) {
-            throw new IllegalArgumentException(
-                "Indentation level has to be >=0"
-            );
-        }
-        final StringBuilder print = new StringBuilder();
-        final String newLine = System.lineSeparator();
-        int spaces = indentation;
-        final StringBuilder indent = new StringBuilder();
-        while (spaces > 0) {
-            indent.append(" ");
-            spaces--;
-        }
-        final Collection<YamlNode> values = this.values();
-        String printed;
-        if(values.size() == 0) {
-            print
-                .append(indent).append("---")
-                .append(newLine)
-                .append(indent).append("...");
-            printed = print.toString();
-        } else {
-            for (final YamlNode node : values) {
-                final BaseYamlNode indentable = (BaseYamlNode) node;
-                print.append(indent)
-                    .append("---")
-                    .append(newLine);
-                print.append(indentable.indent(indentation + 2));
-                print.append(newLine);
-            }
-            printed = print.toString();
-            if(printed.length() > 0) {
-                printed = printed.substring(0, printed.length() - 1);
-            }
-        }
-        return printed;
+        return "";
+//        if(indentation < 0) {
+//            throw new IllegalArgumentException(
+//                "Indentation level has to be >=0"
+//            );
+//        }
+//        final StringBuilder print = new StringBuilder();
+//        final String newLine = System.lineSeparator();
+//        int spaces = indentation;
+//        final StringBuilder indent = new StringBuilder();
+//        while (spaces > 0) {
+//            indent.append(" ");
+//            spaces--;
+//        }
+//        final Collection<YamlNode> values = this.values();
+//        String printed;
+//        if(values.size() == 0) {
+//            print
+//                .append(indent).append("---")
+//                .append(newLine)
+//                .append(indent).append("...");
+//            printed = print.toString();
+//        } else {
+//            for (final YamlNode node : values) {
+//                final BaseYamlNode indentable = (BaseYamlNode) node;
+//                print.append(indent)
+//                    .append("---")
+//                    .append(newLine);
+//                print.append(indentable.indent(indentation + 2));
+//                print.append(newLine);
+//            }
+//            printed = print.toString();
+//            if(printed.length() > 0) {
+//                printed = printed.substring(0, printed.length() - 1);
+//            }
+//        }
+//        return printed;
     }
 
     /**

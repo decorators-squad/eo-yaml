@@ -128,26 +128,6 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
         }
     }
 
-    /**
-     * Indent this scalar. Keep this method package-protected, it should
-     * NOT be visible to users.
-     * @param indentation Number of preceding spaces of each line.
-     * @return Indented Scalar.
-     */
-    String indent(final int indentation) {
-        int spaces = indentation;
-        StringBuilder printed = new StringBuilder();
-        while (spaces > 0) {
-            printed.append(" ");
-            spaces--;
-        }
-        printed.append(this.value());
-        if(!this.comment().value().isEmpty()) {
-            printed.append(" # ").append(this.comment().value());
-        }
-        return printed.toString();
-    }
-
     @Override
     final boolean isEmpty() {
         return this.value() == null || this.value().trim().isEmpty();

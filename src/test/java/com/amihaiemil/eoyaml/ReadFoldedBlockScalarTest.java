@@ -188,27 +188,6 @@ public final class ReadFoldedBlockScalarTest {
     }
 
     /**
-     * Indentation works fine.
-     */
-    @Test
-    public void indentsValue() {
-        final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("First Line.", 1));
-        lines.add(new RtYamlLine("Second Line.", 2));
-        lines.add(new RtYamlLine("Third Line.", 3));
-        final ReadLiteralBlockScalar scalar =
-            new ReadLiteralBlockScalar(new AllYamlLines(lines));
-        MatcherAssert.assertThat(
-            scalar.indent(4),
-            Matchers.is(
-                "    First Line." + System.lineSeparator()
-                    + "    Second Line." + System.lineSeparator()
-                    + "    Third Line."
-            )
-        );
-    }
-
-    /**
      * Method toString should print it as a valid YAML document.
      */
     @Test

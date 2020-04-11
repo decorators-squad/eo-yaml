@@ -44,61 +44,6 @@ import java.util.List;
 public final class BuiltFoldedBlockScalarTest {
 
     /**
-     * Indentation works when the user did not hardcode NewLines
-     * in the provided strings.
-     *
-     * Indentation should work the same for both folded and literal
-     * block scalars.
-     */
-    @Test
-    public void indentsProperlyNoHardcodedNewLines() {
-        final List<String> lines = new ArrayList<>();
-        lines.add("line1");
-        lines.add("line2");
-        lines.add("line3");
-        final Scalar folded = new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
-            lines
-        );
-        MatcherAssert.assertThat(
-            ((BaseYamlNode) folded).indent(2),
-            Matchers.equalTo(
-                "  line1"
-                + System.lineSeparator()
-                + "  line2"
-                + System.lineSeparator()
-                + "  line3"
-            )
-        );
-    }
-
-    /**
-     * Indentation works when the user hardcoded NewLines
-     * in the provided strings.
-     *
-     * Indentation should work the same for both folded and literal
-     * block scalars.
-     */
-    @Test
-    public void indentsProperlyWithHardcodedNewLines() {
-        final List<String> lines = new ArrayList<>();
-        lines.add("line1" + System.lineSeparator() + "line2");
-        lines.add("line3");
-        final Scalar folded = new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
-            lines
-        );
-        MatcherAssert.assertThat(
-            ((BaseYamlNode) folded).indent(2),
-            Matchers.equalTo(
-                "  line1"
-                    + System.lineSeparator()
-                    + "  line2"
-                    + System.lineSeparator()
-                    + "  line3"
-            )
-        );
-    }
-
-    /**
      * Method toString should print it as a valid YAML document.
      */
     @Test
