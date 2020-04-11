@@ -92,10 +92,10 @@ final class RtYamlPrinter implements YamlPrinter {
         final Iterator<YamlNode> valuesIt = stream.values().iterator();
         while(valuesIt.hasNext()) {
             final YamlNode document = valuesIt.next();
-            this.writer.append(indent)
-                    .append("---")
-                    .append(newLine);
-            this.printNode(document, indentation + 2);
+            this.writer
+                .append(indent)
+                .append("---");
+            this.printNode(document, true, indentation + 2);
             if(valuesIt.hasNext()) {
                 this.writer.append(newLine);
             }
@@ -126,33 +126,29 @@ final class RtYamlPrinter implements YamlPrinter {
                 key.comment(), alignment.toString()
             );
             this.writer.append(alignment);
-            final BaseYamlNode indKey = (BaseYamlNode) key;
-            final BaseYamlNode value = (BaseYamlNode) mapping.value(key);
+            final YamlNode value = mapping.value(key);
             if(!(value instanceof Scalar)) {
                 this.printPossibleComment(
                     value.comment(), alignment.toString()
                 );
             }
-            if(indKey instanceof Scalar) {
-                this.printScalar((Scalar) indKey, 0);
+            if(key instanceof Scalar) {
+                this.printNode(key, false, 0);
                 this.writer
                     .append(":");
             } else {
                 this.writer
-                    .append("?")
-                    .append(newLine);
-                this.printNode(indKey, indentation + 2);
+                    .append("?");
+                this.printNode(key, true, indentation + 2);
                 this.writer.append(newLine)
                     .append(alignment)
                     .append(":");
             }
             if (value instanceof Scalar) {
                 this.writer.append(" ");
-                this.printScalar((Scalar) value, 0);
+                this.printNode(value, false, 0);
             } else  {
-                this.writer
-                    .append(newLine);
-                this.printNode(value, indentation + 2);
+                this.printNode(value, true, indentation + 2);
             }
             if(keysIt.hasNext()) {
                 this.writer.append(newLine);
@@ -184,14 +180,13 @@ final class RtYamlPrinter implements YamlPrinter {
                 this.writer
                     .append(alignment)
                     .append("- ");
-                this.printScalar((Scalar) node, 0);
+                this.printNode(node, false, 0);
             } else  {
                 this.printPossibleComment(node.comment(), alignment.toString());
                 this.writer
                     .append(alignment)
-                    .append("-")
-                    .append(newLine);
-                this.printNode(node, indentation + 2);
+                    .append("-");
+                this.printNode(node, true, indentation + 2);
             }
             if(valuesIt.hasNext()) {
                 this.writer.append(newLine);
@@ -253,17 +248,21 @@ final class RtYamlPrinter implements YamlPrinter {
     }
 
     /**
-     * Convenience method to chose the right printer by looking at the
-     * type of the YamlNode. This method should be used when printing children
+     * This method should be used when printing children
      * nodes of a complex Node (mapping, scalar, stream etc).
      * @param node YAML Node to print.
+     * @param onNewLine Should the child node be printed on a new line?
      * @param indentation Indentation of the print.
      * @throws IOException If any I/O error occurs.
      */
     private void printNode(
         final YamlNode node,
+        final boolean onNewLine,
         final int indentation
     ) throws IOException {
+        if(onNewLine) {
+            this.writer.append(System.lineSeparator());
+        }
         if(node instanceof Scalar) {
             this.printScalar((Scalar) node, indentation);
         } else if (node instanceof YamlSequence) {

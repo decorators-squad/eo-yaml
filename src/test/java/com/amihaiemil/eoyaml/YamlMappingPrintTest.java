@@ -134,6 +134,20 @@ public final class YamlMappingPrintTest {
     }
 
     /**
+     * YamlMapping can be printed properly when it
+     * contains an empty YamlSequence value.
+     */
+    @Test
+    public void printsWithEmptySequence() {
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("key", "value1")
+            .add("seq", Yaml.createYamlSequenceBuilder().build())
+            .add("anotherKey", "value2")
+            .build();
+        System.out.print(map);
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
