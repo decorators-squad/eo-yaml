@@ -38,7 +38,7 @@ import java.util.Set;
 /**
  * A Yaml mapping.
  * @checkstyle ExecutableStatementCount (300 lines)
- * @checkstyle ReturnCount (400 lines)
+ * @checkstyle ReturnCount (1000 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -174,8 +174,16 @@ public interface YamlMapping extends YamlNode {
      * @return String or null if the key is missing, or not pointing
      *  to a folded block scalar.
      */
-    String foldedBlockScalar(final YamlNode key);
-
+    default String foldedBlockScalar(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        final String found;
+        if (value != null  && value instanceof Scalar) {
+            found = ((Scalar) value).value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
     /**
      * Get the String lines of the literal block scalar associated
      * with the given key.

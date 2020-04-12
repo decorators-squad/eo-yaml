@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -134,7 +135,7 @@ public final class StrictYamlMappingTest {
     public void exceptionOnNullFoldedBlockScalarString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         PlainStringScalar key = new PlainStringScalar("key");
-        Mockito.when(origin.foldedBlockScalar(key)).thenReturn(null);
+        Mockito.when(origin.value(key)).thenReturn(null);
         YamlMapping strict = new StrictYamlMapping(origin);
         strict.foldedBlockScalar(key);
     }
@@ -207,7 +208,10 @@ public final class StrictYamlMappingTest {
     public void returnsFoldedBlockScalarString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlNode key = new PlainStringScalar("key");
-        Mockito.when(origin.foldedBlockScalar(key)).thenReturn("found");
+        final Scalar found = new RtYamlScalarBuilder.BuiltFoldedBlockScalar(
+            Arrays.asList("found")
+        );
+        Mockito.when(origin.value(key)).thenReturn(found);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.foldedBlockScalar(key),
