@@ -128,11 +128,6 @@ public final class MergedYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> values() {
-        return this.merged.values();
-    }
-
-    @Override
     public YamlNode value(final YamlNode key) {
         return this.merged.value(key);
     }

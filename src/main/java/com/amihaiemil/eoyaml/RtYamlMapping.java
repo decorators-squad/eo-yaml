@@ -78,11 +78,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> values() {
-        return this.mappings.values();
-    }
-
-    @Override
     public YamlNode value(final YamlNode key) {
         return this.mappings.get(key);
     }

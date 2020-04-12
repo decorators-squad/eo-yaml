@@ -130,15 +130,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public Collection<YamlNode> values() {
-        final List<YamlNode> values = new LinkedList<>();
-        for(final YamlNode key : this.keys()) {
-            values.add(this.value(key));
-        }
-        return values;
-    }
-
-    @Override
     public YamlNode value(final YamlNode key) {
         final YamlNode value;
         if(key instanceof Scalar) {

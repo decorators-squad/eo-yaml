@@ -31,6 +31,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -50,11 +52,24 @@ public interface YamlMapping extends YamlNode {
     Set<YamlNode> keys();
 
     /**
+     * Get the YamlNode mapped to the specified key.
+     * @param key YamlNode key. Could be a simple scalar,
+     *  a YamlMapping or a YamlSequence.
+     * @return The found YamlNode or null if nothing is found.
+     */
+    YamlNode value(final YamlNode key);
+
+    /**
      * Fetch the values of this mapping.
      * @return Collection of {@link YamlNode}
      */
-    Collection<YamlNode> values();
-
+    default Collection<YamlNode> values() {
+        final List<YamlNode> values = new LinkedList<>();
+        for(final YamlNode key : this.keys()) {
+            values.add(this.value(key));
+        }
+        return values;
+    }
     /**
      * Get the Yaml mapping associated with the given key.
      * @param key String key
@@ -166,14 +181,6 @@ public interface YamlMapping extends YamlNode {
             Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
         );
     }
-
-    /**
-     * Get the YamlNode mapped to the specified key.
-     * @param key YamlNode key. Could be a simple scalar,
-     *  a YamlMapping or a YamlSequence.
-     * @return The found YamlNode or null if nothing is found.
-     */
-    YamlNode value(final YamlNode key);
 
     /**
      * Convenience method to directly read an integer value
