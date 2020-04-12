@@ -117,7 +117,16 @@ public interface YamlMapping extends YamlNode {
      * @return Yaml sequence or null if the key is missing, or not pointing
      *  to a sequence
      */
-    YamlSequence yamlSequence(final YamlNode key);
+    default YamlSequence yamlSequence(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        final YamlSequence found;
+        if (value != null && value instanceof YamlSequence) {
+            found =  (YamlSequence) value;
+        } else {
+            found = null;
+        }
+        return found;
+    }
 
     /**
      * Get the String associated with the given key.

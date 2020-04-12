@@ -173,18 +173,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlSequence yamlSequence(final YamlNode key) {
-        final YamlSequence found;
-        final YamlNode value = this.value(key);
-        if(value instanceof ReadYamlSequence) {
-            found = (ReadYamlSequence) value;
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
     public String string(final YamlNode key) {
         final String found;
         final YamlNode value = this.value(key);

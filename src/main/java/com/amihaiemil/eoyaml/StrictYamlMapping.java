@@ -66,17 +66,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlSequence yamlSequence(final YamlNode key) {
-        YamlSequence found = this.decorated.yamlSequence(key);
-        if (found == null) {
-            throw new YamlNodeNotFoundException(
-                "No YamlSequence found for key " + key
-            );
-        }
-        return found;
-    }
-
-    @Override
     public String string(final YamlNode key) {
         String found = this.decorated.string(key);
         if (found == null) {

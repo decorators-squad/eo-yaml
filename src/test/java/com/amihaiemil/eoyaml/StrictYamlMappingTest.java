@@ -96,7 +96,7 @@ public final class StrictYamlMappingTest {
     @Test (expected = YamlNodeNotFoundException.class)
     public void exceptionOnNullSequence() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
-        Mockito.when(origin.yamlSequence("key")).thenReturn(null);
+        Mockito.when(origin.value("key")).thenReturn(null);
         YamlMapping strict = new StrictYamlMapping(origin);
         strict.yamlSequence("key");
     }
@@ -175,7 +175,7 @@ public final class StrictYamlMappingTest {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlSequence found = Mockito.mock(YamlSequence.class);
         YamlNode key = new PlainStringScalar("key");
-        Mockito.when(origin.yamlSequence(key)).thenReturn(found);
+        Mockito.when(origin.value(key)).thenReturn(found);
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.yamlSequence("key"), Matchers.equalTo(found)
