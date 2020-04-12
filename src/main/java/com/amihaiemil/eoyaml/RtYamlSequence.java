@@ -70,22 +70,6 @@ final class RtYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public Collection<String> literalBlockScalar(final int index) {
-        final YamlNode value = this.nodes.get(index);
-        final Collection<String> found;
-        if (value instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar) {
-            found = Arrays.asList(
-                ((RtYamlScalarBuilder.BuiltLiteralBlockScalar) value)
-                    .value()
-                    .split(System.lineSeparator())
-            );
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
     public Collection<YamlNode> values() {
         final List<YamlNode> children = new LinkedList<>();
         children.addAll(this.nodes);

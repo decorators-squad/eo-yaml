@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -131,8 +132,21 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @param index Integer index.
      * @return The folded block scalar as String.
      */
-    Collection<String> literalBlockScalar(final int index);
-
+    default Collection<String> literalBlockScalar(final int index) {
+        Collection<String> value = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if(count == index && (node instanceof Scalar)) {
+                value = Arrays.asList(
+                    ((Scalar) node)
+                        .value().split(System.lineSeparator())
+                );
+                break;
+            }
+            count++;
+        }
+        return value;
+    }
     /**
      * Returns this YamlSequence's children Iterator.<br><br>
      * It is equivalent to YamlSequence.values().iterator().

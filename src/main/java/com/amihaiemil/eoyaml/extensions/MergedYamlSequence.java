@@ -135,11 +135,6 @@ public final class MergedYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public Collection<String> literalBlockScalar(final int index) {
-        return this.merged.literalBlockScalar(index);
-    }
-
-    @Override
     public Iterator<YamlNode> iterator() {
         return this.merged.iterator();
     }

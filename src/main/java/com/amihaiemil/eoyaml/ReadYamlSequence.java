@@ -113,23 +113,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public Collection<String> literalBlockScalar(final int index) {
-        Collection<String> value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof ReadLiteralBlockScalar)) {
-                value = Arrays.asList(
-                    ((ReadLiteralBlockScalar) node)
-                        .value().split(System.lineSeparator())
-                );
-                break;
-            }
-            count++;
-        }
-        return value;
-    }
-
-    @Override
     @SuppressWarnings("unused")
     public int size() {
         int size = 0;
