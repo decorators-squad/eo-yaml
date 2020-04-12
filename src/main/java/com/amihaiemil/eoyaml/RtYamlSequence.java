@@ -68,18 +68,6 @@ final class RtYamlSequence extends BaseYamlSequence {
         this.nodes.addAll(elements);
         this.comment = new BuiltComment(this, comment);
     }
-    
-    @Override
-    public String string(final int index) {
-        final YamlNode value = this.nodes.get(index);
-        final String found;
-        if (value instanceof PlainStringScalar) {
-            found = ((PlainStringScalar) value).value();
-        } else {
-            found = null;
-        }
-        return found;
-    }
 
     @Override
     public String foldedBlockScalar(final int index) {

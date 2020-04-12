@@ -89,12 +89,24 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         return sequence;
     }
 
+
     /**
      * Get the String from the given index.
      * @param index Integer index.
      * @return String.
      */
-    String string(final int index);
+    default String string(final int index) {
+        String value = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if(count == index && (node instanceof Scalar)) {
+                value = ((Scalar) node).value();
+                break;
+            }
+            count++;
+        }
+        return value;
+    }
 
     /**
      * Get the folded block scalar from the given index.
