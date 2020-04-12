@@ -57,6 +57,15 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     Collection<YamlNode> values();
 
     /**
+     * Returns this YamlSequence's children Iterator.<br><br>
+     * It is equivalent to YamlSequence.values().iterator().
+     * @return Iterator of YamlNode.
+     */
+    default Iterator<YamlNode> iterator() {
+        return this.values().iterator();
+    }
+
+    /**
      * Get the Yaml mapping  from the given index.
      * @param index Integer index.
      * @return Yaml mapping.
@@ -147,12 +156,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return value;
     }
-    /**
-     * Returns this YamlSequence's children Iterator.<br><br>
-     * It is equivalent to YamlSequence.values().iterator().
-     * @return Iterator of YamlNode.
-     */
-    Iterator<YamlNode> iterator();
 
     /**
      * Convenience method to directly read an integer value

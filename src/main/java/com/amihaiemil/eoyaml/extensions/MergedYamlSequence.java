@@ -135,11 +135,6 @@ public final class MergedYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public Iterator<YamlNode> iterator() {
-        return this.merged.iterator();
-    }
-
-    @Override
     public Comment comment() {
         return this.merged.comment();
     }

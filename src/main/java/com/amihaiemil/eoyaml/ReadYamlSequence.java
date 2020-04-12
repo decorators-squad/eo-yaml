@@ -123,11 +123,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public Iterator<YamlNode> iterator() {
-        return this.values().iterator();
-    }
-
-    @Override
     public Comment comment() {
         return new ReadComment(
             new FirstCommentFound(

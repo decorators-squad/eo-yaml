@@ -82,11 +82,6 @@ final class RtYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public Iterator<YamlNode> iterator() {
-        return this.nodes.iterator();
-    }
-
-    @Override
     public Comment comment() {
         return this.comment;
     }
