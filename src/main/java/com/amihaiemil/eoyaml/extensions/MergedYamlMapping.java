@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml.extensions;
 
 import com.amihaiemil.eoyaml.*;
 
-import java.util.Collection;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -135,11 +134,6 @@ public final class MergedYamlMapping extends BaseYamlMapping {
     @Override
     public Comment comment() {
         return this.merged.comment();
-    }
-
-    @Override
-    public Collection<String> literalBlockScalar(final YamlNode key) {
-        return this.merged.literalBlockScalar(key);
     }
 
     /**

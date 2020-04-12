@@ -30,10 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A Yaml mapping.
@@ -204,8 +201,20 @@ public interface YamlMapping extends YamlNode {
      * @return Collection of String or null if the key is missing,
      *  or not pointing to a literal block scalar.
      */
-    Collection<String> literalBlockScalar(final YamlNode key);
-
+    default Collection<String> literalBlockScalar(final YamlNode key) {
+        final Collection<String> found;
+        final YamlNode value = this.value(key);
+        if(value instanceof Scalar) {
+            found = Arrays.asList(
+                ((Scalar) value)
+                    .value()
+                    .split(System.lineSeparator())
+            );
+        } else {
+            found = null;
+        }
+        return found;
+    }
     /**
      * Get the YamlNode mapped to the specified key.
      * @param key String key.

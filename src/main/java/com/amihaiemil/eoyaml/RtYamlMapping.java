@@ -87,23 +87,4 @@ final class RtYamlMapping extends BaseYamlMapping {
         return this.comment;
     }
 
-
-    @Override
-    public Collection<String> literalBlockScalar(final YamlNode key) {
-        final YamlNode value = this.mappings.get(key);
-        final Collection<String> found;
-        if (value != null
-            && value instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
-        ) {
-            found = Arrays.asList(
-                ((RtYamlScalarBuilder.BuiltLiteralBlockScalar) value)
-                    .value()
-                    .split(System.lineSeparator())
-            );
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
 }

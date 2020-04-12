@@ -27,10 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -148,7 +145,7 @@ public final class StrictYamlMappingTest {
     public void exceptionOnNullLiteralBlockScalarString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         PlainStringScalar key = new PlainStringScalar("key");
-        Mockito.when(origin.literalBlockScalar(key)).thenReturn(null);
+        Mockito.when(origin.value(key)).thenReturn(null);
         YamlMapping strict = new StrictYamlMapping(origin);
         strict.literalBlockScalar(key);
     }
@@ -227,8 +224,10 @@ public final class StrictYamlMappingTest {
     public void returnsLiteralBlockScalar() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlNode key = new PlainStringScalar("key");
-        Collection<String> lines = Mockito.mock(Collection.class);
-        Mockito.when(origin.literalBlockScalar(key)).thenReturn(lines);
+        List<String> lines = Arrays.asList("line1", "line2");
+        Mockito.when(origin.value(key)).thenReturn(
+            new RtYamlScalarBuilder.BuiltLiteralBlockScalar(lines)
+        );
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.literalBlockScalar(key),

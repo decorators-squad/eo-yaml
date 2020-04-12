@@ -27,7 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -63,19 +62,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     @Override
     public Set<YamlNode> keys() {
         return this.decorated.keys();
-    }
-
-    @Override
-    public Collection<String> literalBlockScalar(final YamlNode key) {
-        final Collection<String> found = this.decorated.literalBlockScalar(
-            key
-        );
-        if (found == null) {
-            throw new YamlNodeNotFoundException(
-                "No Literal Block Scalar found for key " + key
-            );
-        }
-        return found;
     }
 
     @Override
