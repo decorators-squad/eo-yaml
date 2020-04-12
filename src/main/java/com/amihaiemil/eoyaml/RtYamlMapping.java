@@ -88,18 +88,6 @@ final class RtYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlMapping yamlMapping(final YamlNode key) {
-        final YamlNode value = this.mappings.get(key);
-        final YamlMapping found;
-        if (value != null && value instanceof YamlMapping) {
-            found = (YamlMapping) value;
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
     public YamlSequence yamlSequence(final YamlNode key) {
         final YamlNode value = this.mappings.get(key);
         final YamlSequence found;

@@ -138,11 +138,6 @@ public final class MergedYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public YamlMapping yamlMapping(final YamlNode key) {
-        return this.merged.yamlMapping(key);
-    }
-
-    @Override
     public YamlSequence yamlSequence(final YamlNode key) {
         return this.merged.yamlSequence(key);
     }
