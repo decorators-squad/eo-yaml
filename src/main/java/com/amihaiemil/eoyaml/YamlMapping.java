@@ -188,7 +188,7 @@ public interface YamlMapping extends YamlNode {
      * Get the String lines of the literal block scalar associated
      * with the given key.
      * @param key String key
-     * @return Collection of string or null if the key is missing,
+     * @return Collection of String or null if the key is missing,
      *  or not pointing to a literal block scalar.
      */
     default Collection<String> literalBlockScalar(final String key) {
@@ -198,10 +198,11 @@ public interface YamlMapping extends YamlNode {
     }
 
     /**
-     * Get the String folded block scalar associated with the given key.
+     * Get the String lines of the literal block scalar associated
+     * with the given key.
      * @param key String key
-     * @return String or null if the key is missing, or not pointing
-     *  to a folded block scalar.
+     * @return Collection of String or null if the key is missing,
+     *  or not pointing to a literal block scalar.
      */
     Collection<String> literalBlockScalar(final YamlNode key);
 
