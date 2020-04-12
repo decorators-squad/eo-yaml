@@ -57,18 +57,22 @@ final class RtYamlPrinter implements YamlPrinter {
 
     @Override
     public void print(final YamlNode node) throws IOException  {
-        if(node instanceof Scalar) {
-            this.writer.append("---").append(System.lineSeparator());
-            this.printScalar((Scalar) node, 0);
-            this.writer.append(System.lineSeparator()).append("...");
-        } else if(node instanceof YamlSequence) {
-            this.printPossibleComment(node, "");
-            this.printSequence((YamlSequence) node, 0);
-        } else if(node instanceof YamlMapping) {
-            this.printPossibleComment(node, "");
-            this.printMapping((YamlMapping) node, 0);
-        } else if(node instanceof YamlStream) {
-            this.printStream((YamlStream) node, 0);
+        try {
+            if (node instanceof Scalar) {
+                this.writer.append("---").append(System.lineSeparator());
+                this.printScalar((Scalar) node, 0);
+                this.writer.append(System.lineSeparator()).append("...");
+            } else if (node instanceof YamlSequence) {
+                this.printPossibleComment(node, "");
+                this.printSequence((YamlSequence) node, 0);
+            } else if (node instanceof YamlMapping) {
+                this.printPossibleComment(node, "");
+                this.printMapping((YamlMapping) node, 0);
+            } else if (node instanceof YamlStream) {
+                this.printStream((YamlStream) node, 0);
+            }
+        } finally {
+            this.writer.close();
         }
     }
 
