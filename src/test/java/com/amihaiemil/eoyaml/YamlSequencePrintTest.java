@@ -244,6 +244,42 @@ public final class YamlSequencePrintTest {
     }
 
     /**
+     * When a scalar value in a sequence contains a reserved symbol,
+     * it should be escaped (wrapped between quotes or apostrophes).
+     */
+    @Test
+    public void printsEscapedScalars() {
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add(
+                "sequence",
+                Yaml.createYamlSequenceBuilder()
+                    .add("15:00")
+                    .add("#314132")
+                    .add("&gt;")
+                    .add("$15")
+                    .add("a>b")
+                    .add("a || b")
+                    .add("-15C")
+                    .add("3% reads \"3 per cent\"")
+                    .build()
+            ).build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("- \"15:00\"").append(System.lineSeparator())
+            .append("- \"#314132\"").append(System.lineSeparator())
+            .append("- \"&gt;\"").append(System.lineSeparator())
+            .append("- \"$15\"").append(System.lineSeparator())
+            .append("- \"a>b\"").append(System.lineSeparator())
+            .append("- \"a || b\"").append(System.lineSeparator())
+            .append("- \"-15C\"").append(System.lineSeparator())
+            .append("- '3% reads \"3 per cent\"'");
+        MatcherAssert.assertThat(
+            map.yamlSequence("sequence").toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

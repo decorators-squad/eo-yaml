@@ -263,6 +263,39 @@ public final class YamlMappingPrintTest {
     }
 
     /**
+     * When a scalar value in a mapping contains a reserved symbol,
+     * it should be escaped (wrapped between quotes or apostrophes).
+     */
+    @Test
+    public void printsEscapedScalars() {
+        final YamlMapping map = Yaml.createYamlMappingBuilder()
+            .add("time", "15:00")
+            .add("color", "#314132")
+            .add("gt", "&gt;")
+            .add("cash", "$15")
+            .add("compare", "a>b")
+            .add("xor", "a || b")
+            .add("degrees", "-15C")
+            .add("percentage", "3% reads \"3 per cent\"")
+            .build();
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("time: \"15:00\"").append(System.lineSeparator())
+            .append("color: \"#314132\"").append(System.lineSeparator())
+            .append("gt: \"&gt;\"").append(System.lineSeparator())
+            .append("cash: \"$15\"").append(System.lineSeparator())
+            .append("compare: \"a>b\"").append(System.lineSeparator())
+            .append("xor: \"a || b\"").append(System.lineSeparator())
+            .append("degrees: \"-15C\"").append(System.lineSeparator())
+            .append("percentage: '3% reads \"3 per cent\"'");
+        MatcherAssert.assertThat(
+            map.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

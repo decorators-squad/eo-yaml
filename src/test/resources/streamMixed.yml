@@ -4,7 +4,7 @@
     - rultor
     - salikjan
     - sherif
-  name: eo-yaml
+  name: "eo-yaml"
 ---
   - yegor
   - paolo
@@ -12,4 +12,4 @@
 ---
   architect: felicia
   developer: sara
-  name: docker-java-api
+  name: "docker-java-api"

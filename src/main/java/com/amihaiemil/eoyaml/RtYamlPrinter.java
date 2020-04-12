@@ -202,7 +202,12 @@ final class RtYamlPrinter implements YamlPrinter {
         if (scalar instanceof PlainStringScalar
             || scalar instanceof ReadPlainScalar
         ) {
-            this.writer.append(this.indent(scalar.value(), indentation));
+            this.writer.append(
+                this.indent(
+                    new Escaped(scalar).value(),
+                    indentation
+                )
+            );
             if(!scalar.comment().value().isEmpty()) {
                 this.writer.append(" # ").append(scalar.comment().value());
             }
@@ -325,5 +330,64 @@ final class RtYamlPrinter implements YamlPrinter {
         }
         printed.delete(printed.length()-1, printed.length());
         return printed.toString();
+    }
+
+    /**
+     * A scalar which escapes its value.
+     * @author Mihai Andronache (amihaiemil@gmail.com)
+     * @version $Id$
+     * @since 4.3.1
+     */
+    static class Escaped extends BaseScalar {
+
+        /**
+         * Special chars that need escaping.
+         */
+        private final String RESERVED = "#:->|$%&";
+
+        /**
+         * Original unescaped scalar.
+         */
+        private final Scalar original;
+
+        /**
+         * Ctor.
+         * @param original Unescaped scalar.
+         */
+        Escaped(final Scalar original) {
+            this.original = original;
+        }
+
+        @Override
+        public String value() {
+            final String value = this.original.value();
+            String escaped = null;
+            if(value.startsWith("'") && value.endsWith("'")
+                || value.startsWith("\"") && value.endsWith("\"")
+            ) {
+                escaped = value;
+            } else {
+                for (int idx = 0; idx < value.length(); idx++){
+                    if(RESERVED.contains(
+                        String.valueOf(value.charAt(idx)))) {
+                        if(value.contains("\"")) {
+                            escaped = "'" + value + "'";
+                        } else {
+                            escaped = "\"" + value + "\"";
+                        }
+                        break;
+                    }
+                }
+                if(escaped == null) {
+                    escaped = value;
+                }
+            }
+            return escaped;
+        }
+
+        @Override
+        public Comment comment() {
+            return this.original.comment();
+        }
     }
 }

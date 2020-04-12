@@ -17,9 +17,9 @@ key5:
   - Atlanta Braves
   - New York Yankees
 :
-  - 2001-07-02
-  - 2001-08-12
-  - 2001-08-14
+  - "2001-07-02"
+  - "2001-08-12"
+  - "2001-08-14"
 ?
   map: asKey
 : scalar
