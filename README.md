@@ -60,6 +60,7 @@ Here is what we're **still missing and working on**:
 
 * Flow and Recursive representation
 * Aliases and anchors
+* YAML to Java Bean
 
 **Keep in mind** that the library is based on interfaces and OOP best practices, so you can probably extend/decorate the objects in order to create the functionality you need, if it's not yet implemented. 
 
