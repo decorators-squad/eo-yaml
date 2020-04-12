@@ -138,11 +138,6 @@ public final class MergedYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final YamlNode key) {
-        return this.merged.string(key);
-    }
-
-    @Override
     public String foldedBlockScalar(final YamlNode key) {
         return this.merged.foldedBlockScalar(key);
     }

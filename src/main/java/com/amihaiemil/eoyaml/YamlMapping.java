@@ -146,8 +146,16 @@ public interface YamlMapping extends YamlNode {
      * @return String or null if the key is missing, or not pointing
      *  to a scalar.
      */
-    String string(final YamlNode key);
-
+    default String string(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        final String found;
+        if (value != null && value instanceof Scalar) {
+            found = ((Scalar) value).value();
+        } else {
+            found = null;
+        }
+        return found;
+    }
     /**
      * Get the String folded block scalar associated with the given key.
      * @param key String key

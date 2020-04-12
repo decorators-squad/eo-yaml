@@ -66,17 +66,6 @@ public final class StrictYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final YamlNode key) {
-        String found = this.decorated.string(key);
-        if (found == null) {
-            throw new YamlNodeNotFoundException(
-                "No String found for key " + key
-            );
-        }
-        return found;
-    }
-
-    @Override
     public String foldedBlockScalar(final YamlNode key) {
         final String found = this.decorated.foldedBlockScalar(key);
         if (found == null) {

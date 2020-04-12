@@ -173,18 +173,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
     }
 
     @Override
-    public String string(final YamlNode key) {
-        final String found;
-        final YamlNode value = this.value(key);
-        if(value instanceof ReadPlainScalar) {
-            found = ((ReadPlainScalar) value).value();
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
     public String foldedBlockScalar(final YamlNode key) {
         final String found;
         final YamlNode value = this.value(key);

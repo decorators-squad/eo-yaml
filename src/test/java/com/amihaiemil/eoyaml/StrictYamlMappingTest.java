@@ -108,7 +108,7 @@ public final class StrictYamlMappingTest {
     @Test (expected = YamlNodeNotFoundException.class)
     public void exceptionOnNullString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
-        Mockito.when(origin.string("key")).thenReturn(null);
+        Mockito.when(origin.value("key")).thenReturn(null);
         YamlMapping strict = new StrictYamlMapping(origin);
         strict.string("key");
     }
@@ -189,7 +189,10 @@ public final class StrictYamlMappingTest {
     public void returnsString() {
         YamlMapping origin = Mockito.mock(YamlMapping.class);
         YamlNode key = new PlainStringScalar("key");
-        Mockito.when(origin.string(key)).thenReturn("found");
+        Mockito.when(origin.value(key)).thenReturn(
+            new PlainStringScalar("found")
+
+        );
         YamlMapping strict = new StrictYamlMapping(origin);
         MatcherAssert.assertThat(
             strict.string("key"), Matchers.equalTo("found")
