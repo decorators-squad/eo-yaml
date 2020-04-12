@@ -113,16 +113,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    @SuppressWarnings("unused")
-    public int size() {
-        int size = 0;
-        for(final YamlLine line : this.significant) {
-            size = size + 1;
-        }
-        return size;
-    }
-
-    @Override
     public Comment comment() {
         return new ReadComment(
             new FirstCommentFound(

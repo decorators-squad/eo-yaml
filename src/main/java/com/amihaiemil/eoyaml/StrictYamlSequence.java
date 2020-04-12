@@ -143,11 +143,6 @@ public final class StrictYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public int size() {
-        return this.decorated.size();
-    }
-
-    @Override
     public Comment comment() {
         return this.decorated.comment();
     }

@@ -44,13 +44,6 @@ import java.util.Iterator;
 public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
-     * The number of Yaml elements (scalars, mappings and sequences) found in
-     * this sequence.
-     * @return Integer.
-     */
-    int size();
-
-    /**
      * Fetch the values of this sequence.
      * @return Collection of {@link YamlNode}
      */
@@ -63,6 +56,15 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      */
     default Iterator<YamlNode> iterator() {
         return this.values().iterator();
+    }
+
+    /**
+     * The number of Yaml elements (scalars, mappings and sequences) found in
+     * this sequence.
+     * @return Integer.
+     */
+    default int size() {
+        return this.values().size();
     }
 
     /**

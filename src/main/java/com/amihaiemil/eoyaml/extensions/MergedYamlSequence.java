@@ -123,12 +123,6 @@ public final class MergedYamlSequence extends BaseYamlSequence {
         }
     }
 
-
-    @Override
-    public int size() {
-        return this.merged.size();
-    }
-
     @Override
     public Collection<YamlNode> values() {
         return this.merged.values();

@@ -77,11 +77,6 @@ final class RtYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public int size() {
-        return this.nodes.size();
-    }
-
-    @Override
     public Comment comment() {
         return this.comment;
     }
