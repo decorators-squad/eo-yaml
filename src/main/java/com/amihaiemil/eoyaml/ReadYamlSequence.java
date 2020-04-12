@@ -113,19 +113,6 @@ final class ReadYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public YamlMapping yamlMapping(final int index) {
-        YamlMapping mapping = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlMapping) {
-                mapping = (YamlMapping) node;
-            }
-            count = count + 1;
-        }
-        return mapping;
-    }
-
-    @Override
     public YamlSequence yamlSequence(final int index) {
         YamlSequence sequence = null;
         int count = 0;

@@ -135,11 +135,6 @@ public final class MergedYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public YamlMapping yamlMapping(final int index) {
-        return this.merged.yamlMapping(index);
-    }
-
-    @Override
     public YamlSequence yamlSequence(final int index) {
         return this.merged.yamlSequence(index);
     }

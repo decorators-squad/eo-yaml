@@ -70,18 +70,6 @@ final class RtYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public YamlMapping yamlMapping(final int index) {
-        final YamlNode value = this.nodes.get(index);
-        final YamlMapping found;
-        if (value instanceof YamlMapping) {
-            found = (YamlMapping) value;
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
-    @Override
     public YamlSequence yamlSequence(final int index) {
         final YamlNode value = this.nodes.get(index);
         final YamlSequence found;

@@ -60,8 +60,18 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @param index Integer index.
      * @return Yaml mapping.
      */
-    YamlMapping yamlMapping(final int index);
 
+    default YamlMapping yamlMapping(final int index) {
+        YamlMapping mapping = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if (count == index && node instanceof YamlMapping) {
+                mapping = (YamlMapping) node;
+            }
+            count = count + 1;
+        }
+        return mapping;
+    }
     /**
      * Get the Yaml sequence from the given index.
      * @param index Integer index.
