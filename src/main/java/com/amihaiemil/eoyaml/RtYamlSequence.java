@@ -68,19 +68,7 @@ final class RtYamlSequence extends BaseYamlSequence {
         this.nodes.addAll(elements);
         this.comment = new BuiltComment(this, comment);
     }
-
-    @Override
-    public YamlSequence yamlSequence(final int index) {
-        final YamlNode value = this.nodes.get(index);
-        final YamlSequence found;
-        if (value instanceof YamlSequence) {
-            found = (YamlSequence) value;
-        } else {
-            found = null;
-        }
-        return found;
-    }
-
+    
     @Override
     public String string(final int index) {
         final YamlNode value = this.nodes.get(index);
