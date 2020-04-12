@@ -135,11 +135,6 @@ public final class MergedYamlSequence extends BaseYamlSequence {
     }
 
     @Override
-    public String foldedBlockScalar(final int index) {
-        return this.merged.foldedBlockScalar(index);
-    }
-
-    @Override
     public Collection<String> literalBlockScalar(final int index) {
         return this.merged.literalBlockScalar(index);
     }
