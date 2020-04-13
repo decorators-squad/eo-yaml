@@ -81,7 +81,101 @@ public final class ReflectedYamlSequenceTest {
         new ReflectedYamlSequence(new Object[] {});
         new ReflectedYamlSequence(new Integer[] {});
         new ReflectedYamlSequence(new Double[] {});
-        new ReflectedYamlSequence(new int[] {});
-        new ReflectedYamlSequence(new byte[] {});
+    }
+
+    /**
+     * ReflectedYamlSequence can reflect String scalars from an array.
+     */
+    @Test
+    public void reflectsStringArray() {
+        final YamlSequence sequence = new ReflectedYamlSequence(
+            new String[] {"one", "two", "three"}
+        );
+        MatcherAssert.assertThat(sequence, Matchers.iterableWithSize(3));
+        final Iterator<YamlNode> valuesIt = sequence.values().iterator();
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("one")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("two")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("three")
+        );
+    }
+
+    /**
+     * ReflectedYamlSequence can reflect String scalars from a collection.
+     */
+    @Test
+    public void reflectsStringCollection() {
+        final YamlSequence sequence = new ReflectedYamlSequence(
+            Arrays.asList("one", "two", "three")
+        );
+        MatcherAssert.assertThat(sequence, Matchers.iterableWithSize(3));
+        final Iterator<YamlNode> valuesIt = sequence.values().iterator();
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("one")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("two")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("three")
+        );
+    }
+
+    /**
+     * ReflectedYamlSequence can reflect Integer scalars from an array.
+     */
+    @Test
+    public void reflectsIntegerArray() {
+        final YamlSequence sequence = new ReflectedYamlSequence(
+            new Integer[] {1, 2, 3}
+        );
+        MatcherAssert.assertThat(sequence, Matchers.iterableWithSize(3));
+        final Iterator<YamlNode> valuesIt = sequence.values().iterator();
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("1")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("2")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("3")
+        );
+    }
+
+    /**
+     * ReflectedYamlSequence can reflect Integer scalars from a collection.
+     */
+    @Test
+    public void reflectsIntegerCollection() {
+        final YamlSequence sequence = new ReflectedYamlSequence(
+            Arrays.asList(1, 2, 3)
+        );
+        MatcherAssert.assertThat(sequence, Matchers.iterableWithSize(3));
+        final Iterator<YamlNode> valuesIt = sequence.values().iterator();
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("1")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("2")
+        );
+        MatcherAssert.assertThat(
+            ((ReflectedYamlScalar) valuesIt.next()).value(),
+            Matchers.equalTo("3")
+        );
     }
 }

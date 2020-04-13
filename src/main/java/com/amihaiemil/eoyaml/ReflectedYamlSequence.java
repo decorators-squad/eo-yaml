@@ -61,7 +61,8 @@ final class ReflectedYamlSequence extends BaseYamlSequence {
         if(sequence instanceof Collection) {
             this.sequence = (Collection<Object>) sequence;
         } else if(sequence.getClass().isArray()) {
-            this.sequence = Arrays.asList(sequence);
+            final Object[] array = (Object[]) sequence;
+            this.sequence = Arrays.asList(array);
         } else {
             throw new IllegalArgumentException(
                 "YamlSequence can only be reflected "
