@@ -41,7 +41,7 @@ import java.util.*;
 final class ReflectedYamlMapping extends BaseYamlMapping {
 
     /**
-     * If the mapping value is any of this type, it is a Scalar.
+     * If the value is any of these types, it is a Scalar.
      */
     private static final List<Class> SCALAR_TYPES = Arrays.asList(
         Integer.class, Long.class, Float.class, Double.class, Short.class,
@@ -156,6 +156,8 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
     private YamlNode objectToYamlNode(final Object value) {
         final YamlNode node;
         if(value == null || SCALAR_TYPES.contains(value.getClass())) {
+            node = new ReflectedYamlScalar(value);
+        } else if(value instanceof Collection || value.getClass().isArray()){
             node = new ReflectedYamlScalar(value);
         } else {
             node = new ReflectedYamlMapping(value);
