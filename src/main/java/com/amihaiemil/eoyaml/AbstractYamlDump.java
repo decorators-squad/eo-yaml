@@ -29,13 +29,13 @@ package com.amihaiemil.eoyaml;
 
 /**
  * A Yaml representer.
+ * @deprecated Will be removed in one of the future versions. You can dump any
+ *  Java Object by starting from the method Yaml.createYamlDump(...).
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #30:30m/DEV Add method ``serlialize()`` in YamlNode interface
- *  and implement it in the YamlNode implementors (e.g. Scalar) to serlialize
- *  it and return the Yaml node as a Yaml tree.
  */
+@Deprecated
 public abstract class AbstractYamlDump {
 
     /**

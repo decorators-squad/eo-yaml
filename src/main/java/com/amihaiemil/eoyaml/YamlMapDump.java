@@ -32,11 +32,13 @@ import java.util.Set;
 
 /**
  * A Map represented as YamlNode.
+ * @deprecated Will be removed in one of the future versions. You can dump any
+ *  Java Object by starting from the method Yaml.createYamlDump(...).
  * @author Sherif Waly (sherifwaly95@gmail.com)
  * @version $Id$
  * @since 1.0.0
- *
  */
+@Deprecated
 public final class YamlMapDump extends AbstractYamlDump {
 
     /**

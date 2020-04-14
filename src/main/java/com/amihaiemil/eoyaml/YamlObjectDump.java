@@ -35,11 +35,13 @@ import org.apache.commons.beanutils.BeanMap;
 
 /**
  * An Object represented as a YamlMapping.
+ * @deprecated Will be removed in one of the future versions. You can dump any
+ *  Java Object by starting from the method Yaml.createYamlDump(...).
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- *
  */
+@Deprecated
 public final class YamlObjectDump extends AbstractYamlDump {
 
     /**
