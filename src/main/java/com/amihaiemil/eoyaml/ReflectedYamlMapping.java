@@ -34,6 +34,7 @@ import java.util.*;
 
 /**
  * YamlMapping reflected from a Java Bean.
+ * @checkstyle BooleanExpressionComplexity (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.3.3
@@ -72,7 +73,8 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
             final Method[] methods = this.bean.getClass().getDeclaredMethods();
             for (final Method method : methods) {
                 if (Modifier.isPublic(method.getModifiers())
-                        && !method.getReturnType().equals(Void.TYPE)
+                    && method.getParameterCount() == 0
+                    && !method.getReturnType().equals(Void.TYPE)
                 ) {
                     keys.add(new MethodKey(method));
                 }
@@ -132,6 +134,7 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
         final Method[] methods = this.bean.getClass().getDeclaredMethods();
         for(final Method method : methods) {
             if (Modifier.isPublic(method.getModifiers())
+                && method.getParameterCount() == 0
                 && !method.getReturnType().equals(Void.TYPE)
                 && (method.getName().equalsIgnoreCase(keyName)
                 || method.getName().equalsIgnoreCase("get" + keyName))
