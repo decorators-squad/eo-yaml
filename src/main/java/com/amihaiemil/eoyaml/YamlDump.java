@@ -27,64 +27,52 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 /**
- * YamlSequence reflected from a Collection or an array of Object.
+ * In YAML, "dumping" means representing the state of an Object as YAML.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.3.3
  */
-final class ReflectedYamlSequence extends BaseYamlSequence {
+public interface YamlDump {
 
     /**
-     * Object sequence.
+     *
+     * Dump an Object, represent it as YAML.
+     * Generally, if the Object is a Collection or on Array, the resulting
+     * YamlNode will be a YamlSequence.<br><br>
+     * If the Object is a Map or other kind of Object, the resulting
+     * YamlNode will be a YamlSequence.<br><br>
+     * If the Object is a String, LocalDate, LocaDateTime or a primitive,
+     * the resulting YamlNode will be a plain Scalar.
+     * @return YAML Representation.
      */
-    private final Collection<Object> sequence;
+    YamlNode dump();
 
     /**
-     * Constructor.
-     * @param sequence Collection or array of Object.
+     * Convenience method, equivalent to calling the
+     * dump(...) method and casting the YamlNode to YamlMapping.
+     * @return YamlMapping.
      */
-    ReflectedYamlSequence(final Object sequence) {
-        if(sequence instanceof Collection) {
-            this.sequence = (Collection<Object>) sequence;
-        } else if(sequence.getClass().isArray()) {
-            final Object[] array = (Object[]) sequence;
-            this.sequence = Arrays.asList(array);
-        } else {
-            throw new IllegalArgumentException(
-                "YamlSequence can only be reflected "
-              + "from a Collection or from an array."
-            );
-        }
+    default YamlMapping dumpMapping() {
+        return (YamlMapping) this.dump();
     }
 
-    @Override
-    public Collection<YamlNode> values() {
-        final List<YamlNode> values = new ArrayList<>();
-        for(final Object value : this.sequence) {
-            values.add(Yaml.createYamlDump(value).dump());
-        }
-        return values;
+    /**
+     * Convenience method, equivalent to calling the
+     * dump(...) method and casting the YamlNode to YamlSequence.
+     * @return YamlSequence.
+     */
+    default YamlSequence dumpSequence() {
+        return (YamlSequence) this.dump();
     }
 
-    @Override
-    public Comment comment() {
-        return new Comment() {
-            @Override
-            public YamlNode yamlNode() {
-                return ReflectedYamlSequence.this;
-            }
-
-            @Override
-            public String value() {
-                return "";
-            }
-        };
+    /**
+     * Convenience method, equivalent to calling the
+     * dump(...) method and casting the YamlNode to Scalar.
+     * @return Scalar.
+     */
+    default Scalar dumpScalar() {
+        return (Scalar) this.dump();
     }
 
 }

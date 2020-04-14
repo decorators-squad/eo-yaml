@@ -27,64 +27,50 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 /**
- * YamlSequence reflected from a Collection or an array of Object.
+ * A YamlDump that works with the Reflection API.
+ * @checkstyle LineLength (100 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.3.3
  */
-final class ReflectedYamlSequence extends BaseYamlSequence {
+final class ReflectedYamlDump implements YamlDump {
 
     /**
-     * Object sequence.
+     * If the value is any of these types, it is a Scalar.
      */
-    private final Collection<Object> sequence;
+    private static final List<Class> SCALAR_TYPES = Arrays.asList(
+        Integer.class, Long.class, Float.class, Double.class, Short.class,
+        String.class, Boolean.class, Character.class, Byte.class
+    );
+
+    /**
+     * Object to dump.
+     */
+    private final Object object;
 
     /**
      * Constructor.
-     * @param sequence Collection or array of Object.
+     * @param object Object to dump.
      */
-    ReflectedYamlSequence(final Object sequence) {
-        if(sequence instanceof Collection) {
-            this.sequence = (Collection<Object>) sequence;
-        } else if(sequence.getClass().isArray()) {
-            final Object[] array = (Object[]) sequence;
-            this.sequence = Arrays.asList(array);
+    ReflectedYamlDump(final Object object){
+        this.object = object;
+    }
+
+    @Override
+    public YamlNode dump() {
+        final YamlNode node;
+        if(this.object == null || SCALAR_TYPES.contains(this.object.getClass())) {
+            node = new ReflectedYamlScalar(this.object);
+        } else if(this.object instanceof Collection || this.object.getClass().isArray()){
+            node = new ReflectedYamlScalar(this.object);
         } else {
-            throw new IllegalArgumentException(
-                "YamlSequence can only be reflected "
-              + "from a Collection or from an array."
-            );
+            node = new ReflectedYamlMapping(this.object);
         }
+        return node;
     }
-
-    @Override
-    public Collection<YamlNode> values() {
-        final List<YamlNode> values = new ArrayList<>();
-        for(final Object value : this.sequence) {
-            values.add(Yaml.createYamlDump(value).dump());
-        }
-        return values;
-    }
-
-    @Override
-    public Comment comment() {
-        return new Comment() {
-            @Override
-            public YamlNode yamlNode() {
-                return ReflectedYamlSequence.this;
-            }
-
-            @Override
-            public String value() {
-                return "";
-            }
-        };
-    }
-
 }

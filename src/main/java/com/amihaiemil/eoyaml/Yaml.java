@@ -122,4 +122,13 @@ public final class Yaml {
     public static YamlPrinter createYamlPrinter(final Writer destination) {
         return new RtYamlPrinter(destination);
     }
+
+    /**
+     * Create a YAML dump to represent the given object as YAML.
+     * @param object Object to dump.
+     * @return YamlDump.
+     */
+    public static YamlDump createYamlDump(final Object object) {
+        return new ReflectedYamlDump(object);
+    }
 }
