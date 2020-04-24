@@ -399,9 +399,27 @@ public final class RtYamlMappingTest {
             )
             .add("name", "eo-yaml")
             .build();
+        System.out.print(yaml.toString());
         String expected = this.readTestResource("simpleMapping.yml");
         MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
     }
+
+    /**
+     * A built YamlMapping with a single key-value pair is printed.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void prettyPrintsOnePair() throws Exception {
+        YamlMapping yaml = Yaml.createYamlMappingBuilder()
+            .add("spec", "1.2")
+            .build();
+        System.out.print(yaml);
+        MatcherAssert.assertThat(
+            yaml.toString(),
+            Matchers.equalTo("spec: 1.2")
+        );
+    }
+
 
     /**
      * A complex YamlMapping can be pretty printed.
