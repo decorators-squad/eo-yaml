@@ -242,9 +242,9 @@ public final class ReadPlainScalarTest {
             scalar.toString(),
             Matchers.equalTo(
             "---"
-                + System.lineSeparator()
+                + "\n"
                 + "value"
-                + System.lineSeparator()
+                + "\n"
                 + "..."
             )
         );

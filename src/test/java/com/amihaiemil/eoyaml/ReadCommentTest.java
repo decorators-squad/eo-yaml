@@ -98,8 +98,8 @@ public final class ReadCommentTest {
         lines.add(new RtYamlLine("# lines", 2));
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("comment").append(System.lineSeparator())
-            .append("on multiple").append(System.lineSeparator())
+            .append("comment").append("\n")
+            .append("on multiple").append("\n")
             .append("lines");
         MatcherAssert.assertThat(
             new ReadComment(
@@ -124,10 +124,10 @@ public final class ReadCommentTest {
         lines.add(new RtYamlLine("# lines", 3));
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("comment").append(System.lineSeparator())
-            .append(System.lineSeparator())
-            .append("on multiple").append(System.lineSeparator())
-            .append(System.lineSeparator())
+            .append("comment").append("\n")
+            .append("\n")
+            .append("on multiple").append("\n")
+            .append("\n")
             .append("lines");
         MatcherAssert.assertThat(
             new ReadComment(

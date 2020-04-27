@@ -72,7 +72,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
     @Override
     public Scalar buildPlainScalar(final String comment) {
         final String plain = this.lines.stream().filter(line -> line!=null).map(
-            line -> line.replaceAll(System.lineSeparator(), " ")
+            line -> line.replaceAll("\n", " ")
         ).collect(Collectors.joining(" "));
         return new PlainStringScalar(plain, comment);
     }
@@ -137,7 +137,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
         @Override
         public String value() {
             return this.lines.stream().map(
-                line -> line.replaceAll(System.lineSeparator(), " ")
+                line -> line.replaceAll("\n", " ")
             ).collect(Collectors.joining(" "));
         }
 
@@ -200,7 +200,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
         @Override
         public String value() {
             return this.lines.stream().collect(
-                Collectors.joining(System.lineSeparator())
+                Collectors.joining("\n")
             );
         }
 

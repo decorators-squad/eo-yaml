@@ -145,8 +145,8 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("key: value1").append(System.lineSeparator())
-            .append("seq: null").append(System.lineSeparator())
+            .append("key: value1").append("\n")
+            .append("seq: null").append("\n")
             .append("anotherKey: value2");
         MatcherAssert.assertThat(
             map.toString(),
@@ -167,8 +167,8 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("key: value1").append(System.lineSeparator())
-            .append("seq: null").append(System.lineSeparator())
+            .append("key: value1").append("\n")
+            .append("seq: null").append("\n")
             .append("anotherKey: value2");
         MatcherAssert.assertThat(
             map.toString(),
@@ -188,8 +188,8 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("key: value1").append(System.lineSeparator())
-            .append("map: null").append(System.lineSeparator())
+            .append("key: value1").append("\n")
+            .append("map: null").append("\n")
             .append("anotherKey: value2");
         MatcherAssert.assertThat(
             map.toString(),
@@ -210,8 +210,8 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("key: value1").append(System.lineSeparator())
-            .append("map: null").append(System.lineSeparator())
+            .append("key: value1").append("\n")
+            .append("map: null").append("\n")
             .append("anotherKey: value2");
         MatcherAssert.assertThat(
             map.toString(),
@@ -231,8 +231,8 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("key: value1").append(System.lineSeparator())
-            .append("scalar: null").append(System.lineSeparator())
+            .append("key: value1").append("\n")
+            .append("scalar: null").append("\n")
             .append("anotherKey: value2");
         MatcherAssert.assertThat(
             map.toString(),
@@ -253,8 +253,8 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("key: value1").append(System.lineSeparator())
-            .append("scalar: null").append(System.lineSeparator())
+            .append("key: value1").append("\n")
+            .append("scalar: null").append("\n")
             .append("anotherKey: value2");
         MatcherAssert.assertThat(
             map.toString(),
@@ -280,13 +280,13 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("time: \"15:00\"").append(System.lineSeparator())
-            .append("color: \"#314132\"").append(System.lineSeparator())
-            .append("gt: \"&gt;\"").append(System.lineSeparator())
-            .append("cash: \"$15\"").append(System.lineSeparator())
-            .append("compare: \"a>b\"").append(System.lineSeparator())
-            .append("xor: \"a || b\"").append(System.lineSeparator())
-            .append("degrees: \"-15C\"").append(System.lineSeparator())
+            .append("time: \"15:00\"").append("\n")
+            .append("color: \"#314132\"").append("\n")
+            .append("gt: \"&gt;\"").append("\n")
+            .append("cash: \"$15\"").append("\n")
+            .append("compare: \"a>b\"").append("\n")
+            .append("xor: \"a || b\"").append("\n")
+            .append("degrees: \"-15C\"").append("\n")
             .append("percentage: '3% reads \"3 per cent\"'");
         MatcherAssert.assertThat(
             map.toString(),

@@ -55,8 +55,8 @@ public final class ReadLiteralBlockScalarTest {
         MatcherAssert.assertThat(
             scalar.value(),
             Matchers.is(
-            "First Line." + System.lineSeparator()
-                + "Second Line."+ System.lineSeparator()
+            "First Line." + "\n"
+                + "Second Line."+ "\n"
                 + "Third Line."
             )
         );
@@ -157,15 +157,15 @@ public final class ReadLiteralBlockScalarTest {
             scalar.toString(),
             Matchers.equalTo(
             "---"
-                + System.lineSeparator()
+                + "\n"
                 + "|"
-                + System.lineSeparator()
+                + "\n"
                 + "  First Line"
-                + System.lineSeparator()
+                + "\n"
                 + "  Second Line"
-                + System.lineSeparator()
+                + "\n"
                 + "  Third Line"
-                + System.lineSeparator()
+                + "\n"
                 + "..."
             )
         );

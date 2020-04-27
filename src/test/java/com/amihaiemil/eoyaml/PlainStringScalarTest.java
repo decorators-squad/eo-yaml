@@ -146,9 +146,9 @@ public final class PlainStringScalarTest {
             scalar.toString(),
             Matchers.equalTo(
             "---"
-                + System.lineSeparator()
+                + "\n"
                 + "value"
-                + System.lineSeparator()
+                + "\n"
                 + "..."
             )
         );

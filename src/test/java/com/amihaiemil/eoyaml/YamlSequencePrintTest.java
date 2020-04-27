@@ -126,8 +126,8 @@ public final class YamlSequencePrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- value1").append(System.lineSeparator())
-            .append("- null").append(System.lineSeparator())
+            .append("- value1").append("\n")
+            .append("- null").append("\n")
             .append("- value2");
         MatcherAssert.assertThat(
             sequence.toString(),
@@ -148,8 +148,8 @@ public final class YamlSequencePrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- value1").append(System.lineSeparator())
-            .append("- null").append(System.lineSeparator())
+            .append("- value1").append("\n")
+            .append("- null").append("\n")
             .append("- value2");
         MatcherAssert.assertThat(
             sequence.toString(),
@@ -169,8 +169,8 @@ public final class YamlSequencePrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- value1").append(System.lineSeparator())
-            .append("- null").append(System.lineSeparator())
+            .append("- value1").append("\n")
+            .append("- null").append("\n")
             .append("- value2");
         MatcherAssert.assertThat(
             sequence.toString(),
@@ -191,8 +191,8 @@ public final class YamlSequencePrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- value1").append(System.lineSeparator())
-            .append("- null").append(System.lineSeparator())
+            .append("- value1").append("\n")
+            .append("- null").append("\n")
             .append("- value2");
         MatcherAssert.assertThat(
             sequence.toString(),
@@ -212,8 +212,8 @@ public final class YamlSequencePrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- scalar1").append(System.lineSeparator())
-            .append("- null").append(System.lineSeparator())
+            .append("- scalar1").append("\n")
+            .append("- null").append("\n")
             .append("- scalar2");
         MatcherAssert.assertThat(
             sequence.toString(),
@@ -234,8 +234,8 @@ public final class YamlSequencePrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- scalar1").append(System.lineSeparator())
-            .append("- null").append(System.lineSeparator())
+            .append("- scalar1").append("\n")
+            .append("- null").append("\n")
             .append("- scalar2");
         MatcherAssert.assertThat(
             sequence.toString(),
@@ -265,13 +265,13 @@ public final class YamlSequencePrintTest {
             ).build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- \"15:00\"").append(System.lineSeparator())
-            .append("- \"#314132\"").append(System.lineSeparator())
-            .append("- \"&gt;\"").append(System.lineSeparator())
-            .append("- \"$15\"").append(System.lineSeparator())
-            .append("- \"a>b\"").append(System.lineSeparator())
-            .append("- \"a || b\"").append(System.lineSeparator())
-            .append("- \"-15C\"").append(System.lineSeparator())
+            .append("- \"15:00\"").append("\n")
+            .append("- \"#314132\"").append("\n")
+            .append("- \"&gt;\"").append("\n")
+            .append("- \"$15\"").append("\n")
+            .append("- \"a>b\"").append("\n")
+            .append("- \"a || b\"").append("\n")
+            .append("- \"-15C\"").append("\n")
             .append("- '3% reads \"3 per cent\"'");
         MatcherAssert.assertThat(
             map.yamlSequence("sequence").toString(),

@@ -76,7 +76,7 @@ public final class RtYamlScalarBuilderTest {
     public void buildsPlainScalarRemovesAddedNewLines() {
         final Scalar scalar = new RtYamlScalarBuilder()
             .addLine("a plain scalar")
-            .addLine("that will be" + System.lineSeparator() + "on the same line.")
+            .addLine("that will be" + "\n" + "on the same line.")
             .addLine("You cannot trick it.")
             .buildPlainScalar();
         MatcherAssert.assertThat(
@@ -187,7 +187,7 @@ public final class RtYamlScalarBuilderTest {
     public void buildsFoldedBlockScalarRemovesAddedNewLines() {
         final Scalar scalar = new RtYamlScalarBuilder()
             .addLine("a folded block scalar")
-            .addLine("that will be" + System.lineSeparator() + "on the same line.")
+            .addLine("that will be" + "\n" + "on the same line.")
             .addLine("Its value will be on a single line because NEWLINE is omitted.")
             .buildFoldedBlockScalar();
         MatcherAssert.assertThat(

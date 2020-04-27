@@ -66,7 +66,7 @@ final class ReadComment implements Comment {
         for(final YamlLine line : this.lines) {
             comment
                 .append(line.comment().trim())
-                .append(System.lineSeparator());
+                .append("\n");
         }
         return comment.toString().trim();
     }

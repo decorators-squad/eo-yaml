@@ -175,13 +175,13 @@ public final class ReadFoldedBlockScalarTest {
             Matchers.is(
                 "Sammy Sosa completed another "
                 + "fine season with great stats."
-                + System.lineSeparator()
-                + System.lineSeparator()
+                + "\n"
+                + "\n"
                 + "  63 Home Runs"
-                + System.lineSeparator()
+                + "\n"
                 + "  75 Hits"
-                + System.lineSeparator()
-                + System.lineSeparator()
+                + "\n"
+                + "\n"
                 + "What a year!"
             )
         );
@@ -203,15 +203,15 @@ public final class ReadFoldedBlockScalarTest {
             scalar.toString(),
             Matchers.equalTo(
             "---"
-                + System.lineSeparator()
+                + "\n"
                 + ">"
-                + System.lineSeparator()
+                + "\n"
                 + "  First Line"
-                + System.lineSeparator()
+                + "\n"
                 + "  Second Line"
-                + System.lineSeparator()
+                + "\n"
                 + "  Third Line"
-                + System.lineSeparator()
+                + "\n"
                 + "..."
             )
         );

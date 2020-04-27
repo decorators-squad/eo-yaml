@@ -61,7 +61,7 @@ final class AllYamlLines implements YamlLines {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
         for (final YamlLine line : this.lines) {
-            builder.append(line.toString()).append(System.lineSeparator());
+            builder.append(line.toString()).append("\n");
         }
         return builder.toString();
     }

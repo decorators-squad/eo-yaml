@@ -59,9 +59,9 @@ final class RtYamlPrinter implements YamlPrinter {
     public void print(final YamlNode node) throws IOException  {
         try {
             if (node instanceof Scalar) {
-                this.writer.append("---").append(System.lineSeparator());
+                this.writer.append("---").append("\n");
                 this.printScalar((Scalar) node, 0);
-                this.writer.append(System.lineSeparator()).append("...");
+                this.writer.append("\n").append("...");
             } else if (node instanceof YamlSequence) {
                 this.printPossibleComment(node, "");
                 this.printSequence((YamlSequence) node, 0);
@@ -86,7 +86,7 @@ final class RtYamlPrinter implements YamlPrinter {
         final YamlStream stream,
         final int indentation
     ) throws IOException {
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         int spaces = indentation;
         final StringBuilder indent = new StringBuilder();
         while (spaces > 0) {
@@ -116,7 +116,7 @@ final class RtYamlPrinter implements YamlPrinter {
         final YamlMapping mapping,
         final int indentation
     ) throws IOException {
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         int spaces = indentation;
         final StringBuilder alignment = new StringBuilder();
         while (spaces > 0) {
@@ -165,7 +165,7 @@ final class RtYamlPrinter implements YamlPrinter {
         final YamlSequence sequence,
         final int indentation
     ) throws IOException {
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         int spaces = indentation;
         final StringBuilder alignment = new StringBuilder();
         while (spaces > 0) {
@@ -210,7 +210,7 @@ final class RtYamlPrinter implements YamlPrinter {
             if(!scalar.comment().value().isEmpty()) {
                 this.writer.append(" # ").append(scalar.comment().value());
             }
-            this.writer.append(System.lineSeparator());
+            this.writer.append("\n");
             final List<String> unfolded = foldedScalar.unfolded();
             for(int idx = 0; idx < unfolded.size(); idx++) {
                 this.writer.append(
@@ -220,7 +220,7 @@ final class RtYamlPrinter implements YamlPrinter {
                     )
                 );
                 if(idx < unfolded.size() - 1) {
-                    this.writer.append(System.lineSeparator());
+                    this.writer.append("\n");
                 }
             }
         } else if (scalar instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
@@ -232,7 +232,7 @@ final class RtYamlPrinter implements YamlPrinter {
                 this.writer.append(" # ").append(scalar.comment().value());
             }
             this.writer
-                .append(System.lineSeparator())
+                .append("\n")
                 .append(
                     this.indent(scalar.value(), indentation + 2)
                 );
@@ -266,7 +266,7 @@ final class RtYamlPrinter implements YamlPrinter {
             this.writer.append(" ").append("null");
         } else {
             if (onNewLine) {
-                this.writer.append(System.lineSeparator());
+                this.writer.append("\n");
             } else {
                 this.writer.append(" ");
             }
@@ -297,13 +297,13 @@ final class RtYamlPrinter implements YamlPrinter {
         if(node != null) {
             final String com = node.comment().value();
             if (com.trim().length() != 0) {
-                String[] lines = com.split(System.lineSeparator());
+                String[] lines = com.split("\n");
                 for (final String line : lines) {
                     this.writer
                             .append(alignment)
                             .append("# ")
                             .append(line)
-                            .append(System.lineSeparator());
+                            .append("\n");
                 }
             }
         }
@@ -323,12 +323,12 @@ final class RtYamlPrinter implements YamlPrinter {
             alignment.append(" ");
             spaces--;
         }
-        String[] lines = value.split(System.lineSeparator());
+        String[] lines = value.split("\n");
         StringBuilder printed = new StringBuilder();
         for(final String line: lines) {
             printed.append(alignment);
             printed.append(line);
-            printed.append(System.lineSeparator());
+            printed.append("\n");
         }
         printed.delete(printed.length()-1, printed.length());
         return printed.toString();

@@ -208,7 +208,7 @@ public interface YamlMapping extends YamlNode {
             found = Arrays.asList(
                 ((Scalar) value)
                     .value()
-                    .split(System.lineSeparator())
+                    .split("\n")
             );
         } else {
             found = null;

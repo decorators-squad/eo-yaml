@@ -150,7 +150,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
             if(count == index && (node instanceof Scalar)) {
                 value = Arrays.asList(
                     ((Scalar) node)
-                        .value().split(System.lineSeparator())
+                        .value().split("\n")
                 );
                 break;
             }

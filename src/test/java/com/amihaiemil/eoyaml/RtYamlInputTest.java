@@ -300,10 +300,10 @@ public final class RtYamlInputTest {
         YamlSequence read = new RtYamlInput(
             new ByteArrayInputStream(
                 new StringBuilder()
-                    .append("---").append(System.lineSeparator())
-                    .append("- apples").append(System.lineSeparator())
-                    .append("- pears").append(System.lineSeparator())
-                    .append("- peaches").append(System.lineSeparator())
+                    .append("---").append("\n")
+                    .append("- apples").append("\n")
+                    .append("- pears").append("\n")
+                    .append("- peaches").append("\n")
                     .toString()
                     .getBytes()
             )
@@ -442,7 +442,7 @@ public final class RtYamlInputTest {
      */
     @Test
     public void readsEmptyMapping() throws Exception {
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         YamlMapping read = Yaml.createYamlInput(
             "---" + newLine + "..."
         ).readYamlMapping();
@@ -462,7 +462,7 @@ public final class RtYamlInputTest {
      */
     @Test
     public void readsEmptySequence() throws Exception {
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         YamlSequence read = Yaml.createYamlInput(
             "---" + newLine + "..."
         ).readYamlSequence();
@@ -480,7 +480,7 @@ public final class RtYamlInputTest {
      */
     @Test
     public void readsEmptyStream() throws Exception {
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         YamlStream read = Yaml.createYamlInput(
             "---" + newLine + "..."
         ).readYamlStream();
@@ -515,17 +515,17 @@ public final class RtYamlInputTest {
             Matchers.isEmptyString()
         );
         MatcherAssert.assertThat(
-            Yaml.createYamlInput("---" + System.lineSeparator() + "...")
+            Yaml.createYamlInput("---" + "\n" + "...")
                 .readPlainScalar().value(),
             Matchers.isEmptyString()
         );
         MatcherAssert.assertThat(
-            Yaml.createYamlInput("---" + System.lineSeparator() + " ...")
+            Yaml.createYamlInput("---" + "\n" + " ...")
                 .readFoldedBlockScalar().value(),
             Matchers.isEmptyString()
         );
         MatcherAssert.assertThat(
-            Yaml.createYamlInput("---" + System.lineSeparator() + "...")
+            Yaml.createYamlInput("---" + "\n" + "...")
                 .readLiteralBlockScalar().value(),
             Matchers.isEmptyString()
         );
@@ -544,9 +544,9 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 "---"
-              + System.lineSeparator()
+              + "\n"
               + "scalar"
-              + System.lineSeparator()
+              + "\n"
               + "..."
             ).readPlainScalar().value(),
             Matchers.equalTo("scalar")
@@ -561,18 +561,18 @@ public final class RtYamlInputTest {
     public void readsFoldedBlockScalar() throws Exception {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
-                ">" + System.lineSeparator()
-              + "some folded" + System.lineSeparator()
+                ">" + "\n"
+              + "some folded" + "\n"
               + "block scalar"
             ).readFoldedBlockScalar().value(),
             Matchers.equalTo("some folded block scalar")
         );
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
-                "---" + System.lineSeparator()
-              + ">" + System.lineSeparator()
-              + "some folded" + System.lineSeparator()
-              + "block scalar" + System.lineSeparator()
+                "---" + "\n"
+              + ">" + "\n"
+              + "some folded" + "\n"
+              + "block scalar" + "\n"
               + "..."
             ).readFoldedBlockScalar().value(),
             Matchers.equalTo("some folded block scalar")
@@ -587,21 +587,21 @@ public final class RtYamlInputTest {
     public void readsLiteralBlockScalar() throws Exception {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
-                "|" + System.lineSeparator()
-              + "line1" + System.lineSeparator()
+                "|" + "\n"
+              + "line1" + "\n"
               + "line2"
             ).readLiteralBlockScalar().value(),
-            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+            Matchers.equalTo("line1" + "\n" + "line2")
         );
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
-                "---" + System.lineSeparator()
-              + "|" + System.lineSeparator()
-              + "line1" + System.lineSeparator()
-              + "line2" + System.lineSeparator()
+                "---" + "\n"
+              + "|" + "\n"
+              + "line1" + "\n"
+              + "line2" + "\n"
               + "..."
             ).readLiteralBlockScalar().value(),
-            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+            Matchers.equalTo("line1" + "\n" + "line2")
         );
     }
 

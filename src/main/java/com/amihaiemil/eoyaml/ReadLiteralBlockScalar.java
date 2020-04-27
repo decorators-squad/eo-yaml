@@ -104,7 +104,7 @@ final class ReadLiteralBlockScalar extends BaseScalar {
         StringBuilder builder = new StringBuilder();
         for(final YamlLine line: this.significant) {
             builder.append(line.trimmed());
-            builder.append(System.lineSeparator());
+            builder.append("\n");
         }
         if(builder.length() > 0) {
             builder.delete(builder.length() - 1, builder.length());

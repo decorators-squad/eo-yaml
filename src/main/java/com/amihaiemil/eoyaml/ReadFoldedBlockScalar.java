@@ -107,7 +107,7 @@ final class ReadFoldedBlockScalar extends BaseFoldedScalar {
      */
     private boolean doNotEndWithNewLine(final StringBuilder builder) {
         return builder.length() > 0
-                && !builder.toString().endsWith(System.lineSeparator());
+                && !builder.toString().endsWith("\n");
     }
     /**
      * Value of this scalar.
@@ -115,7 +115,7 @@ final class ReadFoldedBlockScalar extends BaseFoldedScalar {
      */
     public String value() {
         StringBuilder builder = new StringBuilder();
-        final String newLine = System.lineSeparator();
+        final String newLine = "\n";
         for(final YamlLine line: this.significant) {
             if(line.trimmed().length() == 0 || line.indentation() > 0) {
                 if(this.doNotEndWithNewLine(builder)) {

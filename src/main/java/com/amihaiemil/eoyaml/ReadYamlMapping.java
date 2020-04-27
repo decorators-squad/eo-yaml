@@ -223,7 +223,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     } else {
                         throw new YamlReadingException(
                             "No value found for existing complex key: "
-                          + System.lineSeparator()
+                          + "\n"
                           + ((BaseYamlNode) key).toString()
                         );
                     }

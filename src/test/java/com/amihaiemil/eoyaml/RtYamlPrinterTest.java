@@ -61,9 +61,9 @@ public final class RtYamlPrinterTest {
             baos.toString(),
             Matchers.equalTo(
                 "---"
-               + System.lineSeparator()
+               + "\n"
                + "scalar"
-               + System.lineSeparator()
+               + "\n"
                + "..."
             )
         );

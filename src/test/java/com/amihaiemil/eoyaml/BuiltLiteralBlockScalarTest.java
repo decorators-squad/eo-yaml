@@ -59,15 +59,15 @@ public final class BuiltLiteralBlockScalarTest {
             literal.toString(),
             Matchers.equalTo(
             "---"
-                + System.lineSeparator()
+                + "\n"
                 + "|"
-                + System.lineSeparator()
+                + "\n"
                 + "  line1"
-                + System.lineSeparator()
+                + "\n"
                 + "  line2"
-                + System.lineSeparator()
+                + "\n"
                 + "  line3"
-                + System.lineSeparator()
+                + "\n"
                 + "..."
             )
         );
