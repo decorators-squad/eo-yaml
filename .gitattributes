@@ -2,6 +2,5 @@
 
 *.java text=auto eol=lf
 *.xml text=auto eol=lf
-*.yml text=auto eol=lf
 *.java ident
 *.xml ident
