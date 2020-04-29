@@ -325,12 +325,13 @@ final class RtYamlPrinter implements YamlPrinter {
         }
         String[] lines = value.split(System.lineSeparator());
         StringBuilder printed = new StringBuilder();
-        for(final String line: lines) {
+        for(int idx = 0; idx < lines.length; idx++) {
             printed.append(alignment);
-            printed.append(line);
-            printed.append(System.lineSeparator());
+            printed.append(lines[idx]);
+            if(idx < lines.length - 1) {
+                printed.append(System.lineSeparator());
+            }
         }
-        printed.delete(printed.length()-1, printed.length());
         return printed.toString();
     }
 
