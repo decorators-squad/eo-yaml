@@ -54,7 +54,7 @@ Here is what we have so far:
     - It can be used as a **Java Module** (if you're on JDK 9+).
     - It is **lightweight**! It has [only one dependency](https://github.com/decorators-squad/eo-yaml/blob/master/pom.xml#L46) used in parsing Java Beans to YAML. You can safely exclude it if you're only interested in building or reading YAML.
 
-Also, you can have a look a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML that the library can read and handle so far.
+Also, you can have a look under [src/test/resources](https://github.com/decorators-squad/eo-yaml/tree/master/src/test/resources) to see the kinds of YAML that the library can read and handle so far.
 
 Here is what we're **still missing and working on**:
 
