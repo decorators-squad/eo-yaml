@@ -100,4 +100,34 @@ public final class SpecExamplesITCase {
             ).readYamlMapping();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
     }
+    
+    /**
+     * It tests the example 2.3 of the Yaml Spec 1.2.
+     * @throws FileNotFoundException If the file was not found.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readThirdSpecExample() 
+            throws FileNotFoundException, IOException {
+        final YamlMapping expected = Yaml.createYamlMappingBuilder()
+                .add("american", 
+                        Yaml.createYamlSequenceBuilder()
+                            .add("Boston Red Sox")
+                            .add("Detroit Tigers")
+                            .add("New York Yankees").build()
+                            )
+                .add("national", 
+                        Yaml.createYamlSequenceBuilder()
+                            .add("New York Mets")
+                            .add("Chicago Cubs")
+                            .add("Atlanta Braves").build()
+                            ).build();
+                
+                
+        System.out.println(expected);
+        final YamlMapping actual = Yaml.createYamlInput(
+            new File("src/test/resources/spec/spec_2_3.yml")
+            ).readYamlMapping();
+        MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
+    }
 }
