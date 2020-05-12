@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml.spec;
 
 import com.amihaiemil.eoyaml.Yaml;
+import com.amihaiemil.eoyaml.YamlMapping;
 import com.amihaiemil.eoyaml.YamlSequence;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,6 +62,42 @@ public final class SpecExamplesITCase {
         final YamlSequence actual = Yaml.createYamlInput(
             new File("src/test/resources/spec/spec_2_1.yml")
             ).readYamlSequence();
+        MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
+    }
+    
+    /**
+     * It tests the example 2.2 of the Yaml Spec 1.2.
+     * @throws FileNotFoundException If the file was not found.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readSecondSpecExample() 
+            throws FileNotFoundException, IOException {
+        
+        final YamlMapping expected = Yaml.createYamlMappingBuilder()
+                .add(
+                        "hr",
+                        Yaml.createYamlScalarBuilder()
+                                .addLine("65")
+                                .buildPlainScalar("Home runs")
+                )
+                .add(
+                        "avg",
+                        Yaml.createYamlScalarBuilder()
+                                .addLine("0.278")
+                                .buildPlainScalar("Batting average")
+                )
+                .add(
+                        "rbi",
+                        Yaml.createYamlScalarBuilder()
+                                .addLine("147")
+                                .buildPlainScalar("Runs Batted In")
+                )
+                .build();
+        System.out.println(expected);
+        final YamlMapping actual = Yaml.createYamlInput(
+            new File("src/test/resources/spec/spec_2_2.yml")
+            ).readYamlMapping();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
     }
 }
