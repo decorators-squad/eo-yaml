@@ -39,19 +39,21 @@ import org.junit.Test;
 
 /**
  * It tests the spec 1.2 examples.
+ *
  * @author Aislan Nadrowski (aislan.nadrowski@gmail.com)
  * @version $Id$
  * @sinve 4.3.6
  */
 public final class SpecExamplesITCase {
-    
+
     /**
      * It tests the example 2.1 of the Yaml Spec 1.2.
+     *
      * @throws FileNotFoundException If the file was not found.
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void readFirstSpecExample() 
+    public void readFirstSpecExample()
             throws FileNotFoundException, IOException {
         final YamlSequence expected = Yaml.createYamlSequenceBuilder()
                 .add("Mark McGwire")
@@ -60,20 +62,21 @@ public final class SpecExamplesITCase {
                 .build();
         System.out.println(expected);
         final YamlSequence actual = Yaml.createYamlInput(
-            new File("src/test/resources/spec/spec_2_1.yml")
-            ).readYamlSequence();
+                new File("src/test/resources/spec/spec_2_1.yml")
+        ).readYamlSequence();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
     }
-    
+
     /**
      * It tests the example 2.2 of the Yaml Spec 1.2.
+     *
      * @throws FileNotFoundException If the file was not found.
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void readSecondSpecExample() 
+    public void readSecondSpecExample()
             throws FileNotFoundException, IOException {
-        
+
         final YamlMapping expected = Yaml.createYamlMappingBuilder()
                 .add(
                         "hr",
@@ -96,38 +99,68 @@ public final class SpecExamplesITCase {
                 .build();
         System.out.println(expected);
         final YamlMapping actual = Yaml.createYamlInput(
-            new File("src/test/resources/spec/spec_2_2.yml")
-            ).readYamlMapping();
+                new File("src/test/resources/spec/spec_2_2.yml")
+        ).readYamlMapping();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
     }
-    
+
     /**
      * It tests the example 2.3 of the Yaml Spec 1.2.
+     *
      * @throws FileNotFoundException If the file was not found.
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void readThirdSpecExample() 
+    public void readThirdSpecExample()
             throws FileNotFoundException, IOException {
         final YamlMapping expected = Yaml.createYamlMappingBuilder()
-                .add("american", 
+                .add("american",
                         Yaml.createYamlSequenceBuilder()
-                            .add("Boston Red Sox")
-                            .add("Detroit Tigers")
-                            .add("New York Yankees").build()
-                            )
-                .add("national", 
+                                .add("Boston Red Sox")
+                                .add("Detroit Tigers")
+                                .add("New York Yankees").build()
+                )
+                .add("national",
                         Yaml.createYamlSequenceBuilder()
-                            .add("New York Mets")
-                            .add("Chicago Cubs")
-                            .add("Atlanta Braves").build()
-                            ).build();
-                
-                
+                                .add("New York Mets")
+                                .add("Chicago Cubs")
+                                .add("Atlanta Braves").build()
+                ).build();
+
         System.out.println(expected);
         final YamlMapping actual = Yaml.createYamlInput(
-            new File("src/test/resources/spec/spec_2_3.yml")
-            ).readYamlMapping();
+                new File("src/test/resources/spec/spec_2_3.yml")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
+    }
+
+    /**
+     * It tests the example 2.4 of the Yaml Spec 1.2.
+     *
+     * @throws FileNotFoundException If the file was not found.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readFourthSpecExample()
+            throws FileNotFoundException, IOException {
+        final YamlSequence expected = Yaml.createYamlSequenceBuilder()
+                .add(Yaml.createYamlMappingBuilder()
+                        .add("name", "Mark McGwire")
+                        .add("hr", "65")
+                        .add("avg", "0.278")
+                        .build()
+                )
+                .add(Yaml.createYamlMappingBuilder()
+                        .add("name", "Sammy Sosa")
+                        .add("hr", "63")
+                        .add("avg", "0.288")
+                        .build()
+                ).build();
+
+        System.out.println(expected);
+        final YamlSequence actual = Yaml.createYamlInput(
+                new File("src/test/resources/spec/spec_2_4.yml")
+        ).readYamlSequence();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
     }
 }
