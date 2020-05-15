@@ -43,10 +43,10 @@ import org.junit.Test;
  * @since 4.3.6
  *
  * @todo #336:30min Add more tests to cover all the examples from the Yaml 1.2
- * Specification. You can have a look at PR 335 to see how other examples have
- * been tested. Don't forget that you do not have to write all the tests in this
- * task -- write 1 or 2 tests, leave a todo (puzzle) and the work will continue
- * in a future ticket.
+ *  Specification. You can have a look at PR 335 to see how other examples have
+ *  been tested. Don't forget that you do not have to write all the tests in this
+ *  task -- write 1 or 2 tests, leave a todo (puzzle) and the work will continue
+ *  in a future ticket.
  */
 public final class SpecExamplesITCase {
 
