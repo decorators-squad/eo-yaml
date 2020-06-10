@@ -301,7 +301,7 @@ public interface YamlMapping extends YamlNode {
      * @return Found float or -1 if there is no value for the key,
      *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *   is not a parsable float.
+     *  is not a parsable float.
      */
     default float floatNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
