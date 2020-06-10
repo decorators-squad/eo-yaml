@@ -46,6 +46,7 @@ import java.util.stream.*;
  * @checkstyle LineLength (400 lines)
  * @checkstyle ParameterName (400 lines)
  * @checkstyle FinalParameters (400 lines)
+ * @checkstyle ClassFanOutComplexity (33)
  * @since 3.1.1
  */
 public interface YamlStream extends YamlNode, Stream<YamlNode> {
