@@ -240,7 +240,7 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found integer or -1 if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable integer.
      */
@@ -259,13 +259,13 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found integer or -1 if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable integer.
      */
     default int integer(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if (value != null && value instanceof Scalar) {
+        if(value != null && value instanceof Scalar) {
             return Integer.parseInt(((Scalar) value).value());
         }
         return -1;
@@ -280,7 +280,7 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found float or -1 if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable float.
      */
@@ -299,13 +299,13 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found float or -1 if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *   is not a parsable float.
      */
     default float floatNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if (value != null && value instanceof Scalar) {
+        if(value != null && value instanceof Scalar) {
             return Float.parseFloat(((Scalar) value).value());
         }
         return -1;
@@ -320,7 +320,7 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found double or -1.0 if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
      */
@@ -339,13 +339,13 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found double or -1.0 if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable double.
      */
     default double doubleNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if (value != null && value instanceof Scalar) {
+        if(value != null && value instanceof Scalar) {
             return Double.parseDouble(((Scalar) value).value());
         }
         return -1.0;
@@ -360,7 +360,7 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found long or -1L if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable long.
      */
@@ -379,13 +379,13 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found long or -1L if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
      *  is not a parsable long.
      */
     default long longNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if (value != null && value instanceof Scalar) {
+        if(value != null && value instanceof Scalar) {
             return Long.parseLong(((Scalar) value).value());
         }
         return -1L;
@@ -400,7 +400,7 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDate date(final String key) {
@@ -418,12 +418,12 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDate date(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if (value != null && value instanceof Scalar) {
+        if(value != null && value instanceof Scalar) {
             return LocalDate.parse(((Scalar) value).value());
         }
         return null;
@@ -438,7 +438,7 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDateTime or null if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDateTime dateTime(final String key) {
@@ -456,12 +456,12 @@ public interface YamlMapping extends YamlNode {
      * </pre>
      * @param key The key of the value.
      * @return Found LocalDateTime or null if there is no value for the key,
-     * or the value is not a Scalar.
+     *  or the value is not a Scalar.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDateTime dateTime(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if (value != null && value instanceof Scalar) {
+        if(value != null && value instanceof Scalar) {
             return LocalDateTime.parse(((Scalar) value).value());
         }
         return null;
