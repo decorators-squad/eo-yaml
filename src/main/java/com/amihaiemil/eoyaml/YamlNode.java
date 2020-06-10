@@ -61,12 +61,9 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Scalar.
      */
-    default Scalar asScalar() throws YamlReadingException {
-        if (this.type() != Node.SCALAR) {
-            throw new YamlReadingException(
-                "The YamlNode is not a Scalar!");
-        }
-        return (Scalar) this;
+    default Scalar asScalar()
+        throws YamlReadingException, ClassCastException {
+        return as(Scalar.class, Node.SCALAR);
     }
 
     /**
@@ -76,12 +73,9 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Mapping.
      */
-    default YamlMapping asMapping() throws YamlReadingException {
-        if (this.type() != Node.MAPPING) {
-            throw new YamlReadingException(
-                "The YamlNode is not a YamlMapping!");
-        }
-        return (YamlMapping) this;
+    default YamlMapping asMapping()
+        throws YamlReadingException, ClassCastException {
+        return as(YamlMapping.class, Node.MAPPING);
     }
 
     /**
@@ -91,12 +85,9 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Sequence.
      */
-    default YamlSequence asSequence() throws YamlReadingException {
-        if (this.type() != Node.SEQUENCE) {
-            throw new YamlReadingException(
-                "The YamlNode is not a YamlSequence!");
-        }
-        return (YamlSequence) this;
+    default YamlSequence asSequence()
+        throws YamlReadingException, ClassCastException {
+        return as(YamlSequence.class, Node.SEQUENCE);
     }
 
     /**
@@ -106,12 +97,30 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Stream.
      */
-    default YamlStream asStream() throws YamlReadingException {
-        if (this.type() != Node.STREAM) {
+    default YamlStream asStream()
+        throws YamlReadingException, ClassCastException {
+        return as(YamlStream.class, Node.STREAM);
+    }
+
+    /**
+     * Gives the T instance from node class and node type.
+     *
+     * @param nodeclass Requested YamlNode class.
+     * @param nodetype  Requested YamlNode type {@link Node}.
+     * @param <T>       Requested YamlNode class type.
+     * @return Requested YamlNode.
+     * @throws YamlReadingException If the node type is not
+     *                              a T.
+     * @throws ClassCastException   If the node type couldn't
+     *                              defined correctly.
+     */
+    default <T extends YamlNode> T as(Class<T> nodeclass, Node nodetype)
+        throws YamlReadingException, ClassCastException {
+        if (this.type() != nodetype) {
             throw new YamlReadingException(
-                "The YamlNode is not a YamlStream!");
+                "The YamlNode is not a " + nodeclass.getSimpleName() + '!');
         }
-        return (YamlStream) this;
+        return nodeclass.cast(this);
     }
 
 }
