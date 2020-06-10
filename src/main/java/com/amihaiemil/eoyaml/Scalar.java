@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
- * <p>
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this
@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml;
 
 /**
  * Yaml Scalar.
- *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3
@@ -41,7 +40,6 @@ public interface Scalar extends YamlNode {
      * method should be un-escaped. e.g. if the scalar is
      * escaped, say '#404040', the returned value should be
      * #404040.
-     *
      * @return String value.
      * @throws IllegalStateException In the case of reading YAML,
      *                               this exception is thrown if the Scalar
