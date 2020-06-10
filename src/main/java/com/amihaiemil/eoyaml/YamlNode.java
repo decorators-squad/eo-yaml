@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
- * <p>
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  modification, are permitted provided that the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
+ *  list of conditions and the following disclaimer.
+ *  Redistributions in binary form must reproduce the above copyright notice,
+ *  this list of conditions and the following disclaimer in the documentation
+ *  and/or other materials provided with the distribution.
  * Neither the name of the copyright holder nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
+ *  contributors may be used to endorse or promote products derived from
+ *  this software without specific prior written permission.
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -31,37 +31,33 @@ import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 
 /**
  * YAML node.
- *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
  * @since 1.0.0
+ * @see <a href="http://yaml.org/spec/1.2/spec.html#node/">Spec1.2/node</a>
  */
 public interface YamlNode extends Comparable<YamlNode> {
 
     /**
      * Comment referring to this Node.
-     *
      * @return Comment. If there is no comment, it will return
-     * an "empty" comment (an instance of Comment with empty-string value()).
+     *  an "empty" comment (an instance of Comment with empty-string value()).
      */
     Comment comment();
 
     /**
      * Type of the node.
-     *
      * @return Node type.
      */
     Node type();
 
     /**
      * Gives a String value of the node.
-     *
      * @return String value of the node.
      * @throws YamlReadingException If the node type is not
-     *                              Scalar.
+     *  Scalar.
      * @throws ClassCastException   If the node type couldn't
-     *                              defined correctly.
+     *  defined correctly.
      */
     default Scalar asScalar()
         throws YamlReadingException, ClassCastException {
@@ -70,12 +66,11 @@ public interface YamlNode extends Comparable<YamlNode> {
 
     /**
      * Gives a Mapping value of the node.
-     *
      * @return Mapping value of the node.
      * @throws YamlReadingException If the node type is not
-     *                              Mapping.
+     *  Mapping.
      * @throws ClassCastException   If the node type couldn't
-     *                              defined correctly.
+     *  defined correctly.
      */
     default YamlMapping asMapping()
         throws YamlReadingException, ClassCastException {
@@ -84,12 +79,11 @@ public interface YamlNode extends Comparable<YamlNode> {
 
     /**
      * Gives a Sequence value of the node.
-     *
      * @return Sequence value of the node.
      * @throws YamlReadingException If the node type is not
-     *                              Sequence.
+     *  Sequence.
      * @throws ClassCastException   If the node type couldn't
-     *                              defined correctly.
+     *  defined correctly.
      */
     default YamlSequence asSequence()
         throws YamlReadingException, ClassCastException {
@@ -98,12 +92,11 @@ public interface YamlNode extends Comparable<YamlNode> {
 
     /**
      * Gives a Stream value of the node.
-     *
      * @return Stream value of the node.
      * @throws YamlReadingException If the node type is not
-     *                              Stream.
+     *  Stream.
      * @throws ClassCastException   If the node type couldn't
-     *                              defined correctly.
+     *  defined correctly.
      */
     default YamlStream asStream()
         throws YamlReadingException, ClassCastException {
@@ -112,14 +105,13 @@ public interface YamlNode extends Comparable<YamlNode> {
 
     /**
      * Gives the {@link T} instance from node class and node type.
-     *
      * @param clazz Requested a {@link YamlNode} class.
      * @param type Requested a {@link Node}.
      * @param <T> Requested a {@link YamlNode} class instance.
      * @return Requested a {@link YamlNode}.
      * @throws YamlReadingException If the type is not a {@link T}.
      * @throws ClassCastException   If the node type couldn't
-     *                              defined correctly.
+     *  defined correctly.
      */
     default <T extends YamlNode> T asClass(Class<T> clazz, Node type)
         throws YamlReadingException, ClassCastException {
