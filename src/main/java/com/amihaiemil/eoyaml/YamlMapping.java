@@ -209,7 +209,7 @@ public interface YamlMapping extends YamlNode {
     default Collection<String> literalBlockScalar(final YamlNode key) {
         final Collection<String> found;
         final YamlNode value = this.value(key);
-        if (value instanceof Scalar) {
+        if(value instanceof Scalar) {
             found = Arrays.asList(
                 ((Scalar) value)
                     .value()
