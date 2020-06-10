@@ -76,7 +76,7 @@ public interface YamlMapping extends YamlNode {
      * Get the Yaml mapping associated with the given key.
      * @param key String key
      * @return Yaml mapping or null if the key is missing, or not pointing
-     * to a mapping.
+     *  to a mapping.
      */
     default YamlMapping yamlMapping(final String key) {
         return this.yamlMapping(
@@ -123,7 +123,7 @@ public interface YamlMapping extends YamlNode {
         final YamlNode value = this.value(key);
         final YamlSequence found;
         if (value != null && value instanceof YamlSequence) {
-            found = (YamlSequence) value;
+            found =  (YamlSequence) value;
         } else {
             found = null;
         }
@@ -158,7 +158,6 @@ public interface YamlMapping extends YamlNode {
         }
         return found;
     }
-
     /**
      * Get the String folded block scalar associated with the given key.
      * @param key String key
@@ -180,14 +179,13 @@ public interface YamlMapping extends YamlNode {
     default String foldedBlockScalar(final YamlNode key) {
         final YamlNode value = this.value(key);
         final String found;
-        if (value != null && value instanceof Scalar) {
+        if (value != null &&  value instanceof Scalar) {
             found = ((Scalar) value).value();
         } else {
             found = null;
         }
         return found;
     }
-
     /**
      * Get the String lines of the literal block scalar associated
      * with the given key.
