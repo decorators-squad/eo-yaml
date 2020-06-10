@@ -59,10 +59,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws ClassCastException   If the node type couldn't
      *  defined correctly.
      */
-    default Scalar asScalar()
-        throws YamlReadingException, ClassCastException {
-        return this.asClass(Scalar.class, Node.SCALAR);
-    }
+    Scalar asScalar() throws YamlReadingException, ClassCastException;
 
     /**
      * Gives a Mapping value of the node.
@@ -72,10 +69,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws ClassCastException   If the node type couldn't
      *  defined correctly.
      */
-    default YamlMapping asMapping()
-        throws YamlReadingException, ClassCastException {
-        return this.asClass(YamlMapping.class, Node.MAPPING);
-    }
+    YamlMapping asMapping() throws YamlReadingException, ClassCastException;
 
     /**
      * Gives a Sequence value of the node.
@@ -85,10 +79,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws ClassCastException   If the node type couldn't
      *  defined correctly.
      */
-    default YamlSequence asSequence()
-        throws YamlReadingException, ClassCastException {
-        return this.asClass(YamlSequence.class, Node.SEQUENCE);
-    }
+    YamlSequence asSequence() throws YamlReadingException, ClassCastException;
 
     /**
      * Gives a Stream value of the node.
@@ -98,10 +89,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws ClassCastException   If the node type couldn't
      *  defined correctly.
      */
-    default YamlStream asStream()
-        throws YamlReadingException, ClassCastException {
-        return this.asClass(YamlStream.class, Node.STREAM);
-    }
+    YamlStream asStream() throws YamlReadingException, ClassCastException;
 
     /**
      * Gives the {@link T} instance from node class and node type.
@@ -113,13 +101,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws ClassCastException   If the node type couldn't
      *  defined correctly.
      */
-    default <T extends YamlNode> T asClass(Class<T> clazz, Node type)
-        throws YamlReadingException, ClassCastException {
-        if (this.type() != type) {
-            throw new YamlReadingException(
-                "The YamlNode is not a " + clazz.getSimpleName() + '!');
-        }
-        return clazz.cast(this);
-    }
+    <T extends YamlNode> T asClass(Class<T> clazz, Node type)
+        throws YamlReadingException, ClassCastException;
 
 }

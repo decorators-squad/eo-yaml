@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlPrintException;
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -51,6 +52,41 @@ abstract class BaseYamlNode implements YamlNode {
      * @return True or false.
      */
     abstract boolean isEmpty();
+
+    @Override
+    public final Scalar asScalar()
+        throws YamlReadingException, ClassCastException {
+        return this.asClass(Scalar.class, Node.SCALAR);
+    }
+
+    @Override
+    public final YamlMapping asMapping()
+        throws YamlReadingException, ClassCastException {
+        return this.asClass(YamlMapping.class, Node.MAPPING);
+    }
+
+    @Override
+    public final YamlSequence asSequence()
+        throws YamlReadingException, ClassCastException {
+        return this.asClass(YamlSequence.class, Node.SEQUENCE);
+    }
+
+    @Override
+    public final YamlStream asStream()
+        throws YamlReadingException, ClassCastException {
+        return this.asClass(YamlStream.class, Node.STREAM);
+    }
+
+    @Override
+    public final <T extends YamlNode> T asClass(final Class<T> clazz,
+                                                final Node type)
+        throws YamlReadingException, ClassCastException {
+        if (this.type() != type) {
+            throw new YamlReadingException(
+                "The YamlNode is not a " + clazz.getSimpleName() + '!');
+        }
+        return clazz.cast(this);
+    }
 
     /**
      * Print this YamlNode using a StringWriter to create its
