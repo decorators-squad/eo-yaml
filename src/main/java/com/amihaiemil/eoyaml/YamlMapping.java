@@ -179,7 +179,7 @@ public interface YamlMapping extends YamlNode {
     default String foldedBlockScalar(final YamlNode key) {
         final YamlNode value = this.value(key);
         final String found;
-        if (value != null &&  value instanceof Scalar) {
+        if (value != null  && value instanceof Scalar) {
             found = ((Scalar) value).value();
         } else {
             found = null;
@@ -220,7 +220,6 @@ public interface YamlMapping extends YamlNode {
         }
         return found;
     }
-
     /**
      * Get the YamlNode mapped to the specified key.
      * @param key String key.
