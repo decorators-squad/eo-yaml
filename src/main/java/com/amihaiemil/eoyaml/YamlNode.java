@@ -118,7 +118,7 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @param <T>       Requested {@link YamlNode} class instance.
      * @return Requested {@link YamlNode}.
      * @throws YamlReadingException If the node type is not
-     *                              a T.
+     *                              a {@link T}.
      * @throws ClassCastException   If the node type couldn't
      *                              defined correctly.
      */
