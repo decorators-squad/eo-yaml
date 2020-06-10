@@ -111,11 +111,11 @@ public interface YamlNode extends Comparable<YamlNode> {
     }
 
     /**
-     * Gives the T instance from node class and node type.
+     * Gives the {@link T} instance from node class and node type.
      *
      * @param nodeClass Requested {@link YamlNode} class.
      * @param nodeType  Requested {@link YamlNode} type {@link Node}.
-     * @param <T>       Requested {@link YamlNode} class type.
+     * @param <T>       Requested {@link YamlNode} class instance.
      * @return Requested {@link YamlNode}.
      * @throws YamlReadingException If the node type is not
      *                              a T.
