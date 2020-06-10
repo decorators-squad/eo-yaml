@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
- * <p>
+ *
  * Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this
@@ -36,17 +36,15 @@ import java.util.Iterator;
 
 /**
  * A Yaml sequence.
- *
+ * @checkstyle ReturnCount (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @checkstyle ReturnCount (400 lines)
  * @since 1.0.0
  */
 public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Fetch the values of this sequence.
-     *
      * @return Collection of {@link YamlNode}
      */
     Collection<YamlNode> values();
@@ -59,7 +57,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     /**
      * Returns this YamlSequence's children Iterator.<br><br>
      * It is equivalent to YamlSequence.values().iterator().
-     *
      * @return Iterator of YamlNode.
      */
     default Iterator<YamlNode> iterator() {
@@ -69,7 +66,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     /**
      * The number of Yaml elements (scalars, mappings and sequences) found in
      * this sequence.
-     *
      * @return Integer.
      */
     default int size() {
@@ -78,7 +74,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Get the Yaml mapping  from the given index.
-     *
      * @param index Integer index.
      * @return Yaml mapping.
      */
@@ -97,7 +92,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Get the Yaml sequence from the given index.
-     *
      * @param index Integer index.
      * @return Yaml sequence.
      */
@@ -116,7 +110,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Get the String from the given index.
-     *
      * @param index Integer index.
      * @return String.
      */
