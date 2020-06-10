@@ -242,7 +242,7 @@ public interface YamlMapping extends YamlNode {
      * @return Found integer or -1 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *   is not a parsable integer.
+     *  is not a parsable integer.
      */
     default int integer(final String key) {
         return this.integer(
