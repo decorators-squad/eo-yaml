@@ -35,7 +35,8 @@ echo $NEXT_VERSION
 #If the flag comment wouldn't be there, we'd have to write a more complicated regex to catch the artifactif from a row up.
 #This is because only a regex for version tag would change all the matching version tags in the file.
 sed -i "s/<version>${CURRENT_VERSION}<\/version><\!--rrv-sed-flag-->/<version>${tag}<\/version><\!--rrv-sed-flag-->/" pom.xml
-mvn clean deploy -PgenDocs,signArtifactsGpg,releaseToMavenCentral,releaseToGithubPackages --settings /home/r/settings.xml
+# releaseToGithubPackages
+mvn clean deploy -PgenDocs,signArtifactsGpg,releaseToMavenCentral --settings /home/r/settings.xml
 sed -i "s/<version>${tag}<\/version><\!--rrv-sed-flag-->/<version>${NEXT_VERSION}<\/version><\!--rrv-sed-flag-->/" pom.xml
 sed -i "s/<version>.*<\/version>/<version>${tag}<\/version>/" README.md
 sed -i "s/<a.*>fat<\/a>/<a href=\"https:\/\/oss\.sonatype\.org\/service\/local\/repositories\/releases\/content\/com\/amihaiemil\/web\/eo-yaml\/${tag}\/eo-yaml-${tag}-jar-with-dependencies\.jar\">fat<\/a>/" README.md
