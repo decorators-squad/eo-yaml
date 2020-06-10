@@ -56,11 +56,6 @@ public interface YamlMapping extends YamlNode {
      */
     YamlNode value(final YamlNode key);
 
-    @Override
-    default Node type() {
-        return Node.MAPPING;
-    }
-
     /**
      * Fetch the values of this mapping.
      * @return Collection of {@link YamlNode}

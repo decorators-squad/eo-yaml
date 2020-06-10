@@ -45,6 +45,11 @@ public abstract class BaseYamlMapping
     extends BaseYamlNode implements YamlMapping {
 
     @Override
+    public final Node type() {
+        return Node.MAPPING;
+    }
+
+    @Override
     public final int hashCode() {
         int hash = 0;
         for(final YamlNode key : this.keys()) {

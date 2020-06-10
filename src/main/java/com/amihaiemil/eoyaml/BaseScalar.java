@@ -40,6 +40,11 @@ package com.amihaiemil.eoyaml;
  */
 abstract class BaseScalar extends BaseYamlNode implements Scalar {
 
+    @Override
+    public final Node type() {
+        return Node.SCALAR;
+    }
+
     /**
      * Equality of two objects.
      * @param other Reference to the right hand Scalar

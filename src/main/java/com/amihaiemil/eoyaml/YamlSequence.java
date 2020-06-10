@@ -49,11 +49,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      */
     Collection<YamlNode> values();
 
-    @Override
-    default Node type() {
-        return Node.SEQUENCE;
-    }
-
     /**
      * Returns this YamlSequence's children Iterator.<br><br>
      * It is equivalent to YamlSequence.values().iterator().

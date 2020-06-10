@@ -47,9 +47,4 @@ public interface Scalar extends YamlNode {
      */
     String value();
 
-    @Override
-    default Node type() {
-        return Node.SCALAR;
-    }
-
 }

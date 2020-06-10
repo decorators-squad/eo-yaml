@@ -44,6 +44,11 @@ public abstract class BaseYamlSequence
     extends BaseYamlNode implements YamlSequence {
 
     @Override
+    public final Node type() {
+        return Node.SEQUENCE;
+    }
+
+    @Override
     public final int hashCode() {
         int hash = 0;
         for(final YamlNode node : this.values()) {

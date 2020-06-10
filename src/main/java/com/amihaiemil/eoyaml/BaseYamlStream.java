@@ -44,6 +44,11 @@ import java.util.Iterator;
 abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
 
     @Override
+    public final Node type() {
+        return Node.STREAM;
+    }
+
+    @Override
     public int hashCode() {
         int hash = 0;
         for(final YamlNode node : this.values()) {
