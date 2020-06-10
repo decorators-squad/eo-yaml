@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
- *
+ * <p>
  * Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
+ * modification, are permitted provided that the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this
- *  list of conditions and the following disclaimer.
- *  Redistributions in binary form must reproduce the above copyright notice,
- *  this list of conditions and the following disclaimer in the documentation
- *  and/or other materials provided with the distribution.
+ * list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
  * Neither the name of the copyright holder nor the names of its
- *  contributors may be used to endorse or promote products derived from
- *  this software without specific prior written permission.
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -27,8 +27,11 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
+
 /**
  * Yaml Scalar.
+ *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.3
@@ -40,10 +43,37 @@ public interface Scalar extends YamlNode {
      * method should be un-escaped. e.g. if the scalar is
      * escaped, say '#404040', the returned value should be
      * #404040.
+     *
      * @return String value.
      * @throws IllegalStateException In the case of reading YAML,
-     *  this exception is thrown if the Scalar isn't found where it's
-     *  supposed to be.
+     *                               this exception is thrown if the Scalar isn't found where it's
+     *                               supposed to be.
      */
     String value();
+
+    @Override
+    default Node type() {
+        return Node.SCALAR;
+    }
+
+    @Override
+    default Scalar asScalar() throws YamlReadingException {
+        return this;
+    }
+
+    @Override
+    default YamlMapping asMapping() throws YamlReadingException {
+        throw new YamlReadingException("The YamlNode is not a YamlMapping!");
+    }
+
+    @Override
+    default YamlSequence asSequence() throws YamlReadingException {
+        throw new YamlReadingException("The YamlNode is not a YamlSequence!");
+    }
+
+    @Override
+    default YamlStream asStream() throws YamlReadingException {
+        throw new YamlReadingException("The YamlNode is not a YamlStream!");
+    }
+
 }
