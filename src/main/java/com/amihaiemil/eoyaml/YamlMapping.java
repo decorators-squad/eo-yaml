@@ -51,7 +51,7 @@ public interface YamlMapping extends YamlNode {
     /**
      * Get the YamlNode mapped to the specified key.
      * @param key YamlNode key. Could be a simple scalar,
-     *            a YamlMapping or a YamlSequence.
+     *  a YamlMapping or a YamlSequence.
      * @return The found YamlNode or null if nothing is found.
      */
     YamlNode value(final YamlNode key);
@@ -67,12 +67,11 @@ public interface YamlMapping extends YamlNode {
      */
     default Collection<YamlNode> values() {
         final List<YamlNode> values = new LinkedList<>();
-        for (final YamlNode key : this.keys()) {
+        for(final YamlNode key : this.keys()) {
             values.add(this.value(key));
         }
         return values;
     }
-
     /**
      * Get the Yaml mapping associated with the given key.
      * @param key String key
@@ -89,7 +88,7 @@ public interface YamlMapping extends YamlNode {
      * Get the Yaml mapping associated with the given key.
      * @param key Yaml node (mapping or sequence) key
      * @return Yaml mapping or null if the key is missing, or not pointing
-     * to a mapping.
+     *  to a mapping.
      */
     default YamlMapping yamlMapping(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -106,7 +105,7 @@ public interface YamlMapping extends YamlNode {
      * Get the Yaml sequence associated with the given key.
      * @param key String key
      * @return Yaml sequence or null if the key is missing, or not pointing
-     * to a sequence.
+     *  to a sequence.
      */
     default YamlSequence yamlSequence(final String key) {
         return this.yamlSequence(
@@ -118,7 +117,7 @@ public interface YamlMapping extends YamlNode {
      * Get the Yaml sequence associated with the given key.
      * @param key Yaml node (mapping or sequence) key
      * @return Yaml sequence or null if the key is missing, or not pointing
-     * to a sequence
+     *  to a sequence
      */
     default YamlSequence yamlSequence(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -135,7 +134,7 @@ public interface YamlMapping extends YamlNode {
      * Get the String associated with the given key.
      * @param key String key
      * @return String or null if the key is missing, or not pointing
-     * to a scalar.
+     *  to a scalar.
      */
     default String string(final String key) {
         return this.string(
@@ -147,7 +146,7 @@ public interface YamlMapping extends YamlNode {
      * Get the String associated with the given key.
      * @param key Yaml node key
      * @return String or null if the key is missing, or not pointing
-     * to a scalar.
+     *  to a scalar.
      */
     default String string(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -164,7 +163,7 @@ public interface YamlMapping extends YamlNode {
      * Get the String folded block scalar associated with the given key.
      * @param key String key
      * @return String or null if the key is missing, or not pointing
-     * to a folded block scalar.
+     *  to a folded block scalar.
      */
     default String foldedBlockScalar(final String key) {
         return this.foldedBlockScalar(
@@ -176,7 +175,7 @@ public interface YamlMapping extends YamlNode {
      * Get the String folded block scalar associated with the given key.
      * @param key Yaml node key.
      * @return String or null if the key is missing, or not pointing
-     * to a folded block scalar.
+     *  to a folded block scalar.
      */
     default String foldedBlockScalar(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -194,7 +193,7 @@ public interface YamlMapping extends YamlNode {
      * with the given key.
      * @param key String key
      * @return Collection of String or null if the key is missing,
-     * or not pointing to a literal block scalar.
+     *  or not pointing to a literal block scalar.
      */
     default Collection<String> literalBlockScalar(final String key) {
         return this.literalBlockScalar(
@@ -207,7 +206,7 @@ public interface YamlMapping extends YamlNode {
      * with the given key.
      * @param key String key
      * @return Collection of String or null if the key is missing,
-     * or not pointing to a literal block scalar.
+     *  or not pointing to a literal block scalar.
      */
     default Collection<String> literalBlockScalar(final YamlNode key) {
         final Collection<String> found;
