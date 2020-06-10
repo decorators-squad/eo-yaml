@@ -46,5 +46,4 @@ public interface Scalar extends YamlNode {
      *  supposed to be.
      */
     String value();
-
 }
