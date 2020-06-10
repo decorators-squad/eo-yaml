@@ -192,15 +192,14 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     YamlSequence sequence = ...;
      *     float value = Float.parseFloat(sequence.string(...));
      * </pre>
-     *
      * @param index The index of the value.
      * @return Found float.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable float.
+     *  is not a parsable float.
      */
     default float floatNumber(final int index) {
         final String value = this.string(index);
-        if (value != null && !value.isEmpty()) {
+        if(value != null && !value.isEmpty()) {
             return Float.parseFloat(value);
         }
         return -1;
@@ -213,15 +212,14 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     YamlSequence sequence = ...;
      *     double value = Double.parseDouble(sequence.string(...));
      * </pre>
-     *
      * @param index The index of the value.
      * @return Found double.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable double.
+     *  is not a parsable double.
      */
     default double doubleNumber(final int index) {
         final String value = this.string(index);
-        if (value != null && !value.isEmpty()) {
+        if(value != null && !value.isEmpty()) {
             return Double.parseDouble(value);
         }
         return -1.0;
@@ -234,15 +232,14 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     YamlSequence sequence = ...;
      *     long value = Long.parseLong(sequence.string(...));
      * </pre>
-     *
      * @param index The index of the value.
      * @return Found long.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable long.
+     *  is not a parsable long.
      */
     default long longNumber(final int index) {
         final String value = this.string(index);
-        if (value != null && !value.isEmpty()) {
+        if(value != null && !value.isEmpty()) {
             return Long.parseLong(value);
         }
         return -1L;
@@ -255,14 +252,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     YamlSequence sequence = ...;
      *     LocalDate dateTime = LocalDate.parse(sequence.string(...));
      * </pre>
-     *
      * @param index The index of the value.
      * @return Found LocalDate.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDate date(final int index) {
         final String value = this.string(index);
-        if (value != null && !value.isEmpty()) {
+        if(value != null && !value.isEmpty()) {
             return LocalDate.parse(value);
         }
         return null;
@@ -275,14 +271,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     YamlSequence sequence = ...;
      *     LocalDateTime dateTime = LocalDateTime.parse(sequence.string(...));
      * </pre>
-     *
      * @param index The index of the value.
      * @return Found LocalDateTime.
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
     default LocalDateTime dateTime(final int index) {
         final String value = this.string(index);
-        if (value != null && !value.isEmpty()) {
+        if(value != null && !value.isEmpty()) {
             return LocalDateTime.parse(value);
         }
         return null;
