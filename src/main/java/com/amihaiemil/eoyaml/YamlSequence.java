@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -56,26 +54,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     @Override
     default Node type() {
         return Node.SEQUENCE;
-    }
-
-    @Override
-    default Scalar asScalar() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a Scalar!");
-    }
-
-    @Override
-    default YamlMapping asMapping() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlMapping!");
-    }
-
-    @Override
-    default YamlSequence asSequence() throws YamlReadingException {
-        return this;
-    }
-
-    @Override
-    default YamlStream asStream() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlStream!");
     }
 
     /**

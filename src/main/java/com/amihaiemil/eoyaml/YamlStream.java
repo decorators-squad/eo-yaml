@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
@@ -46,7 +44,6 @@ import java.util.stream.*;
  * @checkstyle LineLength (400 lines)
  * @checkstyle ParameterName (400 lines)
  * @checkstyle FinalParameters (400 lines)
- * @checkstyle ClassFanOutComplexity (33)
  * @since 3.1.1
  */
 public interface YamlStream extends YamlNode, Stream<YamlNode> {
@@ -61,26 +58,6 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
     @Override
     default Node type() {
         return Node.STREAM;
-    }
-
-    @Override
-    default Scalar asScalar() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a Scalar!");
-    }
-
-    @Override
-    default YamlMapping asMapping() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlMapping!");
-    }
-
-    @Override
-    default YamlSequence asSequence() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlSequence!");
-    }
-
-    @Override
-    default YamlStream asStream() throws YamlReadingException {
-        return this;
     }
 
     default Comment comment() {

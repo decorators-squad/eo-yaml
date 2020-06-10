@@ -61,7 +61,13 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Scalar.
      */
-    Scalar asScalar() throws YamlReadingException;
+    default Scalar asScalar() throws YamlReadingException {
+        if (this.type() != Node.SCALAR) {
+            throw new YamlReadingException(
+                "The YamlNode is not a Scalar!");
+        }
+        return (Scalar) this;
+    }
 
     /**
      * Gives a Mapping value of the node.
@@ -70,7 +76,13 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Mapping.
      */
-    YamlMapping asMapping() throws YamlReadingException;
+    default YamlMapping asMapping() throws YamlReadingException {
+        if (this.type() != Node.MAPPING) {
+            throw new YamlReadingException(
+                "The YamlNode is not a YamlMapping!");
+        }
+        return (YamlMapping) this;
+    }
 
     /**
      * Gives a Sequence value of the node.
@@ -79,7 +91,13 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Sequence.
      */
-    YamlSequence asSequence() throws YamlReadingException;
+    default YamlSequence asSequence() throws YamlReadingException {
+        if (this.type() != Node.SEQUENCE) {
+            throw new YamlReadingException(
+                "The YamlNode is not a YamlSequence!");
+        }
+        return (YamlSequence) this;
+    }
 
     /**
      * Gives a Stream value of the node.
@@ -88,6 +106,12 @@ public interface YamlNode extends Comparable<YamlNode> {
      * @throws YamlReadingException If the node type is not
      *                              Stream.
      */
-    YamlStream asStream() throws YamlReadingException;
+    default YamlStream asStream() throws YamlReadingException {
+        if (this.type() != Node.STREAM) {
+            throw new YamlReadingException(
+                "The YamlNode is not a YamlStream!");
+        }
+        return (YamlStream) this;
+    }
 
 }

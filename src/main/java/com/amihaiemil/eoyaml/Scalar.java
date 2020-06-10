@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-
 /**
  * Yaml Scalar.
  *
@@ -54,26 +52,6 @@ public interface Scalar extends YamlNode {
     @Override
     default Node type() {
         return Node.SCALAR;
-    }
-
-    @Override
-    default Scalar asScalar() throws YamlReadingException {
-        return this;
-    }
-
-    @Override
-    default YamlMapping asMapping() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlMapping!");
-    }
-
-    @Override
-    default YamlSequence asSequence() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlSequence!");
-    }
-
-    @Override
-    default YamlStream asStream() throws YamlReadingException {
-        throw new YamlReadingException("The YamlNode is not a YamlStream!");
     }
 
 }
