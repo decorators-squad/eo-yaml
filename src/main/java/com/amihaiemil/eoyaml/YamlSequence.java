@@ -128,7 +128,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Get the folded block scalar from the given index.
-     *
      * @param index Integer index.
      * @return The folded block scalar as String.
      */
@@ -147,7 +146,6 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
 
     /**
      * Get the literal block scalar from the given index.
-     *
      * @param index Integer index.
      * @return The folded block scalar as String.
      */
@@ -174,15 +172,14 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     YamlSequence sequence = ...;
      *     int value = Integer.parseInt(sequence.string(...));
      * </pre>
-     *
      * @param index The index of the value.
      * @return Found integer.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable integer.
+     *  is not a parsable integer.
      */
     default int integer(final int index) {
         final String value = this.string(index);
-        if (value != null && !value.isEmpty()) {
+        if(value != null && !value.isEmpty()) {
             return Integer.parseInt(value);
         }
         return -1;
