@@ -1,17 +1,17 @@
 /**
  * Copyright (c) 2016-2020, Mihai Emil Andronache
  * All rights reserved.
- * <p>
+ *
  * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ *  modification, are permitted provided that the following conditions are met:
  * Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
+ *  list of conditions and the following disclaimer.
+ *  Redistributions in binary form must reproduce the above copyright notice,
+ *  this list of conditions and the following disclaimer in the documentation
+ *  and/or other materials provided with the distribution.
  * Neither the name of the copyright holder nor the names of its
- * contributors may be used to endorse or promote products derived from
- * this software without specific prior written permission.
+ *  contributors may be used to endorse or promote products derived from
+ *  this software without specific prior written permission.
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -34,7 +34,6 @@ import java.util.*;
 
 /**
  * A Yaml mapping.
- *
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @checkstyle ExecutableStatementCount (300 lines)
@@ -45,14 +44,12 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Return the keys' set of this mapping.<br><br>
-     *
      * @return Set of YamlNode keys.
      */
     Set<YamlNode> keys();
 
     /**
      * Get the YamlNode mapped to the specified key.
-     *
      * @param key YamlNode key. Could be a simple scalar,
      *            a YamlMapping or a YamlSequence.
      * @return The found YamlNode or null if nothing is found.
@@ -66,7 +63,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Fetch the values of this mapping.
-     *
      * @return Collection of {@link YamlNode}
      */
     default Collection<YamlNode> values() {
@@ -79,7 +75,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the Yaml mapping associated with the given key.
-     *
      * @param key String key
      * @return Yaml mapping or null if the key is missing, or not pointing
      * to a mapping.
@@ -92,7 +87,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the Yaml mapping associated with the given key.
-     *
      * @param key Yaml node (mapping or sequence) key
      * @return Yaml mapping or null if the key is missing, or not pointing
      * to a mapping.
@@ -110,7 +104,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the Yaml sequence associated with the given key.
-     *
      * @param key String key
      * @return Yaml sequence or null if the key is missing, or not pointing
      * to a sequence.
@@ -123,7 +116,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the Yaml sequence associated with the given key.
-     *
      * @param key Yaml node (mapping or sequence) key
      * @return Yaml sequence or null if the key is missing, or not pointing
      * to a sequence
@@ -141,7 +133,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the String associated with the given key.
-     *
      * @param key String key
      * @return String or null if the key is missing, or not pointing
      * to a scalar.
@@ -154,7 +145,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the String associated with the given key.
-     *
      * @param key Yaml node key
      * @return String or null if the key is missing, or not pointing
      * to a scalar.
@@ -172,7 +162,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the String folded block scalar associated with the given key.
-     *
      * @param key String key
      * @return String or null if the key is missing, or not pointing
      * to a folded block scalar.
@@ -185,7 +174,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the String folded block scalar associated with the given key.
-     *
      * @param key Yaml node key.
      * @return String or null if the key is missing, or not pointing
      * to a folded block scalar.
@@ -204,7 +192,6 @@ public interface YamlMapping extends YamlNode {
     /**
      * Get the String lines of the literal block scalar associated
      * with the given key.
-     *
      * @param key String key
      * @return Collection of String or null if the key is missing,
      * or not pointing to a literal block scalar.
@@ -218,7 +205,6 @@ public interface YamlMapping extends YamlNode {
     /**
      * Get the String lines of the literal block scalar associated
      * with the given key.
-     *
      * @param key String key
      * @return Collection of String or null if the key is missing,
      * or not pointing to a literal block scalar.
@@ -240,7 +226,6 @@ public interface YamlMapping extends YamlNode {
 
     /**
      * Get the YamlNode mapped to the specified key.
-     *
      * @param key String key.
      * @return The found YamlNode or null if nothing is found.
      */
@@ -257,12 +242,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     int value = Integer.parseInt(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found integer or -1 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable integer.
+     *   is not a parsable integer.
      */
     default int integer(final String key) {
         return this.integer(
@@ -277,12 +261,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     int value = Integer.parseInt(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found integer or -1 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable integer.
+     *  is not a parsable integer.
      */
     default int integer(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -299,12 +282,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     float value = Float.parseFloat(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found float or -1 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable float.
+     *  is not a parsable float.
      */
     default float floatNumber(final String key) {
         return this.floatNumber(
@@ -319,12 +301,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     float value = Float.parseFloat(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found float or -1 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable float.
+     *   is not a parsable float.
      */
     default float floatNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -341,12 +322,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     double value = Double.parseDouble(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found double or -1.0 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable double.
+     *  is not a parsable double.
      */
     default double doubleNumber(final String key) {
         return this.doubleNumber(
@@ -361,12 +341,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     double value = Double.parseDouble(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found double or -1.0 if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable double.
+     *  is not a parsable double.
      */
     default double doubleNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -383,12 +362,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     long value = Long.parseLong(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found long or -1L if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable long.
+     *  is not a parsable long.
      */
     default long longNumber(final String key) {
         return this.longNumber(
@@ -403,12 +381,11 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     long value = Long.parseLong(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found long or -1L if there is no value for the key,
      * or the value is not a Scalar.
      * @throws NumberFormatException - if the Scalar value
-     *                               is not a parsable long.
+     *  is not a parsable long.
      */
     default long longNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
@@ -425,7 +402,6 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     LocalDate date = LocalDate.parse(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,
      * or the value is not a Scalar.
@@ -444,7 +420,6 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     LocalDate date = LocalDate.parse(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found LocalDate or null if there is no value for the key,
      * or the value is not a Scalar.
@@ -465,7 +440,6 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     LocalDateTime dateTime = LocalDateTime.parse(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found LocalDateTime or null if there is no value for the key,
      * or the value is not a Scalar.
@@ -484,7 +458,6 @@ public interface YamlMapping extends YamlNode {
      *     YamlMapping map = ...;
      *     LocalDateTime dateTime = LocalDateTime.parse(map.string(...));
      * </pre>
-     *
      * @param key The key of the value.
      * @return Found LocalDateTime or null if there is no value for the key,
      * or the value is not a Scalar.
