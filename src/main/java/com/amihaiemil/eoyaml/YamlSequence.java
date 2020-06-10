@@ -98,7 +98,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         YamlSequence sequence = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if(count == index && node instanceof YamlSequence) {
+            if (count == index && node instanceof YamlSequence) {
                 sequence = (YamlSequence) node;
             }
             count = count + 1;
