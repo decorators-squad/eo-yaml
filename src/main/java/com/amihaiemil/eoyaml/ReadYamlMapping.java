@@ -111,9 +111,9 @@ final class ReadYamlMapping extends BaseYamlMapping {
             } else {
                 if(!trimmed.contains(":")) {
                     throw new YamlReadingException(
-                        "Expected scalar key on line " 
+                        "Expected scalar key on line "
                         + (line.number() + 1) + "."
-                        + " The line should have the format " 
+                        + " The line should have the format "
                         + "'key: value' or 'key:'. "
                         + "Instead, the line is: "
                         + "[" + line.trimmed() + "]."
@@ -142,29 +142,32 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public Comment comment() {
+        //@checkstyle LineLength (50 lines)
         return new ReadComment(
-            new FirstCommentFound(
-                new Backwards(
-                    new Skip(
-                        this.all,
-                        line -> {
-                            final boolean skip;
-                            if(this.previous.number() < 0) {
-                                if(this.significant.iterator().hasNext()) {
-                                    skip = line.number() >= this.significant
-                                            .iterator().next().number();
+            new Backwards(
+                new FirstCommentFound(
+                    new Backwards(
+                        new Skip(
+                            this.all,
+                            line -> {
+                                final boolean skip;
+                                if(this.previous.number() < 0) {
+                                    if(this.significant.iterator().hasNext()) {
+                                        skip = line.number() >= this.significant
+                                                .iterator().next().number();
+                                    } else {
+                                        skip = false;
+                                    }
                                 } else {
-                                    skip = false;
+                                    skip = line.number() >= this.previous.number();
                                 }
-                            } else {
-                                skip = line.number() >= this.previous.number();
-                            }
-                            return skip;
-                        },
-                        line -> line.trimmed().startsWith("---"),
-                        line -> line.trimmed().startsWith("..."),
-                        line -> line.trimmed().startsWith("%"),
-                        line -> line.trimmed().startsWith("!!")
+                                return skip;
+                            },
+                            line -> line.trimmed().startsWith("---"),
+                            line -> line.trimmed().startsWith("..."),
+                            line -> line.trimmed().startsWith("%"),
+                            line -> line.trimmed().startsWith("!!")
+                        )
                     )
                 )
             ),

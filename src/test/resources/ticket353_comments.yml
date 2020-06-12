@@ -1,0 +1,10 @@
+---
+# project comments
+name: "Manager" #inline comment
+# test command
+# multi line comments
+owners:
+  - vikas #test list
+  - nikhil
+identifier: "manager" # identifier
+description: "Test app" # final comment

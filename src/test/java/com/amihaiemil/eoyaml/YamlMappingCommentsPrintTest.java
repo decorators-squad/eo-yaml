@@ -120,6 +120,8 @@ public final class YamlMappingCommentsPrintTest {
             read.value("name").comment().value(),
             Matchers.equalTo("name of the project")
         );
+        final YamlNode platform = read.value("platform");
+        System.out.println(platform.comment().value());
     }
 
     /**
