@@ -1,0 +1,20 @@
+# YamlMapping for test
+architect: mihai
+# all the contributors here
+developers:
+  - rultor
+  - salikjan
+  - sherif
+# Our DevOps contributors.
+# They are chatbots.
+devops:
+  - rultor
+  - travis
+  - 0pdd
+name: "eo-yaml" # name of the project
+# The project is hosted at Github
+# under the "decorators-squad" Organization
+platform:
+  name: Github
+  issues: "https://github.com/decorators-squad/eo-yaml/issues"
+  code: "https://github.com/decorators-squad/eo-yaml"

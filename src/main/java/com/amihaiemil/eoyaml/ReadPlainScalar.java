@@ -95,7 +95,8 @@ final class ReadPlainScalar extends BaseScalar {
                     new Skip(
                         this.all,
                         line -> line.number() != this.scalar.number()
-                    )
+                    ),
+                    Boolean.TRUE
                 ),
                 this
             );

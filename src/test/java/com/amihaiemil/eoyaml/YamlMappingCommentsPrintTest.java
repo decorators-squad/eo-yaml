@@ -120,8 +120,47 @@ public final class YamlMappingCommentsPrintTest {
             read.value("name").comment().value(),
             Matchers.equalTo("name of the project")
         );
-        final YamlNode platform = read.value("platform");
-        System.out.println(platform.comment().value());
+    }
+
+    /**
+     * A read YamlMapping can access its comments.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsMultilineComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/multilineCommentedMapping.yml"
+            )
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            read.comment().value(),
+            Matchers.equalTo("YamlMapping for test")
+        );
+        MatcherAssert.assertThat(
+            read.yamlSequence("developers").comment().value(),
+            Matchers.equalTo("all the contributors here")
+        );
+        MatcherAssert.assertThat(
+            read.value("name").comment().value(),
+            Matchers.equalTo("name of the project")
+        );
+        MatcherAssert.assertThat(
+            read.value("devops").comment().value(),
+            Matchers.equalTo(
+            "Our DevOps contributors."
+                + System.lineSeparator()
+                + "They are chatbots."
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("platform").comment().value(),
+            Matchers.equalTo(
+            "The project is hosted at Github"
+                + System.lineSeparator()
+                + "under the \"decorators-squad\" Organization"
+            )
+        );
     }
 
     /**
