@@ -179,23 +179,34 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * The YamlNode value associated with a String (scalar) key.
      * @param key String key.
      * @return YamlNode.
+     * @checkstyle ReturnCount (50 lines)
      */
     private YamlNode valueOfStringKey(final String key) {
         YamlNode value = null;
-        for (final YamlLine line : this.significant) {
-            final String trimmed = line.trimmed();
-            if(trimmed.endsWith(key + ":")
-                || trimmed.matches("^" + key + "\\:[ ]*\\>$")
-                || trimmed.matches("^" + key + "\\:[ ]*\\|$")
-            ) {
-                value = this.significant.toYamlNode(line);
-            } else if(trimmed.startsWith(key + ":")
-                && trimmed.length() > 1
-            ) {
-                value = new ReadPlainScalar(this.all, line);
+        final String[] keys = new String[] {
+            key,
+            "\"" + key + "\"",
+            "'" + key + "'",
+        };
+        for(final String tryKey : keys) {
+            for (final YamlLine line : this.significant) {
+                final String trimmed = line.trimmed();
+                if(trimmed.endsWith(tryKey + ":")
+                    || trimmed.matches("^" + tryKey + "\\:[ ]*\\>$")
+                    || trimmed.matches("^" + tryKey + "\\:[ ]*\\|$")
+                ) {
+                    value = this.significant.toYamlNode(line);
+                } else if(trimmed.startsWith(tryKey + ":")
+                    && trimmed.length() > 1
+                ) {
+                    value = new ReadPlainScalar(this.all, line);
+                }
+                if(value != null) {
+                    return value;
+                }
             }
         }
-        return value;
+        return null;
     }
 
     /**

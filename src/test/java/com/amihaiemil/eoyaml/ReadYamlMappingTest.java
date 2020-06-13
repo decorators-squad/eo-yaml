@@ -1062,4 +1062,19 @@ public final class ReadYamlMappingTest {
 
         MatcherAssert.assertThat(map.yamlSequence(key), Matchers.nullValue());
     }
+
+    /**
+     * ReadYamlMapping returns the correct value
+     * when the key is wrapped in quotes.
+     */
+    @Test
+    public void returnsValueOfStringKeyWithQuotes() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("\"a-key\": someValue", 0));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        MatcherAssert.assertThat(
+            map.string("a-key"),
+            Matchers.equalTo("someValue")
+        );
+    }
 }
