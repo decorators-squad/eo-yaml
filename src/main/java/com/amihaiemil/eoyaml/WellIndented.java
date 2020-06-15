@@ -102,9 +102,12 @@ final class WellIndented implements YamlLines {
                 YamlLine line = iterator.next();
                 if(!(previous instanceof YamlLine.NullYamlLine)) {
                     int prevIndent = previous.indentation();
+                    if(previous.trimmed().matches("^[ ]*\\-.*\\:$")) {
+                        prevIndent += 2;
+                    }
                     int lineIndent = line.indentation();
                     if(previous.requireNestedIndentation()) {
-                        if(lineIndent != prevIndent+2) {
+                        if(lineIndent != prevIndent + 2) {
                             throw new YamlIndentationException(
                                 "Indentation of line " + (line.number() + 1)
                                 + " is not ok. It should be greater than the one"

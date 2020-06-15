@@ -94,8 +94,8 @@ final class AllYamlLines implements YamlLines {
     }
 
     /**
-     * Try to figure out what YAML node (mapping, sequence or scalar) do these
-     * lines represent.
+     * Try to figure out what YAML node (mapping, sequence or scalar) is found
+     * after the given line.
      * @param prev YamlLine just previous to the node we're trying to find.
      * @return Found YamlNode.
      */
