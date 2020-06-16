@@ -70,10 +70,10 @@ final class ReadPlainScalar extends BaseScalar {
     public String value() {
         final String value;
         final String trimmed = this.scalar.trimmed();
-        if(trimmed.startsWith("-") && trimmed.length() > 1) {
-            value = trimmed.substring(trimmed.indexOf('-')+1).trim();
-        } else if(trimmed.contains(":") && !trimmed.endsWith(":")) {
+        if(trimmed.contains(":") && !trimmed.endsWith(":")) {
             value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+        } else if(trimmed.startsWith("-") && trimmed.length() > 1) {
+            value = trimmed.substring(trimmed.indexOf('-')+1).trim();
         } else {
             value = trimmed;
         }

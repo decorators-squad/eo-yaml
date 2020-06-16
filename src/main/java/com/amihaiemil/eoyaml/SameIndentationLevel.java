@@ -76,11 +76,15 @@ final class SameIndentationLevel implements YamlLines {
             final List<YamlLine> sameIndentation = new ArrayList<>();
             final YamlLine first = iterator.next();
             sameIndentation.add(first);
+            int firstIndentation = first.indentation();
+            if(first.trimmed().matches("^[ ]*\\-.*\\:.*$")) {
+                firstIndentation += 2;
+            }
             while (iterator.hasNext()) {
                 YamlLine current = iterator.next();
-                if(current.indentation() == first.indentation()) {
+                if(current.indentation() == firstIndentation) {
                     sameIndentation.add(current);
-                } else if (current.indentation() < first.indentation()) {
+                } else if (current.indentation() < firstIndentation) {
                     break;
                 }
             }

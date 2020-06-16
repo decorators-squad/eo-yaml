@@ -101,6 +101,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
         final boolean foldedSequence = this.previous.trimmed().matches(
             "^.*\\|.*\\-$"
         );
+        YamlLine prev = new YamlLine.NullYamlLine();
         for(final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if(foldedSequence || trimmed.startsWith("-")) {
@@ -110,9 +111,14 @@ final class ReadYamlSequence extends BaseYamlSequence {
                 ) {
                     kids.add(this.significant.toYamlNode(line));
                 } else {
-                    kids.add(new ReadPlainScalar(this.all, line));
+                    if(trimmed.matches("^.*\\-.*\\:.*$")) {
+                        kids.add(this.significant.toYamlNode(prev));
+                    } else {
+                        kids.add(new ReadPlainScalar(this.all, line));
+                    }
                 }
             }
+            prev = line;
         }
         return kids;
     }

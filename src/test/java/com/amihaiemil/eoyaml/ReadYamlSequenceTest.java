@@ -48,6 +48,7 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the YamlMapping from a given index.
+     * The YamlMapping starts after the dash line.
      */
     @Test
     public void returnsYamlMappingFromIndex(){
@@ -68,6 +69,66 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(alfa, Matchers.instanceOf(YamlMapping.class));
         MatcherAssert.assertThat(
             alfa.yamlMapping("alfa").string("key"), Matchers.equalTo("value")
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return the YamlMapping which starts right
+     * at the dash line. The YamlMapping has a scalar key and another mapping
+     * as value of this key.
+     */
+    @Test
+    public void returnsYamlMappingWithMappingValueStartingAtDash(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- scalar0", 0));
+        lines.add(new RtYamlLine("- scalar1", 1));
+        lines.add(new RtYamlLine("- alfa:", 2));
+        lines.add(new RtYamlLine("    key: value", 3));
+        lines.add(new RtYamlLine("    key2: value2", 4));
+        lines.add(new RtYamlLine("- scalar2", 1));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlMapping alfa = sequence.yamlMapping(2);
+        MatcherAssert.assertThat(alfa, Matchers.notNullValue());
+        MatcherAssert.assertThat(alfa, Matchers.instanceOf(YamlMapping.class));
+        MatcherAssert.assertThat(
+            alfa.yamlMapping("alfa").string("key"), Matchers.equalTo("value")
+        );
+        MatcherAssert.assertThat(
+            alfa.yamlMapping("alfa").string("key2"), Matchers.equalTo("value2")
+        );
+    }
+
+    /**
+     * ReadYamlSequence can return the YamlMapping which starts right
+     * at the dash line.
+     */
+    @Test
+    public void returnsYamlMappingWithScalarValuesStartingAtDash(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- scalar0", 0));
+        lines.add(new RtYamlLine("- scalar1", 1));
+        lines.add(new RtYamlLine("- alfa: beta", 2));
+        lines.add(new RtYamlLine("  teta: gama", 3));
+        lines.add(new RtYamlLine("  omega: value", 4));
+        lines.add(new RtYamlLine("- scalar2", 1));
+        final YamlSequence sequence = new ReadYamlSequence(
+                new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlMapping dashMap = sequence.yamlMapping(2);
+        MatcherAssert.assertThat(dashMap, Matchers.notNullValue());
+        MatcherAssert.assertThat(dashMap, Matchers.instanceOf(YamlMapping.class));
+        MatcherAssert.assertThat(
+            dashMap.string("alfa"), Matchers.equalTo("beta")
+        );
+        MatcherAssert.assertThat(
+            dashMap.string("teta"), Matchers.equalTo("gama")
+        );
+        MatcherAssert.assertThat(
+            dashMap.string("omega"), Matchers.equalTo("value")
         );
     }
 

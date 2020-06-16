@@ -110,10 +110,10 @@ final class AllYamlLines implements YamlLines {
             line -> line.trimmed().startsWith("%"),
             line -> line.trimmed().startsWith("!!")
         ).iterator().next();
-        if(first.trimmed().startsWith("-")) {
-            node = new ReadYamlSequence(prev, this);
-        } else if (first.trimmed().contains(":")){
+        if(first.trimmed().contains(":")) {
             node = new ReadYamlMapping(prev, this);
+        } else if (first.trimmed().startsWith("-")){
+            node = new ReadYamlSequence(prev, this);
         } else if(this.original().size() == 1) {
             node = new ReadPlainScalar(this, first);
         } else {

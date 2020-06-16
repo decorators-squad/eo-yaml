@@ -119,8 +119,15 @@ final class ReadYamlMapping extends BaseYamlMapping {
                         + "[" + line.trimmed() + "]."
                     );
                 }
-                final String key = trimmed.substring(
-                        0, trimmed.indexOf(":")).trim();
+                final String key;
+                if(trimmed.startsWith("-")) {
+                    key = trimmed.substring(
+                        1, trimmed.indexOf(":")
+                    ).trim();
+                } else {
+                    key = trimmed.substring(
+                        0, trimmed.indexOf(":")
+                    ).trim();                }
                 if(!key.isEmpty()) {
                     keys.add(new PlainStringScalar(key));
                 }
@@ -196,7 +203,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     || trimmed.matches("^" + tryKey + "\\:[ ]*\\|$")
                 ) {
                     value = this.significant.toYamlNode(line);
-                } else if(trimmed.startsWith(tryKey + ":")
+                } else if((trimmed.startsWith(tryKey + ":")
+                    || trimmed.startsWith("- " + tryKey + ":"))
                     && trimmed.length() > 1
                 ) {
                     value = new ReadPlainScalar(this.all, line);
