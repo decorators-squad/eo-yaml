@@ -120,7 +120,9 @@ public final class ReadYamlSequenceTest {
         System.out.println(sequence);
         final YamlMapping dashMap = sequence.yamlMapping(2);
         MatcherAssert.assertThat(dashMap, Matchers.notNullValue());
-        MatcherAssert.assertThat(dashMap, Matchers.instanceOf(YamlMapping.class));
+        MatcherAssert.assertThat(
+            dashMap, Matchers.instanceOf(YamlMapping.class)
+        );
         MatcherAssert.assertThat(
             dashMap.string("alfa"), Matchers.equalTo("beta")
         );

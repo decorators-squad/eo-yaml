@@ -127,7 +127,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 } else {
                     key = trimmed.substring(
                         0, trimmed.indexOf(":")
-                    ).trim();                }
+                    ).trim();
+                }
                 if(!key.isEmpty()) {
                     keys.add(new PlainStringScalar(key));
                 }
