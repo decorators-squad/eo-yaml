@@ -32,7 +32,7 @@ package com.amihaiemil.eoyaml;
  * initial indentation with a given value.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 5.0.4
+ * @since 5.1.0
  */
 final class Indented implements YamlLine {
 

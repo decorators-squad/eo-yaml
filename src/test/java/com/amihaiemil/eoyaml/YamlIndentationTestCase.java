@@ -27,7 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
-import org.junit.Ignore;
+import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.io.File;
@@ -38,22 +40,103 @@ import java.io.File;
  * one.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 5.0.4
+ * @since 5.1.0
  */
 public final class YamlIndentationTestCase {
 
     /**
-     * A Yaml mapping containing an unindented sequence
-     * can be read.
+     * A Yaml mapping containing an unindented sequence throws exception
+     * because of bad indentation.
      * @throws Exception If something goes wrong.
      */
-    @Test
-    @Ignore
-    public void readsMappingWithUnindentedSequence() throws Exception {
+    @Test (expected = YamlIndentationException.class)
+    public void unintendedSequenceException() throws Exception {
         final YamlMapping map = Yaml.createYamlInput(
-            new File("src/test/resources/badSequenceIndentationInMapping.yml")
+            new File("src/test/resources/badSequenceIndentationInMapping.yml"),
+            Boolean.FALSE
         ).readYamlMapping();
         System.out.println(map);
     }
 
+    /**
+     * A Yaml mapping containing an unindented sequence can be read
+     * if we guess the correct indentation.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsUnintendedSequenceException() throws Exception {
+        final YamlMapping map = Yaml.createYamlInput(
+            new File("src/test/resources/badSequenceIndentationInMapping.yml"),
+            Boolean.TRUE
+        ).readYamlMapping();
+        final YamlSequence developers = map.yamlSequence("developers");
+        MatcherAssert.assertThat(
+            developers,
+            Matchers.iterableWithSize(3)
+        );
+        MatcherAssert.assertThat(
+            developers.string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            developers.string(1),
+            Matchers.equalTo("sherif")
+        );
+        MatcherAssert.assertThat(
+            developers.string(2),
+            Matchers.equalTo("rultor")
+        );
+    }
+
+    /**
+     * A badly indented YAML mapping throws an exception.
+     * @throws Exception If something goes wrong.
+     */
+    @Test (expected = YamlIndentationException.class)
+    public void complainsOnBadlyIndentedMapping() throws Exception {
+        final YamlMapping map = Yaml.createYamlInput(
+            new File("src/test/resources/badMappingIndentation.yml"),
+            Boolean.FALSE
+        ).readYamlMapping();
+        System.out.println(map);
+    }
+
+    /**
+     * A badly indented YAML can be read if we try to guess the indentation.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsBadlyIndentedMapping() throws Exception {
+        final YamlMapping map = Yaml.createYamlInput(
+            new File("src/test/resources/badMappingIndentation.yml"),
+            Boolean.TRUE
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            map.yamlSequence("developers"),
+            Matchers.nullValue()
+        );
+        MatcherAssert.assertThat(
+            map.yamlMapping("contributors"),
+            Matchers.notNullValue()
+        );
+        final YamlSequence developers = map
+            .yamlMapping("contributors")
+            .yamlSequence("developers");
+        MatcherAssert.assertThat(
+            developers,
+            Matchers.iterableWithSize(3)
+        );
+        MatcherAssert.assertThat(
+            developers.string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            developers.string(1),
+            Matchers.equalTo("sherif")
+        );
+        MatcherAssert.assertThat(
+            developers.string(2),
+            Matchers.equalTo("rultor")
+        );
+    }
 }
