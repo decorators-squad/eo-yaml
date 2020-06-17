@@ -27,49 +27,33 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.*;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.io.File;
 
 /**
- * YamlLines which are being iterated backwards.
+ * Test cases regarding an input YAML's indentation, particularly
+ * disabling validation of indentation and trying to guess the correct
+ * one.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 4.2.0
+ * @since 5.0.4
  */
-final class Backwards implements YamlLines {
+public final class YamlIndentationTestCase {
 
     /**
-     * YamlLines.
+     * A Yaml mapping containing an unindented sequence
+     * can be read.
+     * @throws Exception If something goes wrong.
      */
-    private final YamlLines lines;
-
-    /**
-     * Ctor.
-     * @param lines The Yaml lines.
-     */
-    Backwards(final YamlLines lines) {
-        this.lines = lines;
+    @Test
+    @Ignore
+    public void readsMappingWithUnindentedSequence() throws Exception {
+        final YamlMapping map = Yaml.createYamlInput(
+            new File("src/test/resources/badSequenceIndentationInMapping.yml")
+        ).readYamlMapping();
+        System.out.println(map);
     }
 
-    @Override
-    public Collection<YamlLine> original() {
-        return this.lines.original();
-    }
-
-    @Override
-    public YamlNode toYamlNode(
-        final YamlLine prev,
-        final boolean guessIndentation
-    ) {
-        return this.lines.toYamlNode(prev, guessIndentation);
-    }
-
-    @Override
-    public Iterator<YamlLine> iterator() {
-        final List<YamlLine> original = new ArrayList<>();
-        for(final YamlLine line : this.lines) {
-            original.add(line);
-        }
-        Collections.reverse(original);
-        return original.iterator();
-    }
 }

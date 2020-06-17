@@ -72,7 +72,10 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(final YamlLine prev) {
+    public YamlNode toYamlNode(
+        final YamlLine prev,
+        final boolean guessIndentation
+    ) {
         final YamlNode node;
         final String prevLine = prev.trimmed();
         if(prevLine.isEmpty()) {

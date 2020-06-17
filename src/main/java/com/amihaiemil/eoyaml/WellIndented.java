@@ -36,11 +36,6 @@ import java.util.List;
 /**
  * YamlLines decorator which iterates over them and verifies
  * that their indentation is correct.<br><br>
- * Initially, we used to do this validation at line level, right when each
- * line is being read (in {@link RtYamlInput}). However, we decided
- * to do it at YamlLines level, as a decorator, because
- * in some cases, we need to eliminate some of them first (markers,
- * directives etc). <br><br>
  *
  * This class can be used as follows:
  *
@@ -75,11 +70,30 @@ final class WellIndented implements YamlLines {
     private final YamlLines yamlLines;
 
     /**
+     * If this is true, then we will try to adjust a wrong indentation,
+     * instead of throwin an exception. This mechanism is not safe becuase
+     * the resulting YAML might not be the expected one.
+     */
+    private final boolean guessIndentation;
+
+    /**
      * Ctor.
      * @param yamlLines The Yaml lines.
      */
     WellIndented(final YamlLines yamlLines) {
+        this(yamlLines, false);
+    }
+
+    /**
+     * Ctor.
+     * @param yamlLines The Yaml lines.
+     * @param guessIndentation If indentation is not correct, try to
+     *  adjust it instead of throwing an exception. This mechanism is not
+     *  safe because the resulting YAML might not be the expected one.
+     */
+    WellIndented(final YamlLines yamlLines, final boolean guessIndentation) {
         this.yamlLines = yamlLines;
+        this.guessIndentation = guessIndentation;
     }
 
     /**
@@ -108,21 +122,29 @@ final class WellIndented implements YamlLines {
                     int lineIndent = line.indentation();
                     if(previous.requireNestedIndentation()) {
                         if(lineIndent != prevIndent + 2) {
-                            throw new YamlIndentationException(
-                                "Indentation of line " + (line.number() + 1)
-                                + " is not ok. It should be greater than the one"
-                                + " of line " + (previous.number() + 1)
-                                + " by 2 spaces."
-                            );
+                            if(this.guessIndentation) {
+                                line = new Indented(line, prevIndent + 2);
+                            } else {
+                                throw new YamlIndentationException(
+                                    "Indentation of line " + (line.number() + 1)
+                                  + " is not ok. It should be greater than the one"
+                                  + " of line " + (previous.number() + 1)
+                                  + " by 2 spaces."
+                                );
+                            }
                         }
                     } else {
                         if(!"---".equals(previous.trimmed()) && lineIndent > prevIndent) {
-                            throw new YamlIndentationException(
-                                "Indentation of line " + (line.number() +1) + " is "
-                                + "greater than the one of line "
-                                + (previous.number() + 1) + ". "
-                                + "It should be less or equal."
-                            );
+                            if(this.guessIndentation) {
+                                line = new Indented(line, prevIndent);
+                            } else {
+                                throw new YamlIndentationException(
+                                    "Indentation of line " + (line.number() + 1) + " is "
+                                  + "greater than the one of line "
+                                  + (previous.number() + 1) + ". "
+                                  + "It should be less or equal."
+                                );
+                            }
                         }
                     }
                 }
@@ -139,8 +161,11 @@ final class WellIndented implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(final YamlLine prev) {
-        return this.yamlLines.toYamlNode(prev);
+    public YamlNode toYamlNode(
+        final YamlLine prev,
+        final boolean guessIndentation
+    ) {
+        return this.yamlLines.toYamlNode(prev, guessIndentation);
     }
 
 }

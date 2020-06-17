@@ -65,6 +65,12 @@ final class ReadYamlSequence extends BaseYamlSequence {
     private final YamlLines significant;
 
     /**
+     * If set to true we will try to guess the correct indentation
+     * of misplaced lines.
+     */
+    private final boolean guessIndentation = false;
+
+    /**
      * Ctor.
      * @param lines Given lines.
      */
@@ -108,7 +114,11 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     || trimmed.endsWith("|")
                     || trimmed.endsWith(">")
                 ) {
-                    kids.add(this.significant.toYamlNode(line));
+                    kids.add(
+                        this.significant.toYamlNode(
+                            line, this.guessIndentation
+                        )
+                    );
                 } else {
                     if(trimmed.matches("^.*\\-.*\\:.*$")) {
                         kids.add(

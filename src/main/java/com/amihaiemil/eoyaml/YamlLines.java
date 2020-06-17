@@ -50,9 +50,11 @@ interface YamlLines extends Iterable<YamlLine> {
     /**
      * Turn these lines into a YamlNode.
      * @param prev Previous YamlLine
+     * @param guessIndentation If set to true, we will try to guess
+     *  the correct indentation of misplaced lines.
      * @return YamlNode
      */
-    YamlNode toYamlNode(final YamlLine prev);
+    YamlNode toYamlNode(final YamlLine prev, final boolean guessIndentation);
 
     /**
      * Default iterator which doesn't skip any line,

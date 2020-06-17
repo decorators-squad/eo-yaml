@@ -50,6 +50,12 @@ final class ReadYamlStream extends BaseYamlStream {
     private final YamlLines startMarkers;
 
     /**
+     * If set to true we will try to guess the correct indentation
+     * of misplaced lines.
+     */
+    private final boolean guessIndentation = false;
+
+    /**
      * Constructor.
      * @param lines All YAML lines as they are read from the input.
      */
@@ -76,7 +82,11 @@ final class ReadYamlStream extends BaseYamlStream {
         for(final YamlLine startDoc : this.startMarkers) {
             final YamlLines document = this.readDocument(startDoc);
             if(!document.original().isEmpty()) {
-                values.add(document.toYamlNode(startDoc));
+                values.add(
+                    document.toYamlNode(
+                        startDoc, this.guessIndentation
+                    )
+                );
             }
         }
         return values;
