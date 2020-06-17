@@ -153,9 +153,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     if(trimmed.matches("^.*\\-.*\\:.*$")) {
                         kids.add(
                             new ReadYamlMapping(
-                                new RtYamlLine(
-                                    "# Mapping at dash line", line.number()-1
-                                ),
+                                new RtYamlLine("", line.number()-1),
                                 this.all,
                                 this.guessIndentation
                             )
