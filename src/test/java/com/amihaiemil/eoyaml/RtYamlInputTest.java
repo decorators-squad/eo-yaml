@@ -606,6 +606,48 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * A YamlSequence containing mappings which start on the
+     * same line as the dash can be read.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsSequenceWithDashMappings() throws Exception {
+        final YamlMapping map = Yaml.createYamlInput(
+            this.readTestResource("dashMappings.yml")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(map.type(), Matchers.is(Node.MAPPING));
+        final YamlSequence permissions = map.yamlSequence("permissions");
+        MatcherAssert.assertThat(
+            permissions,
+            Matchers.iterableWithSize(4)
+        );
+        MatcherAssert.assertThat(
+            permissions
+                .yamlMapping(0)
+                .yamlSequence("john"),
+            Matchers.iterableWithSize(2)
+        );
+        MatcherAssert.assertThat(
+            permissions
+                .yamlMapping(1)
+                .yamlSequence("jane"),
+            Matchers.iterableWithSize(2)
+        );
+        MatcherAssert.assertThat(
+            permissions
+                .yamlMapping(2)
+                .string("andrew"),
+            Matchers.equalTo("none")
+        );
+        MatcherAssert.assertThat(
+            permissions
+                .yamlMapping(3)
+                .string("andreea"),
+            Matchers.equalTo("none")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

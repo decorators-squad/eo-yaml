@@ -1,0 +1,9 @@
+permissions:
+  - john:
+      - download
+      - delete
+  - jane:
+      - deploy
+      - download
+  - andrew: none
+  - andreea: none

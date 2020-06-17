@@ -102,22 +102,19 @@ final class ReadYamlMapping extends BaseYamlMapping {
     @Override
     public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new LinkedHashSet<>();
+        YamlLine prev = new YamlLine.NullYamlLine();
         for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
-            if(trimmed.startsWith(":")) {
+            if(trimmed.startsWith(":")
+                || (trimmed.startsWith("-")
+                        && !(prev instanceof YamlLine.NullYamlLine))
+            ) {
                 continue;
             } else if ("?".equals(trimmed)) {
                 keys.add(this.significant.toYamlNode(line));
             } else {
                 if(!trimmed.contains(":")) {
-                    throw new YamlReadingException(
-                        "Expected scalar key on line "
-                        + (line.number() + 1) + "."
-                        + " The line should have the format "
-                        + "'key: value' or 'key:'. "
-                        + "Instead, the line is: "
-                        + "[" + line.trimmed() + "]."
-                    );
+                    continue;
                 }
                 final String key;
                 if(trimmed.startsWith("-")) {
@@ -133,6 +130,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     keys.add(new PlainStringScalar(key));
                 }
             }
+            prev = line;
         }
         return keys;
     }

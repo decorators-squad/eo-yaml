@@ -77,7 +77,7 @@ final class SameIndentationLevel implements YamlLines {
             final YamlLine first = iterator.next();
             sameIndentation.add(first);
             int firstIndentation = first.indentation();
-            if(first.trimmed().matches("^[ ]*\\-.*\\:.*$")) {
+            if(first.trimmed().matches("^[ ]*\\-.*\\:.+$")) {
                 firstIndentation += 2;
             }
             while (iterator.hasNext()) {

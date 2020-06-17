@@ -85,7 +85,7 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("- alfa:", 2));
         lines.add(new RtYamlLine("    key: value", 3));
         lines.add(new RtYamlLine("    key2: value2", 4));
-        lines.add(new RtYamlLine("- scalar2", 1));
+        lines.add(new RtYamlLine("- scalar2", 5));
         final YamlSequence sequence = new ReadYamlSequence(
             new AllYamlLines(lines)
         );
@@ -99,6 +99,9 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(
             alfa.yamlMapping("alfa").string("key2"), Matchers.equalTo("value2")
         );
+        for(final YamlNode value : sequence.values()) {
+            System.out.println(value.type());
+        }
     }
 
     /**
@@ -113,7 +116,7 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("- alfa: beta", 2));
         lines.add(new RtYamlLine("  teta: gama", 3));
         lines.add(new RtYamlLine("  omega: value", 4));
-        lines.add(new RtYamlLine("- scalar2", 1));
+        lines.add(new RtYamlLine("- scalar2", 5));
         final YamlSequence sequence = new ReadYamlSequence(
                 new AllYamlLines(lines)
         );
