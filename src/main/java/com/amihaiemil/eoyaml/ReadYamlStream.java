@@ -53,13 +53,23 @@ final class ReadYamlStream extends BaseYamlStream {
      * If set to true we will try to guess the correct indentation
      * of misplaced lines.
      */
-    private final boolean guessIndentation = false;
+    private final boolean guessIndentation;
 
     /**
      * Constructor.
      * @param lines All YAML lines as they are read from the input.
      */
     ReadYamlStream(final AllYamlLines lines) {
+        this(lines, false);
+    }
+
+    /**
+     * Constructor.
+     * @param lines All YAML lines as they are read from the input.
+     * @param guessIndentation If set to true, we will try to guess
+     *  the correct indentation of misplaced lines.
+     */
+    ReadYamlStream(final AllYamlLines lines, final boolean guessIndentation) {
         this.startMarkers = new WellIndented(
             new StartMarkers(
                 new Skip(
@@ -74,6 +84,7 @@ final class ReadYamlStream extends BaseYamlStream {
             line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("%")
         );
+        this.guessIndentation = guessIndentation;
     }
 
     @Override

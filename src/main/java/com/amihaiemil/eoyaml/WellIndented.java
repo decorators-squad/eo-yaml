@@ -56,7 +56,9 @@ import java.util.List;
  *     )
  * );//Iterate over the lines which are at the same indentation level
  * </pre>
- *
+ * @checkstyle ExecutableStatementCount (400 lines)
+ * @checkstyle CyclomaticComplexity (400 lines)
+ * @checkstyle NestedIfDepth (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.1.2
@@ -163,9 +165,9 @@ final class WellIndented implements YamlLines {
     @Override
     public YamlNode toYamlNode(
         final YamlLine prev,
-        final boolean guessIndentation
+        final boolean guessIndent
     ) {
-        return this.yamlLines.toYamlNode(prev, guessIndentation);
+        return this.yamlLines.toYamlNode(prev, guessIndent);
     }
 
 }
