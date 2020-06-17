@@ -75,17 +75,17 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return new ReadYamlMapping(this.readInput());
+        return new ReadYamlMapping(this.readInput(), this.guessIndentation);
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return new ReadYamlSequence(this.readInput());
+        return new ReadYamlSequence(this.readInput(), this.guessIndentation);
     }
 
     @Override
     public YamlStream readYamlStream() throws IOException {
-        return new ReadYamlStream(this.readInput());
+        return new ReadYamlStream(this.readInput(), this.guessIndentation);
     }
 
     @Override
