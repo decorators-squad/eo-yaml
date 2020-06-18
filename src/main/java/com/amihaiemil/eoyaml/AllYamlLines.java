@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * YamlLines default implementation. "All" refers to the fact that
@@ -96,6 +97,11 @@ final class AllYamlLines implements YamlLines {
             }
         }
         return node;
+    }
+
+    @Override
+    public Iterator<YamlLine> iterator() {
+        return this.lines.iterator();
     }
 
     /**

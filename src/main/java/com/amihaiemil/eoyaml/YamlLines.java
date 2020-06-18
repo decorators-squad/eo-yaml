@@ -61,9 +61,7 @@ interface YamlLines extends Iterable<YamlLine> {
      * iterates over all of them.
      * @return Iterator of YamlLine.
      */
-    default Iterator<YamlLine> iterator() {
-        return this.original().iterator();
-    }
+    Iterator<YamlLine> iterator();
 
     /**
      * Get a certain YamlLine.
