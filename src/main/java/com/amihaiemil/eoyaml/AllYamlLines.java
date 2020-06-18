@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * YamlLines default implementation. "All" refers to the fact that
@@ -72,11 +73,14 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(final YamlLine prev) {
+    public YamlNode toYamlNode(
+        final YamlLine prev,
+        final boolean guessIndentation
+    ) {
         final YamlNode node;
         final String prevLine = prev.trimmed();
         if(prevLine.isEmpty()) {
-            node = this.mappingSequenceOrPlainScalar(prev);
+            node = this.mappingSequenceOrPlainScalar(prev, guessIndentation);
         } else {
             final String lastChar = prevLine.substring(prevLine.length() - 1);
 
@@ -85,21 +89,33 @@ final class AllYamlLines implements YamlLines {
             } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
                 node = new ReadFoldedBlockScalar(prev, this);
             } else if (prevLine.matches(Follows.FOLDED_SEQUENCE)) {
-                node = new ReadYamlSequence(prev, this);
+                node = new ReadYamlSequence(prev, this, guessIndentation);
             } else {
-                node = this.mappingSequenceOrPlainScalar(prev);
+                node = this.mappingSequenceOrPlainScalar(
+                    prev, guessIndentation
+                );
             }
         }
         return node;
+    }
+
+    @Override
+    public Iterator<YamlLine> iterator() {
+        return this.lines.iterator();
     }
 
     /**
      * Try to figure out what YAML node (mapping, sequence or scalar) is found
      * after the given line.
      * @param prev YamlLine just previous to the node we're trying to find.
+     * @param guessIndentation If true, we will guess the correct indentation,
+     *  if any YAML line is misplaced.
      * @return Found YamlNode.
      */
-    private YamlNode mappingSequenceOrPlainScalar(final YamlLine prev) {
+    private YamlNode mappingSequenceOrPlainScalar(
+        final YamlLine prev,
+        final boolean guessIndentation
+    ) {
         final YamlNode node;
         final YamlLine first = new Skip(
             this,
@@ -111,13 +127,12 @@ final class AllYamlLines implements YamlLines {
             line -> line.trimmed().startsWith("!!")
         ).iterator().next();
         if (first.trimmed().startsWith("-")){
-            node = new ReadYamlSequence(prev, this);
+            node = new ReadYamlSequence(prev, this, guessIndentation);
         } else if(first.trimmed().contains(":")) {
-            node = new ReadYamlMapping(prev, this);
+            node = new ReadYamlMapping(prev, this, guessIndentation);
         } else if(this.original().size() == 1) {
             node = new ReadPlainScalar(this, first);
         } else {
-            System.out.println("LINE IS: [" + first.trimmed() + "]");
             throw new YamlReadingException(
                 "Could not parse YAML starting at line " + (first.number() + 1)
                 + " . It should be a sequence (line should start with '-'), "

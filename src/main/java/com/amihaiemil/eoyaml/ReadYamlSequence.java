@@ -65,11 +65,30 @@ final class ReadYamlSequence extends BaseYamlSequence {
     private final YamlLines significant;
 
     /**
+     * If set to true we will try to guess the correct indentation
+     * of misplaced lines.
+     */
+    private final boolean guessIndentation;
+
+    /**
      * Ctor.
      * @param lines Given lines.
      */
     ReadYamlSequence(final AllYamlLines lines) {
-        this(new YamlLine.NullYamlLine(), lines);
+        this(lines, false);
+    }
+
+    /**
+     * Ctor.
+     * @param lines Given lines.
+     * @param guessIndentation If set to true, we will try to
+     *  guess the correct indentation of misplaced lines.
+     */
+    ReadYamlSequence(
+        final AllYamlLines lines,
+        final boolean guessIndentation
+    ) {
+        this(new YamlLine.NullYamlLine(), lines, guessIndentation);
     }
 
     /**
@@ -78,6 +97,21 @@ final class ReadYamlSequence extends BaseYamlSequence {
      * @param lines Given lines.
      */
     ReadYamlSequence(final YamlLine previous, final AllYamlLines lines) {
+        this(previous, lines, false);
+    }
+
+    /**
+     * Ctor.
+     * @param previous Line just before the start of this sequence.
+     * @param lines Given lines.
+     * @param guessIndentation If set to true, we will try to guess the
+     *  correct indentation of misplaced lines.
+     */
+    ReadYamlSequence(
+        final YamlLine previous,
+        final AllYamlLines lines,
+        final boolean guessIndentation
+    ) {
         this.previous = previous;
         this.all = lines;
         this.significant = new SameIndentationLevel(
@@ -90,9 +124,11 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     line -> line.trimmed().startsWith("..."),
                     line -> line.trimmed().startsWith("%"),
                     line -> line.trimmed().startsWith("!!")
-                )
+                ),
+                guessIndentation
             )
         );
+        this.guessIndentation = guessIndentation;
     }
 
     @Override
@@ -108,15 +144,18 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     || trimmed.endsWith("|")
                     || trimmed.endsWith(">")
                 ) {
-                    kids.add(this.significant.toYamlNode(line));
+                    kids.add(
+                        this.significant.toYamlNode(
+                            line, this.guessIndentation
+                        )
+                    );
                 } else {
                     if(trimmed.matches("^.*\\-.*\\:.*$")) {
                         kids.add(
                             new ReadYamlMapping(
-                                new RtYamlLine(
-                                    "# Mapping at dash line", line.number()-1
-                                ),
-                                this.all
+                                new RtYamlLine("", line.number()-1),
+                                this.all,
+                                this.guessIndentation
                             )
                         );
                     } else {

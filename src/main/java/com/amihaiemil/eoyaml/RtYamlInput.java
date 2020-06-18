@@ -46,29 +46,46 @@ final class RtYamlInput implements YamlInput {
     /**
      * Source of the input.
      */
-    private InputStream source;
+    private final InputStream source;
+
+    /**
+     * If set to true, we will try to guess the correct indentation
+     * of misplaced lines.
+     */
+    private final boolean guessIndentation;
 
     /**
      * Ctor.
      * @param source Given source.
      */
     RtYamlInput(final InputStream source) {
+        this(source, false);
+    }
+
+    /**
+     * Ctor.
+     * @param source Given source.
+     * @param guessIndentation If set to true, we will try to guess
+     *  the correct indentation of misplaced lines.
+     */
+    RtYamlInput(final InputStream source, final boolean guessIndentation) {
         this.source = source;
+        this.guessIndentation = guessIndentation;
     }
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return new ReadYamlMapping(this.readInput());
+        return new ReadYamlMapping(this.readInput(), this.guessIndentation);
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return new ReadYamlSequence(this.readInput());
+        return new ReadYamlSequence(this.readInput(), this.guessIndentation);
     }
 
     @Override
     public YamlStream readYamlStream() throws IOException {
-        return new ReadYamlStream(this.readInput());
+        return new ReadYamlStream(this.readInput(), this.guessIndentation);
     }
 
     @Override

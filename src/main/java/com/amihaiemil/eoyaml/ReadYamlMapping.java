@@ -69,11 +69,30 @@ final class ReadYamlMapping extends BaseYamlMapping {
     private final YamlLines significant;
 
     /**
+     * If set to true we will try to guess the correct indentation
+     * of misplaced lines.
+     */
+    private final boolean guessIndentation;
+
+    /**
      * Ctor.
      * @param lines Given lines.
      */
     ReadYamlMapping(final AllYamlLines lines) {
-        this(new YamlLine.NullYamlLine(), lines);
+        this(lines, Boolean.FALSE);
+    }
+
+    /**
+     * Ctor.
+     * @param lines Given lines.
+     * @param guessIndentation If true, we will try to guess the correct
+     *  indentation of misplaced lines.
+     */
+    ReadYamlMapping(
+        final AllYamlLines lines,
+        final boolean guessIndentation
+    ) {
+        this(new YamlLine.NullYamlLine(), lines, guessIndentation);
     }
 
     /**
@@ -82,6 +101,21 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * @param lines Given lines.
      */
     ReadYamlMapping(final YamlLine previous, final AllYamlLines lines) {
+        this(previous, lines, Boolean.FALSE);
+    }
+
+    /**
+     * Ctor.
+     * @param previous Line just before the start of this mapping.
+     * @param lines Given lines.
+     * @param guessIndentation If true, we will try to guess the correct
+     *  indentation of misplaced lines.
+     */
+    ReadYamlMapping(
+        final YamlLine previous,
+        final AllYamlLines lines,
+        final boolean guessIndentation
+    ) {
         this.previous = previous;
         this.all = lines;
         this.significant = new SameIndentationLevel(
@@ -94,9 +128,11 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     line -> line.trimmed().startsWith("..."),
                     line -> line.trimmed().startsWith("%"),
                     line -> line.trimmed().startsWith("!!")
-                )
+                ),
+                guessIndentation
             )
         );
+        this.guessIndentation = guessIndentation;
     }
 
     @Override
@@ -111,7 +147,9 @@ final class ReadYamlMapping extends BaseYamlMapping {
             ) {
                 continue;
             } else if ("?".equals(trimmed)) {
-                keys.add(this.significant.toYamlNode(line));
+                keys.add(
+                    this.significant.toYamlNode(line, this.guessIndentation)
+                );
             } else {
                 if(!trimmed.contains(":")) {
                     continue;
@@ -201,7 +239,9 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     || trimmed.matches("^" + tryKey + "\\:[ ]*\\>$")
                     || trimmed.matches("^" + tryKey + "\\:[ ]*\\|$")
                 ) {
-                    value = this.significant.toYamlNode(line);
+                    value = this.significant.toYamlNode(
+                        line, this.guessIndentation
+                    );
                 } else if((trimmed.startsWith(tryKey + ":")
                     || trimmed.startsWith("- " + tryKey + ":"))
                     && trimmed.length() > 1
@@ -229,14 +269,18 @@ final class ReadYamlMapping extends BaseYamlMapping {
             final YamlLine line = linesIt.next();
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final YamlNode keyNode = this.significant.toYamlNode(line);
+                final YamlNode keyNode = this.significant.toYamlNode(
+                    line, this.guessIndentation
+                );
                 if(keyNode.equals(key)) {
                     final YamlLine colonLine = linesIt.next();
                     if(":".equals(colonLine.trimmed())
                         || colonLine.trimmed().matches("^\\:[ ]*\\>$")
                         || colonLine.trimmed().matches("^\\:[ ]*\\|$")
                     ) {
-                        value = this.significant.toYamlNode(colonLine);
+                        value = this.significant.toYamlNode(
+                            colonLine, this.guessIndentation
+                        );
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
                     ){

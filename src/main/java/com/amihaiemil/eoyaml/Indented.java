@@ -27,49 +27,62 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.*;
-
 /**
- * YamlLines which are being iterated backwards.
+ * An YAML Line indented by us. We override the line's
+ * initial indentation with a given value.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 4.2.0
+ * @since 5.1.0
  */
-final class Backwards implements YamlLines {
+final class Indented implements YamlLine {
 
     /**
-     * YamlLines.
+     * Original YAML line.
      */
-    private final YamlLines lines;
+    private final YamlLine original;
+
+    /**
+     * Given indentation.
+     */
+    private int indentation;
 
     /**
      * Ctor.
-     * @param lines The Yaml lines.
+     * @param original Original YamlLine.
+     * @param indentation Given indentation.
      */
-    Backwards(final YamlLines lines) {
-        this.lines = lines;
+    Indented(final YamlLine original, final int indentation) {
+        this.original = original;
+        this.indentation = indentation;
     }
 
     @Override
-    public Collection<YamlLine> original() {
-        return this.lines.original();
+    public String trimmed() {
+        return this.original.trimmed();
     }
 
     @Override
-    public YamlNode toYamlNode(
-        final YamlLine prev,
-        final boolean guessIndentation
-    ) {
-        return this.lines.toYamlNode(prev, guessIndentation);
+    public String comment() {
+        return this.original.comment();
     }
 
     @Override
-    public Iterator<YamlLine> iterator() {
-        final List<YamlLine> original = new ArrayList<>();
-        for(final YamlLine line : this.lines) {
-            original.add(line);
-        }
-        Collections.reverse(original);
-        return original.iterator();
+    public int number() {
+        return this.original.number();
+    }
+
+    @Override
+    public int indentation() {
+        return this.indentation;
+    }
+
+    @Override
+    public boolean requireNestedIndentation() {
+        return this.original.requireNestedIndentation();
+    }
+
+    @Override
+    public int compareTo(final YamlLine other) {
+        return this.original.compareTo(other);
     }
 }
