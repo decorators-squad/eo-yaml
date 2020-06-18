@@ -47,7 +47,7 @@ Here is what we have so far:
 * Building and Reading YAML Streams, integrated with Java 8's Stream API ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
 * Others:
-    - Automatic validation of the input's indentation.
+    - Automatic validation of the input's indentation ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Validation-of-Indentation)).
     - Clear and detailed Exceptions. For instance, in the case of bad indentation, it will tell you exactly which line is problematic and why.
     - Fully encapsulated. The user works only with a few Java Interfaces.
     - All objects are immutable and thread-safe.
