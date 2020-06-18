@@ -111,6 +111,11 @@ public final class YamlIndentationTestCase {
             new File("src/test/resources/badMappingIndentation.yml"),
             Boolean.TRUE
         ).readYamlMapping();
+        System.out.println(map);
+        MatcherAssert.assertThat(
+            map.string("name"),
+            Matchers.equalTo("eo-yaml")
+        );
         MatcherAssert.assertThat(
             map.yamlSequence("developers"),
             Matchers.nullValue()
