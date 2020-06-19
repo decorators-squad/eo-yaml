@@ -7,7 +7,6 @@
 
 [![DevOps By Rultor.com](http://www.rultor.com/b/decorators-squad/eo-yaml)](http://www.rultor.com/p/decorators-squad/eo-yaml)
 [![We recommend IntelliJ IDEA](http://amihaiemil.github.io/images/intellij-idea-recommend.svg)](https://www.jetbrains.com/idea/)
-
 [![OpenJDK Quality Outreach](https://amihaiemil.com/images/openjdk_quality_outreach.svg)](https://wiki.openjdk.java.net/display/quality/Quality+Outreach)
 
 YAML for Java 8 and above. Based on [spec 1.2](http://www.yaml.org/spec/1.2/spec.html).
