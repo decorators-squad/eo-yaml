@@ -3,7 +3,8 @@ os:
 language: java
 jdk:
   - openjdk8
-  - openjdk11 # the build should work also with JDK 11.
+  - openjdk11
+  - openjdk14 
 script:
   - set -e
   - mvn clean install -Pcheckstyle -PtestCoverage jacoco:report coveralls:report
