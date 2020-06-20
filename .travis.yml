@@ -15,7 +15,7 @@ stages:
 jobs:
   include:
     - stage: testEarlyAccessJDK
-      name: "Build with JDK 15 EA"
+      name: "Build with OpenJDK 15 EA"
       script:
         - ~/install-ea-jdk.sh --target "/home/travis/openjdk15" --workspace "/home/travis/.cache/install-jdk" --feature "15" --license "GPL" --cacerts
         - export JAVA_HOME=~/openjdk15
