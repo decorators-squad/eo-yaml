@@ -77,6 +77,6 @@ Contributors are welcome!
 
 Make sure the maven build
 
-``$ mvn clean install -Pcheckstyle``
+``$ mvn clean install -Pcheckstyle,itcases``
 
 **passes before making a PR**. 
