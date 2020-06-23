@@ -9,7 +9,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <name>eo-yaml</name>
-    <description>YAML for Java. User-friendly OOP library.</description>
+    <description>YAML for Java 8 and above. Very similar to the JSON-P api.</description>
     <url>https://www.github.com/decorators-squad/eo-yaml</url>
     <licenses>
         <license>
