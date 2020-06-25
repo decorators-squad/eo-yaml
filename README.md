@@ -13,7 +13,7 @@ YAML for Java 8 and above. Based on [spec 1.2](http://www.yaml.org/spec/1.2/spec
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** is a human-friendly, cross language, Unicode based data serialization language.
 
-To get the latest release from Maven Central, simply add the following to your ``pom.xml`` (it's always the latest version): 
+To get the latest release from Maven Central, simply add the following to your ``pom.xml``: 
 
 ```xml
 <dependency>
