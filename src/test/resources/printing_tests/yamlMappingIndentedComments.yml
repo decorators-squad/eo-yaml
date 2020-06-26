@@ -1,0 +1,12 @@
+name: "eo-yaml"
+contributors:
+  # Developers here
+  developers:
+    - amihaiemil # Architect
+    - sherif
+    - salijkan
+  # Mostly chatbots
+  devops:
+    - rultor
+    - 0pdd
+    - travis

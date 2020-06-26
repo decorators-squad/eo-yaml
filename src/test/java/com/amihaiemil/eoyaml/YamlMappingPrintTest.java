@@ -50,6 +50,25 @@ import java.io.IOException;
  * @since 4.0.0
  */
 public final class YamlMappingPrintTest {
+
+    /**
+     * We read a YamlMapping containing indented nodes and comments
+     * and print it.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlMappingWithIndentedComment() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File("src/test/resources/printing_tests/yamlMappingIndentedComments.yml")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("yamlMappingIndentedComments.yml")
+            )
+        );
+    }
+
     /**
      * We read a YamlMapping containing all types of
      * YamlNode we have so far and print it.
