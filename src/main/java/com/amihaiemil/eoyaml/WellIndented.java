@@ -129,8 +129,10 @@ final class WellIndented implements YamlLines {
                             } else {
                                 throw new YamlIndentationException(
                                     "Indentation of line " + (line.number() + 1)
+                                  + " [" + line.trimmed() + "]"
                                   + " is not ok. It should be greater than the one"
                                   + " of line " + (previous.number() + 1)
+                                  + " [" + previous.trimmed() + "]"
                                   + " by 2 spaces."
                                 );
                             }
@@ -141,9 +143,11 @@ final class WellIndented implements YamlLines {
                                 line = new Indented(line, prevIndent);
                             } else {
                                 throw new YamlIndentationException(
-                                    "Indentation of line " + (line.number() + 1) + " is "
-                                  + "greater than the one of line "
-                                  + (previous.number() + 1) + ". "
+                                    "Indentation of line " + (line.number() + 1)
+                                  + " [" + line.trimmed() + "]"
+                                  + " is greater than the one of line "
+                                  + (previous.number() + 1)
+                                  + " [" + previous.trimmed() + "]. "
                                   + "It should be less or equal."
                                 );
                             }
