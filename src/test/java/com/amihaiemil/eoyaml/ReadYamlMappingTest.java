@@ -59,7 +59,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("second: ", 1));
         lines.add(new RtYamlLine("  fourth: some", 2));
         lines.add(new RtYamlLine("  fifth: values", 3));
-        lines.add(new RtYamlLine("third: something", 4));
+        lines.add(new RtYamlLine("third: &something", 4));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         System.out.print(map);
         final YamlMapping second = map.yamlMapping("second");
@@ -69,6 +69,9 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
             second.string("fifth"), Matchers.equalTo("values")
+        );
+        MatcherAssert.assertThat(
+            map.string("third"), Matchers.equalTo("&something")
         );
     }
 

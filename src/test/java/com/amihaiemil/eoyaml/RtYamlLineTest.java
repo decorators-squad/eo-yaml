@@ -167,7 +167,8 @@ public final class RtYamlLineTest {
             Matchers.isEmptyString()
         );
     }
-    
+
+
     /**
      * RtYamlLine can trim off the anchors.
      * This test is ignored until Issue 374 gets fixed
