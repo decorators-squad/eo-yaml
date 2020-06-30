@@ -62,9 +62,7 @@ final class RtYamlLine implements YamlLine {
         String trimmed = this.value.trim();
         int i = 0;
         while(i < trimmed.length()) {
-            if((i > 0 && trimmed.charAt(i) == '#')
-                || trimmed.charAt(i) == '&'
-            ) {
+            if(i > 0 && trimmed.charAt(i) == '#') {
                 trimmed = trimmed.substring(0, i);
                 break;
             } else if(trimmed.charAt(i) == '"') {
