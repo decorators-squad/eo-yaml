@@ -17,8 +17,6 @@ import org.openjdk.jmh.annotations.*;
 @Measurement(iterations = 3)
 public class BenchmarkRunner {
 
-    private final org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml();
-
     public static void main(final String[] args) throws IOException {
         Main.main(args);
     }
@@ -40,7 +38,7 @@ public class BenchmarkRunner {
     public void snakeyaml() throws IOException {
         try (final Reader reader =
                  new FileReader(new File("target/test-classes/benchmark", "benchmark.yml"))) {
-            this.yaml.load(reader);
+            new org.yaml.snakeyaml.Yaml().load(reader);
         }
     }
 
