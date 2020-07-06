@@ -13,8 +13,8 @@ import org.openjdk.jmh.annotations.*;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
-@Warmup(iterations = 1)
-@Measurement(iterations = 1)
+@Warmup(iterations = 3)
+@Measurement(iterations = 3)
 public class BenchmarkRunner {
 
     private final org.yaml.snakeyaml.Yaml yaml = new org.yaml.snakeyaml.Yaml();
