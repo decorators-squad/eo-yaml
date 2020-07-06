@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.*;
 
-@BenchmarkMode(Mode.Throughput)
+@BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
 @Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
@@ -56,8 +56,7 @@ public class BenchmarkRunner {
     public void jacksonyaml() throws IOException {
         try (final Reader reader =
                  new FileReader(new File("target/test-classes/benchmark", "benchmark.yml"))) {
-            YAMLFactory.builder()
-                .build()
+            new ObjectMapper(new YAMLFactory())
                 .createParser(reader)
                 .readValueAsTree();
         }
