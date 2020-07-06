@@ -1,6 +1,7 @@
 package com.amihaiemil.eoyaml.benchmark;
 
 import com.amihaiemil.eoyaml.Yaml;
+import com.esotericsoftware.yamlbeans.YamlReader;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.Main;
@@ -9,7 +10,7 @@ import org.openjdk.jmh.annotations.*;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Benchmark)
-@Fork(value = 2, jvmArgs = {"-Xms2G", "-Xmx2G"})
+@Fork(value = 1, jvmArgs = {"-Xms2G", "-Xmx2G"})
 @Warmup(iterations = 5)
 @Measurement(iterations = 5)
 public class BenchmarkRunner {
@@ -26,15 +27,27 @@ public class BenchmarkRunner {
 
     @Benchmark
     public void eoyaml() throws IOException {
-        Yaml.createYamlInput(new FileInputStream(
-            new File("target/test-classes/benchmark", "benchmark.yml")), true)
-            .readYamlMapping();
+        try (final InputStream stream =
+                 new FileInputStream(new File("target/test-classes/benchmark", "benchmark.yml"))) {
+            Yaml.createYamlInput(stream, true)
+                .readYamlMapping();
+        }
     }
 
     @Benchmark
-    public void snakeyaml() throws FileNotFoundException {
-        this.yaml.load(new FileInputStream(
-            new File("target/test-classes/benchmark", "benchmark.yml")));
+    public void snakeyaml() throws IOException {
+        try (final Reader reader =
+                 new FileReader(new File("target/test-classes/benchmark", "benchmark.yml"))) {
+            this.yaml.load(reader);
+        }
+    }
+
+    @Benchmark
+    public void yamlbeans() throws IOException {
+        try (final Reader reader =
+                 new FileReader(new File("target/test-classes/benchmark", "benchmark.yml"))) {
+            new YamlReader(reader).read();
+        }
     }
 
 }
