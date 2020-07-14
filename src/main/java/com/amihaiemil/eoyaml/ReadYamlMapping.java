@@ -225,6 +225,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * @param key String key.
      * @return YamlNode.
      * @checkstyle ReturnCount (50 lines)
+     * @checkstyle LineLength (30 lines)
      */
     private YamlNode valueOfStringKey(final String key) {
         YamlNode value = null;

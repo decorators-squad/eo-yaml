@@ -648,6 +648,43 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Some escaped scalars can be read from a sequence.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsEscapedScalarsFromSequence() throws Exception {
+        final YamlMapping map = Yaml.createYamlInput(
+            this.readTestResource("escapedScalarsInSequence.yml")
+        ).readYamlMapping();
+        System.out.println(map);
+        final YamlSequence scalars = map.yamlSequence("scalars");
+        MatcherAssert.assertThat(
+            scalars.string(0),
+            Matchers.equalTo(
+                "escaped: scalar, looks like mapping"
+            )
+        );
+        MatcherAssert.assertThat(
+            scalars.string(1),
+            Matchers.equalTo(
+                "{escaped: scalar, like: flow}"
+            )
+        );
+        MatcherAssert.assertThat(
+            scalars.string(2),
+            Matchers.equalTo(
+                "- escapedScalar3"
+            )
+        );
+        MatcherAssert.assertThat(
+            scalars.string(3),
+            Matchers.equalTo(
+                "[scalar, like, flow, sequence]"
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

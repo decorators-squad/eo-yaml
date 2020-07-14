@@ -150,7 +150,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                         )
                     );
                 } else {
-                    if(trimmed.matches("^.*\\-.*\\:.*$")) {
+                    if(this.mappingStartsAtDash(line)) {
                         kids.add(
                             new ReadYamlMapping(
                                 new RtYamlLine("", line.number()-1),
@@ -202,4 +202,16 @@ final class ReadYamlSequence extends BaseYamlSequence {
         );
     }
 
+    /**
+     * Returns true if there's a YamlMapping starting right after the
+     * dash, on the same line.
+     * @param dashLine Line.
+     * @return True of false.
+     */
+    private boolean mappingStartsAtDash(final YamlLine dashLine) {
+        final String trimmed = dashLine.trimmed();
+        final boolean escapedScalar = trimmed.matches("^[ ]*\\-[ ]*\".*\"$")
+            || trimmed.matches("^[ ]*\\-[ ]*\'.*\'$");
+        return trimmed.matches("^.*\\-.*\\:.*$") && !escapedScalar;
+    }
 }
