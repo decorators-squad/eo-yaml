@@ -1,5 +1,5 @@
 scalars:
   - "escaped: scalar, looks like mapping"
-  - "{escaped: scalar, like: flow}"
+  - '{escaped: scalar, like: flow}'
   - "- escapedScalar3"
-  - "[scalar, like, flow, sequence]"
+  - '[scalar, like, flow, sequence]'
