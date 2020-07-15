@@ -45,6 +45,51 @@ import java.util.List;
  */
 public final class BackwardsTest {
 
+    public int findClosingBracketIndex(final YamlLines lines) {
+        char openedBracket = '[';
+        char closedBracket = ']';
+
+        int index = lines.iterator().next().trimmed().indexOf(openedBracket);
+        int bracketCount = 1;
+
+        for(YamlLine line : lines) {
+            String text = line.trimmed();
+            for (int i = index + 1; i < text.length(); i++) {
+                if (text.charAt(i) == openedBracket) {
+                    bracketCount++;
+                } else if (text.charAt(i) == closedBracket) {
+                    bracketCount--;
+                }
+
+                if (bracketCount == 0) {
+                    index = i;
+                    break;
+                }
+            }
+            if(bracketCount == 0) {
+                break;
+            }
+            index = -1;
+        }
+
+        return index;
+    }
+
+    @Test
+    public void testBrackets() {
+//        System.out.println(findClosingBracketIndex("abc [ ddd ]"));
+//        System.out.println(findClosingBracketIndex("abc [ ddd ]ccc[]"));
+//        System.out.println(findClosingBracketIndex("abc [ d[d]d ]ccc[]"));
+//        System.out.println(findClosingBracketIndex("abc [ ddd"));
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("folder: [", 0));
+        lines.add(new RtYamlLine("{}", 1));
+        lines.add(new RtYamlLine("]", 2));
+        YamlLines flow = new FoldedFlowLines(new AllYamlLines(lines), '[', ']');
+        final YamlLine line = flow.iterator().next();
+        System.out.println(line.trimmed());
+    }
+
     /**
      * Backwards delegates the call to originals().
      */
