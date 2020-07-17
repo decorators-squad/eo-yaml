@@ -37,7 +37,7 @@ import java.util.List;
  * The iterator will fold all the lines into a single line.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 5.2.0
+ * @since 6.0.0
  */
 final class FoldedFlowLines implements YamlLines {
 

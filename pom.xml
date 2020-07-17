@@ -43,6 +43,13 @@
         <developerConnection>scm:git:git@github.com:decorators-squad/eo-yaml.git</developerConnection>
     </scm>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.eclipse/yasson -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>1.0.7</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

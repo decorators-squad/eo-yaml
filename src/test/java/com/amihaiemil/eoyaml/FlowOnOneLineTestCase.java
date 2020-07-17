@@ -38,7 +38,7 @@ import java.util.Arrays;
  * Unit tests for {@link FlowOnOneLine}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 5.2.0
+ * @since 6.0.0
  */
 public final class FlowOnOneLineTestCase {
 

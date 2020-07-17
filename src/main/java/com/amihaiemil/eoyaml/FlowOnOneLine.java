@@ -31,7 +31,7 @@ package com.amihaiemil.eoyaml;
  * Some YAML flow lines merged into one.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 5.2.0
+ * @since 6.0.0
  */
 final class FlowOnOneLine implements YamlLine {
 
