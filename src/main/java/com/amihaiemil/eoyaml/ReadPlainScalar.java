@@ -70,12 +70,16 @@ final class ReadPlainScalar extends BaseScalar {
     public String value() {
         final String value;
         final String trimmed = this.scalar.trimmed();
-        if(trimmed.contains(":") && !trimmed.endsWith(":")) {
-            value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-        } else if(trimmed.startsWith("-") && trimmed.length() > 1) {
+        if(this.escapedSequenceScalar(this.scalar)) {
             value = trimmed.substring(trimmed.indexOf('-')+1).trim();
         } else {
-            value = trimmed;
+            if (trimmed.contains(":") && !trimmed.endsWith(":")) {
+                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
+            } else if (trimmed.startsWith("-") && trimmed.length() > 1) {
+                value = trimmed.substring(trimmed.indexOf('-') + 1).trim();
+            } else {
+                value = trimmed;
+            }
         }
         if("null".equals(value)) {
             return null;
@@ -124,5 +128,17 @@ final class ReadPlainScalar extends BaseScalar {
             }
         }
         return unescaped;
+    }
+
+    /**
+     * Returns true if there's a YamlMapping starting right after the
+     * dash, on the same line.
+     * @param dashLine Line.
+     * @return True of false.
+     */
+    private boolean escapedSequenceScalar(final YamlLine dashLine) {
+        final String trimmed = dashLine.trimmed();
+        return trimmed.matches("^[ ]*\\-[ ]*\".*\"$")
+            || trimmed.matches("^[ ]*\\-[ ]*\'.*\'$");
     }
 }

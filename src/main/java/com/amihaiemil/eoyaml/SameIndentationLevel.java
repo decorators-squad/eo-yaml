@@ -77,7 +77,7 @@ final class SameIndentationLevel implements YamlLines {
             final YamlLine first = iterator.next();
             sameIndentation.add(first);
             int firstIndentation = first.indentation();
-            if(first.trimmed().matches("^[ ]*\\-.*\\:.+$")) {
+            if(this.mappingStartsAtDash(first)) {
                 firstIndentation += 2;
             }
             while (iterator.hasNext()) {
@@ -104,6 +104,19 @@ final class SameIndentationLevel implements YamlLines {
         final boolean guessIndentation
     ) {
         return this.yamlLines.toYamlNode(prev, guessIndentation);
+    }
+
+    /**
+     * Returns true if there's a YamlMapping starting right after the
+     * dash, on the same line.
+     * @param dashLine Line.
+     * @return True of false.
+     */
+    private boolean mappingStartsAtDash(final YamlLine dashLine) {
+        final String trimmed = dashLine.trimmed();
+        final boolean escapedScalar = trimmed.matches("^[ ]*\\-[ ]*\".*\"$")
+            || trimmed.matches("^[ ]*\\-[ ]*\'.*\'$");
+        return trimmed.matches("^[ ]*\\-.*\\:.+$") && !escapedScalar;
     }
 
 }

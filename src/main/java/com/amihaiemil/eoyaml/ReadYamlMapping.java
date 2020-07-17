@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * YamlMapping read from somewhere. YAML directives and
@@ -224,6 +225,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * @param key String key.
      * @return YamlNode.
      * @checkstyle ReturnCount (50 lines)
+     * @checkstyle LineLength (30 lines)
      */
     private YamlNode valueOfStringKey(final String key) {
         YamlNode value = null;
@@ -236,8 +238,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
             for (final YamlLine line : this.significant) {
                 final String trimmed = line.trimmed();
                 if(trimmed.endsWith(tryKey + ":")
-                    || trimmed.matches("^" + tryKey + "\\:[ ]*\\>$")
-                    || trimmed.matches("^" + tryKey + "\\:[ ]*\\|$")
+                    || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\>$")
+                    || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\|$")
                 ) {
                     value = this.significant.toYamlNode(
                         line, this.guessIndentation

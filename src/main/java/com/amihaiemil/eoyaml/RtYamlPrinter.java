@@ -346,7 +346,7 @@ final class RtYamlPrinter implements YamlPrinter {
         /**
          * Special chars that need escaping.
          */
-        private final String RESERVED = "#:->|$%&";
+        private final String RESERVED = "#:->|$%&{}[]";
 
         /**
          * Original unescaped scalar.
