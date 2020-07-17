@@ -31,10 +31,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Unit tests for {@link ReadFlowSequence}.
@@ -107,94 +105,96 @@ public final class ReadFlowSequenceTestCase {
 
     /**
      * A ReadFlowSequence works if it has only sequences in it.
+     * @todo #368:30min Make sure the escaped scalars read from a
+     *  flow sequence are unescaped when they are returned to the user.
+     *  The bellow assertions, for [a] and b][ should work without being
+     *  surrounded by quotes/apostrophes.
      */
     @Test
     public void hasOnlySequences() {
         final YamlSequence seq = new ReadFlowSequence(
-            new RtYamlLine("[[a, b], [c], [d, e, f]]", 0)
+            new RtYamlLine("[[a, b], [c,\"[a]\",'b]['], [d]]", 0)
         );
-        final Collection<YamlNode> values = seq.values();
-        MatcherAssert.assertThat(values, Matchers.iterableWithSize(3));
-    }
+        System.out.println(seq);
+        MatcherAssert.assertThat(
+            seq.values(),
+            Matchers.iterableWithSize(3)
+        );
+        final YamlSequence first = seq.yamlSequence(0);
+        MatcherAssert.assertThat(first, Matchers.iterableWithSize(2));
+        MatcherAssert.assertThat(
+            first.string(0),
+            Matchers.equalTo("a")
+        );
+        MatcherAssert.assertThat(
+            first.string(1),
+            Matchers.equalTo("b")
+        );
 
-    List<String> found = new ArrayList<>();
+        final YamlSequence second = seq.yamlSequence(1);
+        MatcherAssert.assertThat(second, Matchers.iterableWithSize(3));
+        MatcherAssert.assertThat(
+            second.string(0),
+            Matchers.equalTo("c")
+        );
+        MatcherAssert.assertThat(
+            second.string(1),
+            Matchers.equalTo("\"[a]\"")
+        );
+        MatcherAssert.assertThat(
+            second.string(2),
+            Matchers.equalTo("'b]['")
+        );
+
+        final YamlSequence third = seq.yamlSequence(2);
+        MatcherAssert.assertThat(third, Matchers.iterableWithSize(1));
+        MatcherAssert.assertThat(
+            third.string(0),
+            Matchers.equalTo("d")
+        );
+    }
 
     /**
-     * A ReadFlowSequence works if it has only sequences in it.
+     * A ReadFlowSequence should be able to hold both
+     * scalars and other sequences.
      */
     @Test
-    public void test() {
-        String text = "vv, [a, x, c, {y:y}, 'c]', escaped], hh, [d, [e, [\"a\", \"]b\"]], f], uu, {ds:d}, ddd, ax, ['its'], as";
-        int nested = 0;
-        StringBuilder scalar = new StringBuilder();
-        for(int i=0; i< text.length();i++) {
-            if(text.charAt(i) == '[') {
-                i = this.readNode(i, text, '[', ']');
-            } else if(text.charAt(i) == '{') {
-                i = this.readNode(i, text, '{', '}');
-            } else if(text.charAt(i) != ',' && text.charAt(i) != ' ') {
-                scalar.append(text.charAt(i));
-                if(i==text.length()-1) {
-                    found.add(scalar.toString().trim());
-                }
-            } else {
-                if(!scalar.toString().trim().isEmpty()) {
-                    found.add(scalar.toString().trim());
-                    scalar = new StringBuilder();
-                }
-            }
-        }
-        for(String s : found) {
-            System.out.println(s);
-        }
-    }
-
-    public int readNode(final int start, final String text, final char opening, final char closing) {
-        final StringBuilder node = new StringBuilder();
-        node.append(text.charAt(start));
-        int nested = 1;
-        int i = start;
-        while(nested != 0) {
-            i++;
-            if(i == text.length()) {
-                throw new IllegalStateException(
-                    "Could not find closing square bracket!"
-                );
-            }
-            i = goOverEscapedValue(node, i, text, '\"');
-            i = goOverEscapedValue(node, i, text, '\'');
-            node.append(text.charAt(i));
-            if(text.charAt(i) == opening){
-                nested++;
-            } else if(text.charAt(i) == closing) {
-                nested--;
-            }
-        }
-        found.add(node.toString());
-        return i;
-    }
-
-    public int goOverEscapedValue(
-        final StringBuilder node,
-        final int start,
-        final String text,
-        final char escapeChar
-    ) {
-        int i = start;
-        if(text.charAt(i) == escapeChar) {
-            node.append(text.charAt(i));
-            i++;
-            while(text.charAt(i) != escapeChar) {
-                node.append(text.charAt(i));
-                i++;
-                if(i == text.length()) {
-                    throw new IllegalStateException(
-                        "Could not find closing pair (" + escapeChar
-                      + ") for escaped value starting at " + start
-                    );
-                }
-            }
-        }
-        return i;
+    public void hasSequencesAndScalars() {
+        final YamlSequence seq = new ReadFlowSequence(
+            new RtYamlLine("[scalar, 'escalar', [a, b], other, [d]]", 0)
+        );
+        System.out.println(seq);
+        MatcherAssert.assertThat(
+            seq.values(),
+            Matchers.iterableWithSize(5)
+        );
+        MatcherAssert.assertThat(
+            seq.string(0),
+            Matchers.equalTo("scalar")
+        );
+        MatcherAssert.assertThat(
+            seq.string(1),
+            Matchers.equalTo("'escalar'")
+        );
+        final YamlSequence firstSeq = seq.yamlSequence(2);
+        MatcherAssert.assertThat(firstSeq, Matchers.iterableWithSize(2));
+        MatcherAssert.assertThat(
+            firstSeq.string(0),
+            Matchers.equalTo("a")
+        );
+        MatcherAssert.assertThat(
+            firstSeq.string(1),
+            Matchers.equalTo("b")
+        );
+        MatcherAssert.assertThat(
+            seq.string(3),
+            Matchers.equalTo("other")
+        );
+        final YamlSequence secondSeq = seq.yamlSequence(4);
+        MatcherAssert.assertThat(secondSeq, Matchers.iterableWithSize(1));
+        MatcherAssert.assertThat(
+            secondSeq.string(0),
+            Matchers.equalTo("d")
+        );
     }
 }

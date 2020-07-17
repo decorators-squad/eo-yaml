@@ -116,6 +116,7 @@ final class ReadFlowSequence extends BaseYamlSequence {
      * @checkstyle LineLength (100 lines)
      * @checkstyle ModifiedControlVariable (100 lines)
      * @checkstyle ParameterNumber (300 lines)
+     * @checkstyle CyclomaticComplexity (300 lines)
      */
     private static final class StringNodes implements Iterable<String> {
 
@@ -146,9 +147,9 @@ final class ReadFlowSequence extends BaseYamlSequence {
                 );
                 StringBuilder scalar = new StringBuilder();
                 for (int i = 0; i < nodes.length(); i++) {
-                    if (nodes.charAt(i) == '[') {
+                    if (nodes.charAt(i) == '[' && scalar.toString().isEmpty()) {
                         i = this.readNode(i, nodes, '[', ']', found);
-                    } else if (nodes.charAt(i) == '{') {
+                    } else if (nodes.charAt(i) == '{' && scalar.toString().isEmpty()) {
                         i = this.readNode(i, nodes, '{', '}', found);
                     } else if (nodes.charAt(i) != ',' && nodes.charAt(i) != ' ') {
                         scalar.append(nodes.charAt(i));
