@@ -229,4 +229,40 @@ public final class MergedYamlMappingTest {
             Matchers.equalTo(expected)
         );
     }
+
+    /**
+     * MergedYamlMapping can merge 2 build YamlMapping, first one
+     * with a comment on top.
+     */
+    @Test
+    public void mergesBuiltWithComments() {
+        final YamlMapping first = Yaml.createYamlMappingBuilder()
+            .add(
+                "mapping1",
+                Yaml.createYamlMappingBuilder()
+                    .add("key1", "value1")
+                    .build()
+            ).build("A comment");
+        final YamlMapping second = Yaml.createYamlMappingBuilder()
+            .add(
+                "mapping2",
+                Yaml.createYamlMappingBuilder()
+                    .add("key2", "value2")
+                    .build()
+            ).build();
+        final YamlMapping merged = new MergedYamlMapping(
+            first, second
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("# A comment").append(System.lineSeparator())
+            .append("mapping1:").append(System.lineSeparator())
+            .append("  key1: value1").append(System.lineSeparator())
+            .append("mapping2:").append(System.lineSeparator())
+            .append("  key2: value2");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
 }
