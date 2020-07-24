@@ -1,0 +1,12 @@
+# Comment of the whole document
+---
+# Architects of the project
+architects:
+  - mihai
+  - sherif
+# all the contributors here
+developers:
+- rultor
+- salikjan
+- sherif
+name: "eo-yaml" # name of the project
