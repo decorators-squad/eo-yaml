@@ -19,11 +19,11 @@ To get the latest release from Maven Central, simply add the following to your `
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>eo-yaml</artifactId>
-    <version>5.1.4</version>
+    <version>5.1.5</version>
 </dependency>
 ```
 
-or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/5.1.4/eo-yaml-5.1.4-jar-with-dependencies.jar">fat</a> jar.
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/5.1.5/eo-yaml-5.1.5-jar-with-dependencies.jar">fat</a> jar.
 
 The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages)!
 
