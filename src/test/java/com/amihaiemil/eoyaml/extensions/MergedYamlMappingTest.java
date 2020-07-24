@@ -232,18 +232,17 @@ public final class MergedYamlMappingTest {
 
     /**
      * MergedYamlMapping can merge 2 build YamlMapping, first one
-     * with a comment on top.
+     * with a comment on top of its first element.
      */
     @Test
-    public void mergesBuiltWithComments() {
+    public void mergesBuiltWithCommentOnFirstElement() {
         final YamlMapping first = Yaml.createYamlMappingBuilder()
             .add(
                 "mapping1",
                 Yaml.createYamlMappingBuilder()
                     .add("key1", "value1")
-                    .build()
-            ).build("Document comment");
-        System.out.println(first);
+                    .build("A comment")
+            ).build();
         final YamlMapping second = Yaml.createYamlMappingBuilder()
             .add(
                 "mapping2",
@@ -256,8 +255,44 @@ public final class MergedYamlMappingTest {
         );
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("# Document comment").append(System.lineSeparator())
-            .append("---").append(System.lineSeparator())
+            .append("# A comment").append(System.lineSeparator())
+            .append("mapping1:").append(System.lineSeparator())
+            .append("  key1: value1").append(System.lineSeparator())
+            .append("mapping2:").append(System.lineSeparator())
+            .append("  key2: value2");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * MergedYamlMapping can merge 2 read YamlMapping, first one
+     * with a comment on top of its first element.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void mergesReadWithCommentOnFirstElement() throws Exception {
+        final YamlMapping first = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("# A comment").append(System.lineSeparator())
+                .append("mapping1:").append(System.lineSeparator())
+                .append("  key1: value1")
+                .toString()
+        ).readYamlMapping();
+        System.out.println(first);
+        final YamlMapping second = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("mapping2:").append(System.lineSeparator())
+                .append("  key2: value2")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            first, second
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("# A comment").append(System.lineSeparator())
             .append("mapping1:").append(System.lineSeparator())
             .append("  key1: value1").append(System.lineSeparator())
             .append("mapping2:").append(System.lineSeparator())
