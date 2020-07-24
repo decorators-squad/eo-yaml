@@ -48,30 +48,11 @@ final class FirstCommentFound implements YamlLines {
     private final YamlLines lines;
 
     /**
-     * Are we looking for inline comments?
-     * E.g. Comments after a scalar:
-     * <pre>
-     *   some: scalar # this comment
-     * </pre>
-     */
-    private final boolean inLine;
-
-    /**
      * Ctor.
      * @param lines The Yaml lines where we look for the comment.
      */
     FirstCommentFound(final YamlLines lines) {
-        this(lines, false);
-    }
-
-    /**
-     * Ctor.
-     * @param lines The Yaml lines where we look for the comment.
-     * @param inLine Looking for inline comment or not?
-     */
-    FirstCommentFound(final YamlLines lines, final boolean inLine) {
         this.lines = lines;
-        this.inLine = inLine;
     }
 
     /**
@@ -87,8 +68,6 @@ final class FirstCommentFound implements YamlLines {
                 YamlLine line = iterator.next();
                 if(!line.comment().isEmpty()) {
                     if(line.trimmed().startsWith("#")) {
-                        comment.add(line);
-                    } else if(this.inLine) {
                         comment.add(line);
                     }
                 } else {

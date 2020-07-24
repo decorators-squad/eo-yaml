@@ -95,13 +95,10 @@ final class ReadPlainScalar extends BaseScalar {
             comment = new BuiltComment(this, "");
         } else {
             comment = new ReadComment(
-                new FirstCommentFound(
                     new Skip(
                         this.all,
                         line -> line.number() != this.scalar.number()
                     ),
-                    Boolean.TRUE
-                ),
                 this
             );
         }
