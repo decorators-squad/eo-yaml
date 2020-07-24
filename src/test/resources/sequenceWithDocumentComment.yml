@@ -1,0 +1,11 @@
+# This is the document comment
+---
+# Comment referring to the mapping bellow.
+-
+  key: value
+- element2 # a plain scalar string in a sequence
+- element3
+# a mapping as an element of a sequence
+-
+  key: value
+  key2: value2

@@ -164,6 +164,38 @@ public final class YamlMappingCommentsPrintTest {
     }
 
     /**
+     * A read YamlMapping can access its document comment, as
+     * well as the comment of the very first node.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void distinguishDocumentCommentFromNodeComment() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/mappingWithDocumentComment.yml"
+            )
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            read.comment().value(),
+            Matchers.equalTo("Comment of the whole document")
+        );
+        MatcherAssert.assertThat(
+            read.yamlSequence("architects").comment().value(),
+            Matchers.equalTo(
+                "Architects of the project"
+                + System.lineSeparator()
+                + "Feel free to contribute"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("mappingWithDocumentComment.yml")
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

@@ -130,6 +130,35 @@ public final class YamlSequenceCommentsPrintTest {
     }
 
     /**
+     * A read YamlSequence can access its document comment, as
+     * well as the comment of the very first node.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void distinguishDocumentCommentFromNodeComment() throws Exception {
+        final YamlSequence read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/sequenceWithDocumentComment.yml"
+            )
+        ).readYamlSequence();
+        MatcherAssert.assertThat(
+            read.comment().value(),
+            Matchers.equalTo("This is the document comment")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping(0).comment().value(),
+            Matchers.equalTo("Comment referring to the mapping bellow.")
+        );
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("sequenceWithDocumentComment.yml")
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
