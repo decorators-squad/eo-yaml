@@ -187,6 +187,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
 
     @Override
     public Comment comment() {
+        boolean documentComment = this.previous.number() < 0;
         //@checkstyle LineLength (50 lines)
         return new ReadComment(
             new Backwards(
@@ -196,7 +197,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                             this.all,
                             line -> {
                                 final boolean skip;
-                                if(this.previous.number() < 0) {
+                                if(documentComment) {
                                     if(this.significant.iterator().hasNext()) {
                                         skip = line.number() >= this.significant
                                                 .iterator().next().number();
@@ -208,12 +209,12 @@ final class ReadYamlMapping extends BaseYamlMapping {
                                 }
                                 return skip;
                             },
-                            line -> line.trimmed().startsWith("---"),
                             line -> line.trimmed().startsWith("..."),
                             line -> line.trimmed().startsWith("%"),
                             line -> line.trimmed().startsWith("!!")
                         )
-                    )
+                    ),
+                    documentComment
                 )
             ),
             this

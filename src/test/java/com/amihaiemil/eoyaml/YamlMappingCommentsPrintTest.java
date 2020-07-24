@@ -69,7 +69,7 @@ public final class YamlMappingCommentsPrintTest {
                 Yaml.createYamlScalarBuilder()
                     .addLine("eo-yaml")
                     .buildPlainScalar("name of the project")
-            ).build("YamlMapping for test");
+            ).build("Comment of the whole document");
         System.out.println(commented);
         MatcherAssert.assertThat(
             commented.toString(),
@@ -110,7 +110,7 @@ public final class YamlMappingCommentsPrintTest {
         System.out.println(read);
         MatcherAssert.assertThat(
             read.comment().value(),
-            Matchers.equalTo("YamlMapping for test")
+            Matchers.equalTo("Comment of the whole document")
         );
         MatcherAssert.assertThat(
             read.yamlSequence("developers").comment().value(),
@@ -135,7 +135,7 @@ public final class YamlMappingCommentsPrintTest {
         ).readYamlMapping();
         MatcherAssert.assertThat(
             read.comment().value(),
-            Matchers.equalTo("YamlMapping for test")
+            Matchers.equalTo("Comment of the whole document")
         );
         MatcherAssert.assertThat(
             read.yamlSequence("developers").comment().value(),

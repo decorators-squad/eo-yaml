@@ -169,6 +169,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
 
     @Override
     public Comment comment() {
+        boolean documentComment = this.previous.number() < 0;
         //@checkstyle LineLength (50 lines)
         return new ReadComment(
             new Backwards(
@@ -178,7 +179,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                             this.all,
                             line -> {
                                 final boolean skip;
-                                if(this.previous.number() < 0) {
+                                if(documentComment) {
                                     if(this.significant.iterator().hasNext()) {
                                         skip = line.number() >= this.significant
                                                 .iterator().next().number();
@@ -190,12 +191,12 @@ final class ReadYamlSequence extends BaseYamlSequence {
                                 }
                                 return skip;
                             },
-                            line -> line.trimmed().startsWith("---"),
                             line -> line.trimmed().startsWith("..."),
                             line -> line.trimmed().startsWith("%"),
                             line -> line.trimmed().startsWith("!!")
                         )
-                    )
+                    ),
+                    documentComment
                 )
             ),
             this

@@ -63,10 +63,16 @@ final class RtYamlPrinter implements YamlPrinter {
                 this.printScalar((Scalar) node, 0);
                 this.writer.append(System.lineSeparator()).append("...");
             } else if (node instanceof YamlSequence) {
-                this.printPossibleComment(node, "");
+                boolean documentComment = this.printPossibleComment(node, "");
+                if(documentComment) {
+                    this.writer.append("---").append(System.lineSeparator());
+                }
                 this.printSequence((YamlSequence) node, 0);
             } else if (node instanceof YamlMapping) {
-                this.printPossibleComment(node, "");
+                boolean documentComment = this.printPossibleComment(node, "");
+                if(documentComment) {
+                    this.writer.append("---").append(System.lineSeparator());
+                }
                 this.printMapping((YamlMapping) node, 0);
             } else if (node instanceof YamlStream) {
                 this.printStream((YamlStream) node, 0);
@@ -288,12 +294,14 @@ final class RtYamlPrinter implements YamlPrinter {
      * line.
      * @param node Node containing the Comment.
      * @param alignment Indentation.
+     * @return True if a comment was printed, false otherwise.
      * @throws IOException If any I/O problem occurs.
      */
-    private void printPossibleComment(
+    private boolean printPossibleComment(
         final YamlNode node,
         final String alignment
     ) throws IOException {
+        boolean printed = false;
         if(node != null) {
             final String com = node.comment().value();
             if (com.trim().length() != 0) {
@@ -305,8 +313,10 @@ final class RtYamlPrinter implements YamlPrinter {
                             .append(line)
                             .append(System.lineSeparator());
                 }
+                printed = true;
             }
         }
+        return printed;
     }
 
     /**

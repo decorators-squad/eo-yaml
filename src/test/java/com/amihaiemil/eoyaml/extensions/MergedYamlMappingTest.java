@@ -242,7 +242,8 @@ public final class MergedYamlMappingTest {
                 Yaml.createYamlMappingBuilder()
                     .add("key1", "value1")
                     .build()
-            ).build("A comment");
+            ).build("Document comment");
+        System.out.println(first);
         final YamlMapping second = Yaml.createYamlMappingBuilder()
             .add(
                 "mapping2",
@@ -255,7 +256,8 @@ public final class MergedYamlMappingTest {
         );
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("# A comment").append(System.lineSeparator())
+            .append("# Document comment").append(System.lineSeparator())
+            .append("---").append(System.lineSeparator())
             .append("mapping1:").append(System.lineSeparator())
             .append("  key1: value1").append(System.lineSeparator())
             .append("mapping2:").append(System.lineSeparator())
