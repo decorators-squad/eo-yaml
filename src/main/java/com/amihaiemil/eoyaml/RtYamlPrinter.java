@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import static com.amihaiemil.eoyaml.Comment.UNKNOWN_LINE_NUMBER;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Iterator;
@@ -309,7 +311,7 @@ final class RtYamlPrinter implements YamlPrinter {
         boolean printed = false;
         if(node != null && node.comment() != null) {
             boolean unknownLineNumber = lastComment == null
-                    || lastComment.number() == -1;
+                    || lastComment.number() == UNKNOWN_LINE_NUMBER;
             boolean newLineNumber = lastComment == null
                     || lastComment.number() != node.comment().number();
             if (unknownLineNumber || newLineNumber) {

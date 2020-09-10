@@ -65,7 +65,7 @@ final class ReadComment implements Comment {
     @Override
     public int number() {
         Iterator<YamlLine> iterator = lines.iterator();
-        int lineNumber = -1;
+        int lineNumber = UNKNOWN_LINE_NUMBER;
         if (iterator.hasNext()) {
             lineNumber = iterator.next().number();
         }

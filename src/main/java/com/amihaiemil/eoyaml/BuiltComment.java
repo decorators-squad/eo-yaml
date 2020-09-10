@@ -67,6 +67,6 @@ class BuiltComment implements Comment {
 
     @Override
     public int number() {
-        return -1;
+        return UNKNOWN_LINE_NUMBER;
     }
 }
