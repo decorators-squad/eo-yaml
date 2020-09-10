@@ -52,7 +52,7 @@ public interface Comment {
     /**
      * Line number where the comment starts on.
      *
-     * @return line number
+     * @return Line number.
      */
     int number();
 }

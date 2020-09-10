@@ -42,7 +42,10 @@ import java.util.List;
  */
 final class RtYamlPrinter implements YamlPrinter {
 
-    private Comment lastComment = null;
+    /**
+     * The previous comment encountered.
+     */
+    private Comment lastComment;
 
     /**
      * Writer where the given YAML will be printed.
@@ -305,8 +308,10 @@ final class RtYamlPrinter implements YamlPrinter {
     ) throws IOException {
         boolean printed = false;
         if(node != null && node.comment() != null) {
-            boolean unknownLineNumber = lastComment == null || lastComment.number() == -1;
-            boolean newLineNumber = lastComment == null || lastComment.number() != node.comment().number();
+            boolean unknownLineNumber = lastComment == null
+                    || lastComment.number() == -1;
+            boolean newLineNumber = lastComment == null
+                    || lastComment.number() != node.comment().number();
             if (unknownLineNumber || newLineNumber) {
                 Comment tmpComment = node.comment();
                 final String com = tmpComment.value();
