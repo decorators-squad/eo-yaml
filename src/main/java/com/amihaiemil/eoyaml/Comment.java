@@ -48,4 +48,11 @@ public interface Comment {
      *  will be added when printing.
      */
     String value();
+
+    /**
+     * Line number where the comment starts on.
+     *
+     * @return line number
+     */
+    int number();
 }

@@ -313,6 +313,18 @@ public final class YamlMappingPrintTest {
         );
     }
 
+    @Test
+    public void printsReadYamlDuplicatedComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+                new File("src/test/resources/printing_tests/yamlDuplicatedComments.txt")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+                read.toString(),
+                Matchers.equalTo(
+                        this.readExpected("yamlDuplicatedCommentsRoundTrip.txt")
+                )
+        );
+    }
 
     /**
      * Read a test resource file's contents.

@@ -64,4 +64,9 @@ class BuiltComment implements Comment {
     public String value() {
         return this.value;
     }
+
+    @Override
+    public int number() {
+        return -1;
+    }
 }

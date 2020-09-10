@@ -118,6 +118,11 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
             public String value() {
                 return "";
             }
+
+            @Override
+            public int number() {
+                return -1;
+            }
         };
     }
 
@@ -208,6 +213,11 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
                 @Override
                 public String value() {
                     return "";
+                }
+
+                @Override
+                public int number() {
+                    return -1;
                 }
             };
         }

@@ -144,6 +144,7 @@ public final class StrictYamlSequence extends BaseYamlSequence {
 
     @Override
     public Comment comment() {
+        System.err.println("Strict Sequence Comment");
         return this.decorated.comment();
     }
 }

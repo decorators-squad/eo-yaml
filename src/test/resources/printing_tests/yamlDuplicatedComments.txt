@@ -1,0 +1,18 @@
+title: 'Test Title'
+default_lang: de
+# Employee records
+list:
+  -  martin:
+      name: Martin D'vloper
+      job: Developer
+      skills:
+        - python
+        - perl
+        - pascal
+  -  tabitha:
+      name: Tabitha Bitumen
+      job: Developer
+      skills:
+        - lisp
+        - fortran
+        - erlang

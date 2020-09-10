@@ -42,6 +42,8 @@ import java.util.List;
  */
 final class RtYamlPrinter implements YamlPrinter {
 
+    private Comment lastComment = null;
+
     /**
      * Writer where the given YAML will be printed.
      */
@@ -302,18 +304,24 @@ final class RtYamlPrinter implements YamlPrinter {
         final String alignment
     ) throws IOException {
         boolean printed = false;
-        if(node != null) {
-            final String com = node.comment().value();
-            if (com.trim().length() != 0) {
-                String[] lines = com.split(System.lineSeparator());
-                for (final String line : lines) {
-                    this.writer
-                            .append(alignment)
-                            .append("# ")
-                            .append(line)
-                            .append(System.lineSeparator());
+        if(node != null && node.comment() != null) {
+            boolean unknownLineNumber = lastComment == null || lastComment.number() == -1;
+            boolean newLineNumber = lastComment == null || lastComment.number() != node.comment().number();
+            if (unknownLineNumber || newLineNumber) {
+                Comment tmpComment = node.comment();
+                final String com = tmpComment.value();
+                if (com.trim().length() != 0) {
+                    String[] lines = com.split(System.lineSeparator());
+                    for (final String line : lines) {
+                        this.writer
+                                .append(alignment)
+                                .append("# ")
+                                .append(line)
+                                .append(System.lineSeparator());
+                    }
+                    lastComment = tmpComment;
+                    printed = true;
                 }
-                printed = true;
             }
         }
         return printed;
