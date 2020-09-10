@@ -114,6 +114,14 @@ public final class ReflectedYamlMappingTest {
     }
 
     /**
+     * Use the wrong object to construct a sequence - non-collection or array.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenWrongObject() {
+        new ReflectedYamlMapping(new String[] {"wrong"});
+    }
+
+    /**
      * Simple student pojo for test.
      * @checkstyle JavadocVariable (100 lines)
      * @checkstyle JavadocMethod (100 lines)
