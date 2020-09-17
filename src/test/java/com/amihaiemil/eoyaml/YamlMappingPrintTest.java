@@ -127,6 +127,16 @@ public final class YamlMappingPrintTest {
                     .build()
             )
             .add(
+                "key6",
+                Yaml.createYamlMappingBuilder()
+                    .build()
+            )
+            .add(
+                "key7",
+                Yaml.createYamlSequenceBuilder()
+                    .build()
+            )
+            .add(
                 Yaml.createYamlSequenceBuilder()
                     .add("Atlanta Braves")
                     .add("New York Yankees")

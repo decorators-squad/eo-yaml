@@ -1119,30 +1119,21 @@ public final class ReadYamlMappingTest {
     }
 
     /**
-     * ReadYamlMapping returns the correct value for substring matching of keys.
+     * ReadYamlMapping returns the correct value for empty maps and sequences.
      */
     @Test
     public void dontTurnEmptyMapsAndArraysIntoStrings() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("def:", 0));
-        lines.add(new RtYamlLine("  - {}", 1));
-        lines.add(new RtYamlLine("  - []", 2));
-        lines.add(new RtYamlLine("ghi: []", 2));
+        lines.add(new RtYamlLine("def: {}", 0));
+        lines.add(new RtYamlLine("ghi: []", 1));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
-        Collection<YamlNode> values = map.value("def").asSequence().values();
-        Iterator<YamlNode> iterator = values.iterator();
         MatcherAssert.assertThat(
-                iterator.next().asMapping().keys(),
-                Matchers.is(Matchers.empty())
+                map.value("def").asMapping(),
+                Matchers.is(Yaml.createYamlMappingBuilder().build())
         );
         MatcherAssert.assertThat(
-                iterator.next().asSequence().size(),
-                Matchers.equalTo(0)
-        );
-        values = map.value("ghi").asSequence().values();
-        MatcherAssert.assertThat(
-                values.size(),
-                Matchers.equalTo(0)
+                map.value("ghi").asSequence(),
+                Matchers.is(Yaml.createYamlSequenceBuilder().build())
         );
     }
 }
