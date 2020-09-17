@@ -1127,6 +1127,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("def:", 0));
         lines.add(new RtYamlLine("  - {}", 1));
         lines.add(new RtYamlLine("  - []", 2));
+        lines.add(new RtYamlLine("ghi: []", 2));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         Collection<YamlNode> values = map.value("def").asSequence().values();
         Iterator<YamlNode> iterator = values.iterator();
@@ -1136,6 +1137,11 @@ public final class ReadYamlMappingTest {
         );
         MatcherAssert.assertThat(
                 iterator.next().asSequence().size(),
+                Matchers.equalTo(0)
+        );
+        Collection<YamlNode> otherValues = map.value("ghi").asSequence().values();
+        MatcherAssert.assertThat(
+                otherValues.iterator().next().asSequence().size(),
                 Matchers.equalTo(0)
         );
     }
