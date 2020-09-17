@@ -151,13 +151,13 @@ final class ReadYamlSequence extends BaseYamlSequence {
                                     line, this.guessIndentation
                             )
                     );
-                } else if (trimmed.matches("^-( )*\\{}")) {
+                } else if (trimmed.matches("^-[ ]*\\{}")) {
                     kids.add(new EmptyYamlMapping(new ReadYamlMapping(
                             new RtYamlLine("", line.number()-1),
                             this.all,
                             this.guessIndentation
                     )));
-                } else if (trimmed.matches("^-( )*\\[]")) {
+                } else if (trimmed.matches("^-[ ]*\\[]")) {
                     kids.add(new EmptyYamlSequence(new ReadYamlSequence(
                             new RtYamlLine("", line.number()-1),
                             this.all,
