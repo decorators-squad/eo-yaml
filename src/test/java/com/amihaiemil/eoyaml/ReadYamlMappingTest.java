@@ -1085,6 +1085,43 @@ public final class ReadYamlMappingTest {
      * ReadYamlMapping returns the correct value for substring matching of keys.
      */
     @Test
+    public void returnsValueOfStringKeys() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("aa: ", 0));
+        lines.add(new RtYamlLine("  x: 1", 1));
+        lines.add(new RtYamlLine("a: ", 2));
+        lines.add(new RtYamlLine("  x: 2", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        MatcherAssert.assertThat(
+                map.value("a").asMapping().string("x"),
+                Matchers.equalTo("2")
+        );
+    }
+
+    /**
+     * ReadYamlMapping returns the correct value for substring matching of keys.
+     */
+    @Test
+    public void returnsValueOfStringKeysWithDashesAndSpaces() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("def:", 0));
+        lines.add(new RtYamlLine("  -  aa:", 1));
+        lines.add(new RtYamlLine("      x: 1", 2));
+        lines.add(new RtYamlLine("  - a:", 3));
+        lines.add(new RtYamlLine("      x: 2", 4));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        Collection<YamlNode> values = map.value("def").asSequence().values();
+        YamlNode firstValue = values.iterator().next();
+        MatcherAssert.assertThat(
+                firstValue.asMapping().value("aa").asMapping().string("x"),
+                Matchers.equalTo("1")
+        );
+    }
+
+    /**
+     * ReadYamlMapping returns the correct value for substring matching of keys.
+     */
+    @Test
     public void dontTurnEmptyMapsAndArraysIntoStrings() {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("def:", 0));

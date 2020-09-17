@@ -238,7 +238,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
         for(final String tryKey : keys) {
             for (final YamlLine line : this.significant) {
                 final String trimmed = line.trimmed();
-                if(trimmed.endsWith(tryKey + ":")
+                if(trimmed.matches("^-?[ ]*" + Pattern.quote(tryKey) + ":")
                     || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\>$")
                     || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\|$")
                 ) {
