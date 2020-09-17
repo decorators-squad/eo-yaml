@@ -354,11 +354,6 @@ final class RtYamlPrinter implements YamlPrinter {
     static class Escaped extends BaseScalar {
 
         /**
-         * Special chars that need escaping.
-         */
-        private final String RESERVED = "#:->|$%&{}[]";
-
-        /**
          * Original unescaped scalar.
          */
         private final Scalar original;
@@ -374,25 +369,12 @@ final class RtYamlPrinter implements YamlPrinter {
         @Override
         public String value() {
             final String value = this.original.value();
-            String escaped = null;
-            if(value.startsWith("'") && value.endsWith("'")
-                || value.startsWith("\"") && value.endsWith("\"")
-            ) {
-                escaped = value;
-            } else {
-                for (int idx = 0; idx < value.length(); idx++){
-                    if(RESERVED.contains(
-                        String.valueOf(value.charAt(idx)))) {
-                        if(value.contains("\"")) {
-                            escaped = "'" + value + "'";
-                        } else {
-                            escaped = "\"" + value + "\"";
-                        }
-                        break;
-                    }
-                }
-                if(escaped == null) {
-                    escaped = value;
+            String escaped = value;
+            if (value.matches(".*[\\-#:>|$%&{}\\[\\]]+.*|[ ]+")) {
+                if(value.contains("\"")) {
+                    escaped = "'" + value + "'";
+                } else {
+                    escaped = "\"" + value + "\"";
                 }
             }
             return escaped;

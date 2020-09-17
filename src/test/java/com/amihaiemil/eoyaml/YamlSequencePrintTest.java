@@ -105,6 +105,7 @@ public final class YamlSequencePrintTest {
                     .add("as child")
                     .build()
             )
+            .add(" ")
             .build();
         MatcherAssert.assertThat(
             built.toString(),

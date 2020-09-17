@@ -109,6 +109,6 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
 
     @Override
     final boolean isEmpty() {
-        return this.value() == null || this.value().trim().isEmpty();
+        return this.value() == null || this.value().isEmpty();
     }
 }
