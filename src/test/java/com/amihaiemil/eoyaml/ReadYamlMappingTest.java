@@ -1080,4 +1080,26 @@ public final class ReadYamlMappingTest {
             Matchers.equalTo("someValue")
         );
     }
+
+    /**
+     * ReadYamlMapping returns the correct value for substring matching of keys.
+     */
+    @Test
+    public void dontTurnEmptyMapsAndArraysIntoStrings() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("def:", 0));
+        lines.add(new RtYamlLine("  - {}", 1));
+        lines.add(new RtYamlLine("  - []", 2));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        Collection<YamlNode> values = map.value("def").asSequence().values();
+        Iterator<YamlNode> iterator = values.iterator();
+        MatcherAssert.assertThat(
+                iterator.next().asMapping().keys(),
+                Matchers.is(Matchers.empty())
+        );
+        MatcherAssert.assertThat(
+                iterator.next().asSequence().size(),
+                Matchers.equalTo(0)
+        );
+    }
 }

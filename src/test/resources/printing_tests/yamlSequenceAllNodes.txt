@@ -13,3 +13,5 @@
   - a sequence
   - of plain scalars
   - as child
+- []
+- {}
