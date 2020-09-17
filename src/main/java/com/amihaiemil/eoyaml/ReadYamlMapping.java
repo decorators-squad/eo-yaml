@@ -245,12 +245,25 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     value = this.significant.toYamlNode(
                         line, this.guessIndentation
                     );
+                } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
+                    value = new EmptyYamlMapping(new ReadYamlMapping(
+                            new RtYamlLine("", line.number()-1),
+                            this.all,
+                            this.guessIndentation
+                    ));
+                } else if (trimmed.matches(tryKey + ":[ ]*\\[]")) {
+                    value = new EmptyYamlSequence(new ReadYamlSequence(
+                            new RtYamlLine("", line.number() - 1),
+                            this.all,
+                            this.guessIndentation
+                    ));
                 } else if((trimmed.startsWith(tryKey + ":")
-                    || trimmed.startsWith("- " + tryKey + ":"))
-                    && trimmed.length() > 1
+                        || trimmed.startsWith("- " + tryKey + ":"))
+                        && trimmed.length() > 1
                 ) {
                     value = new ReadPlainScalar(this.all, line);
                 }
+
                 if(value != null) {
                     return value;
                 }

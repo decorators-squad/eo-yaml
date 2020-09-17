@@ -1139,9 +1139,9 @@ public final class ReadYamlMappingTest {
                 iterator.next().asSequence().size(),
                 Matchers.equalTo(0)
         );
-        Collection<YamlNode> otherValues = map.value("ghi").asSequence().values();
+        values = map.value("ghi").asSequence().values();
         MatcherAssert.assertThat(
-                otherValues.iterator().next().asSequence().size(),
+                values.size(),
                 Matchers.equalTo(0)
         );
     }
