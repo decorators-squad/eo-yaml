@@ -370,7 +370,9 @@ final class RtYamlPrinter implements YamlPrinter {
         public String value() {
             final String value = this.original.value();
             String escaped = value;
-            if (value.matches(".*[\\-#:>|$%&{}\\[\\]]+.*|[ ]+")) {
+            boolean quoted = (value.startsWith("'") && value.endsWith("'"))
+                    || (value.startsWith("\"") && value.endsWith("\""));
+            if (!quoted && value.matches(".*[\\-#:>|$%&{}\\[\\]]+.*|[ ]+")) {
                 if(value.contains("\"")) {
                     escaped = "'" + value + "'";
                 } else {
