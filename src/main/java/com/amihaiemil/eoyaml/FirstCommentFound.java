@@ -113,6 +113,7 @@ final class FirstCommentFound implements YamlLines {
      * @return Iterator of YamlLine.
      */
     private Iterator<YamlLine> nodeComment() {
+        enteredComments = false;
         Iterator<YamlLine> iterator = this.lines.iterator();
         final List<YamlLine> comment = new ArrayList<>();
         while (iterator.hasNext()) {
