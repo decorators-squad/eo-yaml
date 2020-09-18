@@ -87,7 +87,7 @@ final class ReflectedYamlSequence extends BaseYamlSequence {
 
             @Override
             public int number() {
-                return -1;
+                return UNKNOWN_LINE_NUMBER;
             }
         };
     }

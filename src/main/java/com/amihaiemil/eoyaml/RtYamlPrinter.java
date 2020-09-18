@@ -312,12 +312,14 @@ final class RtYamlPrinter implements YamlPrinter {
         if(node != null && node.comment() != null) {
             boolean unknownLineNumber = lastComment == null
                     || lastComment.number() == UNKNOWN_LINE_NUMBER;
-            boolean newLineNumber = lastComment == null
-                    || lastComment.number() != node.comment().number();
+            boolean newLineNumber = lastComment != null
+                    && lastComment.number() != node.comment().number();
+            System.err.println("Last comment is " + lastComment);
             if (unknownLineNumber || newLineNumber) {
                 Comment tmpComment = node.comment();
                 final String com = tmpComment.value();
                 if (com.trim().length() != 0) {
+                    System.err.println(tmpComment.getClass() + " Adding comment: " + tmpComment.number() + " [" + com.trim() + "]");
                     String[] lines = com.split(System.lineSeparator());
                     for (final String line : lines) {
                         this.writer

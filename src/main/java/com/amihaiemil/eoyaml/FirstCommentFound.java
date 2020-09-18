@@ -42,6 +42,8 @@ import java.util.List;
  */
 final class FirstCommentFound implements YamlLines {
 
+    boolean enteredComments = false;
+
     /**
      * Lines where we look for the comment.
      */
@@ -115,12 +117,18 @@ final class FirstCommentFound implements YamlLines {
         final List<YamlLine> comment = new ArrayList<>();
         while (iterator.hasNext()) {
             final YamlLine line = iterator.next();
-            if(!"---".equals(line.trimmed()) && !line.comment().isEmpty()) {
-                if(line.trimmed().startsWith("#")) {
-                    comment.add(line);
-                }
-            } else {
+            boolean hasComment = !line.comment().isEmpty();
+            if (enteredComments && !hasComment) {
                 break;
+            } else {
+                if (hasComment) {
+                    enteredComments = true;
+                    if (!"---".equals(line.trimmed())) {
+                        if (line.trimmed().startsWith("#")) {
+                            comment.add(line);
+                        }
+                    }
+                }
             }
         }
         iterator = comment.iterator();

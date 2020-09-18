@@ -38,14 +38,20 @@ import java.util.Iterator;
 final class ReadComment implements Comment {
 
     /**
-     * Lines of this comment.
-     */
-    private final YamlLines lines;
-
-    /**
      * Node to which this comment refers.
      */
     private final YamlNode node;
+
+    /**
+     * Calculated line number
+     */
+    private final int lineNumber;
+
+    /**
+     * Calculated comment
+     */
+    private final String comment;
+
 
     /**
      * Constructor.
@@ -53,8 +59,9 @@ final class ReadComment implements Comment {
      * @param node Node to which it refers.
      */
     ReadComment(final YamlLines lines, final YamlNode node) {
-        this.lines = lines;
         this.node = node;
+        this.lineNumber = calculateLineNumber(lines);
+        this.comment = calculateComments(lines).toString().trim();
     }
 
     @Override
@@ -64,22 +71,30 @@ final class ReadComment implements Comment {
 
     @Override
     public int number() {
-        Iterator<YamlLine> iterator = lines.iterator();
-        int lineNumber = UNKNOWN_LINE_NUMBER;
-        if (iterator.hasNext()) {
-            lineNumber = iterator.next().number();
-        }
-        return lineNumber;
+        return this.lineNumber;
     }
 
     @Override
     public String value() {
-        final StringBuilder comment = new StringBuilder();
-        for(final YamlLine line : this.lines) {
-            comment
-                .append(line.comment().trim())
-                .append(System.lineSeparator());
+        return this.comment;
+    }
+
+    private StringBuilder calculateComments(YamlLines lines) {
+        final StringBuilder tmpComment = new StringBuilder();
+        for(final YamlLine line : lines) {
+            tmpComment
+                    .append(line.comment().trim())
+                    .append(System.lineSeparator());
         }
-        return comment.toString().trim();
+        return tmpComment;
+    }
+
+    private int calculateLineNumber(YamlLines lines) {
+        int tmpLineNumber = UNKNOWN_LINE_NUMBER;
+        Iterator<YamlLine> iterator = lines.iterator();
+        if (iterator.hasNext()) {
+            tmpLineNumber = iterator.next().number();
+        }
+        return tmpLineNumber;
     }
 }
