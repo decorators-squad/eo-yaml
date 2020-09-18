@@ -43,12 +43,12 @@ final class ReadComment implements Comment {
     private final YamlNode node;
 
     /**
-     * Calculated line number
+     * Calculated line number.
      */
     private final int lineNumber;
 
     /**
-     * Calculated comment
+     * Calculated comment.
      */
     private final String comment;
 
@@ -79,7 +79,13 @@ final class ReadComment implements Comment {
         return this.comment;
     }
 
-    private StringBuilder calculateComments(YamlLines lines) {
+    /**
+     * Pre-compute the comment value.
+     *
+     * @param lines The lines to parse into comments.
+     * @return Comments.
+     */
+    private StringBuilder calculateComments(final YamlLines lines) {
         final StringBuilder tmpComment = new StringBuilder();
         for(final YamlLine line : lines) {
             tmpComment
@@ -89,7 +95,13 @@ final class ReadComment implements Comment {
         return tmpComment;
     }
 
-    private int calculateLineNumber(YamlLines lines) {
+    /**
+     * Pre-compute the line number of the first comment.
+     *
+     * @param lines The lines to parse.
+     * @return Line number.
+     */
+    private int calculateLineNumber(final YamlLines lines) {
         int tmpLineNumber = UNKNOWN_LINE_NUMBER;
         Iterator<YamlLine> iterator = lines.iterator();
         if (iterator.hasNext()) {

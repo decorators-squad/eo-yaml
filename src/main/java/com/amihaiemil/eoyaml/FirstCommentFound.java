@@ -42,7 +42,10 @@ import java.util.List;
  */
 final class FirstCommentFound implements YamlLines {
 
-    boolean enteredComments = false;
+    /**
+     * Have we encountered a line with a comment yet.
+     */
+    private boolean enteredComments;
 
     /**
      * Lines where we look for the comment.

@@ -116,7 +116,8 @@ public final class FirstCommentFoundTest {
     }
 
     /**
-     * {@link FirstCommentFound} returns the first comment even if there's a line between it.
+     * {@link FirstCommentFound} returns the first comment even if there's
+     * a line between it.
      */
     @Test
     public void noFirstComment() {
@@ -134,7 +135,8 @@ public final class FirstCommentFoundTest {
     }
 
     /**
-     * {@link FirstCommentFound} returns the comment when called multiple times - check we re-parse correctly.
+     * {@link FirstCommentFound} returns the comment when called multiple
+     *  times - check we re-parse correctly.
      */
     @Test
     public void findCommentsMultipleTimes() {
