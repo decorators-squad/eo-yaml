@@ -380,17 +380,31 @@ public final class ReadYamlSequenceTest {
     @Test
     public void dontTurnEmptyMapsAndArraysIntoStrings() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("- {}", 0));
-        lines.add(new RtYamlLine("- []", 1));
+        lines.add(new RtYamlLine("# A", 0));
+        lines.add(new RtYamlLine("- {}", 1));
+        lines.add(new RtYamlLine("# B", 2));
+        lines.add(new RtYamlLine("- []", 3));
         final YamlSequence seq = new ReadYamlSequence(new AllYamlLines(lines));
         Iterator<YamlNode> iterator = seq.values().iterator();
+        YamlMapping actualMap = iterator.next().asMapping();
+        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build("A");
         MatcherAssert.assertThat(
-                iterator.next().asMapping(),
-                Matchers.equalTo(Yaml.createYamlMappingBuilder().build())
+                actualMap,
+                Matchers.equalTo(expectedMap)
         );
         MatcherAssert.assertThat(
-                iterator.next().asSequence(),
-                Matchers.equalTo(Yaml.createYamlSequenceBuilder().build())
+                actualMap.comment().value(),
+                Matchers.equalTo(expectedMap.comment().value())
+        );
+        YamlSequence actualSeq = iterator.next().asSequence();
+        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build("B");
+        MatcherAssert.assertThat(
+                actualSeq,
+                Matchers.equalTo(expectedSeq)
+        );
+        MatcherAssert.assertThat(
+                actualSeq.comment().value(),
+                Matchers.equalTo(expectedSeq.comment().value())
         );
     }
 

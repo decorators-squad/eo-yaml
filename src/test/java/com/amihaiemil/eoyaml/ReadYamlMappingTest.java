@@ -1124,20 +1124,30 @@ public final class ReadYamlMappingTest {
     @Test
     public void dontTurnEmptyMapsAndArraysIntoStrings() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("def: {}", 0));
-        lines.add(new RtYamlLine("ghi: []", 1));
+        lines.add(new RtYamlLine("# A", 0));
+        lines.add(new RtYamlLine("def: {}", 1));
+        lines.add(new RtYamlLine("# B", 2));
+        lines.add(new RtYamlLine("ghi: []", 3));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         YamlMapping actualMap = map.value("def").asMapping();
-        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build();
+        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build("A");
         MatcherAssert.assertThat(
                 actualMap,
                 Matchers.equalTo(expectedMap)
         );
+        MatcherAssert.assertThat(
+                actualMap.comment().value(),
+                Matchers.equalTo(expectedMap.comment().value())
+        );
         YamlSequence actualSeq = map.value("ghi").asSequence();
-        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build();
+        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build("B");
         MatcherAssert.assertThat(
                 actualSeq,
                 Matchers.equalTo(expectedSeq)
+        );
+        MatcherAssert.assertThat(
+                actualSeq.comment().value(),
+                Matchers.equalTo(expectedSeq.comment().value())
         );
     }
 }

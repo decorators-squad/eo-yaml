@@ -247,13 +247,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     );
                 } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
-                            this.all.line(line.number() - 1),
+                            this.all.line(line.number()),
                             this.all,
                             this.guessIndentation
                     ));
                 } else if (trimmed.matches(tryKey + ":[ ]*\\[]")) {
                     value = new EmptyYamlSequence(new ReadYamlSequence(
-                            this.all.line(line.number() - 1),
+                            this.all.line(line.number()),
                             this.all,
                             this.guessIndentation
                     ));
