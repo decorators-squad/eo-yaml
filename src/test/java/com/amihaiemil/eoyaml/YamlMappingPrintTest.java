@@ -333,6 +333,45 @@ public final class YamlMappingPrintTest {
     }
 
     /**
+     * When a map and sequence .
+     *
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlCommentsOnMapOrSequence() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+                new File("src/test/resources/printing_tests/yamlCommentsOnMapOrSeq.txt")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+                read.toString(),
+                Matchers.equalTo(
+                        this.readExpected("yamlCommentsOnMapOrSeqRoundTrip.txt")
+                )
+        );
+    }
+
+    /**
+     * When on separate lines we can distinguish which node to apply the
+     * comment to.
+     *
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlCommentsOnMapAndSequence() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/printing_tests/yamlCommentsOnMapAndSeq.txt")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+                read.toString(),
+                Matchers.equalTo(
+                        this.readExpected(
+                                "yamlCommentsOnMapAndSeqRoundTrip.txt")
+                )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import static com.amihaiemil.eoyaml.Comment.UNKNOWN_LINE_NUMBER;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -62,17 +60,6 @@ public final class BuiltCommentTest {
         MatcherAssert.assertThat(
             new BuiltComment(Mockito.mock(YamlNode.class), "test").value(),
             Matchers.equalTo("test")
-        );
-    }
-
-    /**
-     * BuiltComment can doesn't have a comment location.
-     */
-    @Test
-    public void returnsUnknownNumber() {
-        MatcherAssert.assertThat(
-            new BuiltComment(Mockito.mock(YamlNode.class), "test").number(),
-            Matchers.equalTo(UNKNOWN_LINE_NUMBER)
         );
     }
 }

@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import static com.amihaiemil.eoyaml.Comment.UNKNOWN_LINE_NUMBER;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -72,10 +70,6 @@ public final class ReadCommentTest {
             readComment.value(),
             Matchers.isEmptyString()
         );
-        MatcherAssert.assertThat(
-            readComment.number(),
-            Matchers.equalTo(UNKNOWN_LINE_NUMBER)
-        );
     }
 
     /**
@@ -92,10 +86,6 @@ public final class ReadCommentTest {
         MatcherAssert.assertThat(
             readComment.value(),
             Matchers.equalTo("comment line")
-        );
-        MatcherAssert.assertThat(
-            readComment.number(),
-            Matchers.equalTo(0)
         );
     }
 
@@ -120,10 +110,6 @@ public final class ReadCommentTest {
         MatcherAssert.assertThat(
             readComment.value(),
             Matchers.equalTo(expected.toString())
-        );
-        MatcherAssert.assertThat(
-            readComment.number(),
-            Matchers.equalTo(0)
         );
     }
 
@@ -154,10 +140,6 @@ public final class ReadCommentTest {
             readComment.value(),
             Matchers.equalTo(expected.toString())
         );
-        MatcherAssert.assertThat(
-            readComment.number(),
-            Matchers.equalTo(0)
-        );
     }
 
     /**
@@ -176,10 +158,6 @@ public final class ReadCommentTest {
         MatcherAssert.assertThat(
             readComment.value(),
             Matchers.equalTo(expected.toString())
-        );
-        MatcherAssert.assertThat(
-            readComment.number(),
-            Matchers.equalTo(1)
         );
     }
 

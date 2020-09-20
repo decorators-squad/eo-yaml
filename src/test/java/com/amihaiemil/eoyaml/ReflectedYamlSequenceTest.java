@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import static com.amihaiemil.eoyaml.Comment.UNKNOWN_LINE_NUMBER;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -59,10 +57,6 @@ public final class ReflectedYamlSequenceTest {
         MatcherAssert.assertThat(
             sequence.comment().value(),
             Matchers.isEmptyString()
-        );
-        MatcherAssert.assertThat(
-            sequence.comment().number(),
-            Matchers.is(UNKNOWN_LINE_NUMBER)
         );
     }
 

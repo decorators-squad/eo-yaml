@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Iterator;
-
 /**
  * A comment which has been read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -43,11 +41,6 @@ final class ReadComment implements Comment {
     private final YamlNode node;
 
     /**
-     * Calculated line number.
-     */
-    private final int lineNumber;
-
-    /**
      * Calculated comment.
      */
     private final String comment;
@@ -60,18 +53,12 @@ final class ReadComment implements Comment {
      */
     ReadComment(final YamlLines lines, final YamlNode node) {
         this.node = node;
-        this.lineNumber = calculateLineNumber(lines);
         this.comment = calculateComments(lines).toString().trim();
     }
 
     @Override
     public YamlNode yamlNode() {
         return this.node;
-    }
-
-    @Override
-    public int number() {
-        return this.lineNumber;
     }
 
     @Override
@@ -93,20 +80,5 @@ final class ReadComment implements Comment {
                     .append(System.lineSeparator());
         }
         return tmpComment;
-    }
-
-    /**
-     * Pre-compute the line number of the first comment.
-     *
-     * @param lines The lines to parse.
-     * @return Line number.
-     */
-    private int calculateLineNumber(final YamlLines lines) {
-        int tmpLineNumber = UNKNOWN_LINE_NUMBER;
-        Iterator<YamlLine> iterator = lines.iterator();
-        if (iterator.hasNext()) {
-            tmpLineNumber = iterator.next().number();
-        }
-        return tmpLineNumber;
     }
 }

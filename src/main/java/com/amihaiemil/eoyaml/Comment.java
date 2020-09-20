@@ -35,12 +35,6 @@ package com.amihaiemil.eoyaml;
  */
 public interface Comment {
     /**
-     * Indicates we don't know or don't have a line number for the given
-     * comment (may not have come from a file).
-     */
-    int UNKNOWN_LINE_NUMBER = -1;
-
-    /**
      * Yaml node to which this comment refers.
      * @return YamlNode.
      */
@@ -54,11 +48,4 @@ public interface Comment {
      *  will be added when printing.
      */
     String value();
-
-    /**
-     * Line number where the comment starts on.
-     *
-     * @return Line number.
-     */
-    int number();
 }

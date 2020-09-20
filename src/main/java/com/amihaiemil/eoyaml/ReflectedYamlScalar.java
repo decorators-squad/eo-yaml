@@ -71,11 +71,6 @@ final class ReflectedYamlScalar extends BaseScalar {
             public String value() {
                 return "";
             }
-
-            @Override
-            public int number() {
-                return UNKNOWN_LINE_NUMBER;
-            }
         };
     }
 }

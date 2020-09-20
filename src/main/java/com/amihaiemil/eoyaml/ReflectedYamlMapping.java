@@ -118,11 +118,6 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
             public String value() {
                 return "";
             }
-
-            @Override
-            public int number() {
-                return UNKNOWN_LINE_NUMBER;
-            }
         };
     }
 
@@ -213,11 +208,6 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
                 @Override
                 public String value() {
                     return "";
-                }
-
-                @Override
-                public int number() {
-                    return UNKNOWN_LINE_NUMBER;
                 }
             };
         }

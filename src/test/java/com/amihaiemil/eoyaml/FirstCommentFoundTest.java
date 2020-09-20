@@ -116,8 +116,8 @@ public final class FirstCommentFoundTest {
     }
 
     /**
-     * {@link FirstCommentFound} returns the first comment even if there's
-     * a line between it.
+     * {@link FirstCommentFound} returns no lines since there is
+     * no comment at the beginning.
      */
     @Test
     public void noFirstComment() {
@@ -131,7 +131,7 @@ public final class FirstCommentFoundTest {
         final YamlLines comment = new FirstCommentFound(
                 new AllYamlLines(lines)
         );
-        MatcherAssert.assertThat(comment, Matchers.iterableWithSize(1));
+        MatcherAssert.assertThat(comment, Matchers.emptyIterable());
     }
 
     /**
@@ -141,13 +141,11 @@ public final class FirstCommentFoundTest {
     @Test
     public void findCommentsMultipleTimes() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("one: one", 0));
-        lines.add(new RtYamlLine("# two", 1));
-        lines.add(new RtYamlLine("three: three", 2));
+        lines.add(new RtYamlLine("# two", 0));
+        lines.add(new RtYamlLine("three: three", 1));
         final YamlLines comment = new FirstCommentFound(
                 new AllYamlLines(lines)
         );
-        MatcherAssert.assertThat(comment, Matchers.iterableWithSize(1));
         MatcherAssert.assertThat(comment, Matchers.iterableWithSize(1));
         MatcherAssert.assertThat(comment, Matchers.iterableWithSize(1));
     }
