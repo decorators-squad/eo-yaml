@@ -27,7 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * YamlSequence read from somewhere.
@@ -145,10 +147,22 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     || trimmed.endsWith(">")
                 ) {
                     kids.add(
-                        this.significant.toYamlNode(
-                            line, this.guessIndentation
-                        )
+                            this.significant.toYamlNode(
+                                    line, this.guessIndentation
+                            )
                     );
+                } else if (trimmed.matches("^-[ ]*\\{}")) {
+                    kids.add(new EmptyYamlMapping(new ReadYamlMapping(
+                            this.all.line(line.number()),
+                            this.all,
+                            this.guessIndentation
+                    )));
+                } else if (trimmed.matches("^-[ ]*\\[]")) {
+                    kids.add(new EmptyYamlSequence(new ReadYamlSequence(
+                            this.all.line(line.number()),
+                            this.all,
+                            this.guessIndentation
+                    )));
                 } else {
                     if(this.mappingStartsAtDash(line)) {
                         kids.add(

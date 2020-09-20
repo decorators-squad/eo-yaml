@@ -375,6 +375,40 @@ public final class ReadYamlSequenceTest {
     }
 
     /**
+     * ReadYamlSequence returns the correct value for empty maps and sequences.
+     */
+    @Test
+    public void dontTurnEmptyMapsAndArraysIntoStrings() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("# A", 0));
+        lines.add(new RtYamlLine("- {}", 1));
+        lines.add(new RtYamlLine("# B", 2));
+        lines.add(new RtYamlLine("- []", 3));
+        final YamlSequence seq = new ReadYamlSequence(new AllYamlLines(lines));
+        Iterator<YamlNode> iterator = seq.values().iterator();
+        YamlMapping actualMap = iterator.next().asMapping();
+        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build("A");
+        MatcherAssert.assertThat(
+                actualMap,
+                Matchers.equalTo(expectedMap)
+        );
+        MatcherAssert.assertThat(
+                actualMap.comment().value(),
+                Matchers.equalTo(expectedMap.comment().value())
+        );
+        YamlSequence actualSeq = iterator.next().asSequence();
+        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build("B");
+        MatcherAssert.assertThat(
+                actualSeq,
+                Matchers.equalTo(expectedSeq)
+        );
+        MatcherAssert.assertThat(
+                actualSeq.comment().value(),
+                Matchers.equalTo(expectedSeq.comment().value())
+        );
+    }
+
+    /**
      * An empty ReadYamlSequence can be printed.
      * @throws Exception if something goes wrong
      */

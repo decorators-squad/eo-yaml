@@ -13,6 +13,8 @@ key5:
   - a sequence
   - of plain scalars
   - as value
+key6: {}
+key7: []
 ?
   - Atlanta Braves
   - New York Yankees
