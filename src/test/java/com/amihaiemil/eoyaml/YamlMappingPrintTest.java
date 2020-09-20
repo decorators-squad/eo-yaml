@@ -350,7 +350,8 @@ public final class YamlMappingPrintTest {
     @Test
     public void printsReadYamlCommentsOnMapOrSequence() throws Exception {
         final YamlMapping read = Yaml.createYamlInput(
-                new File("src/test/resources/printing_tests/yamlCommentsOnMapOrSeq.txt")
+            new File(
+                "src/test/resources/printing_tests/yamlCommentsOnMapOrSeq.txt")
         ).readYamlMapping();
         MatcherAssert.assertThat(
                 read.toString(),
