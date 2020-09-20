@@ -268,8 +268,14 @@ final class RtYamlPrinter implements YamlPrinter {
         final boolean onNewLine,
         final int indentation
     ) throws IOException {
-        if(node == null || ((BaseYamlNode) node).isEmpty()) {
-            this.writer.append(" ").append("null");
+        if (node == null || ((BaseYamlNode) node).isEmpty()) {
+            if (node instanceof EmptyYamlSequence) {
+                this.writer.append(" ").append("[]");
+            } else if (node instanceof EmptyYamlMapping) {
+                this.writer.append(" ").append("{}");
+            } else {
+                this.writer.append(" ").append("null");
+            }
         } else {
             if (onNewLine) {
                 this.writer.append(System.lineSeparator());

@@ -238,19 +238,32 @@ final class ReadYamlMapping extends BaseYamlMapping {
         for(final String tryKey : keys) {
             for (final YamlLine line : this.significant) {
                 final String trimmed = line.trimmed();
-                if(trimmed.endsWith(tryKey + ":")
+                if(trimmed.matches("^-?[ ]*" + Pattern.quote(tryKey) + ":")
                     || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\>$")
                     || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\|$")
                 ) {
                     value = this.significant.toYamlNode(
                         line, this.guessIndentation
                     );
+                } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
+                    value = new EmptyYamlMapping(new ReadYamlMapping(
+                            this.all.line(line.number()),
+                            this.all,
+                            this.guessIndentation
+                    ));
+                } else if (trimmed.matches(tryKey + ":[ ]*\\[]")) {
+                    value = new EmptyYamlSequence(new ReadYamlSequence(
+                            this.all.line(line.number()),
+                            this.all,
+                            this.guessIndentation
+                    ));
                 } else if((trimmed.startsWith(tryKey + ":")
-                    || trimmed.startsWith("- " + tryKey + ":"))
-                    && trimmed.length() > 1
+                        || trimmed.startsWith("- " + tryKey + ":"))
+                        && trimmed.length() > 1
                 ) {
                     value = new ReadPlainScalar(this.all, line);
                 }
+
                 if(value != null) {
                     return value;
                 }
