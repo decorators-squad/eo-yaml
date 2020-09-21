@@ -55,6 +55,18 @@ public final class ReadPlainScalarTest {
     }
 
     /**
+     * ReadPlainScalar can return the scalar's value from an unbalanced/incorrect string escaping.
+     */
+    @Test
+    public void returnsValueFromUnbalancedString() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("key: \"value'", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("\"value'"));
+    }
+
+    /**
      * ReadPlainScalar can return the scalar's unescaped value
      * from a mapping line.
      */
@@ -105,6 +117,33 @@ public final class ReadPlainScalarTest {
             new RtYamlLine("- value", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value"));
+    }
+
+    /**
+     * ReadPlainScalar can return the scalar's value from a sequence line with multiple spaces.
+     */
+    @Test
+    public void returnsValueFromSequenceLineMultipleSpaces() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("-    \"value is here\"", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value is here"));
+    }
+
+    /**
+     * ReadPlainScalar can return the scalar's value from a sequence line where there's an extra line.
+     */
+    @Test
+    public void returnsValueOnNextLineFromSequence() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("sns: ", 0));
+        lines.add(new RtYamlLine("  -", 1));
+        lines.add(new RtYamlLine("    \"arn:aws:sns:{{ region }}:{{ account }}:Topic\"", 2));
+        final Scalar scalar = new ReadPlainScalar(
+                new AllYamlLines(lines), lines.get(2)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("arn:aws:sns:{{ region }}:{{ account }}:Topic"));
     }
 
     /**
