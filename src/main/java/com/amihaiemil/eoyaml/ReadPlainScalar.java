@@ -135,6 +135,8 @@ final class ReadPlainScalar extends BaseScalar {
      */
     private boolean escapedSequenceScalar(final YamlLine dashLine) {
         final String trimmed = dashLine.trimmed();
-        return trimmed.matches("^([ ]*([\\-][ ]*)?)((\"(?:[^\"\\\\]|\\\\.)*\")|('(?:[^'\\\\]|\\\\.)*'))$");
+        return trimmed.matches("^([ ]*([\\-][ ]*)?)"
+                + "((\"(?:[^\"\\\\]|\\\\.)*\")|"
+                + "('(?:[^'\\\\]|\\\\.)*'))$");
     }
 }
