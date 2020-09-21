@@ -103,6 +103,7 @@ public final class PlainStringScalarTest {
         PlainStringScalar second = new PlainStringScalar("java");
         PlainStringScalar digits = new PlainStringScalar("123");
         PlainStringScalar otherDigits = new PlainStringScalar("124");
+        PlainStringScalar nullScalar = new PlainStringScalar(null);
         MatcherAssert.assertThat(first.compareTo(first), Matchers.equalTo(0));
         MatcherAssert.assertThat(first.compareTo(second), Matchers.equalTo(0));
         MatcherAssert.assertThat(
@@ -113,6 +114,12 @@ public final class PlainStringScalarTest {
         );
         MatcherAssert.assertThat(
             digits.compareTo(otherDigits), Matchers.lessThan(0)
+        );
+        MatcherAssert.assertThat(
+            first.compareTo(nullScalar), Matchers.greaterThan(0)
+        );
+        MatcherAssert.assertThat(
+            nullScalar.compareTo(first), Matchers.lessThan(0)
         );
     }
 
