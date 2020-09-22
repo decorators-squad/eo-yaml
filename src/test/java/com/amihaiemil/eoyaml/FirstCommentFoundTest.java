@@ -133,4 +133,20 @@ public final class FirstCommentFoundTest {
         );
         MatcherAssert.assertThat(comment, Matchers.emptyIterable());
     }
+
+    /**
+     * {@link FirstCommentFound} returns the comment when called multiple
+     *  times - check we re-parse correctly.
+     */
+    @Test
+    public void findCommentsMultipleTimes() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("# two", 0));
+        lines.add(new RtYamlLine("three: three", 1));
+        final YamlLines comment = new FirstCommentFound(
+                new AllYamlLines(lines)
+        );
+        MatcherAssert.assertThat(comment, Matchers.iterableWithSize(1));
+        MatcherAssert.assertThat(comment, Matchers.iterableWithSize(1));
+    }
 }

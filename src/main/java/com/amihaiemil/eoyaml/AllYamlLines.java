@@ -129,7 +129,8 @@ final class AllYamlLines implements YamlLines {
         if (first.trimmed().startsWith("-")){
             node = new ReadYamlSequence(prev, this, guessIndentation);
         } else if(first.trimmed().contains(":")) {
-            node = new ReadYamlMapping(prev, this, guessIndentation);
+            node = new ReadYamlMapping(prev.number(), prev, this,
+                    guessIndentation);
         } else if(this.original().size() == 1) {
             node = new ReadPlainScalar(this, first);
         } else {

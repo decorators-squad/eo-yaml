@@ -308,8 +308,9 @@ final class RtYamlPrinter implements YamlPrinter {
         final String alignment
     ) throws IOException {
         boolean printed = false;
-        if(node != null) {
-            final String com = node.comment().value();
+        if(node != null && node.comment() != null) {
+            Comment tmpComment = node.comment();
+            final String com = tmpComment.value();
             if (com.trim().length() != 0) {
                 String[] lines = com.split(System.lineSeparator());
                 for (final String line : lines) {

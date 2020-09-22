@@ -34,6 +34,11 @@ package com.amihaiemil.eoyaml;
  * @since 1.0.0
  */
 interface YamlLine extends Comparable<YamlLine> {
+    /**
+     * Indicates we don't know or don't have a line number for the given
+     * comment (may not have come from a file).
+     */
+    int UNKNOWN_LINE_NUMBER = -1;
 
     /**
      * The line's trimmed contents with comments, aliases etc removed.
@@ -84,7 +89,7 @@ interface YamlLine extends Comparable<YamlLine> {
 
         @Override
         public int number() {
-            return -1;
+            return UNKNOWN_LINE_NUMBER;
         }
 
         @Override

@@ -323,6 +323,64 @@ public final class YamlMappingPrintTest {
         );
     }
 
+    /**
+     * Duplication of the test case described https://github.com/decorators-squad/eo-yaml/issues/396 where a sequence
+     * inside a map duplicated the comment.
+     *
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlDuplicatedComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+                new File("src/test/resources/printing_tests/yamlDuplicatedComments.txt")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+                read.toString(),
+                Matchers.equalTo(
+                        this.readExpected("yamlDuplicatedCommentsRoundTrip.txt")
+                )
+        );
+    }
+
+    /**
+     * When a map and sequence .
+     *
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlCommentsOnMapOrSequence() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/printing_tests/yamlCommentsOnMapOrSeq.txt")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+                read.toString(),
+                Matchers.equalTo(
+                        this.readExpected("yamlCommentsOnMapOrSeqRoundTrip.txt")
+                )
+        );
+    }
+
+    /**
+     * When on separate lines we can distinguish which node to apply the
+     * comment to.
+     *
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlCommentsOnMapAndSequence() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/printing_tests/yamlCommentsOnMapAndSeq.txt")
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+                read.toString(),
+                Matchers.equalTo(
+                        this.readExpected(
+                                "yamlCommentsOnMapAndSeqRoundTrip.txt")
+                )
+        );
+    }
 
     /**
      * Read a test resource file's contents.
