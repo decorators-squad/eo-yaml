@@ -182,6 +182,46 @@ public final class AllYamlLinesTest {
 
     /**
      * Unit test for AllYamlLines.toYamlNode(). The lines should turn
+     * into a literal with colons but no spaces after the colon into scalar.
+     */
+    @Test
+    public void turnsIntoScalarNotMapping() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("arn:something:something", 1));
+        final YamlLines yamlLines = new AllYamlLines(lines);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        MatcherAssert.assertThat(
+                actual,
+                Matchers.instanceOf(Scalar.class)
+        );
+        MatcherAssert.assertThat(
+                actual.asScalar().value(),
+                Matchers.equalTo("arn:something:something")
+        );
+    }
+
+    /**
+     * Unit test for AllYamlLines.toYamlNode(). The lines should turn
+     * into a literal with a dash but no spaces after the dash into scalar.
+     */
+    @Test
+    public void turnsIntoScalarNotSequence() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("-foo", 1));
+        final YamlLines yamlLines = new AllYamlLines(lines);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        MatcherAssert.assertThat(
+                actual,
+                Matchers.instanceOf(Scalar.class)
+        );
+        MatcherAssert.assertThat(
+                actual.asScalar().value(),
+                Matchers.equalTo("-foo")
+        );
+    }
+
+    /**
+     * Unit test for AllYamlLines.toYamlNode(). The lines should turn
      * into a (detected) mapping.
      */
     @Test
@@ -190,9 +230,10 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("some: mapping", 1));
         lines.add(new RtYamlLine("for: test", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("---", 0), false),
-            Matchers.instanceOf(ReadYamlMapping.class)
+                actual,
+                Matchers.instanceOf(ReadYamlMapping.class)
         );
     }
 

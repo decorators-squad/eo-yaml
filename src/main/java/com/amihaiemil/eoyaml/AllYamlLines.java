@@ -30,6 +30,8 @@ package com.amihaiemil.eoyaml;
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * YamlLines default implementation. "All" refers to the fact that
@@ -44,6 +46,18 @@ import java.util.Iterator;
  * @since 1.0.0
  */
 final class AllYamlLines implements YamlLines {
+
+    /**
+     * Pattern to match a sequence or map.
+     */
+    private static final Pattern SEQUENCE_OR_MAP = Pattern.compile("^("
+            + "([ ]*([\\-]|[\\-][ ]+.*))|"
+            + "([ ]*"
+                + "((\"(?:[^\"\\\\]|\\\\.)*\")|"
+                + "('(?:[^'\\\\]|\\\\.)*')|"
+                + "([^\"']*))"
+            +"(:|:[ ].*))"
+            + ")$");
 
     /**
      * Yaml lines.
@@ -116,7 +130,7 @@ final class AllYamlLines implements YamlLines {
         final YamlLine prev,
         final boolean guessIndentation
     ) {
-        final YamlNode node;
+        YamlNode node = null;
         final YamlLine first = new Skip(
             this,
             line -> line.number() <= prev.number(),
@@ -126,13 +140,19 @@ final class AllYamlLines implements YamlLines {
             line -> line.trimmed().startsWith("%"),
             line -> line.trimmed().startsWith("!!")
         ).iterator().next();
-        if (first.trimmed().startsWith("-")){
-            node = new ReadYamlSequence(prev, this, guessIndentation);
-        } else if(first.trimmed().contains(":")) {
-            node = new ReadYamlMapping(prev, this, guessIndentation);
-        } else if(this.original().size() == 1) {
+        Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
+        if (matcher.matches()) {
+            // Sequence group 2
+            // Map group 5
+            if (matcher.group(2) != null) {
+                node = new ReadYamlSequence(prev, this, guessIndentation);
+            } else if (matcher.group(5) != null) {
+                node = new ReadYamlMapping(prev, this, guessIndentation);
+            }
+        } else if (this.original().size() == 1) {
             node = new ReadPlainScalar(this, first);
-        } else {
+        }
+        if (node == null) {
             throw new YamlReadingException(
                 "Could not parse YAML starting at line " + (first.number() + 1)
                 + " . It should be a sequence (line should start with '-'), "
@@ -140,8 +160,8 @@ final class AllYamlLines implements YamlLines {
                 + "scalar, but it has " + this.lines.size() + " lines, "
                 + "while a plain scalar should be only 1 line!"
             );
+        } else {
+            return node;
         }
-        return node;
     }
-
 }

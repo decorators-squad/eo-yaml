@@ -55,6 +55,18 @@ public final class ReadPlainScalarTest {
     }
 
     /**
+     * ReadPlainScalar can return the scalar's value from a mapping line.
+     */
+    @Test
+    public void returnsValueFromScalarLineWithColon() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("key:value", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("key:value"));
+    }
+
+    /**
      * ReadPlainScalar can return the scalar's value from an
      * unbalanced/incorrect string escaping.
      */
@@ -106,6 +118,19 @@ public final class ReadPlainScalarTest {
             new RtYamlLine("key: 'null'", 0)
         );
         MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("null"));
+    }
+
+    /**
+     * ReadPlainScalar can return the scalar's value from a scalar line
+     * (that looks like a sequence line).
+     */
+    @Test
+    public void returnsValueFromScalarLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("-value", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("-value"));
     }
 
     /**

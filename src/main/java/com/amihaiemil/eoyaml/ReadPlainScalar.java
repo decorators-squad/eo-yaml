@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A plain scalar value read from somewhere.
  * @author Mihai Andronace (amihaiemil@gmail.com)
@@ -34,6 +37,17 @@ package com.amihaiemil.eoyaml;
  * @since 3.1.3
  */
 final class ReadPlainScalar extends BaseScalar {
+
+    /**
+     * Pattern to match quoted literals, mappings or sequences.
+     */
+    private static final Pattern QUOTED_LITERAL_MAP_SEQ = Pattern.compile(
+            "^(([ ]*([\\-][ ]*)?)"
+            + "((\"(?:[^\"\\\\]|\\\\.)*\")|"
+            + "('(?:[^'\\\\]|\\\\.)*'))|"
+            + "([ ]*(.*)(:|:[ ]+(.*)))|"
+            + "(-[ ]+(.*))|"
+            + ")$");
 
     /**
      * All YAML Lines of the document.
@@ -70,16 +84,20 @@ final class ReadPlainScalar extends BaseScalar {
     public String value() {
         final String value;
         final String trimmed = this.scalar.trimmed();
-        if(this.escapedSequenceScalar(this.scalar)) {
-            value = trimmed.substring(trimmed.indexOf('-')+1).trim();
-        } else {
-            if (trimmed.contains(":") && !trimmed.endsWith(":")) {
-                value = trimmed.substring(trimmed.indexOf(":") + 1).trim();
-            } else if (trimmed.startsWith("-") && trimmed.length() > 1) {
-                value = trimmed.substring(trimmed.indexOf('-') + 1).trim();
+        Matcher matcher = this.escapedSequenceScalar(this.scalar);
+        if(matcher.matches()) {
+            // The group that includes '' or ""
+            if (matcher.group(4) != null) {
+                value = matcher.group(4);
+            } else if (matcher.group(10) != null) {
+                value = matcher.group(10).trim();
+            } else if (matcher.group(12) != null) {
+                value = matcher.group(12).trim();
             } else {
                 value = trimmed;
             }
+        } else {
+            value = trimmed;
         }
         if("null".equals(value)) {
             return null;
@@ -133,10 +151,8 @@ final class ReadPlainScalar extends BaseScalar {
      * @param dashLine Line.
      * @return True of false.
      */
-    private boolean escapedSequenceScalar(final YamlLine dashLine) {
+    private Matcher escapedSequenceScalar(final YamlLine dashLine) {
         final String trimmed = dashLine.trimmed();
-        return trimmed.matches("^([ ]*([\\-][ ]*)?)"
-                + "((\"(?:[^\"\\\\]|\\\\.)*\")|"
-                + "('(?:[^'\\\\]|\\\\.)*'))$");
+        return QUOTED_LITERAL_MAP_SEQ.matcher(trimmed);
     }
 }
