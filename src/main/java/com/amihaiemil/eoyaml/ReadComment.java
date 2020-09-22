@@ -36,14 +36,15 @@ package com.amihaiemil.eoyaml;
 final class ReadComment implements Comment {
 
     /**
-     * Lines of this comment.
-     */
-    private final YamlLines lines;
-
-    /**
      * Node to which this comment refers.
      */
     private final YamlNode node;
+
+    /**
+     * Calculated comment.
+     */
+    private final String comment;
+
 
     /**
      * Constructor.
@@ -51,8 +52,8 @@ final class ReadComment implements Comment {
      * @param node Node to which it refers.
      */
     ReadComment(final YamlLines lines, final YamlNode node) {
-        this.lines = lines;
         this.node = node;
+        this.comment = calculateComments(lines).toString().trim();
     }
 
     @Override
@@ -62,12 +63,22 @@ final class ReadComment implements Comment {
 
     @Override
     public String value() {
-        final StringBuilder comment = new StringBuilder();
-        for(final YamlLine line : this.lines) {
-            comment
-                .append(line.comment().trim())
-                .append(System.lineSeparator());
+        return this.comment;
+    }
+
+    /**
+     * Pre-compute the comment value.
+     *
+     * @param lines The lines to parse into comments.
+     * @return Comments.
+     */
+    private StringBuilder calculateComments(final YamlLines lines) {
+        final StringBuilder tmpComment = new StringBuilder();
+        for(final YamlLine line : lines) {
+            tmpComment
+                    .append(line.comment().trim())
+                    .append(System.lineSeparator());
         }
-        return comment.toString().trim();
+        return tmpComment;
     }
 }

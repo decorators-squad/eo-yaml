@@ -107,6 +107,7 @@ public final class YamlSequencePrintTest {
             )
             .add(Yaml.createYamlSequenceBuilder().build())
             .add(Yaml.createYamlMappingBuilder().build())
+            .add(" ")
             .build();
         MatcherAssert.assertThat(
             built.toString(),

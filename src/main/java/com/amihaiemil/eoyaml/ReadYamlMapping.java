@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
+
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -76,6 +78,11 @@ final class ReadYamlMapping extends BaseYamlMapping {
     private final boolean guessIndentation;
 
     /**
+     * Where to stop looking for comments.
+     */
+    private final int commentStop;
+
+    /**
      * Ctor.
      * @param lines Given lines.
      */
@@ -93,30 +100,26 @@ final class ReadYamlMapping extends BaseYamlMapping {
         final AllYamlLines lines,
         final boolean guessIndentation
     ) {
-        this(new YamlLine.NullYamlLine(), lines, guessIndentation);
+        this(UNKNOWN_LINE_NUMBER, new YamlLine.NullYamlLine(), lines,
+            guessIndentation);
     }
 
     /**
      * Ctor.
-     * @param previous Line just before the start of this mapping.
-     * @param lines Given lines.
-     */
-    ReadYamlMapping(final YamlLine previous, final AllYamlLines lines) {
-        this(previous, lines, Boolean.FALSE);
-    }
-
-    /**
-     * Ctor.
+     * @checkstyle ParameterNumber (100 lines)
+     * @param commentStop Where to
      * @param previous Line just before the start of this mapping.
      * @param lines Given lines.
      * @param guessIndentation If true, we will try to guess the correct
      *  indentation of misplaced lines.
      */
     ReadYamlMapping(
+        final int commentStop,
         final YamlLine previous,
         final AllYamlLines lines,
         final boolean guessIndentation
     ) {
+        this.commentStop = commentStop;
         this.previous = previous;
         this.all = lines;
         this.significant = new SameIndentationLevel(
@@ -205,7 +208,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                                         skip = false;
                                     }
                                 } else {
-                                    skip = line.number() >= this.previous.number();
+                                    skip = line.number() >= commentStop;
                                 }
                                 return skip;
                             },
@@ -247,6 +250,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     );
                 } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
+                            line.number(),
                             this.all.line(line.number()),
                             this.all,
                             this.guessIndentation

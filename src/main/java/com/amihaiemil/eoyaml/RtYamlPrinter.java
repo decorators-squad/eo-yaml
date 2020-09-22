@@ -308,8 +308,9 @@ final class RtYamlPrinter implements YamlPrinter {
         final String alignment
     ) throws IOException {
         boolean printed = false;
-        if(node != null) {
-            final String com = node.comment().value();
+        if(node != null && node.comment() != null) {
+            Comment tmpComment = node.comment();
+            final String com = tmpComment.value();
             if (com.trim().length() != 0) {
                 String[] lines = com.split(System.lineSeparator());
                 for (final String line : lines) {
@@ -360,11 +361,6 @@ final class RtYamlPrinter implements YamlPrinter {
     static class Escaped extends BaseScalar {
 
         /**
-         * Special chars that need escaping.
-         */
-        private final String RESERVED = "#:->|$%&{}[]";
-
-        /**
          * Original unescaped scalar.
          */
         private final Scalar original;
@@ -380,25 +376,14 @@ final class RtYamlPrinter implements YamlPrinter {
         @Override
         public String value() {
             final String value = this.original.value();
-            String escaped = null;
-            if(value.startsWith("'") && value.endsWith("'")
-                || value.startsWith("\"") && value.endsWith("\"")
-            ) {
-                escaped = value;
-            } else {
-                for (int idx = 0; idx < value.length(); idx++){
-                    if(RESERVED.contains(
-                        String.valueOf(value.charAt(idx)))) {
-                        if(value.contains("\"")) {
-                            escaped = "'" + value + "'";
-                        } else {
-                            escaped = "\"" + value + "\"";
-                        }
-                        break;
-                    }
-                }
-                if(escaped == null) {
-                    escaped = value;
+            String escaped = value;
+            boolean quoted = (value.startsWith("'") && value.endsWith("'"))
+                    || (value.startsWith("\"") && value.endsWith("\""));
+            if (!quoted && value.matches(".*[\\-#:>|$%&{}\\[\\]]+.*|[ ]+")) {
+                if(value.contains("\"")) {
+                    escaped = "'" + value + "'";
+                } else {
+                    escaped = "\"" + value + "\"";
                 }
             }
             return escaped;

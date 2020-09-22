@@ -178,4 +178,12 @@ public final class ReflectedYamlSequenceTest {
             Matchers.equalTo("3")
         );
     }
+
+    /**
+     * Use the wrong object to construct a sequence - non-collection or array.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenWrongObject() {
+        new ReflectedYamlSequence("wrong");
+    }
 }

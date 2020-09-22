@@ -147,7 +147,8 @@ final class AllYamlLines implements YamlLines {
             if (matcher.group(2) != null) {
                 node = new ReadYamlSequence(prev, this, guessIndentation);
             } else if (matcher.group(5) != null) {
-                node = new ReadYamlMapping(prev, this, guessIndentation);
+                node = new ReadYamlMapping(prev.number(),
+                        prev, this, guessIndentation);
             }
         } else if (this.original().size() == 1) {
             node = new ReadPlainScalar(this, first);
