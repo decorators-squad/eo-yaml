@@ -28,8 +28,10 @@
 package com.amihaiemil.eoyaml;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -581,7 +583,6 @@ public final class RtYamlInputTest {
 
     /**
      * RtYamlInput can read a folded block scalar.
-     * @throws Exception If something goes wrong.
      */
     @Test
     public void readsLiteralBlockScalar() throws Exception {
@@ -595,6 +596,15 @@ public final class RtYamlInputTest {
                     "line1" + System.lineSeparator()
                             + "line2" + System.lineSeparator())
         );
+    }
+
+    /**
+     * RtYamlInput can read a folded block scalar with document
+     * start/end markers.
+     */
+    @Test
+    public void readsLiteralBlockScalarWithDocumentStartEnd()
+            throws Exception {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 "---" + System.lineSeparator()
@@ -686,6 +696,17 @@ public final class RtYamlInputTest {
                 "[scalar, like, flow, sequence]"
             )
         );
+    }
+
+    /**
+     * Compare two RtYamlLines by trimmed value.
+     */
+    @Test
+    public void comparesTo() {
+        RtYamlLine java = new RtYamlLine("Java", 1);
+        RtYamlLine scala = new RtYamlLine("Scala", 1);
+        MatcherAssert.assertThat(java.compareTo(scala), Matchers.lessThan(0));
+        MatcherAssert.assertThat(java.compareTo(java), Matchers.is(0));
     }
 
     /**

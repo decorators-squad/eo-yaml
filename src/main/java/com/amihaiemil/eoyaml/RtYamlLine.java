@@ -87,7 +87,7 @@ final class RtYamlLine implements YamlLine {
     public String contents(final int previousIndent) {
         String contents;
         int indentation = indentation();
-        if (indentation == 0) {
+        if (indentation == 0 && previousIndent <= 0) {
             contents = this.value;
         } else if (indentation > previousIndent) {
             contents = this.value.substring(previousIndent + 2);
