@@ -57,7 +57,7 @@ public final class ReadLiteralBlockScalarTest {
             Matchers.is(
             "First Line." + System.lineSeparator()
                 + "Second Line." + System.lineSeparator()
-                + "Third Line." + System.lineSeparator()
+                + "Third Line."
             )
         );
     }
@@ -98,7 +98,7 @@ public final class ReadLiteralBlockScalarTest {
             new ReadLiteralBlockScalar(lines.get(0), new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.equalTo("line 1\n line 2\nend\n")
+            Matchers.equalTo("line 1\n line 2\nend")
         );
     }
 
@@ -116,7 +116,7 @@ public final class ReadLiteralBlockScalarTest {
             new ReadLiteralBlockScalar(lines.get(0), new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.equalTo("trailing spaces   \ntrailing tab\t\n")
+            Matchers.equalTo("trailing spaces   \ntrailing tab\t")
         );
     }
 

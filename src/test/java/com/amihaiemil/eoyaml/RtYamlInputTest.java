@@ -588,10 +588,12 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 "|" + System.lineSeparator()
-              + "line1" + System.lineSeparator()
-              + "line2"
+              + "  line1" + System.lineSeparator()
+              + "  line2"
             ).readLiteralBlockScalar().value(),
-            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+            Matchers.equalTo(
+                    "line1" + System.lineSeparator()
+                            + "line2")
         );
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
@@ -601,7 +603,9 @@ public final class RtYamlInputTest {
               + "line2" + System.lineSeparator()
               + "..."
             ).readLiteralBlockScalar().value(),
-            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+            Matchers.equalTo(
+                    "line1" + System.lineSeparator()
+                            + "line2" + System.lineSeparator())
         );
     }
 

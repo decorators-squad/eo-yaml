@@ -77,15 +77,14 @@ public final class YamlSequencePrintTest {
      */
     @Test
     public void printsBuiltYamlSequenceWithAllNodes() throws Exception {
+        Scalar block = Yaml.createYamlScalarBuilder()
+                .addLine("literal")
+                .addLine("block")
+                .addLine("scalar")
+                .buildLiteralBlockScalar();
         final YamlSequence built = Yaml.createYamlSequenceBuilder()
             .add("plain scalar")
-            .add(
-                Yaml.createYamlScalarBuilder()
-                    .addLine("literal")
-                    .addLine("block")
-                    .addLine("scalar")
-                    .buildLiteralBlockScalar()
-            )
+            .add(block)
             .add(
                 Yaml.createYamlScalarBuilder()
                     .addLine("a scalar folded")
@@ -96,6 +95,11 @@ public final class YamlSequencePrintTest {
             .add(
                 Yaml.createYamlMappingBuilder()
                     .add("key", "value")
+                    .build()
+            )
+            .add(
+                Yaml.createYamlMappingBuilder()
+                    .add("key", block)
                     .build()
             )
             .add(
