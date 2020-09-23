@@ -82,7 +82,24 @@ public final class ReadLiteralBlockScalarTest {
             Matchers.equalTo("Literal scalar as value in map")
         );
         MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
-        System.err.println("Got [" + scalar.value() + "]");
+    }
+
+    /**
+     * ReadLiteralBlockScalar can return properly indented values.
+     */
+    @Test
+    public void handlesIndenting() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("literal: |", 0));
+        lines.add(new RtYamlLine("  line 1", 1));
+        lines.add(new RtYamlLine("   line 2", 2));
+        lines.add(new RtYamlLine("  end", 3));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(lines.get(0), new AllYamlLines(lines));
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo("line 1\n line 2\nend\n")
+        );
     }
 
     /**

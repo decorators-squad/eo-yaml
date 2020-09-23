@@ -1,23 +1,5 @@
-- plain scalar
-- |
-  literal
-  block
-  scalar
-- >
-  a scalar folded
-  on more lines
-  for readability
--
-  key: value
 -
   key: |
     literal
     block
     scalar
--
-  - a sequence
-  - of plain scalars
-  - as child
-- []
-- {}
-- " "
