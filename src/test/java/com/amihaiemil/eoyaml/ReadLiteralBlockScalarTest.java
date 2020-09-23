@@ -57,7 +57,7 @@ public final class ReadLiteralBlockScalarTest {
             Matchers.is(
             "First Line." + System.lineSeparator()
                 + "Second Line." + System.lineSeparator()
-                + "Third Line."
+                + "Third Line." + System.lineSeparator()
             )
         );
     }
@@ -98,7 +98,7 @@ public final class ReadLiteralBlockScalarTest {
             new ReadLiteralBlockScalar(lines.get(0), new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.equalTo("line 1\n line 2\nend")
+            Matchers.equalTo("line 1\n line 2\nend\n")
         );
     }
 
@@ -116,7 +116,7 @@ public final class ReadLiteralBlockScalarTest {
             new ReadLiteralBlockScalar(lines.get(0), new AllYamlLines(lines));
         MatcherAssert.assertThat(
             scalar.value(),
-            Matchers.equalTo("trailing spaces   \ntrailing tab\t")
+            Matchers.equalTo("trailing spaces   \ntrailing tab\t\n")
         );
     }
 
@@ -146,7 +146,7 @@ public final class ReadLiteralBlockScalarTest {
         lines.add(new RtYamlLine("Third Line.", 3));
         final ReadLiteralBlockScalar scalar =
             new ReadLiteralBlockScalar(new AllYamlLines(lines));
-        RtYamlSequence seq = new RtYamlSequence(new LinkedList<YamlNode>());
+        RtYamlSequence seq = new RtYamlSequence(new LinkedList<>());
         MatcherAssert.assertThat(scalar.compareTo(seq), Matchers.lessThan(0));
     }
 
@@ -159,7 +159,7 @@ public final class ReadLiteralBlockScalarTest {
         lines.add(new RtYamlLine("Java", 1));
         final ReadLiteralBlockScalar pipeScalar =
             new ReadLiteralBlockScalar(new AllYamlLines(lines));
-        final PlainStringScalar scalar = new PlainStringScalar("Java");
+        final PlainStringScalar scalar = new PlainStringScalar("Java\n");
         MatcherAssert.assertThat(pipeScalar.compareTo(scalar), Matchers.is(0));
     }
 

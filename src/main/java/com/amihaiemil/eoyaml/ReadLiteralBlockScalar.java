@@ -27,8 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Iterator;
-
 /**
  * Read Yaml literal block Scalar. This is a Scalar spanning multiple lines.
  * This Scalar's lines will be treated as separate lines and won't be folded
@@ -104,14 +102,10 @@ final class ReadLiteralBlockScalar extends BaseScalar {
      */
     public String value() {
         StringBuilder builder = new StringBuilder();
-        Iterator<YamlLine> lineIterator = this.significant.iterator();
-        while (lineIterator.hasNext()) {
-            YamlLine yamlLine = lineIterator.next();
+        for (final YamlLine yamlLine: this.significant) {
             int previousIndent = previous.indentation();
             builder.append(yamlLine.contents(Math.max(previousIndent, 0)));
-            if (lineIterator.hasNext()) {
-                builder.append(System.lineSeparator());
-            }
+            builder.append(System.lineSeparator());
         }
         return builder.toString();
     }

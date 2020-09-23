@@ -593,7 +593,7 @@ public final class RtYamlInputTest {
             ).readLiteralBlockScalar().value(),
             Matchers.equalTo(
                     "line1" + System.lineSeparator()
-                            + "line2")
+                            + "line2" + System.lineSeparator())
         );
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
