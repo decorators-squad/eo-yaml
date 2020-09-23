@@ -82,6 +82,7 @@ public final class ReadLiteralBlockScalarTest {
             Matchers.equalTo("Literal scalar as value in map")
         );
         MatcherAssert.assertThat(comment.yamlNode(), Matchers.is(scalar));
+        System.err.println("Got [" + scalar.value() + "]");
     }
 
     /**
