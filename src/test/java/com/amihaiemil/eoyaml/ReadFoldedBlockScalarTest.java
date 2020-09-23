@@ -87,6 +87,8 @@ public final class ReadFoldedBlockScalarTest {
     /**
      * ReadPointerScalar can compare itself to other ReadPipeScalar.
      * Literal block scalar keeps newlines, folded doesn't.
+     *
+     * @see <a href="https://yaml.org/spec/1.2/spec.html#id2773653">Block Scalar Indicators</a>
      */
     @Test
     public void comparesToReadPipeScalar() {
