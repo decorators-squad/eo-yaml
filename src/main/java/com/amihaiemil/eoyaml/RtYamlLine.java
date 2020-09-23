@@ -82,6 +82,17 @@ final class RtYamlLine implements YamlLine {
     }
 
     @Override
+    public String contents(final int previousIndent) {
+        String contents;
+        if (indentation() + 2 > previousIndent) {
+            contents = this.value.substring(previousIndent + 2);
+        } else {
+            contents = value;
+        }
+        return contents;
+    }
+
+    @Override
     public String comment() {
         String comment = "";
         String trimmed = this.value.trim();

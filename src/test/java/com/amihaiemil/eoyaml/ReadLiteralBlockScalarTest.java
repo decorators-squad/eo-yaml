@@ -56,8 +56,8 @@ public final class ReadLiteralBlockScalarTest {
             scalar.value(),
             Matchers.is(
             "First Line." + System.lineSeparator()
-                + "Second Line."+ System.lineSeparator()
-                + "Third Line."
+                + "Second Line." + System.lineSeparator()
+                + "Third Line." + System.lineSeparator()
             )
         );
     }
@@ -99,6 +99,24 @@ public final class ReadLiteralBlockScalarTest {
         MatcherAssert.assertThat(
             scalar.value(),
             Matchers.equalTo("line 1\n line 2\nend\n")
+        );
+    }
+
+    /**
+     * ReadLiteralBlockScalar can return properly indented
+     * values and trailing spaces are preserved.
+     */
+    @Test
+    public void handlesTrailingSpaces() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("literal: |", 0));
+        lines.add(new RtYamlLine("  trailing spaces   ", 1));
+        lines.add(new RtYamlLine("  trailing tab\t", 2));
+        final ReadLiteralBlockScalar scalar =
+            new ReadLiteralBlockScalar(lines.get(0), new AllYamlLines(lines));
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo("trailing spaces   \ntrailing tab\t\n")
         );
     }
 

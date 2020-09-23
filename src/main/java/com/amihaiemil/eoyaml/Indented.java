@@ -62,6 +62,11 @@ final class Indented implements YamlLine {
     }
 
     @Override
+    public String contents(final int previousIndent) {
+        return this.original.contents(previousIndent);
+    }
+
+    @Override
     public String comment() {
         return this.original.comment();
     }

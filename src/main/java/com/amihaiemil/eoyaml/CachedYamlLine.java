@@ -48,6 +48,11 @@ final class CachedYamlLine implements YamlLine {
     private String trimmed;
 
     /**
+     * Cached contents line.
+     */
+    private String contents;
+
+    /**
      * Cached indentation.
      */
     private int indentation = -1;
@@ -76,6 +81,14 @@ final class CachedYamlLine implements YamlLine {
             this.trimmed = this.line.trimmed();
         }
         return this.trimmed;
+    }
+
+    @Override
+    public String contents(final int previousIndent) {
+        if(this.contents == null) {
+            this.contents = this.line.contents(previousIndent);
+        }
+        return this.contents;
     }
 
     @Override
