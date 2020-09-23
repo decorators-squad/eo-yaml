@@ -28,10 +28,8 @@
 package com.amihaiemil.eoyaml;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
@@ -583,6 +581,7 @@ public final class RtYamlInputTest {
 
     /**
      * RtYamlInput can read a folded block scalar.
+     * @throws Exception If something goes wrong.
      */
     @Test
     public void readsLiteralBlockScalar() throws Exception {
@@ -601,6 +600,7 @@ public final class RtYamlInputTest {
     /**
      * RtYamlInput can read a folded block scalar with document
      * start/end markers.
+     * @throws Exception If something goes wrong.
      */
     @Test
     public void readsLiteralBlockScalarWithDocumentStartEnd()

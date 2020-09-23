@@ -42,6 +42,9 @@ import org.junit.rules.ExpectedException;
  * @since 1.0.0
  */
 public final class RtYamlLineTest {
+    /**
+     * Expect no exceptions thrown in tests.
+     */
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -214,7 +217,8 @@ public final class RtYamlLineTest {
     @Test
     public void badIndentationForContent() {
         thrown.expect(YamlReadingException.class);
-        thrown.expectMessage("Literal must be indented at least 2 spaces from previous element.");
+        thrown.expectMessage("Literal must be indented at least 2 spaces"
+                + " from previous element.");
         YamlLine line = new RtYamlLine("  this: line", 5);
         MatcherAssert.assertThat(
                 line.contents(4),
