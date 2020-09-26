@@ -157,8 +157,6 @@ final class AllYamlLines implements YamlLines {
         ).iterator().next();
         Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
         if (matcher.matches()) {
-            // Sequence group 2
-            // Map group 5
             if (matcher.group(2) != null) {
                 node = new ReadYamlSequence(prev, this, guessIndentation);
             } else if (matcher.group(4) != null) {
