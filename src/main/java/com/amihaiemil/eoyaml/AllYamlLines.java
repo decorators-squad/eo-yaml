@@ -39,8 +39,6 @@ import java.util.regex.Pattern;
  * are cases where we need to iterate only over the lines which are
  * at the same indentation level and for that we use the decorator
  * {@link SameIndentationLevel}.
- * @checkstyle ExecutableStatementCount (400 lines)
- * @checkstyle CyclomaticComplexity (400 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
