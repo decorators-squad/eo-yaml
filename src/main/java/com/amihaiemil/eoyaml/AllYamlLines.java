@@ -46,7 +46,11 @@ import java.util.regex.Pattern;
 final class AllYamlLines implements YamlLines {
 
     /**
-     * Pattern to match a sequence or map.
+     * There are 3 types of nodes: scalar, sequence and mapping.  This matches
+     * either a sequence or map - no match indicates it's a scalar.
+     *
+     * Does not handle '?' mapping key or flow mapping
+     * (https://yaml.org/spec/1.2/spec.html#id2790832).
      *
      * A sequence is:
      *  - [ ]* : 0 or more spaces
@@ -54,7 +58,7 @@ final class AllYamlLines implements YamlLines {
      *      spaces and any other characters.
      *
      * A map is:
-     *  - [ ] * : 0 or many spaces followed by:
+     *  - [ ]* : 0 or many spaces followed by:
      *    - a key:
      *      - ('(?:[^'\\]|\\.)*') : a single (') quoted string or
      *      - ("(?:[^"\\]|\\.)*") : double (") quoted string
