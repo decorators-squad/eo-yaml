@@ -49,14 +49,29 @@ final class AllYamlLines implements YamlLines {
 
     /**
      * Pattern to match a sequence or map.
+     *
+     * A sequence is:
+     *  - [ ]* : 0 or more spaces
+     *    - [\-](|[ ]+.*) : a dash (-) optionally followed by 1 or more
+     *      spaces and any other characters.
+     *
+     * A map is:
+     *  - [ ] * : 0 or many spaces followed by:
+     *    - a key:
+     *      - ('(?:[^'\\]|\\.)*') : a single (') quoted string or
+     *      - ("(?:[^"\\]|\\.)*") : double (") quoted string
+     *      - ([^"']*) : a non quoted string (characters other than ' or ").
+     *        - followed by:
+     *          - :(|[ ].*) : a colon (:) optionally followed by a space
+     *            and any other characters.
      */
     private static final Pattern SEQUENCE_OR_MAP = Pattern.compile("^("
-            + "([ ]*([\\-]|[\\-][ ]+.*))|"
+            + "([ ]*[\\-](|[ ]+.*))|"
             + "([ ]*"
-                + "((\"(?:[^\"\\\\]|\\\\.)*\")|"
                 + "('(?:[^'\\\\]|\\\\.)*')|"
-                + "([^\"']*))"
-            +"(:|:[ ].*))"
+                  + "(\"(?:[^\"\\\\]|\\\\.)*\")|"
+                  + "([^\"']*)"
+                + ":(|[ ].*))"
             + ")$");
 
     /**
@@ -146,7 +161,7 @@ final class AllYamlLines implements YamlLines {
             // Map group 5
             if (matcher.group(2) != null) {
                 node = new ReadYamlSequence(prev, this, guessIndentation);
-            } else if (matcher.group(5) != null) {
+            } else if (matcher.group(4) != null) {
                 node = new ReadYamlMapping(prev.number(),
                         prev, this, guessIndentation);
             }
