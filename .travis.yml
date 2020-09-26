@@ -9,7 +9,7 @@ before_install: # Get the shell script for installing Early Access versions of t
   - wget https://github.com/sormuras/bach/raw/master/install-jdk.sh -O ~/install-ea-jdk.sh && chmod +x ~/install-ea-jdk.sh
 script:
   - set -e
-  - mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report
+  - mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report
 stages:
   - test # the default Travis stage.
   - testEarlyAccessJDK
@@ -30,4 +30,6 @@ jobs:
         - export JAVA_HOME=~/openjdk16
         - export PATH="$JAVA_HOME/bin:$PATH"
         - set -e
-        - mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report
+        - mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report
+after_success:
+  - mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report
