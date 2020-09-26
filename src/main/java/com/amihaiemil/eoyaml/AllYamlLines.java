@@ -52,13 +52,13 @@ final class AllYamlLines implements YamlLines {
      * Does not handle '?' mapping key or flow mapping
      * (https://yaml.org/spec/1.2/spec.html#id2790832).
      *
-     * A sequence is:
+     * A sequence (group 2) is:
      *  - [ ]* : 0 or more spaces
      *    - [\-](|[ ]+.*) : a dash (-) optionally followed by 1 or more
      *      spaces and any other characters.
      *
-     * A map is:
-     *  - [ ]* : 0 or many spaces followed by:
+     * A map (group 4) is:
+     *  - [ ]* : 0 or more spaces followed by:
      *    - a key:
      *      - ('(?:[^'\\]|\\.)*') : a single (') quoted string or
      *      - ("(?:[^"\\]|\\.)*") : double (") quoted string
