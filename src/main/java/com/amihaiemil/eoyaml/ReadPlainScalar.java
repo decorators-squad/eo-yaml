@@ -111,8 +111,8 @@ final class ReadPlainScalar extends BaseScalar {
      */
     @Override
     public String value() {
-        final String value;
         final String trimmed = this.scalar.trimmed();
+        String value = trimmed;
         Matcher matcher = this.escapedSequenceScalar(this.scalar);
         if(matcher.matches()) {
             if (matcher.group(QUOTED_LITERAL_GROUP) != null) {
@@ -121,8 +121,6 @@ final class ReadPlainScalar extends BaseScalar {
                 value = matcher.group(MAPPING_GROUP).trim();
             } else if (matcher.group(SEQUENCE_GROUP) != null) {
                 value = matcher.group(SEQUENCE_GROUP).trim();
-            } else {
-                value = trimmed;
             }
         } else {
             value = trimmed;
