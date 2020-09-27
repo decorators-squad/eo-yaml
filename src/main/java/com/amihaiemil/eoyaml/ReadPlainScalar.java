@@ -39,15 +39,44 @@ import java.util.regex.Pattern;
 final class ReadPlainScalar extends BaseScalar {
 
     /**
-     * Pattern to match quoted literals, mappings or sequences.
+     * Pattern to match scalars in mappings or sequences.
+     *
+     * Ignore zero or more spaces and a hyphen (-) followed by one
+     * or more spaces.
+     *
+     * A quoted scalar literal is inside:
+     *  - ('(?:[^'\\]|\\.)*') : a single (') quoted string or
+     *  - ("(?:[^"\\]|\\.)*") : double (") quoted string
+     *
+     * A scalar for a mapping are characters after:
+     *  - .*:[ ]+(.*) : Any characters before a colon followed by
+     *    one or more spaces.
+     *
+     * The remain sequence scalar is:
+     *   - -[ ]+(.*) : Any characters after a hyphen (-) and one more spaces.
      */
-    private static final Pattern QUOTED_LITERAL_MAP_SEQ = Pattern.compile(
-            "^(([ ]*([\\-][ ]*)?)"
-            + "((\"(?:[^\"\\\\]|\\\\.)*\")|"
-            + "('(?:[^'\\\\]|\\\\.)*'))|"
-            + "([ ]*(.*)(:|:[ ]+(.*)))|"
-            + "(-[ ]+(.*))|"
+    private static final Pattern QUOTED_LITERAL_MAP_SEQ = Pattern.compile("^("
+            + "[ ]*(-[ ]+)"
+                + "(('(?:[^'\\\\]|\\\\.)*')|"
+                + "(\"(?:[^\"\\\\]|\\\\.)*\"))|"
+            + "(.*:[ ]+(.*))|"
+            + "(-[ ]+(.*))"
             + ")$");
+
+    /**
+     * Regex group index that matches quoted literals.
+     */
+    private static final int QUOTED_LITERAL_GROUP = 3;
+
+    /**
+     * Regex group index that matches scalar values of mappings.
+     */
+    private static final int MAPPING_GROUP = 7;
+
+    /**
+     * Regex group index that matches scalar value of non-quotes sequences.
+     */
+    private static final int SEQUENCE_GROUP = 9;
 
     /**
      * All YAML Lines of the document.
@@ -86,13 +115,12 @@ final class ReadPlainScalar extends BaseScalar {
         final String trimmed = this.scalar.trimmed();
         Matcher matcher = this.escapedSequenceScalar(this.scalar);
         if(matcher.matches()) {
-            // The group that includes '' or ""
-            if (matcher.group(4) != null) {
-                value = matcher.group(4);
-            } else if (matcher.group(10) != null) {
-                value = matcher.group(10).trim();
-            } else if (matcher.group(12) != null) {
-                value = matcher.group(12).trim();
+            if (matcher.group(QUOTED_LITERAL_GROUP) != null) {
+                value = matcher.group(QUOTED_LITERAL_GROUP);
+            } else if (matcher.group(MAPPING_GROUP) != null) {
+                value = matcher.group(MAPPING_GROUP).trim();
+            } else if (matcher.group(SEQUENCE_GROUP) != null) {
+                value = matcher.group(SEQUENCE_GROUP).trim();
             } else {
                 value = trimmed;
             }
