@@ -52,7 +52,7 @@ final class ReadPlainScalar extends BaseScalar {
      *  - .*:[ ]+(.*) : Any characters before a colon followed by
      *    one or more spaces.
      *
-     * The remain sequence scalar is:
+     * The sequence scalar is:
      *   - -[ ]+(.*) : Any characters after a hyphen (-) and one more spaces.
      */
     private static final Pattern QUOTED_LITERAL_MAP_SEQ = Pattern.compile("^("
