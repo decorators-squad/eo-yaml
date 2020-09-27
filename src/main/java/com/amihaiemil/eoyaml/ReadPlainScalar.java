@@ -122,8 +122,6 @@ final class ReadPlainScalar extends BaseScalar {
             } else if (matcher.group(SEQUENCE_GROUP) != null) {
                 value = matcher.group(SEQUENCE_GROUP).trim();
             }
-        } else {
-            value = trimmed;
         }
         if("null".equals(value)) {
             return null;
