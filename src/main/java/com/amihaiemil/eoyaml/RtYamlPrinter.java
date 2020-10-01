@@ -151,7 +151,7 @@ final class RtYamlPrinter implements YamlPrinter {
                     .append(":");
             }
             if (value instanceof Scalar) {
-                this.printNode(value, false, 0);
+                this.printNode(value, false, indentation);
             } else  {
                 this.printNode(value, true, indentation + 2);
             }
@@ -211,8 +211,7 @@ final class RtYamlPrinter implements YamlPrinter {
     ) throws IOException {
         if (scalar instanceof BaseFoldedScalar) {
             final BaseFoldedScalar foldedScalar = (BaseFoldedScalar) scalar;
-            this.writer
-                    .append(">");
+            this.writer.append(">");
             if(!scalar.comment().value().isEmpty()) {
                 this.writer.append(" # ").append(scalar.comment().value());
             }
@@ -232,8 +231,7 @@ final class RtYamlPrinter implements YamlPrinter {
         } else if (scalar instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
                 || scalar instanceof ReadLiteralBlockScalar
         ) {
-            this.writer
-                .append("|");
+            this.writer.append("|");
             if(!scalar.comment().value().isEmpty()) {
                 this.writer.append(" # ").append(scalar.comment().value());
             }
@@ -246,7 +244,7 @@ final class RtYamlPrinter implements YamlPrinter {
             this.writer.append(
                 this.indent(
                     new Escaped(scalar).value(),
-                    indentation
+                    0
                 )
             );
             if(!scalar.comment().value().isEmpty()) {

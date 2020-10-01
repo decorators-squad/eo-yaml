@@ -42,9 +42,17 @@ interface YamlLine extends Comparable<YamlLine> {
 
     /**
      * The line's trimmed contents with comments, aliases etc removed.
-     * @return String contents.
+     * @return Trimmed string (leading and trailing spaces) contents.
      */
     String trimmed();
+
+    /**
+     * The line's contents with spaces, tabs, etc maintained.
+     * @param previousIndent How deeply nested is the Yaml line - this is used
+     *                       to remove leading spaces.
+     * @return String line contents.
+     */
+    String contents(int previousIndent);
 
     /**
      * Return the comment, if any, from this line.
@@ -79,6 +87,11 @@ interface YamlLine extends Comparable<YamlLine> {
 
         @Override
         public String trimmed() {
+            return "";
+        }
+
+        @Override
+        public String contents(final int previousIndent) {
             return "";
         }
 

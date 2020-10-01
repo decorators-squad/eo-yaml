@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
+
 /**
  * Default implementation of {@link YamlLine}.
  * "Rt" stands for "Runtime".
@@ -79,6 +81,21 @@ final class RtYamlLine implements YamlLine {
             i++;
         }
         return trimmed.trim();
+    }
+
+    @Override
+    public String contents(final int previousIndent) {
+        String contents;
+        int indentation = indentation();
+        if (indentation == 0 && previousIndent <= 0) {
+            contents = this.value;
+        } else if (indentation > previousIndent) {
+            contents = this.value.substring(previousIndent + 2);
+        } else {
+            throw new YamlReadingException("Literal must be indented "
+                    + "at least 2 spaces from previous element.");
+        }
+        return contents;
     }
 
     @Override
@@ -148,11 +165,7 @@ final class RtYamlLine implements YamlLine {
             final String specialCharacters = ":>|-?";
             final CharSequence prevLineLastChar =
                 this.trimmed().substring(this.trimmed().length() - 1);
-            if (specialCharacters.contains(prevLineLastChar)) {
-                result = true;
-            } else {
-                result = false;
-            }
+            result = specialCharacters.contains(prevLineLastChar);
         }
         return result;
     }

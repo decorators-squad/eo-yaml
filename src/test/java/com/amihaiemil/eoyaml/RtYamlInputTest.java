@@ -588,11 +588,23 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 "|" + System.lineSeparator()
-              + "line1" + System.lineSeparator()
-              + "line2"
+              + "  line1" + System.lineSeparator()
+              + "  line2"
             ).readLiteralBlockScalar().value(),
-            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+            Matchers.equalTo(
+                    "line1" + System.lineSeparator()
+                            + "line2" + System.lineSeparator())
         );
+    }
+
+    /**
+     * RtYamlInput can read a folded block scalar with document
+     * start/end markers.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void readsLiteralBlockScalarWithDocumentStartEnd()
+            throws Exception {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 "---" + System.lineSeparator()
@@ -601,7 +613,9 @@ public final class RtYamlInputTest {
               + "line2" + System.lineSeparator()
               + "..."
             ).readLiteralBlockScalar().value(),
-            Matchers.equalTo("line1" + System.lineSeparator() + "line2")
+            Matchers.equalTo(
+                    "line1" + System.lineSeparator()
+                            + "line2" + System.lineSeparator())
         );
     }
 
@@ -682,6 +696,17 @@ public final class RtYamlInputTest {
                 "[scalar, like, flow, sequence]"
             )
         );
+    }
+
+    /**
+     * Compare two RtYamlLines by trimmed value.
+     */
+    @Test
+    public void comparesTo() {
+        RtYamlLine java = new RtYamlLine("Java", 1);
+        RtYamlLine scala = new RtYamlLine("Scala", 1);
+        MatcherAssert.assertThat(java.compareTo(scala), Matchers.lessThan(0));
+        MatcherAssert.assertThat(java.compareTo(java), Matchers.is(0));
     }
 
     /**
