@@ -32,6 +32,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
@@ -102,6 +103,29 @@ public final class ReadYamlSequenceTest {
         for(final YamlNode value : sequence.values()) {
             System.out.println(value.type());
         }
+    }
+
+    /**
+     * A Sequence of mappings (each starting at dash line) can be read
+     * from a parent mapping.
+     */
+    @Test
+    public void returnsSequenceOfMappingsFromMapping(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("key: value", 0));
+        lines.add(new RtYamlLine("seqMap: ", 1));
+        lines.add(new RtYamlLine("  - alfa: b", 2));
+        lines.add(new RtYamlLine("  - beta: c", 3));
+        lines.add(new RtYamlLine("other: value", 4));
+        final YamlMapping mapping = new ReadYamlMapping(
+            new AllYamlLines(lines)
+        );
+        System.out.println(mapping);
+        final YamlSequence seqMap = mapping.yamlSequence("seqMap");
+        MatcherAssert.assertThat(
+            seqMap,
+            Matchers.iterableWithSize(2)
+        );
     }
 
     /**
