@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonObject;
 import java.io.*;
 
 /**
@@ -180,5 +181,14 @@ public final class Yaml {
      */
     public static YamlDump createYamlDump(final Object object) {
         return new ReflectedYamlDump(object);
+    }
+
+    /**
+     * Create a YAML mapping from a {@link JsonObject}.
+     * @param object JsonObject in question.
+     * @return YamlMapping.
+     */
+    public static YamlMapping fromJsonObject(final JsonObject object) {
+        return new JsonYamlMapping(object);
     }
 }
