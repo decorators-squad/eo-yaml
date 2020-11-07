@@ -145,4 +145,19 @@ public final class JsonYamlMappingTest {
             new JsonYamlMapping(json), Matchers.equalTo(expected)
         );
     }
+
+    /**
+     * YamlMapping has empty Comment.
+     */
+    @Test
+    public void hasEmptyComment(){
+        final Comment comment = new JsonYamlMapping(Json
+            .createObjectBuilder()
+            .build())
+            .comment();
+        MatcherAssert.assertThat(comment.yamlNode(), Matchers
+            .instanceOf(JsonYamlMapping.class));
+        MatcherAssert.assertThat(comment.value(), Matchers
+            .isEmptyString());
+    }
 }
