@@ -9,6 +9,10 @@
 [![We recommend IntelliJ IDEA](http://amihaiemil.github.io/images/intellij-idea-recommend.svg)](https://www.jetbrains.com/idea/)
 [![OpenJDK Quality Outreach](https://amihaiemil.com/images/openjdk_quality_outreach.svg)](https://wiki.openjdk.java.net/display/quality/Quality+Outreach)
 
+<a href="https://www.yegor256.com/2019/11/03/award-2020.html">
+  <img src="https://www.yegor256.com/images/award/2020/winner-amihaiemil.png" height="45" alt='winner'/>
+</a>
+
 YAML for Java 8 and above. Based on [spec 1.2](http://www.yaml.org/spec/1.2/spec.html).
 
 From the [specification](http://yaml.org/spec/1.2/spec.html): **YAML™** is a human-friendly, cross language, Unicode based data serialization language.
