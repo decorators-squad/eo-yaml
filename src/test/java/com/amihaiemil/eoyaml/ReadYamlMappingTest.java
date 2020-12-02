@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -1149,5 +1150,24 @@ public final class ReadYamlMappingTest {
                 actualSeq.comment().value(),
                 Matchers.equalTo(expectedSeq.comment().value())
         );
+    }
+
+    /**
+     * ReadYamlMapping can be created from another YamlMapping.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadFromAnotherFromYamlMapping()
+        throws IOException {
+        YamlMapping yaml = Yaml.createYamlMappingBuilder()
+            .add("key1", "Some value?")
+            .add("key2", "Some other value.")
+            .build();
+        YamlMapping copy = Yaml.createYamlInput(yaml.toString())
+            .readYamlMapping();
+        MatcherAssert.assertThat(copy.string("key1"), Matchers
+            .equalTo("Some value?"));
+        MatcherAssert.assertThat(copy.string("key2"), Matchers
+            .equalTo("Some other value."));
     }
 }
