@@ -32,7 +32,9 @@ import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  *
@@ -78,4 +80,32 @@ public final class RtYamlPrinterTest {
         }
     }
 
+    /**
+     * {@link RtYamlPrinter.Escaped} escapes values when encounter special
+     * characters or when there are quotations inside and ignores when the
+     * values are already escaped with
+     * <code>"</code> or <code>'</code>.
+     */
+    @Test
+    public void escapesWhenEncounterSpecialChars(){
+        MatcherAssert.assertThat(new RtYamlPrinter
+                .Escaped(new PlainStringScalar("Some value?")).value(),
+            Matchers.equalTo("\"Some value?\""));
+        MatcherAssert.assertThat(new RtYamlPrinter
+                .Escaped(new PlainStringScalar("Some value-")).value(),
+            Matchers.equalTo("\"Some value-\""));
+        MatcherAssert.assertThat(new RtYamlPrinter
+                .Escaped(new PlainStringScalar("Some value#")).value(),
+            Matchers.equalTo("\"Some value#\""));
+        MatcherAssert.assertThat(new RtYamlPrinter
+                .Escaped(new PlainStringScalar("'Some value'")).value(),
+            Matchers.equalTo("'Some value'"));
+        MatcherAssert.assertThat(new RtYamlPrinter
+                .Escaped(new PlainStringScalar("Some \"value\"|"))
+                .value(),
+            Matchers.equalTo("'Some \"value\"|'"));
+        MatcherAssert.assertThat(new RtYamlPrinter
+                .Escaped(new PlainStringScalar("\"Some value\"")).value(),
+            Matchers.equalTo("\"Some value\""));
+    }
 }
