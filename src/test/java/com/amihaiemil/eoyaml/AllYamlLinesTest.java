@@ -28,14 +28,17 @@
 package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+
+import java.io.*;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
  * Unit tests for {@link AllYamlLines}.
@@ -43,7 +46,19 @@ import org.junit.Test;
  * @version $Id$
  * @sinve 1.0.0
  */
+@RunWith(Parameterized.class)
 public final class AllYamlLinesTest {
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> guessIndentationModes() {
+        return Arrays.asList(new Object[][] { { true }, { false } });
+    }
+
+    private final boolean guessIndentationMode;
+
+    public AllYamlLinesTest(boolean guessIndentationMode) {
+        this.guessIndentationMode = guessIndentationMode;
+    }
 
     /**
      * RtYamlLines can iterate over the lines properly.
@@ -119,7 +134,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("value3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
         final YamlNode seq =  yamlLines.toYamlNode(
-            new RtYamlLine("foldedSequence:|-", 0), false
+            new RtYamlLine("foldedSequence:|-", 0), this.guessIndentationMode
         );
         MatcherAssert.assertThat(
             seq, Matchers.instanceOf(ReadYamlSequence.class)
@@ -156,7 +171,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("value3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
         final YamlNode seq =  yamlLines.toYamlNode(
-            new RtYamlLine("foldedSequence:| -", 0), false
+            new RtYamlLine("foldedSequence:| -", 0), this.guessIndentationMode
         );
         MatcherAssert.assertThat(
             seq, Matchers.instanceOf(ReadYamlSequence.class)
@@ -189,7 +204,7 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("arn:something:something", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), this.guessIndentationMode);
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(Scalar.class)
@@ -209,7 +224,7 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("-foo", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), this.guessIndentationMode);
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(Scalar.class)
@@ -230,7 +245,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("some: mapping", 1));
         lines.add(new RtYamlLine("for: test", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), this.guessIndentationMode);
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(ReadYamlMapping.class)
@@ -248,7 +263,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("- sequence", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("?", 0), false),
+            yamlLines.toYamlNode(new RtYamlLine("?", 0), this.guessIndentationMode),
             Matchers.instanceOf(ReadYamlSequence.class)
         );
     }
@@ -263,7 +278,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("justAScalar", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("---", 0), false),
+            yamlLines.toYamlNode(new RtYamlLine("---", 0), this.guessIndentationMode),
             Matchers.instanceOf(ReadPlainScalar.class)
         );
     }
@@ -284,7 +299,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("a folded or literal scalar", 4));
         final YamlLines yamlLines = new AllYamlLines(lines);
         try {
-            yamlLines.toYamlNode(new RtYamlLine("---", -1), false);
+            yamlLines.toYamlNode(new RtYamlLine("---", -1), this.guessIndentationMode);
             Assert.fail("Expected IllegalStateException!");
         } catch (final YamlReadingException ex) {
             final String message = ex.getMessage();
@@ -298,4 +313,62 @@ public final class AllYamlLinesTest {
             );
         }
     }
+
+    /**
+     * Unit test for serializing quoted keys of scalar values
+     */
+    @Test
+    public void quotedKeysRoundTripTests() throws Exception {
+        quotedKeysTest("quotedKeysMin.yml", 1);
+        quotedKeysTest("quotedKeysMax.yml", 6);
+    }
+
+    private void quotedKeysTest(String filename, int mapSize) throws IOException {
+        final List<YamlLine> fileLines = readTestResource(filename);
+
+        final String fileContents =
+                fileLines.stream().map(YamlLine::toString)
+                        .collect(Collectors.joining("\n"));
+
+        final AllYamlLines allYamlLines = new AllYamlLines(fileLines);
+
+        final YamlNode node = allYamlLines.toYamlNode(new YamlLine.NullYamlLine(), this.guessIndentationMode);
+
+        MatcherAssert.assertThat(node.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(node.asMapping().keys().size(), Matchers.equalTo(1));
+
+        // throws an error
+        final YamlNode problematic = node.asMapping().value("a_mapping");
+        MatcherAssert.assertThat(problematic.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(problematic.asMapping().keys().size(), Matchers.equalTo(mapSize));
+
+        final String pretty = node.toString();
+
+        MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
+    }
+
+
+    /**
+     * Read a test resource file's contents.
+     * @param fileName File to read.
+     * @return File's contents as String.
+     * @throws FileNotFoundException If something is wrong.
+     * @throws IOException If something is wrong.
+     */
+    private List<YamlLine> readTestResource(final String fileName)
+            throws FileNotFoundException, IOException {
+        final BufferedReader reader =
+                new BufferedReader(new FileReader("src/test/resources/" + fileName));
+
+        List<YamlLine> result = new ArrayList<>();
+
+        String l;
+        int i = 1;
+        while ((l = reader.readLine()) != null) {
+            result.add(new RtYamlLine(l, i++));
+        }
+
+        return result;
+    }
+
 }
