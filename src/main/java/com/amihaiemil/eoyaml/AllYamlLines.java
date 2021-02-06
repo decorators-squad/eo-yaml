@@ -68,12 +68,12 @@ final class AllYamlLines implements YamlLines {
      *            and any other characters.
      */
     private static final Pattern SEQUENCE_OR_MAP = Pattern.compile("^("
-            + "([ ]*[\\-](|[ ]+.*))|"
-            + "([ ]*"
+            + "([\\-](|[ ]+.*))|"
+            + "((?:"
                 + "('(?:[^'\\\\]|\\\\.)*')|"
                   + "(\"(?:[^\"\\\\]|\\\\.)*\")|"
                   + "([^\"']*)"
-                + ":(|[ ].*))"
+                + "):(|[ ].*))"
             + ")$");
 
     /**
