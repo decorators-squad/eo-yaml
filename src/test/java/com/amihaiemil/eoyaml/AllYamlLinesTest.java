@@ -28,15 +28,14 @@
 package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Unit tests for {@link AllYamlLines}.
@@ -190,8 +189,7 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("arn:something:something", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(
-                new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(Scalar.class)
@@ -211,8 +209,7 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("-foo", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(
-                new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(Scalar.class)
