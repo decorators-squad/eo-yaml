@@ -34,6 +34,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import javax.json.Json;
+
 /**
  * Unit tests for {@link Yaml}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -116,6 +118,17 @@ public final class YamlTest {
     public void createsYamlInputFromString() {
         MatcherAssert.assertThat(
             Yaml.createYamlInput("yaml: test"), Matchers.notNullValue()
+        );
+    }
+
+    /**
+     * Yaml can create an YamlMapping from a json object.
+     */
+    @Test
+    public void createsYamlMappingFromJsonObject() {
+        MatcherAssert.assertThat(
+            Yaml.fromJsonObject(Json.createObjectBuilder().build()),
+            Matchers.notNullValue()
         );
     }
 }

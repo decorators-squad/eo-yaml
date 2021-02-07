@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonObject;
 import java.io.*;
 
 /**
@@ -34,7 +35,10 @@ import java.io.*;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- *
+ * @todo #231:60min Implement and test method fromJsonArray(JsonArray)
+ *  for Yaml, that will create a YamlSequence from a JsonArray.
+ * @todo #231:60min Wiki documentation is needed for YAML mappings from JSON.
+ *  (fromJsonObject() and fromJsonArray()).
  */
 public final class Yaml {
 
@@ -180,5 +184,14 @@ public final class Yaml {
      */
     public static YamlDump createYamlDump(final Object object) {
         return new ReflectedYamlDump(object);
+    }
+
+    /**
+     * Create a YAML mapping from a {@link JsonObject}.
+     * @param object JsonObject in question.
+     * @return YamlMapping.
+     */
+    public static YamlMapping fromJsonObject(final JsonObject object) {
+        return new JsonYamlMapping(object);
     }
 }
