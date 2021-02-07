@@ -28,17 +28,15 @@
 package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Unit tests for {@link AllYamlLines}.
