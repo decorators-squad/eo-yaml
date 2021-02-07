@@ -710,6 +710,71 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Do a round-trip test on the minimal quoted-key sample file.
+     *
+     * @throws IOException When there's a problem reading the sample files.
+     */
+    @Test
+    public void quotedKeysMinTest() throws IOException {
+        final String filename = "quotedKeysMin.yml";
+        final String fileContents = readTestResource(filename).trim();
+
+        final YamlMapping read = new RtYamlInput(
+                new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                read.asMapping().keys().size(),
+                Matchers.equalTo(1));
+
+        final YamlNode topLevelMapping = read.asMapping().value("a_mapping");
+        MatcherAssert.assertThat(
+                topLevelMapping.type(),
+                Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                topLevelMapping.asMapping().keys().size(),
+                Matchers.equalTo(1));
+
+        final String pretty = read.toString().trim();
+
+        MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
+    }
+
+
+    /**
+     * Do a round-trip test on the maximal quoted-key sample file.
+     *
+     * @throws IOException When there's a problem reading the sample files.
+     */
+    @Test
+    public void quotedKeysMaxTest() throws IOException {
+        final String filename = "quotedKeysMax.yml";
+        final String fileContents = readTestResource(filename).trim();
+
+        final YamlMapping read = new RtYamlInput(
+                new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                read.asMapping().keys().size(),
+                Matchers.equalTo(1));
+
+        final YamlNode topLevelMapping = read.asMapping().value("a_mapping");
+        MatcherAssert.assertThat(
+                topLevelMapping.type(),
+                Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                topLevelMapping.asMapping().keys().size(),
+                Matchers.equalTo(6));
+
+        final String pretty = read.toString().trim();
+
+        MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
