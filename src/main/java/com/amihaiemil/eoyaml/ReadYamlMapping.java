@@ -248,7 +248,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     value = this.significant.toYamlNode(
                         line, this.guessIndentation
                     );
-                } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
+                } else if (trimmed.matches(tryKey + ":[ ]*\\{\\}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
                             line.number(),
                             this.all.line(line.number()),
