@@ -33,6 +33,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * Unit tests for {@link MergedYamlMapping}.
  * @author Mihai Andronache (amihaiemil.com)
@@ -297,6 +299,157 @@ public final class MergedYamlMappingTest {
             .append("  key1: value1").append(System.lineSeparator())
             .append("mapping2:").append(System.lineSeparator())
             .append("  key2: value2");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * Merges two simple mappings. Uses the request issue
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/420#issuecomment-731776176">example</a>
+     * as test case.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void mergesSimpleMappings() throws IOException {
+        final YamlMapping original =  Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type: x")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping changed =Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            original, changed
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type: x").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * Merges two complex mappings with conflict override.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void mergesComplexMappingsWithOverride() throws IOException {
+        final YamlMapping original = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: x").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        -").append(System.lineSeparator())
+                .append("          foo: 1").append(System.lineSeparator())
+                .append("          bar: 2").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - y").append(System.lineSeparator())
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping changed = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: changedX").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - addedZ").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            original, changed, true
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type:").append(System.lineSeparator())
+            .append("      Prop1: changedX").append(System.lineSeparator())
+            .append("      Prop2:").append(System.lineSeparator())
+            .append("        -").append(System.lineSeparator())
+            .append("          foo: 1").append(System.lineSeparator())
+            .append("          bar: 2").append(System.lineSeparator())
+            .append("        - x").append(System.lineSeparator())
+            .append("        - y").append(System.lineSeparator())
+            .append("        - addedZ").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * Merges two complex mappings with no conflict override.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void mergesComplexMappingsWithNoOverride() throws IOException {
+        final YamlMapping original = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: x").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        -").append(System.lineSeparator())
+                .append("          foo: 1").append(System.lineSeparator())
+                .append("          bar: 2").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - y").append(System.lineSeparator())
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping changed = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: changedX").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - addedZ").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            original, changed
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type:").append(System.lineSeparator())
+            .append("      Prop1: x").append(System.lineSeparator())
+            .append("      Prop2:").append(System.lineSeparator())
+            .append("        -").append(System.lineSeparator())
+            .append("          foo: 1").append(System.lineSeparator())
+            .append("          bar: 2").append(System.lineSeparator())
+            .append("        - x").append(System.lineSeparator())
+            .append("        - y").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
         MatcherAssert.assertThat(
             merged.toString(),
             Matchers.equalTo(expected.toString())
