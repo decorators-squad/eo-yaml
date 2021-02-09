@@ -455,4 +455,69 @@ public final class MergedYamlMappingTest {
             Matchers.equalTo(expected.toString())
         );
     }
+
+    /**
+     * It should remove key "Prop3" from Mapping by replacing it with null.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldRemoveKeyFromComplexMapping() throws IOException{
+        final YamlMapping original = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: x").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        -").append(System.lineSeparator())
+                .append("          foo: 1").append(System.lineSeparator())
+                .append("          bar: 2").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - y").append(System.lineSeparator())
+                .append("      Prop3:").append(System.lineSeparator())
+                .append("        foo: 1").append(System.lineSeparator())
+                .append("        bar: 2").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+
+        final YamlMapping keyRemover = Yaml
+            .createYamlMappingBuilder()
+            .add("Parameters", Yaml
+                .createYamlMappingBuilder()
+                .add("Param1", Yaml
+                    .createYamlMappingBuilder()
+                    .add("Type", Yaml
+                        .createYamlMappingBuilder()
+                        .add("Prop3", (String) null)
+                        .build())
+                    .build())
+                .build()
+            ).build();
+
+        final YamlMapping merged = new MergedYamlMapping(
+            original, keyRemover, true
+        );
+
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type:").append(System.lineSeparator())
+            .append("      Prop1: x").append(System.lineSeparator())
+            .append("      Prop2:").append(System.lineSeparator())
+            .append("        -").append(System.lineSeparator())
+            .append("          foo: 1").append(System.lineSeparator())
+            .append("          bar: 2").append(System.lineSeparator())
+            .append("        - x").append(System.lineSeparator())
+            .append("        - y").append(System.lineSeparator())
+            .append("      Prop3: null").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
 }
