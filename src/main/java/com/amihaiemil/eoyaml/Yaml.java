@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import java.io.*;
 
@@ -193,5 +194,14 @@ public final class Yaml {
      */
     public static YamlMapping fromJsonObject(final JsonObject object) {
         return new JsonYamlMapping(object);
+    }
+
+    /**
+     * Create a YAML sequence from a {@link JsonArray}.
+     * @param array JsonArray in question.
+     * @return YamlSequence.
+     */
+    public static YamlSequence fromJsonArray(final JsonArray array){
+        return new JsonYamlSequence(array);
     }
 }
