@@ -36,8 +36,6 @@ import java.io.*;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #231:60min Implement and test method fromJsonArray(JsonArray)
- *  for Yaml, that will create a YamlSequence from a JsonArray.
  * @todo #231:60min Wiki documentation is needed for YAML mappings from JSON.
  *  (fromJsonObject() and fromJsonArray()).
  */
