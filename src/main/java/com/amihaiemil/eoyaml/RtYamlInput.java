@@ -123,6 +123,7 @@ final class RtYamlInput implements YamlInput {
      * Read the input's lines.
      * @return All read YamlLines
      * @throws IOException If something goes wrong while reading the input.
+     * @todo #447:60min Refactor solution for #447 by using lines iterators.
      */
     private AllYamlLines readInput() throws IOException {
         final List<YamlLine> lines = new ArrayList<>();
