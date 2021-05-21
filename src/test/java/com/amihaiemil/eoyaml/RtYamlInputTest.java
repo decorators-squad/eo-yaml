@@ -775,6 +775,54 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Corner case when key:value is on the same with sequence marker.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/447">#447</a>
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void shouldReadSequenceWhenFirstKeyIsOnTheSameLineFirstCase()
+        throws IOException {
+        final String fileName = "src/test/resources/issue_447_bug_mapping"
+            + "_case_1.yml";
+        final YamlMapping root = Yaml.createYamlInput(new File(fileName))
+            .readYamlMapping();
+        final YamlSequence variables = root.yamlSequence("root");
+        MatcherAssert.assertThat(variables, Matchers.iterableWithSize(3));
+    }
+
+    /**
+     * Corner case when key:value is on the same with sequence marker.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/447">#447</a>
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void shouldReadSequenceWhenFirstKeyIsOnTheSameLineSecondCase()
+        throws IOException {
+        final String fileName = "src/test/resources/issue_447_bug_mapping"
+            + "_case_2.yml";
+        final YamlMapping root = Yaml.createYamlInput(new File(fileName))
+            .readYamlMapping();
+        final YamlSequence variables = root.yamlSequence("root");
+        MatcherAssert.assertThat(variables, Matchers.iterableWithSize(3));
+    }
+
+    /**
+     * Corner case when key:value is on the same with sequence marker.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/447">#447</a>
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void shouldReadSequenceWhenFirstKeyIsOnTheSameLineThirdCase()
+        throws IOException {
+        final String fileName = "src/test/resources/issue_447_bug_mapping"
+            + "_case_3.yml";
+        final YamlMapping root = Yaml.createYamlInput(new File(fileName))
+            .readYamlMapping();
+        final YamlSequence variables = root.yamlSequence("root");
+        MatcherAssert.assertThat(variables, Matchers.iterableWithSize(3));
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
