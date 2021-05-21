@@ -34,7 +34,7 @@ jobs:
     - stage: testEarlyAccessJDK
       name: "Build with OpenJDK 17 EA"
       script:
-        - ~/install-ea-jdk.sh --target "/home/travis/openjdk16" --workspace "/home/travis/.cache/install-jdk" --feature "17" --license "GPL" --cacerts
+        - ~/install-ea-jdk.sh --target "/home/travis/openjdk17" --workspace "/home/travis/.cache/install-jdk" --feature "17" --license "GPL" --cacerts
         - export JAVA_HOME=~/openjdk17
         - export PATH="$JAVA_HOME/bin:$PATH"
         - set -e
