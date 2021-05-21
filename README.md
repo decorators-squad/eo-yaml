@@ -31,7 +31,7 @@ or download the <a href="https://oss.sonatype.org/service/local/repositories/rel
 If you use Gradle, add this to your dependencies:
 
 ```gradle
-implementation group: 'com.amihaiemil.web', name: 'eo-yaml', version: '5.1.9'
+implementation group: 'com.amihaiemil.web', name: 'eo-yaml', version: '5.2.0'
 ```
 
 The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages)!
