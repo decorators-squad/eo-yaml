@@ -8,6 +8,7 @@
 # the variable ${tag} provided to rultor. Specifically, it increments the 
 # 3rd digit and adds '-SNAPSHOT' to it.
 #
+#
 # IMPORTANT:
 #     the given tag has to contain 3 numbers separated by dots!
 #     
