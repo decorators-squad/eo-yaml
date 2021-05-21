@@ -804,6 +804,30 @@ public final class RtYamlInputTest {
             .readYamlMapping();
         final YamlSequence variables = root.yamlSequence("root");
         MatcherAssert.assertThat(variables, Matchers.iterableWithSize(3));
+        MatcherAssert.assertThat(
+            variables.yamlMapping(0).string("key"),
+            Matchers.equalTo("key1")
+        );
+        MatcherAssert.assertThat(
+            variables.yamlMapping(0).string("value"),
+            Matchers.equalTo("value1")
+        );
+        MatcherAssert.assertThat(
+            variables.yamlMapping(1).string("key"),
+            Matchers.equalTo("key2")
+        );
+        MatcherAssert.assertThat(
+            variables.yamlMapping(1).string("value"),
+            Matchers.equalTo("value2")
+        );
+        MatcherAssert.assertThat(
+            variables.yamlMapping(2).string("key"),
+            Matchers.equalTo("key3")
+        );
+        MatcherAssert.assertThat(
+            variables.yamlMapping(2).string("value"),
+            Matchers.equalTo("value3")
+        );
     }
 
     /**
