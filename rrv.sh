@@ -40,7 +40,7 @@ mvn clean deploy -PgenDocs,signArtifactsGpg,releaseToGithubPackages,releaseToMav
 sed -i "s/<version>${tag}<\/version><\!--rrv-sed-flag-->/<version>${NEXT_VERSION}<\/version><\!--rrv-sed-flag-->/" pom.xml
 sed -i "s/<version>.*<\/version>/<version>${tag}<\/version>/" README.md
 sed -i "s/<a.*>fat<\/a>/<a href=\"https:\/\/oss\.sonatype\.org\/service\/local\/repositories\/releases\/content\/com\/amihaiemil\/web\/eo-yaml\/${tag}\/eo-yaml-${tag}-jar-with-dependencies\.jar\">fat<\/a>/" README.md
-sed -i "s/, version '.*'/, version '${tag}'/" README.md
+sed -i "s/, version: '.*'/, version: '${tag}'/" README.md
 
 git commit -am "${NEXT_VERSION}"
 git checkout master
