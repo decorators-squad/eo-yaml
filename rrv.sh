@@ -1,6 +1,7 @@
 #!/bin/bash
 # Rultor release versioning script for Maven projects.
 #
+#
 # It looks for the project’s version, which MUST respect the pattern 
 # [0-9]*\.[0-9]*\.[0-9]*-SNAPSHOT and BE THE FIRST MATCH in pom.xml
 #
