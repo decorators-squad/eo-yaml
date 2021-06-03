@@ -56,17 +56,18 @@ final class PlainStringScalar extends BaseScalar {
      * @param value Given value for this scalar.
      */
     PlainStringScalar(final String value) {
-        this(value, "");
+        this(value, "", true);
     }
 
     /**
      * Ctor.
      * @param comment Comment referring to this Scalar.
      * @param value Given value for this scalar.
+     * @param inlineComment Whether the comment is inline or before the scalar.
      */
-    PlainStringScalar(final String value, final String comment) {
+    PlainStringScalar(final String value, final String comment, final boolean inlineComment) {
         this.value = value;
-        this.comment = new BuiltComment(this, comment);
+        this.comment = new BuiltComment(this, comment, inlineComment);
     }
 
     /**

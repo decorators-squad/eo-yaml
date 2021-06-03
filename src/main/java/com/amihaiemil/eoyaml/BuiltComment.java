@@ -46,13 +46,29 @@ class BuiltComment implements Comment {
     private final String value;
 
     /**
+     * The position of the comment.
+     */
+    private final boolean inlineComment;
+
+    /**
      * Constructor.
      * @param node Yaml node to which this comment refers.
      * @param value The String comment.
      */
     BuiltComment(final YamlNode node, final String value) {
+        this(node, value, false);
+    }
+
+    /**
+     * Constructor.
+     * @param node Yaml node to which this comment refers.
+     * @param value The String comment.
+     * @param inlineComment The position of the comment.
+     */
+    BuiltComment(final YamlNode node, final String value, final boolean inlineComment) {
         this.node = node;
         this.value = value;
+        this.inlineComment = inlineComment;
     }
 
     @Override
@@ -63,5 +79,10 @@ class BuiltComment implements Comment {
     @Override
     public String value() {
         return this.value;
+    }
+
+    @Override
+    public boolean inlineComment() {
+        return inlineComment;
     }
 }

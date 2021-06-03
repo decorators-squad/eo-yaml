@@ -58,21 +58,19 @@ final class RtYamlPrinter implements YamlPrinter {
     @Override
     public void print(final YamlNode node) throws IOException  {
         try {
-            if (node instanceof Scalar) {
+            boolean documentComment = false;
+            if (!node.comment().inlineComment()) {
+                documentComment = this.printPossibleComment(node, "");
+            }
+            if (documentComment) {
                 this.writer.append("---").append(System.lineSeparator());
+            }
+            if (node instanceof Scalar) {
                 this.printScalar((Scalar) node, 0);
                 this.writer.append(System.lineSeparator()).append("...");
             } else if (node instanceof YamlSequence) {
-                boolean documentComment = this.printPossibleComment(node, "");
-                if(documentComment) {
-                    this.writer.append("---").append(System.lineSeparator());
-                }
                 this.printSequence((YamlSequence) node, 0);
             } else if (node instanceof YamlMapping) {
-                boolean documentComment = this.printPossibleComment(node, "");
-                if(documentComment) {
-                    this.writer.append("---").append(System.lineSeparator());
-                }
                 this.printMapping((YamlMapping) node, 0);
             } else if (node instanceof YamlStream) {
                 this.printStream((YamlStream) node, 0);
@@ -134,7 +132,7 @@ final class RtYamlPrinter implements YamlPrinter {
             final YamlNode key = keysIt.next();
             this.printPossibleComment(key, alignment.toString());
             final YamlNode value = mapping.value(key);
-            if(!(value instanceof Scalar)) {
+            if(!value.comment().inlineComment()) {
                 this.printPossibleComment(value, alignment.toString());
             }
             this.writer.append(alignment);
@@ -181,16 +179,15 @@ final class RtYamlPrinter implements YamlPrinter {
         final Iterator<YamlNode> valuesIt = sequence.values().iterator();
         while(valuesIt.hasNext()) {
             final YamlNode node = valuesIt.next();
+            if (!node.comment().inlineComment()) {
+                this.printPossibleComment(node, alignment.toString());
+            }
+            this.writer
+                .append(alignment)
+                .append("-");
             if (node instanceof Scalar) {
-                this.writer
-                    .append(alignment)
-                    .append("-");
                 this.printNode(node, false, 0);
             } else  {
-                this.printPossibleComment(node, alignment.toString());
-                this.writer
-                    .append(alignment)
-                    .append("-");
                 this.printNode(node, true, indentation + 2);
             }
             if(valuesIt.hasNext()) {
@@ -212,8 +209,9 @@ final class RtYamlPrinter implements YamlPrinter {
         if (scalar instanceof BaseFoldedScalar) {
             final BaseFoldedScalar foldedScalar = (BaseFoldedScalar) scalar;
             this.writer.append(">");
-            if(!scalar.comment().value().isEmpty()) {
-                this.writer.append(" # ").append(scalar.comment().value());
+            if(!scalar.comment().value().isEmpty() && scalar.comment().inlineComment()) {
+                this.writer.append(" # ")
+                        .append(scalar.comment().value().replace(System.lineSeparator(), " "));
             }
             this.writer.append(System.lineSeparator());
             final List<String> unfolded = foldedScalar.unfolded();
@@ -232,8 +230,9 @@ final class RtYamlPrinter implements YamlPrinter {
                 || scalar instanceof ReadLiteralBlockScalar
         ) {
             this.writer.append("|");
-            if(!scalar.comment().value().isEmpty()) {
-                this.writer.append(" # ").append(scalar.comment().value());
+            if(!scalar.comment().value().isEmpty() && scalar.comment().inlineComment()) {
+                this.writer.append(" # ")
+                        .append(scalar.comment().value().replace(System.lineSeparator(), " "));
             }
             this.writer
                 .append(System.lineSeparator())
@@ -247,8 +246,9 @@ final class RtYamlPrinter implements YamlPrinter {
                     0
                 )
             );
-            if(!scalar.comment().value().isEmpty()) {
-                this.writer.append(" # ").append(scalar.comment().value());
+            if(!scalar.comment().value().isEmpty() && scalar.comment().inlineComment()) {
+                this.writer.append(" # ")
+                        .append(scalar.comment().value().replace(System.lineSeparator(), " "));
             }
         }
     }

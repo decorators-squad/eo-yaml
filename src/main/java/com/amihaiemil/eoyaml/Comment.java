@@ -48,4 +48,11 @@ public interface Comment {
      *  will be added when printing.
      */
     String value();
+
+    /**
+     * The position of the comment.
+     * @return true - The comment should be placed after the node value;<br>
+     *     false - The comment should be placed before the node
+     */
+    boolean inlineComment();
 }

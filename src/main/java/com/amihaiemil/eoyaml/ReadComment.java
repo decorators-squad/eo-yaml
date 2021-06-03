@@ -67,6 +67,15 @@ final class ReadComment implements Comment {
     }
 
     /**
+     * Always returns false as ReadComment doesn't save the position of the comment.
+     * @return false
+     */
+    @Override
+    public boolean inlineComment() {
+        return false;
+    }
+
+    /**
      * Pre-compute the comment value.
      *
      * @param lines The lines to parse into comments.

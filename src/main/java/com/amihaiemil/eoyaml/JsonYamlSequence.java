@@ -44,6 +44,11 @@ final class JsonYamlSequence extends BaseYamlSequence {
             public String value() {
                 return "";
             }
+
+            @Override
+            public boolean inlineComment() {
+                return false;
+            }
         };
     }
 }

@@ -79,7 +79,7 @@ public final class BuiltLiteralBlockScalarTest {
     @Test
     public void returnsComment() {
         final Scalar scl = new RtYamlScalarBuilder.BuiltLiteralBlockScalar(
-            new ArrayList<>(), "comment"
+            new ArrayList<>(), "comment", true
         );
         MatcherAssert.assertThat(
             scl.comment().value(),

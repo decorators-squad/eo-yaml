@@ -71,6 +71,11 @@ final class ReflectedYamlScalar extends BaseScalar {
             public String value() {
                 return "";
             }
+
+            @Override
+            public boolean inlineComment() {
+                return true;
+            }
         };
     }
 }

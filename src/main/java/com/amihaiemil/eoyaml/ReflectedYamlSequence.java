@@ -84,6 +84,11 @@ final class ReflectedYamlSequence extends BaseYamlSequence {
             public String value() {
                 return "";
             }
+
+            @Override
+            public boolean inlineComment() {
+                return false;
+            }
         };
     }
 

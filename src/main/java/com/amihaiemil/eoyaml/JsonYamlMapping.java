@@ -52,6 +52,11 @@ final class JsonYamlMapping extends BaseYamlMapping {
             public String value() {
                 return "";
             }
+
+            @Override
+            public boolean inlineComment() {
+                return false;
+            }
         };
     }
 }

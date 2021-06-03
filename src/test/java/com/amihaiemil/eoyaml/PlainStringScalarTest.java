@@ -61,7 +61,7 @@ public final class PlainStringScalarTest {
     @Test
     public void returnsComment() {
         final String val = "test scalar value";
-        final PlainStringScalar scl = new PlainStringScalar(val, "comment");
+        final PlainStringScalar scl = new PlainStringScalar(val, "comment", true);
         MatcherAssert.assertThat(
             scl.comment().value(),
             Matchers.equalTo("comment")

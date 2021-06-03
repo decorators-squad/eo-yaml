@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -71,20 +72,34 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
 
     @Override
     public Scalar buildPlainScalar(final String comment) {
-        final String plain = this.lines.stream().filter(line -> line!=null).map(
-            line -> line.replaceAll(System.lineSeparator(), " ")
-        ).collect(Collectors.joining(" "));
-        return new PlainStringScalar(plain, comment);
+        return buildPlainScalar(comment, !comment.contains(System.lineSeparator()));
+    }
+
+    @Override
+    public Scalar buildPlainScalar(final String comment, boolean inlineComment) {
+        final String plain = this.lines.stream().filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
+        return new PlainStringScalar(plain, comment, inlineComment);
     }
 
     @Override
     public Scalar buildFoldedBlockScalar(final String comment) {
-        return new BuiltFoldedBlockScalar(this.lines, comment);
+        return buildFoldedBlockScalar(comment, !comment.contains(System.lineSeparator()));
+    }
+
+    @Override
+    public Scalar buildFoldedBlockScalar(final String comment, boolean inlineComment) {
+        return new BuiltFoldedBlockScalar(this.lines, comment, inlineComment);
     }
 
     @Override
     public Scalar buildLiteralBlockScalar(final String comment) {
-        return new BuiltLiteralBlockScalar(this.lines, comment);
+        return buildLiteralBlockScalar(comment, !comment.contains(System.lineSeparator()));
+    }
+
+    @Override
+    public Scalar buildLiteralBlockScalar(final String comment, boolean inlineComment) {
+        return new BuiltLiteralBlockScalar(this.lines, comment, inlineComment);
     }
 
     /**
@@ -110,7 +125,7 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          * @param lines Given string lines.
          */
         BuiltFoldedBlockScalar(final List<String> lines) {
-            this(lines, "");
+            this(lines, "", true);
         }
 
         /**
@@ -119,10 +134,10 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          * @param lines Given string lines.
          */
         BuiltFoldedBlockScalar(
-            final List<String> lines, final String comment
+            final List<String> lines, final String comment, final boolean inlineComment
         ) {
             this.lines = lines;
-            this.comment = new BuiltComment(this, comment);
+            this.comment = new BuiltComment(this, comment, inlineComment);
         }
 
         /**
@@ -177,19 +192,20 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
          * @param lines Given string lines.
          */
         BuiltLiteralBlockScalar(final List<String> lines) {
-            this(lines, "");
+            this(lines, "", true);
         }
 
         /**
          * Ctor.
          * @param lines Given string lines.
          * @param comment Comment referring to this scalar.
+         * @param inlineComment The position of the comment.
          */
         BuiltLiteralBlockScalar(
-            final List<String> lines, final String comment
+            final List<String> lines, final String comment, boolean inlineComment
         ) {
             this.lines = lines;
-            this.comment = new BuiltComment(this, comment);
+            this.comment = new BuiltComment(this, comment, inlineComment);
         }
 
 
