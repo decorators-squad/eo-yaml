@@ -44,6 +44,9 @@ import java.io.IOException;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.2.0
+ * @todo #454:60min Modify the printing logic for scalar comments: if the
+ *  comment contains line breaks, write it above the scalar. If the comment has
+ *  no line breaks, write it inline, after the scalar.
  */
 public final class YamlMappingCommentsPrintTest {
 
