@@ -56,15 +56,36 @@ public final class PlainStringScalarTest {
     }
 
     /**
-     * Scalar can return its comment.
+     * Scalar can return its inline comment.
      */
     @Test
-    public void returnsComment() {
+    public void returnsInlineComment() {
         final String val = "test scalar value";
         final PlainStringScalar scl = new PlainStringScalar(val, "comment");
         MatcherAssert.assertThat(
             scl.comment().value(),
             Matchers.equalTo("comment")
+        );
+        MatcherAssert.assertThat(
+            scl.comment().yamlNode(),
+            Matchers.is(scl)
+        );
+    }
+
+    /**
+     * Scalar can return its above and inline comments concatenated.
+     */
+    @Test
+    public void returnsConcatenatedComment() {
+        final String val = "test scalar value";
+        final PlainStringScalar scl = new PlainStringScalar(
+            val, "above", "inline"
+        );
+        MatcherAssert.assertThat(
+            scl.comment().value(),
+            Matchers.equalTo(
+                "above" + System.lineSeparator() + "inline"
+            )
         );
         MatcherAssert.assertThat(
             scl.comment().yamlNode(),
