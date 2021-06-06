@@ -33,7 +33,7 @@ package com.amihaiemil.eoyaml;
  * @version $Id$
  * @since 5.2.1
  */
-final class ReadScalarComment implements ScalarComment {
+final class Concatenated implements ScalarComment {
 
     /**
      * Comment above the scalar.
@@ -50,7 +50,7 @@ final class ReadScalarComment implements ScalarComment {
      * @param above Comment above the scalar.
      * @param inline Comment inline with the scalar.
      */
-    ReadScalarComment(
+    Concatenated(
         final Comment above,
         final Comment inline
     ) {

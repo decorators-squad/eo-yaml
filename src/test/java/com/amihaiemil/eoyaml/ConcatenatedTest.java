@@ -33,41 +33,41 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Unit tests for {@link ReadScalarComment}.
+ * Unit tests for {@link Concatenated}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 5.2.1
  */
-public final class ReadScalarCommentTest {
+public final class ConcatenatedTest {
 
     /**
-     * ReadScalarComment can return the Comment above.
+     * Concatenated can return the Comment above.
      */
     @Test
     public void returnsCommentAbove() {
         final Comment above = Mockito.mock(Comment.class);
         final Comment inline = Mockito.mock(Comment.class);
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).above(),
+            new Concatenated(above, inline).above(),
             Matchers.is(above)
         );
     }
 
     /**
-     * ReadScalarComment can return the inline Comment.
+     * Concatenated can return the inline Comment.
      */
     @Test
     public void returnsInlineComment() {
         final Comment above = Mockito.mock(Comment.class);
         final Comment inline = Mockito.mock(Comment.class);
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).inline(),
+            new Concatenated(above, inline).inline(),
             Matchers.is(inline)
         );
     }
 
     /**
-     * ReadScalarComment can return the parent YamlNode.
+     * Concatenated can return the parent YamlNode.
      */
     @Test
     public void returnsNode() {
@@ -77,13 +77,13 @@ public final class ReadScalarCommentTest {
         Mockito.when(inline.yamlNode()).thenReturn(parent);
 
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).yamlNode(),
+            new Concatenated(above, inline).yamlNode(),
             Matchers.is(parent)
         );
     }
 
     /**
-     * ReadScalarComment returns the concatenated (with newline) value of
+     * Concatenated returns the concatenated (with newline) value of
      * both comments.
      */
     @Test
@@ -94,7 +94,7 @@ public final class ReadScalarCommentTest {
         Mockito.when(inline.value()).thenReturn("And inline comment.");
 
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).value(),
+            new Concatenated(above, inline).value(),
             Matchers.equalTo(
                 "Comment above on\n"
                 + "more lines.\n"
@@ -104,7 +104,7 @@ public final class ReadScalarCommentTest {
     }
 
     /**
-     * ReadScalarComment.value() is only the inline comment if the above
+     * Concatenated.value() is only the inline comment if the above
      * Comment is empty.
      */
     @Test
@@ -115,13 +115,13 @@ public final class ReadScalarCommentTest {
         Mockito.when(inline.value()).thenReturn("Inline comment.");
 
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).value(),
+            new Concatenated(above, inline).value(),
             Matchers.equalTo("Inline comment.")
         );
     }
 
     /**
-     * ReadScalarComment.value() is only the above comment if the inline
+     * Concatenated.value() is only the above comment if the inline
      * Comment is empty.
      */
     @Test
@@ -132,13 +132,13 @@ public final class ReadScalarCommentTest {
         Mockito.when(inline.value()).thenReturn("");
 
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).value(),
+            new Concatenated(above, inline).value(),
             Matchers.equalTo("Comment above on\nmore lines.")
         );
     }
 
     /**
-     * ReadScalarComment.value() returns empty string if both comments are
+     * Concatenated.value() returns empty string if both comments are
      * empty.
      */
     @Test
@@ -149,7 +149,7 @@ public final class ReadScalarCommentTest {
         Mockito.when(inline.value()).thenReturn("");
 
         MatcherAssert.assertThat(
-            new ReadScalarComment(above, inline).value(),
+            new Concatenated(above, inline).value(),
             Matchers.isEmptyString()
         );
     }
