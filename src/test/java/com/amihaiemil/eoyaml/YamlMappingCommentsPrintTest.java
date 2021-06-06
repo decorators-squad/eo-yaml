@@ -196,6 +196,45 @@ public final class YamlMappingCommentsPrintTest {
     }
 
     /**
+     * Reads scalar comments from a mapping properly.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsScalarComments() throws IOException {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/scalarCommentsInMapping.yml"
+            )
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            read.value("architect").comment().value(),
+            Matchers.equalTo(
+                "Mihai is the architect,\nhe has 8 years Java XP"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("name").comment().value(),
+            Matchers.equalTo(
+                "name of the project"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("provider").comment().value(),
+            Matchers.equalTo(
+                "git web service"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("devops").comment().value(),
+            Matchers.equalTo("")
+        );
+        MatcherAssert.assertThat(
+            read.value("tech").comment().value(),
+            Matchers.equalTo("planet java")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
