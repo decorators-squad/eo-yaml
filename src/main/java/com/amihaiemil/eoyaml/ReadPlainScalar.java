@@ -133,13 +133,13 @@ final class ReadPlainScalar extends BaseScalar {
     public Comment comment() {
         final Comment comment;
         if(this.scalar instanceof YamlLine.NullYamlLine) {
-            comment = new ReadScalarComment(
+            comment = new Concatenated(
                 new BuiltComment(this, ""),
                 new BuiltComment(this, "")
             );
         } else {
             final int lineNumber = this.scalar.number();
-            comment = new ReadScalarComment(
+            comment = new Concatenated(
                 new ReadComment(
                     new Backwards(
                         new FirstCommentFound(
