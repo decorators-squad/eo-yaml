@@ -133,18 +133,14 @@ final class ReadPlainScalar extends BaseScalar {
     public Comment comment() {
         final Comment comment;
         if(this.scalar instanceof YamlLine.NullYamlLine) {
-            comment = new BuiltComment(this, "");
-        } else {
-            final Comment inline = new ReadComment(
-                    new Skip(
-                        this.all,
-                        line -> line.number() != this.scalar.number()
-                    ),
-                this
+            comment = new ReadScalarComment(
+                new BuiltComment(this, ""),
+                new BuiltComment(this, "")
             );
-            if(inline.value().trim().isEmpty()) {
-                final int lineNumber = this.scalar.number();
-                comment = new ReadComment(
+        } else {
+            final int lineNumber = this.scalar.number();
+            comment = new ReadScalarComment(
+                new ReadComment(
                     new Backwards(
                         new FirstCommentFound(
                             new Backwards(
@@ -160,10 +156,15 @@ final class ReadPlainScalar extends BaseScalar {
                         )
                     ),
                     this
-                );
-            } else {
-                comment = inline;
-            }
+                ),
+                new ReadComment(
+                    new Skip(
+                        this.all,
+                        line -> line.number() != lineNumber
+                    ),
+                    this
+                )
+            );
         }
         return comment;
     }

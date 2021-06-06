@@ -198,7 +198,11 @@ public final class YamlSequenceCommentsPrintTest {
         );
         MatcherAssert.assertThat(
             values.next().comment().value(),
-            Matchers.equalTo("inline comment about element6")
+            Matchers.equalTo(
+                "this comment refers\n"
+                + "to the element6 scalar\n"
+                + "element6 also has an inline comment"
+            )
         );
     }
 
