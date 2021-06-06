@@ -97,6 +97,18 @@ public interface YamlScalarBuilder {
     Scalar buildPlainScalar(final String inline);
 
     /**
+     * Build a plain Scalar. Ideally, you should use this when
+     * your scalar is short, a single line of text.<br><br>
+     * If you added more lines of text, all of them will be put together,
+     * separated by spaces.
+     * @param above Comment above the scalar. It may have multiple lines.
+     * @param inline Inline comment referring to the built scalar. If it has
+     *  more lines, they will be concatenated into a single line.
+     * @return The built Scalar.
+     */
+    Scalar buildPlainScalar(final String above, final String inline);
+
+    /**
      * Build a Folded Block Scalar. Use this when your scalar has multiple
      * lines of text, but you don't care about the newlines, you want them
      * all separated by spaces. <br><br>
