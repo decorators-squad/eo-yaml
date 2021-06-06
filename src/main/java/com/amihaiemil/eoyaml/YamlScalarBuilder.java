@@ -94,7 +94,9 @@ public interface YamlScalarBuilder {
      *  more lines, they will be concatenated into a single line.
      * @return The built Scalar.
      */
-    Scalar buildPlainScalar(final String inline);
+    default Scalar buildPlainScalar(final String inline) {
+        return this.buildPlainScalar("", inline);
+    }
 
     /**
      * Build a plain Scalar. Ideally, you should use this when
