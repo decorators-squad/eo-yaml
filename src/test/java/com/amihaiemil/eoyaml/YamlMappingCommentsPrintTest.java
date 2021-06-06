@@ -233,7 +233,11 @@ public final class YamlMappingCommentsPrintTest {
         );
         MatcherAssert.assertThat(
             read.value("tech").comment().value(),
-            Matchers.equalTo("planet java")
+            Matchers.equalTo(
+                "eo-yaml is written in Java\n"
+                + "and it has no dependencies\n"
+                + "Java SE 8+"
+            )
         );
     }
 

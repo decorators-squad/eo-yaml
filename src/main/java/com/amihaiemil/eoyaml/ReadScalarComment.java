@@ -32,8 +32,6 @@ package com.amihaiemil.eoyaml;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 5.2.1
- * @todo #458:30min Use this class inside ReadPlainScalar.comment() to read
- *  both the comment which is above and the one which is inline.
  */
 final class ReadScalarComment implements ScalarComment {
 

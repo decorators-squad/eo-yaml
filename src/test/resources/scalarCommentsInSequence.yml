@@ -9,6 +9,6 @@
 # it's multiline
 - element4
 - element5
-# this comment is ignored because there is
-# an inline (closer comment)
-- element6 # inline comment about element6
+# this comment refers
+# to the element6 scalar
+- element6 # element6 also has an inline comment

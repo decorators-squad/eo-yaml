@@ -9,6 +9,6 @@ name: "eo-yaml" # name of the project
 # git web service
 provider: github
 devops: rultor
-# this comment is ignored because the scalar has
-# an inline comment (closer to it)
-tech: java # planet java
+# eo-yaml is written in Java
+# and it has no dependencies
+tech: java # Java SE 8+
