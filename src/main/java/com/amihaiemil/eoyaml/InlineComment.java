@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2021, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,62 +27,40 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
- * YAML Plain scalar from String. Use this class when dealing with
- * built YAML or in the unit tests.
- *
- * DO NOT use it when READING yaml. For reading use
- * {@link ReadPlainScalar}!
- *
+ * Comment decorator which removes the comment's newLines.
+ * Puts the whole comment on one line.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 5.2.1
  */
-final class PlainStringScalar extends BaseScalar {
+final class InlineComment implements Comment {
 
     /**
-     * Comments referring to this scalar.
+     * Original Comment.
      */
-    private final Comment comment;
-
-    /**
-     * This scalar's value.
-     */
-    private final String value;
+    private final Comment original;
 
     /**
      * Ctor.
-     * @param value Given value for this scalar.
+     * @param original Original comment.
      */
-    PlainStringScalar(final String value) {
-        this(value, "");
+    InlineComment(final Comment original) {
+        this.original = original;
     }
 
-    /**
-     * Ctor.
-     * @param comment Comment referring to this Scalar.
-     * @param value Given value for this scalar.
-     */
-    PlainStringScalar(final String value, final String comment) {
-        this.value = value;
-        this.comment = new InlineComment(
-            new BuiltComment(this, comment)
-        );
+    @Override
+    public YamlNode yamlNode() {
+        return this.original.yamlNode();
     }
 
-    /**
-     * Value of this scalar.
-     * @return Value of type T.
-     */
     @Override
     public String value() {
-        return this.value;
+        return Arrays.stream(
+            this.original.value().split("\\r?\\n")
+        ).collect(Collectors.joining(" "));
     }
-
-    @Override
-    public Comment comment() {
-        return this.comment;
-    }
-
 }

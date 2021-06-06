@@ -132,14 +132,18 @@ final class RtYamlPrinter implements YamlPrinter {
         final Iterator<YamlNode> keysIt = mapping.keys().iterator();
         while(keysIt.hasNext()) {
             final YamlNode key = keysIt.next();
-            this.printPossibleComment(key, alignment.toString());
             final YamlNode value = mapping.value(key);
             if(!(value instanceof Scalar)) {
                 this.printPossibleComment(value, alignment.toString());
             }
             this.writer.append(alignment);
             if(key instanceof Scalar) {
-                this.printScalar((Scalar) key, 0);
+                this.writer.append(
+                    this.indent(
+                        new Escaped((Scalar) key).value(),
+                        0
+                    )
+                );
                 this.writer
                     .append(":");
             } else {
