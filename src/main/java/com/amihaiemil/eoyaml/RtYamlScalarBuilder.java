@@ -70,11 +70,16 @@ final class RtYamlScalarBuilder implements YamlScalarBuilder {
     }
 
     @Override
-    public Scalar buildPlainScalar(final String comment) {
+    public Scalar buildPlainScalar(final String inline) {
+        return this.buildPlainScalar("", inline);
+    }
+
+    @Override
+    public Scalar buildPlainScalar(final String above, final String inline) {
         final String plain = this.lines.stream().filter(line -> line!=null).map(
             line -> line.replaceAll(System.lineSeparator(), " ")
         ).collect(Collectors.joining(" "));
-        return new PlainStringScalar(plain, comment);
+        return new PlainStringScalar(plain, above, inline);
     }
 
     @Override
