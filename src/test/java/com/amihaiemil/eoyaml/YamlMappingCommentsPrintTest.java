@@ -44,8 +44,6 @@ import java.io.IOException;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.2.0
- * @todo #457:60min Continue modifying the printing logic for scalar comments:
- *  The above and inline comments should be printed properly.
  */
 public final class YamlMappingCommentsPrintTest {
 
