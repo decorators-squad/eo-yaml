@@ -207,6 +207,25 @@ public final class YamlSequenceCommentsPrintTest {
     }
 
     /**
+     * A read YamlSequence should print itself together with the
+     * read scalar comments.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlSequenceWithScalarComments() throws Exception {
+        final YamlSequence read = Yaml.createYamlInput(
+            new File("src/test/resources/scalarCommentsInSequence.yml")
+        ).readYamlSequence();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("scalarCommentsInSequence.yml")
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

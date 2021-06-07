@@ -44,8 +44,6 @@ import java.io.IOException;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.2.0
- * @todo #457:60min Continue modifying the printing logic for scalar comments:
- *  The above and inline comments should be printed properly.
  */
 public final class YamlMappingCommentsPrintTest {
 
@@ -236,6 +234,86 @@ public final class YamlMappingCommentsPrintTest {
                 "eo-yaml is written in Java\n"
                 + "and it has no dependencies\n"
                 + "Java SE 8+"
+            )
+        );
+    }
+
+    /**
+     * A read YamlMapping should print itself together with the
+     * read scalar .
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlMappingWithScalarComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File("src/test/resources/scalarCommentsInMapping.yml")
+        ).readYamlMapping();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("scalarCommentsInMapping.yml")
+            )
+        );
+    }
+
+    /**
+     * We can print a built scalar with 2 comments.
+     */
+    @Test
+    public void printsBuiltScalarWithTwoComments() {
+        final Scalar scalar = Yaml.createYamlScalarBuilder()
+            .addLine("simple")
+            .buildPlainScalar("comment on top\nline2", "comment");
+        System.out.println(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+                "---" + System.lineSeparator()
+                + "# comment on top" + System.lineSeparator()
+                + "# line2" + System.lineSeparator()
+                + "simple # comment" + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
+
+    /**
+     * We can print a built scalar an inline comment.
+     */
+    @Test
+    public void printsBuiltScalarWithInline() {
+        final Scalar scalar = Yaml.createYamlScalarBuilder()
+            .addLine("simple")
+            .buildPlainScalar("comment");
+        System.out.println(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+                "---" + System.lineSeparator()
+                    + "simple # comment" + System.lineSeparator()
+                    + "..."
+            )
+        );
+    }
+
+    /**
+     * We can print a built scalar with comment above.
+     */
+    @Test
+    public void printsBuiltScalarWithAboveComment() {
+        final Scalar scalar = Yaml.createYamlScalarBuilder()
+            .addLine("simple")
+            .buildPlainScalar("comment on top\nline2", "");
+        System.out.println(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+                "---" + System.lineSeparator()
+                    + "# comment on top" + System.lineSeparator()
+                    + "# line2" + System.lineSeparator()
+                    + "simple" + System.lineSeparator()
+                    + "..."
             )
         );
     }
