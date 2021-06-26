@@ -1,7 +1,7 @@
 # eo-yaml
 <img alt="eo-yaml-logo" src="http://www.amihaiemil.com/images/camila2.png" width="120" height="70"/>
 
-[![Build Status](https://travis-ci.org/decorators-squad/eo-yaml.svg?branch=master)](https://travis-ci.org/decorators-squad/eo-yaml)
+[![Build Status](https://travis-ci.com/decorators-squad/eo-yaml.svg?branch=master)](https://travis-ci.com/decorators-squad/eo-yaml)
 [![Coverage Status](https://coveralls.io/repos/github/decorators-squad/eo-yaml/badge.svg?branch=master)](https://coveralls.io/github/decorators-squad/eo-yaml?branch=master)
 
 [![Managed By Self XDSD](https://self-xdsd.com/b/mbself.svg)](https://self-xdsd.com/p/decorators-squad/eo-yaml?provider=github) 
