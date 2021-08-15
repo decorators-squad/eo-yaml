@@ -40,7 +40,7 @@ The releases are also available on [Github Packages](https://github.com/decorato
 ## Usage
 
 The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to.
-Just start form the ``com.amihaiemil.eoyaml.Yaml`` class, it offers all the builders and readers you may need.
+Just start from the ``com.amihaiemil.eoyaml.Yaml`` class, it offers all the builders and readers you may need.
 
 See the [Block Style Yaml](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML) wiki for a first glance.
 
