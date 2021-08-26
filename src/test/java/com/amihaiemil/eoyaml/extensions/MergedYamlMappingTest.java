@@ -520,4 +520,144 @@ public final class MergedYamlMappingTest {
             Matchers.equalTo(expected.toString())
         );
     }
+
+    /**
+     * It should merge comments.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByOverridingComment() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("Old Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("New Comment");
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.comment().value(),
+            Matchers.equalTo("New Comment")
+        );
+    }
+
+    /**
+     * It should merge comments.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByOverridingCommentOfSequence() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build("Old Comment"))
+            .build();
+        YamlMapping updater =  Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build("New Comment"))
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.yamlSequence("Key").comment().value(),
+            Matchers.equalTo("New Comment")
+        );
+    }
+
+    /**
+     * It should merge inner comments.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByOverridingInnerComment() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlMappingBuilder()
+                .add("InnerKey", "InnerValue")
+                .build("Old Comment"))
+            .build("Top Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlMappingBuilder()
+                .add("InnerKey", "InnerValue")
+                .build("New Comment"))
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged
+                .value("Key")
+                .asMapping()
+                .comment()
+                .value(),
+            Matchers.equalTo("New Comment")
+        );
+    }
+
+    /**
+     * It should keep original comment when merge mapping has not overriding
+     * flag set.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByNotOverridingCommentWhenOverridingFlagNotSet() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("Old Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("New Comment");
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.FALSE
+        );
+        MatcherAssert.assertThat(
+            merged.comment().value(),
+            Matchers.equalTo("Old Comment")
+        );
+    }
+
+    /**
+     * It should keep original comment if the updater has no comment attached.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByNotOverridingCommentWhenCommentNotProvided() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("Old Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.comment().value(),
+            Matchers.equalTo("Old Comment")
+        );
+    }
+
+    /**
+     * It should keep original comment when updater merge sequence has no
+     * comment attached.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByNotOverridingCommentOfSequenceWhenCommentNotProvided() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build("Old Comment"))
+            .build();
+        YamlMapping updater =  Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build())
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.yamlSequence("Key").comment().value(),
+            Matchers.equalTo("Old Comment")
+        );
+    }
 }

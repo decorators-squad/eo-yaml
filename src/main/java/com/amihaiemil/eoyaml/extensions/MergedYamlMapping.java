@@ -202,9 +202,15 @@ public final class MergedYamlMapping extends BaseYamlMapping {
                         originalSeqBuilder = originalSeqBuilder.add(node);
                     }
                 }
+                final Comment newComment;
+                if(!changedSeq.comment().value().isEmpty()){
+                    newComment = changedSeq.comment();
+                }else{
+                    newComment = originalSeq.comment();
+                }
                 originalBuilder = originalBuilder.add(
                     key,
-                    originalSeqBuilder.build(originalSeq.comment().value())
+                    originalSeqBuilder.build(newComment.value())
                 );
             } else {
                 final YamlNode newValue;
@@ -220,7 +226,13 @@ public final class MergedYamlMapping extends BaseYamlMapping {
                 originalBuilder = originalBuilder.add(key, newValue);
             }
         }
-        return originalBuilder.build(original.comment().value());
+        final Comment newComment;
+        if(overrideConflicts && !changed.comment().value().isEmpty()){
+            newComment = changed.comment();
+        }else{
+            newComment = original.comment();
+        }
+        return originalBuilder.build(newComment.value());
     }
 
     /**
