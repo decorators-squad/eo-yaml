@@ -1,0 +1,28 @@
+#Node comment
+architect: mihai
+developers:
+  - rultor
+  - salikjan
+  - sherif
+name: eo-yaml
+
+
+
+#Second whole document comment
+
+
+
+---
+architect: vlad
+developers:
+  - andrei
+name: eo-json-impl
+#Third whole document trimmed
+---
+architect: felicia
+developer: sara
+name: docker-java-api
+---
+architect: john
+developer: dan
+name: docker-java-api

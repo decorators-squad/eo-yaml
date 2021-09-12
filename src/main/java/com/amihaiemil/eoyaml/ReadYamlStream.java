@@ -81,7 +81,6 @@ final class ReadYamlStream extends BaseYamlStream {
         );
         this.all = new Skip(
             lines,
-            line -> line.trimmed().startsWith("#"),
             line -> line.trimmed().startsWith("%")
         );
         this.guessIndentation = guessIndentation;
@@ -110,11 +109,17 @@ final class ReadYamlStream extends BaseYamlStream {
      */
     private YamlLines readDocument(final YamlLine start) {
         final List<YamlLine> yamlDocLines = new ArrayList<>();
-        final YamlLine startLine = this.all.line(start.number());
-        if(!"---".equals(startLine.trimmed())) {
-            yamlDocLines.add(startLine);
+        final YamlLines docComment = new Backwards(
+            new FirstCommentFound(
+                new Backwards(
+                    new Skip(this.all, (line) -> line.number() > start.number())
+                ), true
+            )
+        );
+        for (final YamlLine line: docComment){
+            yamlDocLines.add(line);
         }
-        for(final YamlLine line : this.all.original()) {
+        for(final YamlLine line : this.all) {
             if(line.number() > start.number()) {
                 final String current = line.trimmed();
                 if("---".equals(current) || "...".equals(current)) {

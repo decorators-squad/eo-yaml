@@ -31,8 +31,11 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Unit tests for {@link ReadYamlStream}.
@@ -162,5 +165,52 @@ public final class ReadYamlStreamTest {
             new AllYamlLines(lines)
         );
         MatcherAssert.assertThat(stream.values(), Matchers.iterableWithSize(3));
+    }
+
+    /**
+     * YamlStream should print the comment only once for each document/first
+     * node (in case doc starter is missing).
+     * <br/>
+     * Related to bug: <a href="https://github.com/decorators-squad/eo-yaml/issues/473">#473</a>.
+     * @throws IOException When something goes wrong.
+     */
+    @Test
+    public void shouldPrintTheFirstNodeOrDocumentCommentOnce()
+        throws IOException {
+        YamlStream yamlStream = Yaml
+            .createYamlInput(new File("src/test/resources"
+                + "/streamWithDocumentComments.yml"))
+            .readYamlStream();
+
+        List<YamlNode> collect = yamlStream.collect(Collectors.toList());
+
+        MatcherAssert.assertThat(collect, Matchers.iterableWithSize(4));
+
+        MatcherAssert.assertThat(
+            collect.get(0).comment().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            collect.get(0).asMapping()
+                .value("architect")
+                .comment()
+                .value(),
+            Matchers.equalTo("Node comment")
+        );
+
+        MatcherAssert.assertThat(
+            collect.get(1).comment().value(),
+            Matchers.equalTo("Second whole document comment")
+        );
+
+        MatcherAssert.assertThat(
+            collect.get(2).comment().value(),
+            Matchers.equalTo("Third whole document trimmed")
+        );
+
+        MatcherAssert.assertThat(
+            collect.get(3).comment().value(),
+            Matchers.isEmptyString()
+        );
     }
 }
