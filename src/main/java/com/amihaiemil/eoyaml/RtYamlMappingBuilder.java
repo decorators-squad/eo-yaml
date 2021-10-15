@@ -80,7 +80,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
 
     @Override
     public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
-        if(key == null || ((BaseYamlNode) key).isEmpty()) {
+        if(key == null || key.isEmpty()) {
             throw new IllegalArgumentException(
                 "The key in YamlMapping cannot be null or empty!"
             );
