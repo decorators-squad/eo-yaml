@@ -39,6 +39,12 @@ import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 public interface YamlNode extends Comparable<YamlNode> {
 
     /**
+     * Is this YamlNode empty?
+     * @return True or false.
+     */
+    boolean isEmpty();
+
+    /**
      * Comment referring to this Node.
      * @return Comment. If there is no comment, it will return
      *  an "empty" comment (an instance of Comment with empty-string value()).
