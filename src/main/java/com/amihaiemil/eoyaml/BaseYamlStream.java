@@ -126,7 +126,7 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
     }
 
     @Override
-    final boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.values().isEmpty();
     }
 }

@@ -139,7 +139,7 @@ public abstract class BaseYamlMapping
     }
 
     @Override
-    final boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.keys().isEmpty();
     }
 }
