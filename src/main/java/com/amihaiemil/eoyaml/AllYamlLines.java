@@ -114,13 +114,12 @@ final class AllYamlLines implements YamlLines {
             node = this.mappingSequenceOrPlainScalar(prev, guessIndentation);
         } else {
             final String lastChar = prevLine.substring(prevLine.length() - 1);
-
-            if (lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
+            if (prevLine.matches(Follows.FOLDED_SEQUENCE)) {
+                node = new ReadYamlSequence(prev, this, guessIndentation);
+            } else if (lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
                 node = new ReadLiteralBlockScalar(prev, this);
             } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
                 node = new ReadFoldedBlockScalar(prev, this);
-            } else if (prevLine.matches(Follows.FOLDED_SEQUENCE)) {
-                node = new ReadYamlSequence(prev, this, guessIndentation);
             } else {
                 node = this.mappingSequenceOrPlainScalar(
                     prev, guessIndentation
