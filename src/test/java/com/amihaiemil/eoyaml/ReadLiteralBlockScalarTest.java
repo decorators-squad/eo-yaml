@@ -27,8 +27,12 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -203,6 +207,45 @@ public final class ReadLiteralBlockScalarTest {
                 + "  Third Line"
                 + System.lineSeparator()
                 + "..."
+            )
+        );
+    }
+
+    /**
+     * Prints a block scalar from string.
+     * <br/>
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/480">
+     *     See bug</a>
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void printsLiteralBlockScalarFromString() throws IOException {
+        final String input = readTestResource("issue_480_bug_printing.yml");
+
+        YamlMapping mapping = Yaml.createYamlInput(input, true)
+            .readYamlMapping();
+        MatcherAssert.assertThat(
+            mapping.string("test1"),
+            Matchers.equalTo("  this is a test message 1\r\n")
+        );
+        MatcherAssert.assertThat(
+            mapping.string("test2"),
+            Matchers.equalTo("  this is a test message 2\r\n")
+        );
+    }
+
+    /**
+     * Read a test resource file's contents.
+     * @param fileName File to read.
+     * @return File's contents as String.
+     * @throws FileNotFoundException If something is wrong.
+     * @throws IOException If something is wrong.
+     */
+    private String readTestResource(final String fileName)
+        throws FileNotFoundException, IOException {
+        return new String(
+            IOUtils.toByteArray(
+                new FileInputStream("src/test/resources/" + fileName)
             )
         );
     }
