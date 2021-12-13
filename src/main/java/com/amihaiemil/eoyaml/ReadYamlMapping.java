@@ -242,13 +242,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
             for (final YamlLine line : this.significant) {
                 final String trimmed = line.trimmed();
                 if(trimmed.matches("^-?[ ]*" + Pattern.quote(tryKey) + ":")
-                    || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\>$")
-                    || trimmed.matches("^" + Pattern.quote(tryKey) + "\\:[ ]*\\|$")
+                    || trimmed.matches("^" + Pattern.quote(tryKey) + ":[ ]*>$")
+                    || trimmed.matches("^" + Pattern.quote(tryKey) + ":[ ]*\\|[+-]?$")
                 ) {
                     value = this.significant.toYamlNode(
                         line, this.guessIndentation
                     );
-                } else if (trimmed.matches(tryKey + ":[ ]*\\{\\}")) {
+                } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
                             line.number(),
                             this.all.line(line.number()),

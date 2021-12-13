@@ -88,7 +88,7 @@ public interface YamlMapping extends YamlNode {
     default YamlMapping yamlMapping(final YamlNode key) {
         final YamlNode value = this.value(key);
         final YamlMapping found;
-        if (value != null && value instanceof YamlMapping) {
+        if (value instanceof YamlMapping) {
             found = (YamlMapping) value;
         } else {
             found = null;
@@ -117,7 +117,7 @@ public interface YamlMapping extends YamlNode {
     default YamlSequence yamlSequence(final YamlNode key) {
         final YamlNode value = this.value(key);
         final YamlSequence found;
-        if (value != null && value instanceof YamlSequence) {
+        if (value instanceof YamlSequence) {
             found =  (YamlSequence) value;
         } else {
             found = null;
@@ -146,7 +146,7 @@ public interface YamlMapping extends YamlNode {
     default String string(final YamlNode key) {
         final YamlNode value = this.value(key);
         final String found;
-        if (value != null && value instanceof Scalar) {
+        if (value instanceof Scalar) {
             found = ((Scalar) value).value();
         } else {
             found = null;
@@ -174,7 +174,7 @@ public interface YamlMapping extends YamlNode {
     default String foldedBlockScalar(final YamlNode key) {
         final YamlNode value = this.value(key);
         final String found;
-        if (value != null  && value instanceof Scalar) {
+        if (value instanceof Scalar) {
             found = ((Scalar) value).value();
         } else {
             found = null;
@@ -260,7 +260,7 @@ public interface YamlMapping extends YamlNode {
      */
     default int integer(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if(value != null && value instanceof Scalar) {
+        if(value instanceof Scalar) {
             return Integer.parseInt(((Scalar) value).value());
         }
         return -1;
@@ -300,7 +300,7 @@ public interface YamlMapping extends YamlNode {
      */
     default float floatNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if(value != null && value instanceof Scalar) {
+        if(value instanceof Scalar) {
             return Float.parseFloat(((Scalar) value).value());
         }
         return -1;
@@ -340,7 +340,7 @@ public interface YamlMapping extends YamlNode {
      */
     default double doubleNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if(value != null && value instanceof Scalar) {
+        if(value instanceof Scalar) {
             return Double.parseDouble(((Scalar) value).value());
         }
         return -1.0;
@@ -380,7 +380,7 @@ public interface YamlMapping extends YamlNode {
      */
     default long longNumber(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if(value != null && value instanceof Scalar) {
+        if(value instanceof Scalar) {
             return Long.parseLong(((Scalar) value).value());
         }
         return -1L;
@@ -418,7 +418,7 @@ public interface YamlMapping extends YamlNode {
      */
     default LocalDate date(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if(value != null && value instanceof Scalar) {
+        if(value instanceof Scalar) {
             return LocalDate.parse(((Scalar) value).value());
         }
         return null;
@@ -456,7 +456,7 @@ public interface YamlMapping extends YamlNode {
      */
     default LocalDateTime dateTime(final YamlNode key) {
         final YamlNode value = this.value(key);
-        if(value != null && value instanceof Scalar) {
+        if(value instanceof Scalar) {
             return LocalDateTime.parse(((Scalar) value).value());
         }
         return null;
