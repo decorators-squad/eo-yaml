@@ -90,9 +90,7 @@ final class ReadLiteralBlockScalar extends BaseScalar {
                 line -> {
                     final YamlLine key = previous;
                     final Skip.Line skipLine = (Skip.Line) line;
-                    final int prevIndentation = skipLine.getPrevious()
-                        .indentation();
-                    if(prevIndentation > skipLine.indentation()) {
+                    if(skipLine.indentation() == key.indentation()) {
                         // mark that we finished the block by storing the
                         // block's key line
                         skipLine.store(key);

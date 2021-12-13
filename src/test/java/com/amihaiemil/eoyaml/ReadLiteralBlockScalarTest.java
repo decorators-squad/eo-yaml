@@ -226,11 +226,13 @@ public final class ReadLiteralBlockScalarTest {
             .readYamlMapping();
         MatcherAssert.assertThat(
             mapping.string("test1"),
-            Matchers.equalTo("  this is a test message 1\r\n")
+            Matchers.equalTo("  this is a test message 1"
+                + System.lineSeparator())
         );
         MatcherAssert.assertThat(
             mapping.string("test2"),
-            Matchers.equalTo("  this is a test message 2\r\n")
+            Matchers.equalTo("  this is a test message 2"
+                + System.lineSeparator())
         );
     }
 
