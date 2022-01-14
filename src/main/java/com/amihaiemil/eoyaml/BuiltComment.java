@@ -36,6 +36,11 @@ package com.amihaiemil.eoyaml;
 class BuiltComment implements Comment {
 
     /**
+     * The System line separator to join the comments.
+     */
+    static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    /**
      * Node to which this comment refers.
      */
     private final YamlNode node;

@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
+
 /**
  * Builder of YamlMapping. Implementations should be immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -72,6 +74,15 @@ public interface YamlMappingBuilder {
      */
     default YamlMapping build() {
         return this.build("");
+    }
+    
+    /**
+     * Build the YamlMapping.
+     * @param comment The multiple line comment on top of the YamlMapping.
+     * @return Built YamlMapping.
+     */
+    default YamlMapping build(final Collection<String> comment) {
+        return this.build(String.join(BuiltComment.LINE_SEPARATOR, comment));
     }
 
     /**

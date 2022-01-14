@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
+
 /**
  * Builder of YamlSequence. Implementations should be immutable and thread-safe.
  * @author Salavat.Yalalov (s.yalalov@gmail.com)
@@ -55,6 +57,15 @@ public interface YamlSequenceBuilder {
      */
     default YamlSequence build() {
         return this.build("");
+    }
+
+    /**
+     * Build the YamlSequence and specify a comment referring to it.
+     * @param comment The multiple line comment about the built YamlSequence.
+     * @return Built YamlSequence
+     */
+    default YamlSequence build(final Collection<String> comment) {
+        return this.build(String.join(BuiltComment.LINE_SEPARATOR, comment));
     }
 
     /**
