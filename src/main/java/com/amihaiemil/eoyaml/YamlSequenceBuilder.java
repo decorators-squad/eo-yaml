@@ -65,7 +65,7 @@ public interface YamlSequenceBuilder {
      * @return Built YamlSequence
      */
     default YamlSequence build(final Collection<String> comment) {
-        return this.build(String.join(BuiltComment.LINE_SEPARATOR, comment));
+        return this.build(String.join(System.lineSeparator(), comment));
     }
 
     /**

@@ -82,7 +82,7 @@ public interface YamlMappingBuilder {
      * @return Built YamlMapping.
      */
     default YamlMapping build(final Collection<String> comment) {
-        return this.build(String.join(BuiltComment.LINE_SEPARATOR, comment));
+        return this.build(String.join(System.lineSeparator(), comment));
     }
 
     /**

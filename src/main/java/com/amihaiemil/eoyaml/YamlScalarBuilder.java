@@ -113,7 +113,7 @@ public interface YamlScalarBuilder {
     default Scalar buildPlainScalar(
         final Collection<String> above, final String inline) {
         return this.buildPlainScalar(
-            String.join(BuiltComment.LINE_SEPARATOR, above), inline
+            String.join(System.lineSeparator(), above), inline
         );
     }
 
