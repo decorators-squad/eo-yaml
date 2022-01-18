@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
+
 /**
  * Builder of Yaml Scalar. Implementations should be immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -96,6 +98,23 @@ public interface YamlScalarBuilder {
      */
     default Scalar buildPlainScalar(final String inline) {
         return this.buildPlainScalar("", inline);
+    }
+
+    /**
+     * Build a plain Scalar. Ideally, you should use this when
+     * your scalar is short, a single line of text.<br><br>
+     * If you added more lines of text, all of them will be put together,
+     * separated by spaces.
+     * @param above The multiple line comment Comment above the scalar.
+     * @param inline Inline comment referring to the built scalar. If it has
+     *  more lines, they will be concatenated into a single line.
+     * @return The built Scalar.
+     */
+    default Scalar buildPlainScalar(
+        final Collection<String> above, final String inline) {
+        return this.buildPlainScalar(
+            String.join(System.lineSeparator(), above), inline
+        );
     }
 
     /**
