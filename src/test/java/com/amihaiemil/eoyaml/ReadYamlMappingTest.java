@@ -517,6 +517,23 @@ public final class ReadYamlMappingTest {
     }
 
     /**
+     * ReadYamlMapping can return the String mapped to a
+     * String key even if the key contains quoted colons.
+     */
+    @Test
+    public void returnsQuotedStringContainingColonsWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("\"namespace: key\": \"value\"", 0));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final String key = map.string("namespace:key");
+        MatcherAssert.assertThat(key, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+                key, Matchers.equalTo("value")
+        );
+    }
+
+    /**
      * ReadYamlMapping.string(...) returns null if the queried
      * Scalar is not present.
      */

@@ -121,6 +121,18 @@ public final class ReadPlainScalarTest {
     }
 
     /**
+     * ReadPlainScalar can return correct value string even if it contains quote colons
+     */
+    @Test
+    public void returnsQuotedStringContainingColonsFromMappingLine() {
+        final Scalar scalar = new ReadPlainScalar(
+                new AllYamlLines(new ArrayList<>()),
+                new RtYamlLine("key: \"value: with: colons:\"", 0)
+        );
+        MatcherAssert.assertThat(scalar.value(), Matchers.equalTo("value: with: colons:"));
+    }
+
+    /**
      * ReadPlainScalar can return the scalar's value from a scalar line
      * (that looks like a sequence line).
      */
