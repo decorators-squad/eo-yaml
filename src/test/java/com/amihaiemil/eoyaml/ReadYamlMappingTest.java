@@ -523,13 +523,18 @@ public final class ReadYamlMappingTest {
     @Test
     public void returnsQuotedStringContainingColonsWithStringKey(){
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("\"namespace: key\": \"value\"", 0));
+        lines.add(new RtYamlLine("\"namespace:key\": \"value:colon\"", 0));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         System.out.println(map);
-        final String key = map.string("namespace:key");
+        final YamlNode key = map.keys().iterator().next();
         MatcherAssert.assertThat(key, Matchers.notNullValue());
         MatcherAssert.assertThat(
-                key, Matchers.equalTo("value")
+                key.asScalar().value(), Matchers.equalTo("namespace:key")
+        );
+        final YamlNode value = map.values().iterator().next();
+        MatcherAssert.assertThat(value, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+                value.asScalar().value(), Matchers.equalTo("value:colon")
         );
     }
 
