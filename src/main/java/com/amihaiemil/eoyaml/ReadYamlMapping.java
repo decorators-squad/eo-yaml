@@ -161,11 +161,11 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 final String key;
                 if(trimmed.startsWith("-")) {
                     key = trimmed.substring(
-                        1, trimmed.indexOf(":")
+                        1, trimmed.lastIndexOf(":")
                     ).trim();
                 } else {
                     key = trimmed.substring(
-                        0, trimmed.indexOf(":")
+                        0, trimmed.lastIndexOf(":")
                     ).trim();
                 }
                 if(!key.isEmpty()) {
@@ -241,21 +241,22 @@ final class ReadYamlMapping extends BaseYamlMapping {
         for(final String tryKey : keys) {
             for (final YamlLine line : this.significant) {
                 final String trimmed = line.trimmed();
-                if(trimmed.matches("^-?[ ]*" + Pattern.quote(tryKey) + ":")
-                    || trimmed.matches("^" + Pattern.quote(tryKey) + ":[ ]*>$")
-                    || trimmed.matches("^" + Pattern.quote(tryKey) + ":[ ]*\\|[+-]?$")
+                final String relaxedKey = relaxed(tryKey);
+                if(trimmed.matches("^-?[ ]*" + Pattern.quote(relaxedKey) + ":")
+                    || trimmed.matches("^" + Pattern.quote(relaxedKey) + ":[ ]*>$")
+                    || trimmed.matches("^" + Pattern.quote(relaxedKey) + ":[ ]*\\|[+-]?$")
                 ) {
                     value = this.significant.toYamlNode(
                         line, this.guessIndentation
                     );
-                } else if (trimmed.matches(tryKey + ":[ ]*\\{}")) {
+                } else if (trimmed.matches(relaxedKey + ":[ ]*\\{}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
                             line.number(),
                             this.all.line(line.number()),
                             this.all,
                             this.guessIndentation
                     ));
-                } else if (trimmed.matches(tryKey + ":[ ]*\\[]")) {
+                } else if (trimmed.matches(relaxedKey + ":[ ]*\\[]")) {
                     value = new EmptyYamlSequence(new ReadYamlSequence(
                             this.all.line(line.number()),
                             this.all,
@@ -274,6 +275,27 @@ final class ReadYamlMapping extends BaseYamlMapping {
             }
         }
         return null;
+    }
+
+    /**
+     * Escape [ and ] for regex matching when key starts with "[ and ends with
+     * "].
+     * @param key Provided key.
+     * @return Relaxed key for pattern matching.
+     */
+    private String relaxed(final String key){
+        final String regexEscape;
+        if(key.startsWith("\"[") && key.endsWith("]\"")){
+            final int openIndex = 1;
+            final int closedIndex = key.length() - 1;
+            final StringBuilder builder = new StringBuilder(key);
+            builder.insert(openIndex, "\\\\");
+            builder.insert(closedIndex, "\\\\");
+            regexEscape = builder.toString();
+        }else {
+            regexEscape = key;
+        }
+        return regexEscape;
     }
 
     /**

@@ -35,6 +35,7 @@ import java.util.Set;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -877,6 +878,43 @@ public final class RtYamlInputTest {
                     .build()
             )
         );
+    }
+
+
+    /**
+     * Do a round-trip test on the bracketed-key sample file.
+     *
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/494">#494</a>
+     * based on
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/495">PR</a>
+     *
+     * @throws IOException When there's a problem reading the sample files.
+     */
+    @Test
+    public void supportsBracketedNotation() throws IOException {
+        final String filename = "issue_494_bracketed_keys.yml";
+        final String fileContents = readTestResource(filename).trim();
+
+        final YamlMapping read = new RtYamlInput(
+            new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+            read.asMapping().keys().size(),
+            Matchers.equalTo(1));
+
+        final YamlNode topLevelMapping = read.asMapping().value("a_mapping");
+        MatcherAssert.assertThat(
+            topLevelMapping.type(),
+            Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+            topLevelMapping.asMapping().keys().size(),
+            Matchers.equalTo(1));
+
+        final String pretty = read.toString().trim();
+
+        MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
     }
 
     /**
