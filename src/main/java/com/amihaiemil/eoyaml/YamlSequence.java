@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -36,242 +39,742 @@ import java.util.Iterator;
 
 /**
  * A Yaml sequence.
- * @checkstyle ReturnCount (400 lines)
+ * 
+ * @checkstyle ReturnCount (1500 lines)
+ * 
  * @author Mihai Andronache (amihaiemil@gmail.com)
+ * 
  * @version $Id$
+ * 
  * @since 1.0.0
  */
 public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
-
+    
     /**
      * Fetch the values of this sequence.
-     * @return Collection of {@link YamlNode}
+     * 
+     * @return The Collection containing all the of {@link YamlNode}s of this
+     * sequence.
      */
     Collection<YamlNode> values();
-
+    
     /**
-     * Returns this YamlSequence's children Iterator.<br><br>
+     * Returns this YamlSequence's children Iterator.<br>
+     * <br>
      * It is equivalent to YamlSequence.values().iterator().
-     * @return Iterator of YamlNode.
+     * 
+     * @return The Iterator of the {@link #values()}.
      */
     default Iterator<YamlNode> iterator() {
-        return this.values().iterator();
+        return values().iterator();
     }
-
+    
     /**
-     * The number of Yaml elements (scalars, mappings and sequences) found in
-     * this sequence.
-     * @return Integer.
+     * The number of Yaml nodes (scalars, mappings and sequences) found in this
+     * sequence.
+     * 
+     * @return The {@link #values()} size.
      */
     default int size() {
-        return this.values().size();
+        return values().size();
     }
-
+    
     /**
-     * Get the Yaml mapping  from the given index.
-     * @param index Integer index.
-     * @return Yaml mapping.
+     * Get the index from the given YamlNode.
+     * 
+     * @param node The node to get the index from.
+     * 
+     * @return The index of the given node, if the given node is not part of
+     * this sequence, -1 is returned.
+     * 
+     * @since 6.0.2
      */
-
-    default YamlMapping yamlMapping(final int index) {
-        YamlMapping mapping = null;
+    default int indexOf(YamlNode node) {
         int count = 0;
-        for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlMapping) {
-                mapping = (YamlMapping) node;
+        
+        for (final YamlNode value : values()) {
+            if (value.equals(node)) {
+                return count;
             }
-            count = count + 1;
+            count++;
         }
-        return mapping;
+        return -1;
     }
+    
+    /**
+     * Get the Yaml node from the given index.
+     * 
+     * @param index The index to get the node from.
+     * 
+     * @return The Yaml node from the given index, if the index is out of
+     * bounds, <code>null</code> is returned.
+     * 
+     * @since 6.0.2
+     */
+    default YamlNode value(int index) {
+        if (index < 0 || index >= size()) {
+            return null;
+        }
+        int count = 0;
+        
+        for (final YamlNode value : values()) {
+            if (count == index) {
+                return value;
+            }
+            count++;
+        }
+        return null;
+    }
+    
+    /**
+     * Get the Yaml mapping from the given index.
+     * 
+     * @param index The index of the Yaml mapping in this sequence.
+     * 
+     * @return The Yaml mapping in the given index, if the index is out of
+     * bounds or the node for the given index is not a instance of
+     * {@link YamlMapping}, <code>null</code> is returned.
+     */
+    default YamlMapping yamlMapping(int index) {
+        YamlNode value = value(index);
+        
+        if (value instanceof YamlMapping) {
+            return (YamlMapping) value;
+        }
+        return null;
+    }
+    
     /**
      * Get the Yaml sequence from the given index.
-     * @param index Integer index.
-     * @return Yaml sequence.
+     * 
+     * @param index The index of the Yaml sequence in this sequence.
+     * 
+     * @return The Yaml sequence in the given index, if the index is out of
+     * bounds or the node for the given index is not a instance of
+     * {@link YamlSequence}, <code>null</code> is returned.
      */
-    default YamlSequence yamlSequence(final int index) {
-        YamlSequence sequence = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlSequence) {
-                sequence = (YamlSequence) node;
-            }
-            count = count + 1;
+    default YamlSequence yamlSequence(int index) {
+        YamlNode value = value(index);
+        
+        if (value instanceof YamlSequence) {
+            return (YamlSequence) value;
         }
-        return sequence;
+        return null;
     }
-
-
+    
+    /**
+     * Get the Yaml scalar from the given index.
+     * 
+     * @param index The index of the Yaml scalar in this sequence.
+     * 
+     * @return The Yaml scalar in the given index, if the index is out of bounds
+     * or the node for the given index is not a instance of {@link Scalar},
+     * <code>null</code> is returned.
+     * 
+     * @since 6.0.2
+     */
+    default Scalar yamlScalar(int index) {
+        YamlNode value = value(index);
+        
+        if (value instanceof Scalar) {
+            return (Scalar) value;
+        }
+        return null;
+    }
+    
     /**
      * Get the String from the given index.
-     * @param index Integer index.
-     * @return String.
+     * 
+     * @param index The index of the String in this sequence.
+     * 
+     * @return The String in the given index, if the index is out of bounds or
+     * the node for the given index is not a instance of {@link Scalar},
+     * <code>null</code> is returned.
      */
     default String string(final int index) {
-        String value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = ((Scalar) node).value();
-                break;
-            }
-            count++;
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return null;
         }
-        return value;
+        return value.value();
     }
-
+    
     /**
      * Get the folded block scalar from the given index.
-     * @param index Integer index.
-     * @return The folded block scalar as String.
+     * 
+     * @param index The index of the folded block scalar in this sequence.
+     * 
+     * @return The folded block scalar as String, if the index is out of bounds
+     * or the node for the given index is not a instance of {@link Scalar},
+     * <code>null</code> is returned.
      */
     default String foldedBlockScalar(final int index) {
-        String value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = ((Scalar) node).value();
-                break;
-            }
-            count++;
-        }
-        return value;
+        return string(index);
     }
-
+    
     /**
      * Get the literal block scalar from the given index.
-     * @param index Integer index.
-     * @return The folded block scalar as String.
+     * 
+     * @param index The index of the literal block scalar in this sequence.
+     * 
+     * @return The folded block scalar as a Collection of Strings, if the index
+     * is out of bounds or the node for the given index is not a instance of
+     * {@link Scalar}, <code>null</code> is returned.
      */
-    default Collection<String> literalBlockScalar(final int index) {
-        Collection<String> value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = Arrays.asList(
-                    ((Scalar) node)
-                        .value().split(System.lineSeparator())
-                );
-                break;
-            }
-            count++;
+    default Collection<String> literalBlockScalar(int index) {
+        String value = string(index);
+        
+        if (value == null) {
+            return null;
         }
-        return value;
+        return Arrays.asList(value.split(System.lineSeparator()));
     }
-
+    
     /**
-     * Convenience method to directly read an integer value
-     * from this sequence. It is equivalent to:
+     * Convenience method to directly read a boolean value from this sequence.
+     * It is equivalent to:
+     * 
      * <pre>
      *     YamlSequence sequence = ...;
-     *     int value = Integer.parseInt(sequence.string(...));
+     *     Scalar scalar = sequence.scalar(...);
+     *     boolean value = scalar.booleanValue();
      * </pre>
-     * @param index The index of the value.
-     * @return Found integer.
-     * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable integer.
+     * 
+     * @param index The index of the boolean value in this sequence.
+     * 
+     * @return The boolean value in the given index, false otherwise.
+     * 
+     * @since 6.0.2
      */
-    default int integer(final int index) {
-        final String value = this.string(index);
-        if(value != null && !value.isEmpty()) {
-            return Integer.parseInt(value);
+    default boolean booleanValue(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return false;
         }
-        return -1;
+        return value.booleanValue();
     }
-
+    
     /**
-     * Convenience method to directly read a float value
-     * from this sequence. It is equivalent to:
+     * Convenience method to directly read a boolean value from this sequence.
+     * It is equivalent to:
+     * 
      * <pre>
      *     YamlSequence sequence = ...;
-     *     float value = Float.parseFloat(sequence.string(...));
+     *     Scalar scalar = sequence.scalar(...);
+     *     boolean value = scalar.booleanValue(...);
      * </pre>
-     * @param index The index of the value.
-     * @return Found float.
-     * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable float.
+     * 
+     * @param index The index of the boolean value in this sequence.
+     * @param trueValue The value to compare the Scalar value with.
+     * 
+     * @return The boolean value in the given index, false otherwise.
+     * 
+     * @since 6.0.2
      */
-    default float floatNumber(final int index) {
-        final String value = this.string(index);
-        if(value != null && !value.isEmpty()) {
-            return Float.parseFloat(value);
+    default boolean booleanValue(int index, String trueValue) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return false;
         }
-        return -1;
+        return value.booleanValue(trueValue);
     }
-
+    
     /**
-     * Convenience method to directly read a double value
-     * from this sequence. It is equivalent to:
+     * Convenience method to directly read a BigDecimal value from this
+     * sequence. It is equivalent to:
+     * 
      * <pre>
      *     YamlSequence sequence = ...;
-     *     double value = Double.parseDouble(sequence.string(...));
+     *     Scalar scalar = sequence.scalar(...);
+     *     BigDecimal value = scalar.bigDecimalValue(...);
      * </pre>
-     * @param index The index of the value.
-     * @return Found double.
-     * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable double.
+     * 
+     * @param index The index of the BigDecimal value in this sequence.
+     * @param mathContext The context to use.
+     * 
+     * @return The BigDecimal value in the given index, <code>null</code>
+     * otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigDecimal.
+     * 
+     * @since 6.0.2
      */
-    default double doubleNumber(final int index) {
-        final String value = this.string(index);
-        if(value != null && !value.isEmpty()) {
-            return Double.parseDouble(value);
+    default BigDecimal bigDecimalNumber(int index, MathContext mathContext) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return null;
         }
-        return -1.0;
+        return value.bigDecimalValue(mathContext);
     }
-
+    
     /**
-     * Convenience method to directly read a long value
-     * from this sequence. It is equivalent to:
+     * Convenience method to directly read a BigInteger value from this
+     * sequence. It is equivalent to:
+     * 
      * <pre>
      *     YamlSequence sequence = ...;
-     *     long value = Long.parseLong(sequence.string(...));
+     *     Scalar scalar = sequence.scalar(...);
+     *     BigInteger value = scalar.bigIntegerValue();
      * </pre>
-     * @param index The index of the value.
-     * @return Found long.
-     * @throws NumberFormatException - if the Scalar value
-     *  is not a parsable long.
+     * 
+     * @param index The index of the BigInteger value in this sequence.
+     * 
+     * @return The BigInteger value in the given index, <code>null</code>
+     * otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigDecimal.
+     * 
+     * @since 6.0.2
      */
-    default long longNumber(final int index) {
-        final String value = this.string(index);
-        if(value != null && !value.isEmpty()) {
-            return Long.parseLong(value);
+    default BigDecimal bigDecimalNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return null;
         }
-        return -1L;
+        return value.bigDecimalValue();
     }
-
+    
     /**
-     * Convenience method to directly read a LocalDate value
-     * from this sequence. It is equivalent to:
+     * Convenience method to directly read a double value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     double value = scalar.doubleValue(...);
+     * </pre>
+     * 
+     * @param index The index of the double value in this sequence.
+     * @param mathContext The context to use.
+     * 
+     * @return The double value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigDecimal.
+     * 
+     * @since 6.0.2
+     */
+    default double doubleNumber(int index, MathContext mathContext) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.doubleValue(mathContext);
+    }
+    
+    /**
+     * Convenience method to directly read a double value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     double value = scalar.doubleValue();
+     * </pre>
+     * 
+     * @param index The index of the double value in this sequence.
+     * 
+     * @return The double value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * double.
+     */
+    default double doubleNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.doubleValue();
+    }
+    
+    /**
+     * Convenience method to directly read a float value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     float value = scalar.floatValue(...);
+     * </pre>
+     * 
+     * @param index The index of the float value in this sequence.
+     * @param mathContext The context to use.
+     * 
+     * @return The float value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigDecimal.
+     * 
+     * @since 6.0.2
+     */
+    default float floatNumber(int index, MathContext mathContext) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.floatValue(mathContext);
+    }
+    
+    /**
+     * Convenience method to directly read a float value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     float value = scalar.floatValue();
+     * </pre>
+     * 
+     * @param index The index of the float value in this sequence.
+     * 
+     * @return The float value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * float.
+     */
+    default float floatNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.floatValue();
+    }
+    
+    /**
+     * Convenience method to directly read a BigInteger value from this
+     * sequence. It is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     BigInteger value = scalar.bigIntegerValue(...);
+     * </pre>
+     * 
+     * @param index The index of the BigInteger value in this sequence.
+     * @param radix The radix to be used in interpreting the scalar value.
+     * 
+     * @return The BigInteger value in the given index, <code>null</code>
+     * otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigInteger.
+     * 
+     * @since 6.0.2
+     */
+    default BigInteger bigIntegerNumber(int index, int radix) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return null;
+        }
+        return value.bigIntegerValue(radix);
+    }
+    
+    /**
+     * Convenience method to directly read a BigInteger value from this
+     * sequence. It is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     BigInteger value = scalar.bigIntegerValue();
+     * </pre>
+     * 
+     * @param index The index of the BigInteger value in this sequence.
+     * 
+     * @return The BigInteger value in the given index, <code>null</code>
+     * otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigInteger.
+     * 
+     * @since 6.0.2
+     */
+    default BigInteger bigIntegerNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return null;
+        }
+        return value.bigIntegerValue();
+    }
+    
+    /**
+     * Convenience method to directly read a long value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     long value = scalar.longValue(...);
+     * </pre>
+     * 
+     * @param index The index of the long value in this sequence.
+     * @param radix The radix to be used in interpreting the scalar value.
+     * 
+     * @return The long value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigInteger.
+     * 
+     * @since 6.0.2
+     */
+    default long longNumber(int index, int radix) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.longValue(radix);
+    }
+    
+    /**
+     * Convenience method to directly read a long value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     long value = scalar.longValue();
+     * </pre>
+     * 
+     * @param index The index of the long value in this sequence.
+     * 
+     * @return The long value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable long.
+     */
+    default long longNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.longValue();
+    }
+    
+    /**
+     * Convenience method to directly read a integer value from this sequence.
+     * It is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     int value = scalar.intValue(...);
+     * </pre>
+     * 
+     * @param index The index of the integer value in this sequence.
+     * @param radix The radix to be used in interpreting the scalar value.
+     * 
+     * @return The integer value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigInteger.
+     * 
+     * @since 6.0.2
+     */
+    default int integer(int index, int radix) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.intValue(radix);
+    }
+    
+    /**
+     * Convenience method to directly read an integer value from this sequence.
+     * It is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     int value = scalar.intValue();
+     * </pre>
+     * 
+     * @param index The index of the integer value in this sequence.
+     * 
+     * @return The integer value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * Integer.
+     */
+    default int integer(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.intValue();
+    }
+    
+    /**
+     * Convenience method to directly read a short value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     short value = scalar.shortValue(...);
+     * </pre>
+     * 
+     * @param index The index of the short value in this sequence.
+     * @param radix The radix to be used in interpreting the scalar value.
+     * 
+     * @return The short value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigInteger.
+     * 
+     * @since 6.0.2
+     */
+    default short shortNumber(int index, int radix) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.shortValue(radix);
+    }
+    
+    /**
+     * Convenience method to directly read a short value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     short value = scalar.shortValue();
+     * </pre>
+     * 
+     * @param index The index of the short value in this sequence.
+     * 
+     * @return The short value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * Short.
+     * 
+     * @since 6.0.2
+     */
+    default short shortNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.shortValue();
+    }
+    
+    /**
+     * Convenience method to directly read a byte value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     byte value = scalar.byteValue(...);
+     * </pre>
+     * 
+     * @param index The index of the byte value in this sequence.
+     * @param radix The radix to be used in interpreting the scalar value.
+     * 
+     * @return The byte value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable
+     * BigInteger.
+     * 
+     * @since 6.0.2
+     */
+    default byte byteNumber(int index, int radix) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.byteValue(radix);
+    }
+    
+    /**
+     * Convenience method to directly read a byte value from this sequence. It
+     * is equivalent to:
+     * 
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     Scalar scalar = sequence.scalar(...);
+     *     byte value = scalar.byteValue();
+     * </pre>
+     * 
+     * @param index The index of the byte value in this sequence.
+     * 
+     * @return The byte value in the given index, -1 otherwise.
+     * 
+     * @throws NumberFormatException If the Scalar value is not a parsable Byte.
+     * 
+     * @since 6.0.2
+     */
+    default byte byteNumber(int index) {
+        Scalar value = yamlScalar(index);
+        
+        if (value == null) {
+            return -1;
+        }
+        return value.byteValue();
+    }
+    
+    /**
+     * Convenience method to directly read a LocalDate value from this sequence.
+     * It is equivalent to:
+     * 
      * <pre>
      *     YamlSequence sequence = ...;
      *     LocalDate dateTime = LocalDate.parse(sequence.string(...));
      * </pre>
+     * 
      * @param index The index of the value.
+     * 
      * @return Found LocalDate.
+     * 
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
-    default LocalDate date(final int index) {
-        final String value = this.string(index);
-        if(value != null && !value.isEmpty()) {
+    default LocalDate date(int index) {
+        String value = string(index);
+        
+        if (value != null && !value.isEmpty()) {
             return LocalDate.parse(value);
         }
         return null;
     }
-
+    
     /**
-     * Convenience method to directly read a LocalDateTime value
-     * from this sequence. It is equivalent to:
+     * Convenience method to directly read a LocalDateTime value from this
+     * sequence. It is equivalent to:
+     * 
      * <pre>
      *     YamlSequence sequence = ...;
      *     LocalDateTime dateTime = LocalDateTime.parse(sequence.string(...));
      * </pre>
+     * 
      * @param index The index of the value.
+     * 
      * @return Found LocalDateTime.
+     * 
      * @throws DateTimeParseException - if the Scalar value cannot be parsed.
      */
-    default LocalDateTime dateTime(final int index) {
-        final String value = this.string(index);
-        if(value != null && !value.isEmpty()) {
+    default LocalDateTime dateTime(int index) {
+        String value = string(index);
+        
+        if (value != null && !value.isEmpty()) {
             return LocalDateTime.parse(value);
         }
         return null;
