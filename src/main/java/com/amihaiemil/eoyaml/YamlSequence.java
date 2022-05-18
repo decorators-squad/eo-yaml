@@ -68,39 +68,71 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     }
 
     /**
-     * Get the Yaml mapping  from the given index.
+     * Get the index in this YamlSequence for the given YamlNode.
+     * @param node The node to get the index from.
+     * @return The index of the given node, if the given node is not part of
+     * this sequence, -1 is returned.
+     * @since 6.0.2
+     */
+    default int indexOf(final YamlNode node) {
+        int index = 0;
+
+        for (final YamlNode value : this.values()) {
+            if (value.equals(node)) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
+
+    /**
+     * Get the Yaml node from the given index.
+     * @param index The index to get the node from.
+     * @return The Yaml node from the given index, if the index is out of
+     * bounds, <code>null</code> is returned.
+     * @since 6.0.2
+     */
+    default YamlNode value(final int index) {
+        if (index < 0 || index >= size()) {
+            return null;
+        }
+        int count = 0;
+        
+        for (final YamlNode value : this.values()) {
+            if (count == index) {
+                return value;
+            }
+            count++;
+        }
+        return null;
+    }
+
+    /**
+     * Get the Yaml mapping from the given index.
      * @param index Integer index.
      * @return Yaml mapping.
      */
-
     default YamlMapping yamlMapping(final int index) {
-        YamlMapping mapping = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlMapping) {
-                mapping = (YamlMapping) node;
-            }
-            count = count + 1;
+        final YamlNode value = this.value(index);
+        if (value instanceof YamlMapping) {
+            return (YamlMapping) value;
         }
-        return mapping;
+        return null;
     }
+
     /**
      * Get the Yaml sequence from the given index.
      * @param index Integer index.
      * @return Yaml sequence.
      */
     default YamlSequence yamlSequence(final int index) {
-        YamlSequence sequence = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlSequence) {
-                sequence = (YamlSequence) node;
-            }
-            count = count + 1;
+        final YamlNode value = this.value(index);
+        if (value instanceof YamlSequence) {
+            return (YamlSequence) value;
         }
-        return sequence;
+        return null;
     }
-
 
     /**
      * Get the String from the given index.
@@ -108,16 +140,11 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return String.
      */
     default String string(final int index) {
-        String value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = ((Scalar) node).value();
-                break;
-            }
-            count++;
+        final YamlNode value = this.value(index);
+        if (value instanceof Scalar) {
+            return ((Scalar) value).value();
         }
-        return value;
+        return null;
     }
 
     /**
@@ -126,16 +153,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return The folded block scalar as String.
      */
     default String foldedBlockScalar(final int index) {
-        String value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = ((Scalar) node).value();
-                break;
-            }
-            count++;
-        }
-        return value;
+        return this.string(index);
     }
 
     /**
@@ -144,19 +162,11 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return The folded block scalar as String.
      */
     default Collection<String> literalBlockScalar(final int index) {
-        Collection<String> value = null;
-        int count = 0;
-        for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = Arrays.asList(
-                    ((Scalar) node)
-                        .value().split(System.lineSeparator())
-                );
-                break;
-            }
-            count++;
+        final String value = this.string(index);
+        if (value != null) {
+            return Arrays.asList(value.split(System.lineSeparator()));
         }
-        return value;
+        return null;
     }
 
     /**
