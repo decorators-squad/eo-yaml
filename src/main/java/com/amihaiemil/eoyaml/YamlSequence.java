@@ -75,6 +75,9 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @since 6.0.2
      */
     default int indexOf(final YamlNode node) {
+        if (node == null) {
+            return -1;
+        }
         int index = 0;
 
         for (final YamlNode value : this.values()) {
