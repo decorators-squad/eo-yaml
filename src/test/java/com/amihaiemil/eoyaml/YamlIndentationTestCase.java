@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
@@ -153,7 +154,7 @@ public final class YamlIndentationTestCase {
      * @throws Exception If something goes wrong.
      */
     @Test
-    public void testIndentationAndYamlIndentationException() throws Exception {
+    public void badlyIndentedSequenceThrowsException() throws Exception {
         try {
             final List<YamlLine> lines = new ArrayList<>();
             lines.add(new RtYamlLine("value1", 1));
@@ -163,10 +164,8 @@ public final class YamlIndentationTestCase {
             final YamlNode seq = yamlLines.toYamlNode(
                     new RtYamlLine("foldedSequence:|-", 0), false);
             final Collection<YamlNode> values = ((YamlSequence) seq).values();
-            MatcherAssert.assertThat(
-                    "testIndentationAndYamlIndentationException "
-                    + "should have thrown YamlIndentationException",
-                    false);
+            Assert.fail("badlyIntendedSequenceThrowsException "
+                    + "should have thrown YamlIndentationException");
         } catch (final YamlIndentationException expected) {
             MatcherAssert.assertThat(expected.getMessage(), Matchers.equalTo(
                     "Indentation of line 3 [lGvSz] is greater "
