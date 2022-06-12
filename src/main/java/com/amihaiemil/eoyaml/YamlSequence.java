@@ -103,7 +103,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * bounds, <code>null</code> is returned.
      * @since 6.0.2
      */
-    default YamlNode value(final int index) {
+    default YamlNode get(final int index) {
         if (index < 0 || index >= size()) {
             return null;
         }
@@ -124,7 +124,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return Yaml mapping.
      */
     default YamlMapping yamlMapping(final int index) {
-        final YamlNode value = this.value(index);
+        final YamlNode value = this.get(index);
         if (value instanceof YamlMapping) {
             return (YamlMapping) value;
         }
@@ -137,7 +137,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return Yaml sequence.
      */
     default YamlSequence yamlSequence(final int index) {
-        final YamlNode value = this.value(index);
+        final YamlNode value = this.get(index);
         if (value instanceof YamlSequence) {
             return (YamlSequence) value;
         }
@@ -150,7 +150,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return String.
      */
     default String string(final int index) {
-        final YamlNode value = this.value(index);
+        final YamlNode value = this.get(index);
         if (value instanceof Scalar) {
             return ((Scalar) value).value();
         }
@@ -188,7 +188,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     char value = string.charAt(0);
      * </pre>
      * @param index The index of the value.
-     * @return The first character from {@link #value(int)}.
+     * @return The first character from {@link #get(int)}.
      * @since 6.0.2
      */
     default char charAt(final int index) {
@@ -228,7 +228,7 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      *     boolean value = string.equals(trueValue);
      * </pre>
      * @param index Integer index.
-     * @param trueValue The String to compare the {@link #value(int)} to.
+     * @param trueValue The String to compare the {@link #get(int)} to.
      * @return Boolean.
      * @since 6.0.2
      */
