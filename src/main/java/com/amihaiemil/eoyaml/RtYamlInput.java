@@ -160,7 +160,7 @@ final class RtYamlInput implements YamlInput {
                     final String offset = "  ";
                     final String keyValueIndent = seqIndent + offset;
                     final YamlLine keyValueLine = new RtYamlLine(
-                        keyValueIndent + line.split("-")[1].trim(),
+                        keyValueIndent + line.split("-", 2)[1].trim(),
                         ++number
                     );
                     if (!keyValueLine.toString().trim().isEmpty()) {

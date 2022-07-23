@@ -879,6 +879,27 @@ public final class RtYamlInputTest {
         );
     }
 
+    /**
+     * Corner case when key:value is on the same line as the sequence marker
+     * and key contains dashes (which is the sequence marker itself).
+     *  @throws IOException If something is wrong.
+     */
+    @Test
+    public void shouldReadSequenceWhenFirstKeyWithDashesIsOnTheSameLine()
+        throws IOException {
+        final String fileName = "src/test/resources/"
+            + "compactSequenceWithDashedKey.yml";
+        final YamlMapping root = Yaml.createYamlInput(new File(fileName))
+            .readYamlMapping();
+
+        final YamlSequence sequence = root.yamlSequence("root");
+        MatcherAssert.assertThat(sequence, Matchers.iterableWithSize(2));
+
+        MatcherAssert.assertThat(
+            sequence.yamlMapping(0).string("a-a-a"),
+            Matchers.equalTo("1")
+        );
+    }
 
     /**
      * Do a round-trip test on the bracketed-key sample file.
