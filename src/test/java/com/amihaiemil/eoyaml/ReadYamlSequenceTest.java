@@ -167,7 +167,7 @@ public final class ReadYamlSequenceTest {
         );
         MatcherAssert.assertThat(
                 sequence.yamlMapping(4).string("beta3"),
-                Matchers.equalTo("\"something-else\"")
+                Matchers.equalTo("something-else")
         );
         MatcherAssert.assertThat(
                 sequence.yamlMapping(6).string("beta4"),
