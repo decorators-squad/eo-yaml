@@ -151,27 +151,53 @@ public final class ReadYamlSequenceTest {
         lines.add(new RtYamlLine("- beta3: \"something-else\"", 4));
         lines.add(new RtYamlLine("- scalar3", 5));
         lines.add(new RtYamlLine("- beta4: somethingElse", 6));
-        lines.add(new RtYamlLine("- \"scalar4\"", 7));
+        lines.add(new RtYamlLine("- \"scalar:4\"", 7));
+        lines.add(new RtYamlLine("- beta5: somethingElse", 8));
+        lines.add(new RtYamlLine("- beta6: somethingElse", 9));
+        lines.add(new RtYamlLine("- 'scalar:5'", 10));
         final YamlSequence sequence = new ReadYamlSequence(
                 new AllYamlLines(lines)
         );
         System.out.println(sequence);
-        MatcherAssert.assertThat(sequence.size(), Matchers.is(8));
+        MatcherAssert.assertThat(sequence.size(), Matchers.is(11));
         MatcherAssert.assertThat(
                 sequence.yamlMapping(0).string("beta1"),
                 Matchers.equalTo("somethingElse")
+        );
+        MatcherAssert.assertThat(sequence.string(1),
+                Matchers.equalTo("scalar1")
         );
         MatcherAssert.assertThat(
                 sequence.yamlMapping(2).string("beta2"),
                 Matchers.equalTo("somethingElse")
         );
+        MatcherAssert.assertThat(sequence.string(3),
+                Matchers.equalTo("scalar2")
+        );
         MatcherAssert.assertThat(
                 sequence.yamlMapping(4).string("beta3"),
                 Matchers.equalTo("something-else")
         );
+        MatcherAssert.assertThat(sequence.string(5),
+                Matchers.equalTo("scalar3")
+        );
         MatcherAssert.assertThat(
                 sequence.yamlMapping(6).string("beta4"),
                 Matchers.equalTo("somethingElse")
+        );
+        MatcherAssert.assertThat(sequence.string(7),
+                Matchers.equalTo("scalar:4")
+        );
+        MatcherAssert.assertThat(
+                sequence.yamlMapping(8).string("beta5"),
+                Matchers.equalTo("somethingElse")
+        );
+        MatcherAssert.assertThat(
+                sequence.yamlMapping(9).string("beta6"),
+                Matchers.equalTo("somethingElse")
+        );
+        MatcherAssert.assertThat(sequence.string(10),
+                Matchers.equalTo("scalar:5")
         );
     }
 
