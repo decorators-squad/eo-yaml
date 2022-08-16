@@ -1,12 +1,14 @@
 #!/bin/bash
 # Rultor release versioning script for Maven projects.
 #
+#
 # It looks for the project’s version, which MUST respect the pattern 
 # [0-9]*\.[0-9]*\.[0-9]*-SNAPSHOT and BE THE FIRST MATCH in pom.xml
 #
 # What it does: updates the pom.xml version of the project according to
 # the variable ${tag} provided to rultor. Specifically, it increments the 
 # 3rd digit and adds '-SNAPSHOT' to it.
+#
 #
 # IMPORTANT:
 #     the given tag has to contain 3 numbers separated by dots!
@@ -39,6 +41,7 @@ mvn clean deploy -PgenDocs,signArtifactsGpg,releaseToGithubPackages,releaseToMav
 sed -i "s/<version>${tag}<\/version><\!--rrv-sed-flag-->/<version>${NEXT_VERSION}<\/version><\!--rrv-sed-flag-->/" pom.xml
 sed -i "s/<version>.*<\/version>/<version>${tag}<\/version>/" README.md
 sed -i "s/<a.*>fat<\/a>/<a href=\"https:\/\/oss\.sonatype\.org\/service\/local\/repositories\/releases\/content\/com\/amihaiemil\/web\/eo-yaml\/${tag}\/eo-yaml-${tag}-jar-with-dependencies\.jar\">fat<\/a>/" README.md
+sed -i "s/, version: '.*'/, version: '${tag}'/" README.md
 
 git commit -am "${NEXT_VERSION}"
 git checkout master

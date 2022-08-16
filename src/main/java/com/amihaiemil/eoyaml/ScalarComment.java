@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2021, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,78 +28,24 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * YAML Plain scalar from String. Use this class when dealing with
- * built YAML or in the unit tests.
- *
- * DO NOT use it when READING yaml. For reading use
- * {@link ReadPlainScalar}!
- *
+ * A scalar can have 2 comments: 1 on top of it and 1 inline. This interface
+ * represents both of them.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 5.2.1
  */
-final class PlainStringScalar extends BaseScalar {
+public interface ScalarComment extends Comment {
 
     /**
-     * Comments referring to this scalar.
+     * Comment above the Scalar.
+     * @return Comment.
      */
-    private final Comment comment;
+    Comment above();
 
     /**
-     * This scalar's value.
+     * Comment inline with the Scalar.
+     * @return Comment.
      */
-    private final String value;
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     */
-    PlainStringScalar(final String value) {
-        this(value, "");
-    }
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     * @param inline Comment inline with the scalar (after it).
-     */
-    PlainStringScalar(final String value, final String inline) {
-        this(value, "", inline);
-    }
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     * @param above Comment above the scalar.
-     * @param inline Comment inline with the scalar.
-     */
-    PlainStringScalar(
-        final String value, final String above, final String inline
-    ) {
-        this.value = value;
-        this.comment = new Concatenated(
-            new BuiltComment(
-                this, above
-            ),
-            new InlineComment(
-                new BuiltComment(this, inline)
-            )
-        );
-    }
-
-    /**
-     * Value of this scalar.
-     * @return Value of type T.
-     */
-    @Override
-    public String value() {
-        return this.value;
-    }
-
-    @Override
-    public Comment comment() {
-        return this.comment;
-    }
+    Comment inline();
 
 }

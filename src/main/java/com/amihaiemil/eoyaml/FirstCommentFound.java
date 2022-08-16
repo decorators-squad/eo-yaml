@@ -146,12 +146,10 @@ final class FirstCommentFound implements YamlLines {
                         if(line.trimmed().startsWith("#")) {
                             comment.add(line);
                         }
-                    } else {
+                    } else if (!line.trimmed().isEmpty()){
                         break;
                     }
                 }
-            }
-            if(comment.size() > 0) {
                 break;
             }
         }

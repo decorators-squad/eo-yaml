@@ -27,79 +27,51 @@
  */
 package com.amihaiemil.eoyaml;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+
 /**
- * YAML Plain scalar from String. Use this class when dealing with
- * built YAML or in the unit tests.
- *
- * DO NOT use it when READING yaml. For reading use
- * {@link ReadPlainScalar}!
- *
- * @author Mihai Andronache (amihaiemil@gmail.com)
+ * Unit tests for {@link JsonYamlSequence}.
+ * @author criske
  * @version $Id$
- * @since 1.0.0
- * @see http://yaml.org/spec/1.2/spec.html#scalar//
+ * @since 5.1.7
  */
-final class PlainStringScalar extends BaseScalar {
+public final class JsonYamlSequenceTest {
 
     /**
-     * Comments referring to this scalar.
+     * JsonYamlSequence can map a json array.
      */
-    private final Comment comment;
-
-    /**
-     * This scalar's value.
-     */
-    private final String value;
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     */
-    PlainStringScalar(final String value) {
-        this(value, "");
-    }
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     * @param inline Comment inline with the scalar (after it).
-     */
-    PlainStringScalar(final String value, final String inline) {
-        this(value, "", inline);
-    }
-
-    /**
-     * Ctor.
-     * @param value Given value for this scalar.
-     * @param above Comment above the scalar.
-     * @param inline Comment inline with the scalar.
-     */
-    PlainStringScalar(
-        final String value, final String above, final String inline
-    ) {
-        this.value = value;
-        this.comment = new Concatenated(
-            new BuiltComment(
-                this, above
-            ),
-            new InlineComment(
-                new BuiltComment(this, inline)
-            )
+    @Test
+    public void canMapJsonArray(){
+        final JsonArray array =  Json.createArrayBuilder()
+            .add("rultor")
+            .add("salikjan")
+            .add("sherif")
+            .build();
+        final JsonYamlSequence sequence = new JsonYamlSequence(array);
+        MatcherAssert.assertThat(sequence.values(),
+            Matchers.iterableWithSize(3));
+        MatcherAssert.assertThat(sequence.values().iterator().next(),
+            Matchers.equalTo(new PlainStringScalar("rultor"))
         );
     }
 
     /**
-     * Value of this scalar.
-     * @return Value of type T.
+     * JsonYamlSequence has empty Comment.
      */
-    @Override
-    public String value() {
-        return this.value;
+    @Test
+    public void hasEmptyComment(){
+        final Comment comment = new JsonYamlSequence(Json
+            .createArrayBuilder()
+            .build())
+            .comment();
+        MatcherAssert.assertThat(comment.yamlNode(), Matchers
+            .instanceOf(JsonYamlSequence.class));
+        MatcherAssert.assertThat(comment.value(), Matchers
+            .isEmptyString());
     }
-
-    @Override
-    public Comment comment() {
-        return this.comment;
-    }
-
 }

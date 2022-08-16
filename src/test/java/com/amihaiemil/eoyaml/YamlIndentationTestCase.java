@@ -30,9 +30,13 @@ package com.amihaiemil.eoyaml;
 import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Test cases regarding an input YAML's indentation, particularly
@@ -144,4 +148,30 @@ public final class YamlIndentationTestCase {
             Matchers.equalTo("rultor")
         );
     }
+
+    /**
+     * A badly indented YAML sequence throws an exception.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void badlyIndentedSequenceThrowsException() throws Exception {
+        try {
+            final List<YamlLine> lines = new ArrayList<>();
+            lines.add(new RtYamlLine("value1", 1));
+            lines.add(new RtYamlLine(" lGvSz", 2));
+            lines.add(new RtYamlLine("value3", 3));
+            final YamlLines yamlLines = new AllYamlLines(lines);
+            final YamlNode seq = yamlLines.toYamlNode(
+                    new RtYamlLine("foldedSequence:|-", 0), false);
+            final Collection<YamlNode> values = ((YamlSequence) seq).values();
+            Assert.fail("badlyIntendedSequenceThrowsException "
+                    + "should have thrown YamlIndentationException");
+        } catch (final YamlIndentationException expected) {
+            MatcherAssert.assertThat(expected.getMessage(), Matchers.equalTo(
+                    "Indentation of line 3 [lGvSz] is greater "
+                    + "than the one of line 2 [value1]. "
+                    + "It should be less or equal."));
+        }
+    }
+
 }

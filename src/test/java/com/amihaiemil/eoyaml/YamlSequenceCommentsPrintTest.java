@@ -159,6 +159,73 @@ public final class YamlSequenceCommentsPrintTest {
     }
 
     /**
+     * Reads scalar comments from a sequence properly.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsScalarComments() throws IOException {
+        final YamlSequence read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/scalarCommentsInSequence.yml"
+            )
+        ).readYamlSequence();
+        final Iterator<YamlNode> values = read.values().iterator();
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.equalTo("a plain scalar string in a sequence")
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.equalTo("a mapping as an element of a sequence")
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.equalTo(
+                "comment on top of scalar in sequence\nit's multiline"
+            )
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.isEmptyString()
+        );
+        MatcherAssert.assertThat(
+            values.next().comment().value(),
+            Matchers.equalTo(
+                "this comment refers\n"
+                + "to the element6 scalar\n"
+                + "element6 also has an inline comment"
+            )
+        );
+    }
+
+    /**
+     * A read YamlSequence should print itself together with the
+     * read scalar comments.
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlSequenceWithScalarComments() throws Exception {
+        final YamlSequence read = Yaml.createYamlInput(
+            new File("src/test/resources/scalarCommentsInSequence.yml")
+        ).readYamlSequence();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("scalarCommentsInSequence.yml")
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

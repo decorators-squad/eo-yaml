@@ -196,6 +196,129 @@ public final class YamlMappingCommentsPrintTest {
     }
 
     /**
+     * Reads scalar comments from a mapping properly.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsScalarComments() throws IOException {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File(
+                "src/test/resources/scalarCommentsInMapping.yml"
+            )
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            read.value("architect").comment().value(),
+            Matchers.equalTo(
+                "Mihai is the architect,\nhe has 8 years Java XP"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("name").comment().value(),
+            Matchers.equalTo(
+                "name of the project"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("provider").comment().value(),
+            Matchers.equalTo(
+                "git web service"
+            )
+        );
+        MatcherAssert.assertThat(
+            read.value("devops").comment().value(),
+            Matchers.equalTo("")
+        );
+        MatcherAssert.assertThat(
+            read.value("tech").comment().value(),
+            Matchers.equalTo(
+                "eo-yaml is written in Java\n"
+                + "and it has no dependencies\n"
+                + "Java SE 8+"
+            )
+        );
+    }
+
+    /**
+     * A read YamlMapping should print itself together with the
+     * read scalar .
+     * @throws Exception If something goes wrong.
+     */
+    @Test
+    public void printsReadYamlMappingWithScalarComments() throws Exception {
+        final YamlMapping read = Yaml.createYamlInput(
+            new File("src/test/resources/scalarCommentsInMapping.yml")
+        ).readYamlMapping();
+        System.out.println(read);
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readExpected("scalarCommentsInMapping.yml")
+            )
+        );
+    }
+
+    /**
+     * We can print a built scalar with 2 comments.
+     */
+    @Test
+    public void printsBuiltScalarWithTwoComments() {
+        final Scalar scalar = Yaml.createYamlScalarBuilder()
+            .addLine("simple")
+            .buildPlainScalar("comment on top\nline2", "comment");
+        System.out.println(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+                "---" + System.lineSeparator()
+                + "# comment on top" + System.lineSeparator()
+                + "# line2" + System.lineSeparator()
+                + "simple # comment" + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
+
+    /**
+     * We can print a built scalar an inline comment.
+     */
+    @Test
+    public void printsBuiltScalarWithInline() {
+        final Scalar scalar = Yaml.createYamlScalarBuilder()
+            .addLine("simple")
+            .buildPlainScalar("comment");
+        System.out.println(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+                "---" + System.lineSeparator()
+                    + "simple # comment" + System.lineSeparator()
+                    + "..."
+            )
+        );
+    }
+
+    /**
+     * We can print a built scalar with comment above.
+     */
+    @Test
+    public void printsBuiltScalarWithAboveComment() {
+        final Scalar scalar = Yaml.createYamlScalarBuilder()
+            .addLine("simple")
+            .buildPlainScalar("comment on top\nline2", "");
+        System.out.println(scalar);
+        MatcherAssert.assertThat(
+            scalar.toString(),
+            Matchers.equalTo(
+                "---" + System.lineSeparator()
+                    + "# comment on top" + System.lineSeparator()
+                    + "# line2" + System.lineSeparator()
+                    + "simple" + System.lineSeparator()
+                    + "..."
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

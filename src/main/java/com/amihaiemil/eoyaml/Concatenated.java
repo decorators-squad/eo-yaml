@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2021, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,68 +27,68 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
-
 /**
- * Builder of YamlMapping. Implementations should be immutable and thread-safe.
+ * A ScalarComment read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 5.2.1
  */
-public interface YamlMappingBuilder {
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value String
-     * @return This builder
-     */
-    YamlMappingBuilder add(final String key, final String value);
+final class Concatenated implements ScalarComment {
 
     /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value String
-     * @return This builder
+     * Comment above the scalar.
      */
-    YamlMappingBuilder add(final YamlNode key, final String value);
+    private final Comment above;
 
     /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
+     * Inline Comment.
      */
-    YamlMappingBuilder add(final YamlNode key, final YamlNode value);
+    private final Comment inline;
 
     /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
+     * Ctor.
+     * @param above Comment above the scalar.
+     * @param inline Comment inline with the scalar.
      */
-    YamlMappingBuilder add(final String key, final YamlNode value);
-
-    /**
-     * Build the YamlMapping.
-     * @return Built YamlMapping.
-     */
-    default YamlMapping build() {
-        return this.build("");
-    }
-    
-    /**
-     * Build the YamlMapping.
-     * @param comment The multiple line comment on top of the YamlMapping.
-     * @return Built YamlMapping.
-     */
-    default YamlMapping build(final Collection<String> comment) {
-        return this.build(String.join(System.lineSeparator(), comment));
+    Concatenated(
+        final Comment above,
+        final Comment inline
+    ) {
+        this.above = above;
+        this.inline = inline;
     }
 
-    /**
-     * Build the YamlMapping.
-     * @param comment Comment on top of the YamlMapping.
-     * @return Built YamlMapping.
-     */
-    YamlMapping build(final String comment);
+    @Override
+    public YamlNode yamlNode() {
+        return this.inline.yamlNode();
+    }
+
+    @Override
+    public String value() {
+        final StringBuilder comment = new StringBuilder();
+        final String aboveValue = this.above.value();
+        final String inlineValue = this.inline.value();
+
+        if(inlineValue.trim().isEmpty()){
+            comment.append(aboveValue);
+        } else if(aboveValue.trim().isEmpty()){
+            comment.append(inlineValue);
+        } else {
+            comment
+                .append(aboveValue)
+                .append(System.lineSeparator())
+                .append(inlineValue);
+        }
+        return comment.toString();
+    }
+
+    @Override
+    public Comment above() {
+        return this.above;
+    }
+
+    @Override
+    public Comment inline() {
+        return this.inline;
+    }
 }

@@ -60,6 +60,7 @@ final class RtYamlPrinter implements YamlPrinter {
         try {
             if (node instanceof Scalar) {
                 this.writer.append("---").append(System.lineSeparator());
+                this.printPossibleComment(node, "");
                 this.printScalar((Scalar) node, 0);
                 this.writer.append(System.lineSeparator()).append("...");
             } else if (node instanceof YamlSequence) {
@@ -132,14 +133,16 @@ final class RtYamlPrinter implements YamlPrinter {
         final Iterator<YamlNode> keysIt = mapping.keys().iterator();
         while(keysIt.hasNext()) {
             final YamlNode key = keysIt.next();
-            this.printPossibleComment(key, alignment.toString());
             final YamlNode value = mapping.value(key);
-            if(!(value instanceof Scalar)) {
-                this.printPossibleComment(value, alignment.toString());
-            }
+            this.printPossibleComment(value, alignment.toString());
             this.writer.append(alignment);
             if(key instanceof Scalar) {
-                this.printScalar((Scalar) key, 0);
+                this.writer.append(
+                    this.indent(
+                        new Escaped((Scalar) key).value(),
+                        0
+                    )
+                );
                 this.writer
                     .append(":");
             } else {
@@ -181,16 +184,13 @@ final class RtYamlPrinter implements YamlPrinter {
         final Iterator<YamlNode> valuesIt = sequence.values().iterator();
         while(valuesIt.hasNext()) {
             final YamlNode node = valuesIt.next();
+            this.printPossibleComment(node, alignment.toString());
+            this.writer
+                .append(alignment)
+                .append("-");
             if (node instanceof Scalar) {
-                this.writer
-                    .append(alignment)
-                    .append("-");
                 this.printNode(node, false, 0);
             } else  {
-                this.printPossibleComment(node, alignment.toString());
-                this.writer
-                    .append(alignment)
-                    .append("-");
                 this.printNode(node, true, indentation + 2);
             }
             if(valuesIt.hasNext()) {
@@ -241,14 +241,21 @@ final class RtYamlPrinter implements YamlPrinter {
                     this.indent(scalar.value(), indentation + 2)
                 );
         } else {
-            this.writer.append(
-                this.indent(
-                    new Escaped(scalar).value(),
-                    0
-                )
-            );
-            if(!scalar.comment().value().isEmpty()) {
-                this.writer.append(" # ").append(scalar.comment().value());
+            final Comment comment = scalar.comment();
+            if(comment instanceof ScalarComment) {
+                this.writer.append(
+                    this.indent(
+                        new Escaped(scalar).value(),
+                        0
+                    )
+                );
+                final ScalarComment scalarComment = (ScalarComment) comment;
+
+                if(!scalarComment.inline().value().isEmpty()) {
+                    this.writer.append(" # ").append(
+                        scalarComment.inline().value()
+                    );
+                }
             }
         }
     }
@@ -266,7 +273,7 @@ final class RtYamlPrinter implements YamlPrinter {
         final boolean onNewLine,
         final int indentation
     ) throws IOException {
-        if (node == null || ((BaseYamlNode) node).isEmpty()) {
+        if (node == null || node.isEmpty()) {
             if (node instanceof EmptyYamlSequence) {
                 this.writer.append(" ").append("[]");
             } else if (node instanceof EmptyYamlMapping) {
@@ -307,7 +314,12 @@ final class RtYamlPrinter implements YamlPrinter {
     ) throws IOException {
         boolean printed = false;
         if(node != null && node.comment() != null) {
-            Comment tmpComment = node.comment();
+            final Comment tmpComment;
+            if(node.comment() instanceof ScalarComment) {
+                tmpComment = ((ScalarComment) node.comment()).above();
+            } else {
+                tmpComment = node.comment();
+            }
             final String com = tmpComment.value();
             if (com.trim().length() != 0) {
                 String[] lines = com.split(System.lineSeparator());

@@ -1,0 +1,14 @@
+- element1
+- element2 # a plain scalar string in a sequence
+- element3
+# a mapping as an element of a sequence
+-
+  key: value
+  key2: value2
+# comment on top of scalar in sequence
+# it's multiline
+- element4
+- element5
+# this comment refers
+# to the element6 scalar
+- element6 # element6 also has an inline comment

@@ -125,7 +125,7 @@ public abstract class BaseYamlSequence
     }
 
     @Override
-    final boolean isEmpty() {
+    public final boolean isEmpty() {
         return this.values().isEmpty();
     }
 }

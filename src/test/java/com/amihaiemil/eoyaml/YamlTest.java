@@ -34,6 +34,9 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import javax.json.Json;
+import javax.json.JsonValue;
+
 /**
  * Unit tests for {@link Yaml}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -116,6 +119,31 @@ public final class YamlTest {
     public void createsYamlInputFromString() {
         MatcherAssert.assertThat(
             Yaml.createYamlInput("yaml: test"), Matchers.notNullValue()
+        );
+    }
+
+    /**
+     * Yaml can create an YamlMapping from a json object.
+     */
+    @Test
+    public void createsYamlMappingFromJsonObject() {
+        MatcherAssert.assertThat(
+            Yaml.fromJsonObject(Json.createObjectBuilder().build()),
+            Matchers.notNullValue()
+        );
+    }
+
+    /**
+     * Yaml can create an YamlMapping from a json array.
+     */
+    @Test
+    public void createsYamlMappingFromJsonArray() {
+        MatcherAssert.assertThat(
+            Yaml.fromJsonArray(JsonValue.EMPTY_JSON_ARRAY),
+            Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.instanceOf(JsonYamlSequence.class)
+            )
         );
     }
 }

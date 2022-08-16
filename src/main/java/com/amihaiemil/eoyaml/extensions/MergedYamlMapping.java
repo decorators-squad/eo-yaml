@@ -142,8 +142,9 @@ public final class MergedYamlMapping extends BaseYamlMapping {
      * @param changed Changed mapping.
      * @param overrideConflicts Should conflicting keys be overriden or not?
      * @return Merged mapping.
+     * @checkstyle HiddenField (500 lines)
      */
-    private static YamlMapping merge(
+    private YamlMapping merge(
         final YamlMapping original,
         final YamlMapping changed,
         final boolean overrideConflicts
@@ -154,26 +155,114 @@ public final class MergedYamlMapping extends BaseYamlMapping {
         } else if (changed == null || changed.keys().isEmpty()) {
             merged = original;
         } else {
-            YamlMappingBuilder builder = Yaml.createYamlMappingBuilder();
-            final Set<YamlNode> changedKeys = changed.keys();
-            for (final YamlNode key : original.keys()) {
-                if(changedKeys.contains(key)) {
-                    if(overrideConflicts) {
-                        builder = builder.add(key, changed.value(key));
-                    } else {
-                        builder = builder.add(key, original.value(key));
-                    }
-                    changedKeys.remove(key);
-                } else {
-                    builder = builder.add(key, original.value(key));
-                }
-            }
-            for(final YamlNode key : changedKeys) {
-                builder = builder.add(key, changed.value(key));
-            }
-            merged = builder.build(original.comment().value());
+            merged = this.recursiveMerge(original, changed, overrideConflicts);
         }
         return merged;
     }
 
+    /**
+     * Recursively merge to mappings.
+     * @param original Original mapping.
+     * @param changed Changed mapping.
+     * @param overrideConflicts Should conflicting keys be overridden or not?
+     * @return Merged mapping.
+     * @checkstyle CyclomaticComplexity (200 lines)
+     * @checkstyle ExecutableStatementCount (200 lines)
+     */
+    private YamlMapping recursiveMerge(
+        final YamlMapping original,
+        final YamlMapping changed,
+        final boolean overrideConflicts
+    ) {
+        YamlMappingBuilder originalBuilder = this
+            .yamlMappingBuilderFrom(original);
+        final Set<YamlNode> changedKeys = changed.keys();
+        for(final YamlNode key : changedKeys) {
+            final YamlNode originalValue = original.value(key);
+            final YamlNode changedValue = changed.value(key);
+            if (changedValue instanceof YamlMapping
+                && originalValue instanceof YamlMapping) {
+                originalBuilder = originalBuilder.add(
+                    key,
+                    this.recursiveMerge(
+                        (YamlMapping) originalValue,
+                        (YamlMapping) changedValue,
+                        overrideConflicts
+                    )
+                );
+            } else if(overrideConflicts
+                && changedValue instanceof YamlSequence
+                && originalValue instanceof YamlSequence){
+                final YamlSequence originalSeq = (YamlSequence) originalValue;
+                final YamlSequence changedSeq = (YamlSequence) changedValue;
+                YamlSequenceBuilder originalSeqBuilder = this
+                    .yamlSequenceBuilderFrom(originalSeq);
+                for (final YamlNode node : changedSeq.values()) {
+                    if (!originalSeq.values().contains(node)) {
+                        originalSeqBuilder = originalSeqBuilder.add(node);
+                    }
+                }
+                final Comment newComment;
+                if(!changedSeq.comment().value().isEmpty()){
+                    newComment = changedSeq.comment();
+                }else{
+                    newComment = originalSeq.comment();
+                }
+                originalBuilder = originalBuilder.add(
+                    key,
+                    originalSeqBuilder.build(newComment.value())
+                );
+            } else {
+                final YamlNode newValue;
+                if (originalValue != null) {
+                    if (overrideConflicts) {
+                        newValue = changedValue;
+                    } else {
+                        newValue = originalValue;
+                    }
+                } else {
+                    newValue = changedValue;
+                }
+                originalBuilder = originalBuilder.add(key, newValue);
+            }
+        }
+        final Comment newComment;
+        if(overrideConflicts && !changed.comment().value().isEmpty()){
+            newComment = changed.comment();
+        }else{
+            newComment = original.comment();
+        }
+        return originalBuilder.build(newComment.value());
+    }
+
+    /**
+     * Create a {@link YamlSequenceBuilder} from a {@link YamlSequence} source.
+     * @param source YamlMapping source.
+     * @return Builder of YamlSequence.
+     */
+    private YamlSequenceBuilder yamlSequenceBuilderFrom(
+        final YamlSequence source
+    ) {
+        YamlSequenceBuilder builder = Yaml.createYamlSequenceBuilder();
+        for (final YamlNode node : source.values()) {
+            builder = builder.add(node);
+        }
+        return builder;
+    }
+
+    /**
+     * Create a {@link YamlMappingBuilder} from a {@link YamlMapping} source.
+     * @param source YamlMapping source.
+     * @return Builder of YamlMapping.
+     */
+    private YamlMappingBuilder yamlMappingBuilderFrom(
+        final YamlMapping source
+    ) {
+        YamlMappingBuilder builder = Yaml
+            .createYamlMappingBuilder();
+        for (final YamlNode key : source.keys()) {
+            builder = builder.add(key, source.value(key));
+        }
+        return builder;
+    }
 }

@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlPrintException;
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -46,12 +45,6 @@ import java.io.StringWriter;
  * @since 4.0.0
  */
 abstract class BaseYamlNode implements YamlNode {
-
-    /**
-     * Is this YamlNode empty?
-     * @return True or false.
-     */
-    abstract boolean isEmpty();
 
     @Override
     public final Scalar asScalar()

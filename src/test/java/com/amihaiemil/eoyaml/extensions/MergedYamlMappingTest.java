@@ -33,6 +33,8 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * Unit tests for {@link MergedYamlMapping}.
  * @author Mihai Andronache (amihaiemil.com)
@@ -300,6 +302,362 @@ public final class MergedYamlMappingTest {
         MatcherAssert.assertThat(
             merged.toString(),
             Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * Merges two simple mappings. Uses the request issue
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/420#issuecomment-731776176">example</a>
+     * as test case.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void mergesSimpleMappings() throws IOException {
+        final YamlMapping original =  Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type: x")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping changed =Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            original, changed
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type: x").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * Merges two complex mappings with conflict override.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void mergesComplexMappingsWithOverride() throws IOException {
+        final YamlMapping original = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: x").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        -").append(System.lineSeparator())
+                .append("          foo: 1").append(System.lineSeparator())
+                .append("          bar: 2").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - y").append(System.lineSeparator())
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping changed = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: changedX").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - addedZ").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            original, changed, true
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type:").append(System.lineSeparator())
+            .append("      Prop1: changedX").append(System.lineSeparator())
+            .append("      Prop2:").append(System.lineSeparator())
+            .append("        -").append(System.lineSeparator())
+            .append("          foo: 1").append(System.lineSeparator())
+            .append("          bar: 2").append(System.lineSeparator())
+            .append("        - x").append(System.lineSeparator())
+            .append("        - y").append(System.lineSeparator())
+            .append("        - addedZ").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * Merges two complex mappings with no conflict override.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void mergesComplexMappingsWithNoOverride() throws IOException {
+        final YamlMapping original = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: x").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        -").append(System.lineSeparator())
+                .append("          foo: 1").append(System.lineSeparator())
+                .append("          bar: 2").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - y").append(System.lineSeparator())
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping changed = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: changedX").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - addedZ").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+        final YamlMapping merged = new MergedYamlMapping(
+            original, changed
+        );
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type:").append(System.lineSeparator())
+            .append("      Prop1: x").append(System.lineSeparator())
+            .append("      Prop2:").append(System.lineSeparator())
+            .append("        -").append(System.lineSeparator())
+            .append("          foo: 1").append(System.lineSeparator())
+            .append("          bar: 2").append(System.lineSeparator())
+            .append("        - x").append(System.lineSeparator())
+            .append("        - y").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * It should remove key "Prop3" from Mapping by replacing it with null.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldRemoveKeyFromComplexMapping() throws IOException{
+        final YamlMapping original = Yaml.createYamlInput(
+            new StringBuilder()
+                .append("Parameters:").append(System.lineSeparator())
+                .append("  Param1:").append(System.lineSeparator())
+                .append("    Type:").append(System.lineSeparator())
+                .append("      Prop1: x").append(System.lineSeparator())
+                .append("      Prop2:").append(System.lineSeparator())
+                .append("        -").append(System.lineSeparator())
+                .append("          foo: 1").append(System.lineSeparator())
+                .append("          bar: 2").append(System.lineSeparator())
+                .append("        - x").append(System.lineSeparator())
+                .append("        - y").append(System.lineSeparator())
+                .append("      Prop3:").append(System.lineSeparator())
+                .append("        foo: 1").append(System.lineSeparator())
+                .append("        bar: 2").append(System.lineSeparator())
+                .append("  Param2:").append(System.lineSeparator())
+                .append("    Type: y")
+                .toString()
+        ).readYamlMapping();
+
+        final YamlMapping keyRemover = Yaml
+            .createYamlMappingBuilder()
+            .add("Parameters", Yaml
+                .createYamlMappingBuilder()
+                .add("Param1", Yaml
+                    .createYamlMappingBuilder()
+                    .add("Type", Yaml
+                        .createYamlMappingBuilder()
+                        .add("Prop3", (String) null)
+                        .build())
+                    .build())
+                .build()
+            ).build();
+
+        final YamlMapping merged = new MergedYamlMapping(
+            original, keyRemover, true
+        );
+
+        final StringBuilder expected = new StringBuilder();
+        expected
+            .append("Parameters:").append(System.lineSeparator())
+            .append("  Param1:").append(System.lineSeparator())
+            .append("    Type:").append(System.lineSeparator())
+            .append("      Prop1: x").append(System.lineSeparator())
+            .append("      Prop2:").append(System.lineSeparator())
+            .append("        -").append(System.lineSeparator())
+            .append("          foo: 1").append(System.lineSeparator())
+            .append("          bar: 2").append(System.lineSeparator())
+            .append("        - x").append(System.lineSeparator())
+            .append("        - y").append(System.lineSeparator())
+            .append("      Prop3: null").append(System.lineSeparator())
+            .append("  Param2:").append(System.lineSeparator())
+            .append("    Type: y");
+        MatcherAssert.assertThat(
+            merged.toString(),
+            Matchers.equalTo(expected.toString())
+        );
+    }
+
+    /**
+     * It should merge comments.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByOverridingComment() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("Old Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("New Comment");
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.comment().value(),
+            Matchers.equalTo("New Comment")
+        );
+    }
+
+    /**
+     * It should merge comments.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByOverridingCommentOfSequence() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build("Old Comment"))
+            .build();
+        YamlMapping updater =  Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build("New Comment"))
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.yamlSequence("Key").comment().value(),
+            Matchers.equalTo("New Comment")
+        );
+    }
+
+    /**
+     * It should merge inner comments.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByOverridingInnerComment() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlMappingBuilder()
+                .add("InnerKey", "InnerValue")
+                .build("Old Comment"))
+            .build("Top Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlMappingBuilder()
+                .add("InnerKey", "InnerValue")
+                .build("New Comment"))
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged
+                .value("Key")
+                .asMapping()
+                .comment()
+                .value(),
+            Matchers.equalTo("New Comment")
+        );
+    }
+
+    /**
+     * It should keep original comment when merge mapping has not overriding
+     * flag set.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByNotOverridingCommentWhenOverridingFlagNotSet() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("Old Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("New Comment");
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.FALSE
+        );
+        MatcherAssert.assertThat(
+            merged.comment().value(),
+            Matchers.equalTo("Old Comment")
+        );
+    }
+
+    /**
+     * It should keep original comment if the updater has no comment attached.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByNotOverridingCommentWhenCommentNotProvided() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build("Old Comment");
+        YamlMapping updater = Yaml.createYamlMappingBuilder()
+            .add("Key", "Value")
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.comment().value(),
+            Matchers.equalTo("Old Comment")
+        );
+    }
+
+    /**
+     * It should keep original comment when updater merge sequence has no
+     * comment attached.
+     * @see <a href="https://github.com/decorators-squad/eo-yaml/issues/469">Bug: #469</a>
+     */
+    @Test
+    public void mergesByNotOverridingCommentOfSequenceWhenCommentNotProvided() {
+        YamlMapping original = Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build("Old Comment"))
+            .build();
+        YamlMapping updater =  Yaml.createYamlMappingBuilder()
+            .add("Key", Yaml.createYamlSequenceBuilder().add("Value")
+                .build())
+            .build();
+        YamlMapping merged = new MergedYamlMapping(original,
+            updater, Boolean.TRUE
+        );
+        MatcherAssert.assertThat(
+            merged.yamlSequence("Key").comment().value(),
+            Matchers.equalTo("Old Comment")
         );
     }
 }

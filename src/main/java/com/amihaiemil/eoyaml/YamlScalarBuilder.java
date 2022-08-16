@@ -27,6 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Collection;
+
 /**
  * Builder of Yaml Scalar. Implementations should be immutable and thread-safe.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -90,10 +92,42 @@ public interface YamlScalarBuilder {
      * your scalar is short, a single line of text.<br><br>
      * If you added more lines of text, all of them will be put together,
      * separated by spaces.
-     * @param comment Comment referring to the built scalar.
+     * @param inline Inline comment referring to the built scalar. If it has
+     *  more lines, they will be concatenated into a single line.
      * @return The built Scalar.
      */
-    Scalar buildPlainScalar(final String comment);
+    default Scalar buildPlainScalar(final String inline) {
+        return this.buildPlainScalar("", inline);
+    }
+
+    /**
+     * Build a plain Scalar. Ideally, you should use this when
+     * your scalar is short, a single line of text.<br><br>
+     * If you added more lines of text, all of them will be put together,
+     * separated by spaces.
+     * @param above The multiple line comment Comment above the scalar.
+     * @param inline Inline comment referring to the built scalar. If it has
+     *  more lines, they will be concatenated into a single line.
+     * @return The built Scalar.
+     */
+    default Scalar buildPlainScalar(
+        final Collection<String> above, final String inline) {
+        return this.buildPlainScalar(
+            String.join(System.lineSeparator(), above), inline
+        );
+    }
+
+    /**
+     * Build a plain Scalar. Ideally, you should use this when
+     * your scalar is short, a single line of text.<br><br>
+     * If you added more lines of text, all of them will be put together,
+     * separated by spaces.
+     * @param above Comment above the scalar. It may have multiple lines.
+     * @param inline Inline comment referring to the built scalar. If it has
+     *  more lines, they will be concatenated into a single line.
+     * @return The built Scalar.
+     */
+    Scalar buildPlainScalar(final String above, final String inline);
 
     /**
      * Build a Folded Block Scalar. Use this when your scalar has multiple

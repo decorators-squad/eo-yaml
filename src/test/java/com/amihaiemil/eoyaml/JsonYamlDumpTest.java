@@ -27,68 +27,46 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
+
+import javax.json.Json;
 
 /**
- * Builder of YamlMapping. Implementations should be immutable and thread-safe.
- * @author Mihai Andronache (amihaiemil@gmail.com)
+ * Unit tests for {@link JsonYamlDump}.
+ * @author criske
  * @version $Id$
- * @since 1.0.0
+ * @since 5.1.7
  */
-public interface YamlMappingBuilder {
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value String
-     * @return This builder
-     */
-    YamlMappingBuilder add(final String key, final String value);
+public final class JsonYamlDumpTest {
 
     /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value String
-     * @return This builder
+     * JsonYamlDump can dump null value.
      */
-    YamlMappingBuilder add(final YamlNode key, final String value);
-
-    /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
-    YamlMappingBuilder add(final YamlNode key, final YamlNode value);
-
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value YamlNode (sequence or mapping)
-     * @return This builder
-     */
-    YamlMappingBuilder add(final String key, final YamlNode value);
-
-    /**
-     * Build the YamlMapping.
-     * @return Built YamlMapping.
-     */
-    default YamlMapping build() {
-        return this.build("");
-    }
-    
-    /**
-     * Build the YamlMapping.
-     * @param comment The multiple line comment on top of the YamlMapping.
-     * @return Built YamlMapping.
-     */
-    default YamlMapping build(final Collection<String> comment) {
-        return this.build(String.join(System.lineSeparator(), comment));
+    @Test
+    public void canDumpNullValue(){
+        MatcherAssert.assertThat(new JsonYamlDump(null).dump(),
+            Matchers.equalTo(new PlainStringScalar("null")));
     }
 
     /**
-     * Build the YamlMapping.
-     * @param comment Comment on top of the YamlMapping.
-     * @return Built YamlMapping.
+     * JsonYamlDump can dump JsonYamlMapping from json object.
      */
-    YamlMapping build(final String comment);
+    @Test
+    public void canDumpJsonObject(){
+        MatcherAssert.assertThat(new JsonYamlDump(Json
+                .createObjectBuilder().build()).dump(),
+            Matchers.instanceOf(JsonYamlMapping.class));
+    }
+
+    /**
+     * JsonYamlDump can dump JsonYamlSequence from json array.
+     */
+    @Test
+    public void canDumpJsonArray(){
+        MatcherAssert.assertThat(new JsonYamlDump(Json
+                .createArrayBuilder().build()).dump(),
+            Matchers.instanceOf(JsonYamlSequence.class));
+    }
 }

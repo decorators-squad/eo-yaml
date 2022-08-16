@@ -1,10 +1,10 @@
 # eo-yaml
 <img alt="eo-yaml-logo" src="http://www.amihaiemil.com/images/camila2.png" width="120" height="70"/>
 
-[![Build Status](https://travis-ci.org/decorators-squad/eo-yaml.svg?branch=master)](https://travis-ci.org/decorators-squad/eo-yaml)
+[![Build Status](https://travis-ci.com/decorators-squad/eo-yaml.svg?branch=master)](https://travis-ci.com/decorators-squad/eo-yaml)
 [![Coverage Status](https://coveralls.io/repos/github/decorators-squad/eo-yaml/badge.svg?branch=master)](https://coveralls.io/github/decorators-squad/eo-yaml?branch=master)
-[![PDD status](http://www.0pdd.com/svg?name=decorators-squad/eo-yaml)](http://www.0pdd.com/p?name=decorators-squad/eo-yaml)
 
+[![Managed By Self XDSD](https://self-xdsd.com/b/mbself.svg)](https://self-xdsd.com/p/decorators-squad/eo-yaml?provider=github) 
 [![DevOps By Rultor.com](http://www.rultor.com/b/decorators-squad/eo-yaml)](http://www.rultor.com/p/decorators-squad/eo-yaml)
 [![We recommend IntelliJ IDEA](http://amihaiemil.github.io/images/intellij-idea-recommend.svg)](https://www.jetbrains.com/idea/)
 [![OpenJDK Quality Outreach](https://amihaiemil.com/images/openjdk_quality_outreach.svg)](https://wiki.openjdk.java.net/display/quality/Quality+Outreach)
@@ -23,18 +23,24 @@ To get the latest release from Maven Central, simply add the following to your `
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>eo-yaml</artifactId>
-    <version>5.1.7</version>
+    <version>6.0.2</version>
 </dependency>
 ```
 
-or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/5.1.7/eo-yaml-5.1.7-jar-with-dependencies.jar">fat</a> jar.
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/6.0.2/eo-yaml-6.0.2-jar-with-dependencies.jar">fat</a> jar.
+
+If you use Gradle, add this to your dependencies:
+
+```gradle
+implementation group: 'com.amihaiemil.web', name: 'eo-yaml', version: '6.0.2'
+```
 
 The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages)!
 
 ## Usage
 
 The API of this library is clean, intuitive and generally close to the ``javax.json`` API that most developers are used to.
-Just start form the ``com.amihaiemil.eoyaml.Yaml`` class, it offers all the builders and readers you may need.
+Just start from the ``com.amihaiemil.eoyaml.Yaml`` class, it offers all the builders and readers you may need.
 
 See the [Block Style Yaml](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML) wiki for a first glance.
 
