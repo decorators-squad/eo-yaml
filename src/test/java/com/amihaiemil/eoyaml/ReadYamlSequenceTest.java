@@ -142,7 +142,7 @@ public final class ReadYamlSequenceTest {
      * dash line and has only one entry
      */
     @Test
-    public void mappingOnFirstLine(){
+    public void returnsShortYamlMappingWithScalarValuesStartingAtDash(){
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("- beta1: somethingElse", 0));
         lines.add(new RtYamlLine("- scalar1", 1));
