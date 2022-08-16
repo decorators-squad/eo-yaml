@@ -166,10 +166,13 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     )));
                 } else {
                     if(this.mappingStartsAtDash(line)) {
+                        final YamlLine previous = line.number() == 0
+                                        ? new YamlLine.NullYamlLine()
+                                        : this.all.line(line.number() - 1);
                         kids.add(
                             new ReadYamlMapping(
                                 line.number() + 1,
-                                this.all.line(line.number() - 1),
+                                previous,
                                 this.all,
                                 this.guessIndentation
                             )
