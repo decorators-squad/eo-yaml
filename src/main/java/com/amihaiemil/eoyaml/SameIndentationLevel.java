@@ -77,12 +77,15 @@ final class SameIndentationLevel implements YamlLines {
             final YamlLine first = iterator.next();
             sameIndentation.add(first);
             int firstIndentation = first.indentation();
-            if(this.mappingStartsAtDash(first)) {
-                firstIndentation += 2;
-            }
+            boolean firstIsMappingStartsWithDash =
+                    this.mappingStartsAtDash(first);
             while (iterator.hasNext()) {
                 YamlLine current = iterator.next();
-                if(current.indentation() == firstIndentation) {
+                if (firstIsMappingStartsWithDash
+                        && this.mapping(current)
+                        && current.indentation() == firstIndentation + 2) {
+                    sameIndentation.add(current);
+                } else if(current.indentation() == firstIndentation) {
                     sameIndentation.add(current);
                 } else if (current.indentation() < firstIndentation) {
                     break;
@@ -117,6 +120,18 @@ final class SameIndentationLevel implements YamlLines {
         final boolean escapedScalar = trimmed.matches("^[ ]*\\-[ ]*\".*\"$")
             || trimmed.matches("^[ ]*\\-[ ]*\'.*\'$");
         return trimmed.matches("^[ ]*\\-.*\\:.+$") && !escapedScalar;
+    }
+
+    /**
+     * Returns true if the line is a mapping entry.
+     * @param dashLine Line.
+     * @return True of false.
+     */
+    private boolean mapping(final YamlLine dashLine) {
+        final String trimmed = dashLine.trimmed();
+        final boolean escapedScalar = trimmed.matches("^[ ]*\".*\"$")
+                || trimmed.matches("^[ ]*\'.*\'$");
+        return trimmed.matches("^[ ]*.*\\:.+$") && !escapedScalar;
     }
 
 }
