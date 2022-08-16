@@ -138,6 +138,44 @@ public final class ReadYamlSequenceTest {
     }
 
     /**
+     * ReadYamlSequence can return the YamlMapping which starts right at the
+     * dash line and has only one entry
+     */
+    @Test
+    public void mappingOnFirstLine(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- beta1: somethingElse", 0));
+        lines.add(new RtYamlLine("- scalar1", 1));
+        lines.add(new RtYamlLine("- \"beta2\": somethingElse", 2));
+        lines.add(new RtYamlLine("- scalar2", 3));
+        lines.add(new RtYamlLine("- beta3: \"something-else\"", 4));
+        lines.add(new RtYamlLine("- scalar3", 5));
+        lines.add(new RtYamlLine("- beta4: somethingElse", 6));
+        lines.add(new RtYamlLine("- \"scalar4\"", 7));
+        final YamlSequence sequence = new ReadYamlSequence(
+                new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        MatcherAssert.assertThat(sequence.size(), Matchers.is(8));
+        MatcherAssert.assertThat(
+                sequence.yamlMapping(0).string("beta1"),
+                Matchers.equalTo("somethingElse")
+        );
+        MatcherAssert.assertThat(
+                sequence.yamlMapping(2).string("beta2"),
+                Matchers.equalTo("somethingElse")
+        );
+        MatcherAssert.assertThat(
+                sequence.yamlMapping(4).string("beta3"),
+                Matchers.equalTo("\"something-else\"")
+        );
+        MatcherAssert.assertThat(
+                sequence.yamlMapping(6).string("beta4"),
+                Matchers.equalTo("somethingElse")
+        );
+    }
+
+    /**
      * ReadYamlSequence can return the YamlSequence from a given index.
      */
     @Test
