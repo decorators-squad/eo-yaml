@@ -77,8 +77,7 @@ final class SameIndentationLevel implements YamlLines {
             final YamlLine first = iterator.next();
             sameIndentation.add(first);
             int firstIndentation = first.indentation();
-            boolean firstIsDashMap =
-                    this.mappingStartsAtDash(first);
+            boolean firstIsDashMap = this.mappingStartsAtDash(first);
             while (iterator.hasNext()) {
                 YamlLine current = iterator.next();
                 if (firstIsDashMap
