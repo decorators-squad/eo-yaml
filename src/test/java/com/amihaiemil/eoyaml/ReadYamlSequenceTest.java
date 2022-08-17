@@ -139,7 +139,8 @@ public final class ReadYamlSequenceTest {
 
     /**
      * ReadYamlSequence can return the YamlMapping which starts right at the
-     * dash line and has only one entry
+     * dash line and has only one entry.
+     * @checkstyle ExecutableStatementCount (100 lines)
      */
     @Test
     public void returnsShortYamlMappingWithScalarValuesStartingAtDash(){

@@ -133,6 +133,10 @@ final class ReadYamlSequence extends BaseYamlSequence {
         this.guessIndentation = guessIndentation;
     }
 
+    /**
+     * Retrieve the values of this sequence.
+     * @checkstyle CyclomaticComplexity (200 lines)
+     */
     @Override
     public Collection<YamlNode> values() {
         final List<YamlNode> kids = new LinkedList<>();
@@ -166,13 +170,16 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     )));
                 } else {
                     if(this.mappingStartsAtDash(line)) {
-                        final YamlLine previous = line.number() == 0
-                                        ? new YamlLine.NullYamlLine()
-                                        : this.all.line(line.number() - 1);
+                        YamlLine dashMapPrevious;
+                        if (line.number() == 0) {
+                            dashMapPrevious = new YamlLine.NullYamlLine();
+                        } else {
+                            dashMapPrevious = this.all.line(line.number() - 1);
+                        }
                         kids.add(
                             new ReadYamlMapping(
                                 line.number() + 1,
-                                previous,
+                                dashMapPrevious,
                                 this.all,
                                 this.guessIndentation
                             )
