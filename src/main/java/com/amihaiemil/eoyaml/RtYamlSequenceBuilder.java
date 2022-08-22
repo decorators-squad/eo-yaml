@@ -27,7 +27,8 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
      * Default ctor.
      */
     RtYamlSequenceBuilder() {
-        this(new LinkedList<>());
+        this(new ArrayList<>());
     }
 
     /**
@@ -55,7 +56,17 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
      * @param nodes Nodes used in building the YamlSequence
      */
     RtYamlSequenceBuilder(final List<YamlNode> nodes) {
-        this.nodes = nodes;
+        this.nodes = Collections.synchronizedList(nodes); // List is now thread-safe
+    }
+
+    @Override
+    public int size() {
+        return this.nodes.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.nodes.isEmpty();
     }
 
     @Override
@@ -64,11 +75,35 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     }
 
     @Override
+    public YamlSequenceBuilder add(String value, String inlineComment) {
+        return this.add(new PlainStringScalar(value, inlineComment));
+    }
+
+    @Override
     public YamlSequenceBuilder add(final YamlNode node) {
-        final List<YamlNode> list = new LinkedList<>();
-        list.addAll(this.nodes);
-        list.add(node);
-        return new RtYamlSequenceBuilder(list);
+        nodes.add(node);
+        return this;
+    }
+
+    @Override
+    public YamlSequenceBuilder add(String value, int index) {
+        return this.add(new PlainStringScalar(value), index);
+    }
+
+    @Override
+    public YamlSequenceBuilder add(String value, String inlineComment, int index) {
+        return this.add(new PlainStringScalar(value, inlineComment), index);
+    }
+
+    @Override
+    public YamlSequenceBuilder add(YamlNode node, int index) {
+        nodes.add(index, node);
+        return this;
+    }
+
+    @Override
+    public YamlNode remove(int index) {
+        return this.nodes.remove(index);
     }
 
     @Override

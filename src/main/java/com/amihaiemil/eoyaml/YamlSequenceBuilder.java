@@ -45,11 +45,92 @@ public interface YamlSequenceBuilder {
     YamlSequenceBuilder add(final String value);
 
     /**
+     * Get the number of elements in the generated sequence.
+     * @return The number of elements in the generated sequence.
+     * 
+     * @since 6.0.4
+     */
+    int size();
+
+    /**
+     * Returns true if this sequence builder has no elements.
+     * @return true if this sequence builder has no elements.
+     * 
+     * @since 6.0.4
+     */
+    default boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value String value to be added.
+     * @param inlineComment The yaml comment for the value.
+     * @return This builder.
+     * 
+     * @since 6.0.4
+     */
+    YamlSequenceBuilder add(final String value, final String inlineComment);
+
+    /**
      * Add a value to the sequence.
      * @param node YamlNode
      * @return This builder
      */
     YamlSequenceBuilder add(final YamlNode node);
+
+    /**
+     * Add a value to the sequence.
+     * @param value String value to be added.
+     * @param index The index location to add the value into.
+     * @return This builder.
+     * 
+     * @since 6.0.4
+     * 
+     * @throws IndexOutOfBoundsException if the index is out of range
+     *         ({@code index < 0 || index > size()})
+     */
+    YamlSequenceBuilder add(final String value, final int index);
+
+    /**
+     * Add a value to the sequence.
+     * @param value String value to be added.
+     * @param inlineComment The yaml comment for the value.
+     * @param index The index location to add the value into.
+     * @return This builder.
+     * 
+     * @since 6.0.4
+     * 
+     * @throws IndexOutOfBoundsException if the index is out of range
+     *         ({@code index < 0 || index > size()})
+     */
+    YamlSequenceBuilder add(final String value, final String inlineComment, final int index);
+
+    
+    /**
+     * Add a value to the sequence.
+     * @param node The YamlNode to be added.
+     * @param index The index location to add the value into.
+     * @return This builder.
+     * 
+     * @since 6.0.4
+     * 
+     * @throws IndexOutOfBoundsException if the index is out of range
+     *         ({@code index < 0 || index > size()})
+     */
+    YamlSequenceBuilder add(final YamlNode node, final int index);
+
+    /**
+     * Remove a value from the sequence in the given index.
+     * @param index The index of the element to be removed.
+     * @return The removed node.
+     * 
+     * @since 6.0.4
+     * 
+     * @throws IndexOutOfBoundsException if the index is out of range
+     *         ({@code index < 0 || index >= size()})
+     */
+    YamlNode remove(int index);
 
     /**
      * Build the YamlSequence.
