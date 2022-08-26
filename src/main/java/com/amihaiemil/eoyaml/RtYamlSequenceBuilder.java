@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2022, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,17 +27,20 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
- * YamlSequenceBuilder implementation. "Rt" stands for "Runtime".
- * This class is immutable and thread-safe.
+ * YamlSequenceBuilder implementation. "Rt" stands for "Runtime". This class is
+ * immutable and thread-safe.
  * @author Salavat.Yalalov (s.yalalov@gmail.com)
  * @version $Id$
  * @since 1.0.0
  */
 final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
+
     /**
      * Added nodes.
      */
@@ -64,11 +67,41 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     }
 
     @Override
+    public YamlSequenceBuilder add(String value, String inlineComment) {
+        return this.add(new PlainStringScalar(value, inlineComment));
+    }
+
+    @Override
     public YamlSequenceBuilder add(final YamlNode node) {
         final List<YamlNode> list = new LinkedList<>();
         list.addAll(this.nodes);
         list.add(node);
         return new RtYamlSequenceBuilder(list);
+    }
+
+    @Override
+    public YamlSequenceBuilder remove(String value) {
+        return this.remove(new PlainStringScalar(value));
+    }
+
+    @Override
+    public YamlSequenceBuilder remove(YamlNode node) {
+        final List<YamlNode> list = new LinkedList<>();
+        list.addAll(this.nodes);
+        list.remove(node);
+        return new RtYamlSequenceBuilder(list);
+    }
+
+    @Override
+    public Iterator<YamlNode> iterator() {
+        throw new UnsupportedOperationException(
+                "Cannot iterate over a imutbale YamlSequenceBuilder.");
+    }
+
+    @Override
+    public Stream<YamlNode> stream() {
+        throw new UnsupportedOperationException(
+                "Cannot stream over a imutbale YamlSequenceBuilder.");
     }
 
     @Override

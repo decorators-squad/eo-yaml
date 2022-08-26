@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2022, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,10 +55,20 @@ public final class Yaml {
     }
 
     /**
-     * Create a {@link YamlSequenceBuilder}.
-     * @return Builder of YamlMapping.
+     * Create a immutable {@link YamlSequenceBuilder}.
+     * @return Immutable builder of YamlSequence.
      */
     public static YamlSequenceBuilder createYamlSequenceBuilder() {
+        return new RtYamlSequenceBuilder();
+    }
+
+    /**
+     * Create a mutable {@link YamlSequenceBuilder}.
+     * @return Mutable builder of YamlSequence.
+     * 
+     * @since 6.0.4
+     */
+    public static YamlSequenceBuilder createMutableYamlSequenceBuilder() {
         return new RtYamlSequenceBuilder();
     }
 

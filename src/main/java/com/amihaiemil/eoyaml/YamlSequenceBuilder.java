@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2022, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,8 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * Builder of YamlSequence. Implementations should be immutable and thread-safe.
@@ -35,21 +37,64 @@ import java.util.Collection;
  * @version $Id$
  * @since 1.0.0
  */
-public interface YamlSequenceBuilder {
+public interface YamlSequenceBuilder extends Iterable<YamlNode> {
 
     /**
      * Add a value to the sequence.
      * @param value String
-     * @return This builder
+     * @return This builder if the YamlSequenceBuilder implementantion is
+     * mutable, else a new Builder is returned.
      */
     YamlSequenceBuilder add(final String value);
 
     /**
      * Add a value to the sequence.
+     * @param value String
+     * @param inlineComment The inline comment for the value
+     * @return This builder if the YamlSequenceBuilder implementantion is
+     * mutable, else a new Builder is returned.
+     */
+    YamlSequenceBuilder add(final String value, final String inlineComment);
+
+    /**
+     * Add a value to the sequence.
      * @param node YamlNode
-     * @return This builder
+     * @return This builder if the YamlSequenceBuilder implementantion is
+     * mutable, else a new Builder is returned.
      */
     YamlSequenceBuilder add(final YamlNode node);
+
+    /**
+     * Removes the first occurrence of the specified value from this builder.
+     * @param value String
+     * @return This builder if the YamlSequenceBuilder implementantion is
+     * mutable, else a new Builder is returned.
+     */
+    YamlSequenceBuilder remove(final String value);
+
+    /**
+     * Removes the first occurrence of the specified node from this builder.
+     * @param node YamlNode
+     * @return This builder if the YamlSequenceBuilder implementantion is
+     * mutable, else a new Builder is returned.
+     */
+    YamlSequenceBuilder remove(final YamlNode node);
+
+    /**
+     * @throws UnsupportedOperationException If the implementation of the
+     * YamlSequenceBuilder is immutable.
+     */
+    @Override
+    Iterator<YamlNode> iterator() throws UnsupportedOperationException;
+
+    /**
+     * Stream of the values in this builder.
+     * @return A thread safe stream of the values present in this
+     * YamlSequenceBuilder.
+     * @throws UnsupportedOperationException If the implementation of the
+     * YamlSequenceBuilder is immutable.
+     */
+    Stream<YamlNode> stream() throws UnsupportedOperationException;
 
     /**
      * Build the YamlSequence.
