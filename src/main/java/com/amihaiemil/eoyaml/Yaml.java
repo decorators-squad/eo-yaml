@@ -44,7 +44,7 @@ public final class Yaml {
     /**
      * Hidden ctor.
      */
-    private Yaml(){}
+    private Yaml() { }
 
     /**
      * Create a {@link YamlMappingBuilder}.
@@ -65,7 +65,6 @@ public final class Yaml {
     /**
      * Create a mutable {@link YamlSequenceBuilder}.
      * @return Mutable builder of YamlSequence.
-     * 
      * @since 6.0.4
      */
     public static YamlSequenceBuilder createMutableYamlSequenceBuilder() {
@@ -209,7 +208,7 @@ public final class Yaml {
      * @param array JsonArray in question.
      * @return YamlSequence.
      */
-    public static YamlSequence fromJsonArray(final JsonArray array){
+    public static YamlSequence fromJsonArray(final JsonArray array) {
         return new JsonYamlSequence(array);
     }
 }

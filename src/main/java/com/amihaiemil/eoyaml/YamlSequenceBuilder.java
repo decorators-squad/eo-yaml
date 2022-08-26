@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 /**
- * Builder of YamlSequence. Implementations should be immutable and thread-safe.
+ * Builder of YamlSequence. Implementations should be thread-safe.
  * @author Salavat.Yalalov (s.yalalov@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -45,7 +45,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @return This builder if the YamlSequenceBuilder implementantion is
      * mutable, else a new Builder is returned.
      */
-    YamlSequenceBuilder add(final String value);
+    YamlSequenceBuilder add(String value);
 
     /**
      * Add a value to the sequence.
@@ -54,7 +54,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @return This builder if the YamlSequenceBuilder implementantion is
      * mutable, else a new Builder is returned.
      */
-    YamlSequenceBuilder add(final String value, final String inlineComment);
+    YamlSequenceBuilder add(String value, String inlineComment);
 
     /**
      * Add a value to the sequence.
@@ -62,7 +62,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @return This builder if the YamlSequenceBuilder implementantion is
      * mutable, else a new Builder is returned.
      */
-    YamlSequenceBuilder add(final YamlNode node);
+    YamlSequenceBuilder add(YamlNode node);
 
     /**
      * Removes the first occurrence of the specified value from this builder.
@@ -70,7 +70,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @return This builder if the YamlSequenceBuilder implementantion is
      * mutable, else a new Builder is returned.
      */
-    YamlSequenceBuilder remove(final String value);
+    YamlSequenceBuilder remove(String value);
 
     /**
      * Removes the first occurrence of the specified node from this builder.
@@ -78,7 +78,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @return This builder if the YamlSequenceBuilder implementantion is
      * mutable, else a new Builder is returned.
      */
-    YamlSequenceBuilder remove(final YamlNode node);
+    YamlSequenceBuilder remove(YamlNode node);
 
     /**
      * @throws UnsupportedOperationException If the implementation of the
@@ -109,7 +109,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @param comment The multiple line comment about the built YamlSequence.
      * @return Built YamlSequence
      */
-    default YamlSequence build(final Collection<String> comment) {
+    default YamlSequence build(Collection<String> comment) {
         return this.build(String.join(System.lineSeparator(), comment));
     }
 
@@ -118,5 +118,5 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
      * @param comment Comment about the built YamlSequence.
      * @return Built YamlSequence
      */
-    YamlSequence build(final String comment);
+    YamlSequence build(String comment);
 }

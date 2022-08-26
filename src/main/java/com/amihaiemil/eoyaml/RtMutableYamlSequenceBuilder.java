@@ -40,76 +40,77 @@ import java.util.stream.Stream;
  * @version $Id$
  * @since 6.0.4
  */
-public class RtMutableYamlSequenceBuilder implements YamlSequenceBuilder {
+final class RtMutableYamlSequenceBuilder implements YamlSequenceBuilder {
 
-	/**
-	 * The nodes.
-	 */
-	private final List<YamlNode> nodes;
+    /**
+     * The nodes.
+     */
+    private final List<YamlNode> nodes;
 
-	/**
-	 * Default constructor.
-	 */
-	RtMutableYamlSequenceBuilder() {
-		this(new ArrayList<>());
-	}
+    /**
+     * Default constructor.
+     */
+    RtMutableYamlSequenceBuilder() {
+        this(new ArrayList<>());
+    }
 
-	/**
-	 * Constructor.
-	 * @param nodes Nodes used in building the YamlSequence
-	 */
-	RtMutableYamlSequenceBuilder(final List<YamlNode> nodes) {
-		this.nodes = Collections.synchronizedList(nodes);
-	}
+    /**
+     * Constructor.
+     * @param nodes Nodes used in building the YamlSequence
+     */
+    RtMutableYamlSequenceBuilder(final List<YamlNode> nodes) {
+        this.nodes = Collections.synchronizedList(nodes);
+    }
 
-	@Override
-	public YamlSequenceBuilder add(String value) {
-		return this.add(new PlainStringScalar(value));
-	}
+    @Override
+    public YamlSequenceBuilder add(final String value) {
+        return this.add(new PlainStringScalar(value));
+    }
 
-	@Override
-	public YamlSequenceBuilder add(String value, String inlineComment) {
-		return this.add(new PlainStringScalar(value, inlineComment));
-	}
+    @Override
+    public YamlSequenceBuilder add(final String value,
+            final String inlineComment) {
+        return this.add(new PlainStringScalar(value, inlineComment));
+    }
 
-	@Override
-	public YamlSequenceBuilder add(YamlNode node) {
-		nodes.add(node);
-		return this;
-	}
+    @Override
+    public YamlSequenceBuilder add(final YamlNode node) {
+        nodes.add(node);
+        return this;
+    }
 
-	@Override
-	public YamlSequenceBuilder remove(String value) {
-		return this.remove(new PlainStringScalar(value));
-	}
+    @Override
+    public YamlSequenceBuilder remove(final String value) {
+        return this.remove(new PlainStringScalar(value));
+    }
 
-	@Override
-	public YamlSequenceBuilder remove(YamlNode node) {
-		nodes.remove(node);
-		return this;
-	}
+    @Override
+    public YamlSequenceBuilder remove(final YamlNode node) {
+        nodes.remove(node);
+        return this;
+    }
 
-	@Override
-	public Iterator<YamlNode> iterator() {
-		synchronized (nodes) {
-			return nodes.iterator();
-		}
-	}
+    @Override
+    public Iterator<YamlNode> iterator() {
+        synchronized (nodes) {
+            return nodes.iterator();
+        }
+    }
 
-	@Override
-	public Stream<YamlNode> stream() {
-		synchronized (nodes) {
-			return nodes.stream();
-		}
-	}
+    @Override
+    public Stream<YamlNode> stream() {
+        synchronized (nodes) {
+            return nodes.stream();
+        }
+    }
 
-	@Override
-	public YamlSequence build(String comment) {
-		YamlSequence sequence = new RtYamlSequence(this.nodes, comment);
-		if (this.nodes.isEmpty()) {
-			sequence = new EmptyYamlSequence(sequence);
-		}
-		return sequence;
-	}
+    @Override
+    public YamlSequence build(final String comment) {
+        YamlSequence sequence = new RtYamlSequence(this.nodes, comment);
+        if (this.nodes.isEmpty()) {
+            sequence = new EmptyYamlSequence(sequence);
+        }
+        return sequence;
+    }
 
 }

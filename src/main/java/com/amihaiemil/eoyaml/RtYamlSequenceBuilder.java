@@ -67,7 +67,7 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     }
 
     @Override
-    public YamlSequenceBuilder add(String value, String inlineComment) {
+    public YamlSequenceBuilder add(final String value, final String inlineComment) {
         return this.add(new PlainStringScalar(value, inlineComment));
     }
 
@@ -80,12 +80,12 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     }
 
     @Override
-    public YamlSequenceBuilder remove(String value) {
+    public YamlSequenceBuilder remove(final String value) {
         return this.remove(new PlainStringScalar(value));
     }
 
     @Override
-    public YamlSequenceBuilder remove(YamlNode node) {
+    public YamlSequenceBuilder remove(final YamlNode node) {
         final List<YamlNode> list = new LinkedList<>();
         list.addAll(this.nodes);
         list.remove(node);
