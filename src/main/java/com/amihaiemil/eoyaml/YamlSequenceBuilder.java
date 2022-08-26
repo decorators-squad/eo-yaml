@@ -81,6 +81,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
     YamlSequenceBuilder remove(YamlNode node);
 
     /**
+     * Returns an iterator over nodes present in the builder.
      * @throws UnsupportedOperationException If the implementation of the
      * YamlSequenceBuilder is immutable.
      */
@@ -88,7 +89,7 @@ public interface YamlSequenceBuilder extends Iterable<YamlNode> {
     Iterator<YamlNode> iterator() throws UnsupportedOperationException;
 
     /**
-     * Stream of the values in this builder.
+     * Returns an stream over the nodes present in the builder.
      * @return A thread safe stream of the values present in this
      * YamlSequenceBuilder.
      * @throws UnsupportedOperationException If the implementation of the

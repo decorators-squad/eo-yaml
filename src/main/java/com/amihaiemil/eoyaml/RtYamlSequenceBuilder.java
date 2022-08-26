@@ -65,9 +65,10 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
     public YamlSequenceBuilder add(final String value) {
         return this.add(new PlainStringScalar(value));
     }
-
+ 
     @Override
-    public YamlSequenceBuilder add(final String value, final String inlineComment) {
+    public YamlSequenceBuilder add(final String value,
+            final String inlineComment) {
         return this.add(new PlainStringScalar(value, inlineComment));
     }
 
