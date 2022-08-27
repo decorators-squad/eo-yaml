@@ -47,11 +47,19 @@ public final class Yaml {
     private Yaml(){}
 
     /**
-     * Create a {@link YamlMappingBuilder}.
+     * Create an immutable, thread-safe, {@link YamlMappingBuilder}.
      * @return Builder of YamlMapping.
      */
     public static YamlMappingBuilder createYamlMappingBuilder() {
         return new RtYamlMappingBuilder();
+    }
+
+    /**
+     * Create a mutable, NOT thread-safe, {@link YamlMappingBuilder}.
+     * @return Builder of YamlMapping.
+     */
+    public static YamlMappingBuilder createMutableYamlMappingBuilder() {
+        return new MutableYamlMappingBuilder();
     }
 
     /**

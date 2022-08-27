@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2022, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,12 +46,30 @@ import javax.json.JsonValue;
 public final class YamlTest {
 
     /**
-     * Yaml can create a YamlMappingBuilder.
+     * Yaml can create an immutable YamlMappingBuilder.
      */
     @Test
     public void createsYamlMappingBuilder() {
         MatcherAssert.assertThat(
-            Yaml.createYamlMappingBuilder(), Matchers.notNullValue()
+            Yaml.createYamlMappingBuilder(),
+            Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.instanceOf(RtYamlMappingBuilder.class)
+            )
+        );
+    }
+
+    /**
+     * Yaml can create a mutable YamlMappingBuilder.
+     */
+    @Test
+    public void createsMutableYamlMappingBuilder() {
+        MatcherAssert.assertThat(
+            Yaml.createMutableYamlMappingBuilder(),
+            Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.instanceOf(MutableYamlMappingBuilder.class)
+            )
         );
     }
 
