@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2022, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,45 +35,45 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Unit tests for {@link RtYamlSequenceBuilder}.
- * @author Salavat.Yalalov (s.yalalov@gmail.com)
+ * Unit tests for {@link MutableYamlSequenceBuilder}.
+ * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 6.1.0
  */
-public final class RtYamlSequenceBuilderTest {
+public final class MutableYamlSequenceBuilderTest {
     /**
-     * RtYamlSequence can add a String.
+     * MutableYamlSequenceBuilder can add a String.
      */
     @Test
     public void addsString() {
-        YamlSequenceBuilder sequenceBuilder = new RtYamlSequenceBuilder();
+        YamlSequenceBuilder sequenceBuilder = new MutableYamlSequenceBuilder();
         YamlSequenceBuilder withAdded = sequenceBuilder.add("value");
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            sequenceBuilder, Matchers.not(Matchers.is(withAdded))
+            sequenceBuilder, Matchers.is(withAdded)
         );
     }
 
     /**
-     * RtYamlSequence can add a YamlNode.
+     * MutableYamlSequenceBuilder can add a YamlNode.
      */
     @Test
     public void addsYamlNode() {
-        YamlSequenceBuilder sequenceBuilder = new RtYamlSequenceBuilder();
+        YamlSequenceBuilder sequenceBuilder = new MutableYamlSequenceBuilder();
         YamlSequenceBuilder withAdded =
             sequenceBuilder.add(new PlainStringScalar("value"));
         MatcherAssert.assertThat(withAdded, Matchers.notNullValue());
         MatcherAssert.assertThat(
-            sequenceBuilder, Matchers.not(Matchers.is(withAdded))
+            sequenceBuilder, Matchers.is(withAdded)
         );
     }
 
     /**
-     * RtYamlSequence can build a YamlSequence.
+     * MutableYamlSequenceBuilder can build a YamlSequence.
      */
     @Test
     public void buildsYamlSequence() {
-        YamlSequenceBuilder sequenceBuilder = new RtYamlSequenceBuilder();
+        YamlSequenceBuilder sequenceBuilder = new MutableYamlSequenceBuilder();
         List<YamlNode> devs = new LinkedList<>();
         devs.add(new PlainStringScalar("amihaiemil"));
         devs.add(new PlainStringScalar("salikjan"));
@@ -93,12 +93,12 @@ public final class RtYamlSequenceBuilderTest {
         );
     }
     /**
-     * RtYamlSequenceBuilder can build a YamlSequence with a comment
+     * MutableYamlSequenceBuilder can build a YamlSequence with a comment
      * referring to it.
      */
     @Test
     public void buildsYamlSequenceWithComment() {
-        final YamlSequence seq = new RtYamlSequenceBuilder()
+        final YamlSequence seq = new MutableYamlSequenceBuilder()
             .add("element 1")
             .add("element 2")
             .build("some test sequence");

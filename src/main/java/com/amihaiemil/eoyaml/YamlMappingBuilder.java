@@ -30,7 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.util.Collection;
 
 /**
- * Builder of YamlMapping. Implementations should be immutable and thread-safe.
+ * Builder of YamlMapping.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -40,7 +40,7 @@ public interface YamlMappingBuilder {
      * Add a pair to the mapping.
      * @param key String
      * @param value String
-     * @return This builder
+     * @return Builder
      */
     YamlMappingBuilder add(final String key, final String value);
 
@@ -48,7 +48,7 @@ public interface YamlMappingBuilder {
      * Add a pair to the mapping.
      * @param key YamlNode (sequence or mapping)
      * @param value String
-     * @return This builder
+     * @return Builder
      */
     YamlMappingBuilder add(final YamlNode key, final String value);
 
@@ -56,7 +56,7 @@ public interface YamlMappingBuilder {
      * Add a pair to the mapping.
      * @param key YamlNode (sequence or mapping)
      * @param value YamlNode (sequence or mapping)
-     * @return This builder
+     * @return Builder
      */
     YamlMappingBuilder add(final YamlNode key, final YamlNode value);
 
@@ -64,7 +64,7 @@ public interface YamlMappingBuilder {
      * Add a pair to the mapping.
      * @param key String
      * @param value YamlNode (sequence or mapping)
-     * @return This builder
+     * @return Builder
      */
     YamlMappingBuilder add(final String key, final YamlNode value);
 

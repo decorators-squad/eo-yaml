@@ -63,11 +63,19 @@ public final class Yaml {
     }
 
     /**
-     * Create a {@link YamlSequenceBuilder}.
+     * Create an immutable, thread-safe, {@link YamlSequenceBuilder}.
      * @return Builder of YamlMapping.
      */
     public static YamlSequenceBuilder createYamlSequenceBuilder() {
         return new RtYamlSequenceBuilder();
+    }
+
+    /**
+     * Create a mutable, NOT thread-safe, {@link YamlSequenceBuilder}.
+     * @return Builder of YamlMapping.
+     */
+    public static YamlSequenceBuilder createMutableYamlSequenceBuilder() {
+        return new MutableYamlSequenceBuilder();
     }
 
     /**

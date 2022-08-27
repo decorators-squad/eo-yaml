@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2022, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,51 +27,54 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Builder of YamlSequence.
- * @author Salavat.Yalalov (s.yalalov@gmail.com)
+ * YamlSequenceBuilder mutable implementation, for better memory cosumption.
+ * This class is <b>mutable and NOT thread-safe</b>.
+ * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
+ * @since 6.1.0
  */
-public interface YamlSequenceBuilder {
+final class MutableYamlSequenceBuilder implements YamlSequenceBuilder {
+    /**
+     * Added nodes.
+     */
+    private final List<YamlNode> nodes;
 
     /**
-     * Add a value to the sequence.
-     * @param value String
-     * @return Builder
+     * Default ctor.
      */
-    YamlSequenceBuilder add(final String value);
-
-    /**
-     * Add a value to the sequence.
-     * @param node YamlNode
-     * @return Builder
-     */
-    YamlSequenceBuilder add(final YamlNode node);
-
-    /**
-     * Build the YamlSequence.
-     * @return Built YamlSequence
-     */
-    default YamlSequence build() {
-        return this.build("");
+    MutableYamlSequenceBuilder() {
+        this(new LinkedList<>());
     }
 
     /**
-     * Build the YamlSequence and specify a comment referring to it.
-     * @param comment The multiple line comment about the built YamlSequence.
-     * @return Built YamlSequence
+     * Constructor.
+     * @param nodes Nodes used in building the YamlSequence
      */
-    default YamlSequence build(final Collection<String> comment) {
-        return this.build(String.join(System.lineSeparator(), comment));
+    MutableYamlSequenceBuilder(final List<YamlNode> nodes) {
+        this.nodes = nodes;
     }
 
-    /**
-     * Build the YamlSequence and specify a comment referring to it.
-     * @param comment Comment about the built YamlSequence.
-     * @return Built YamlSequence
-     */
-    YamlSequence build(final String comment);
+    @Override
+    public YamlSequenceBuilder add(final String value) {
+        return this.add(new PlainStringScalar(value));
+    }
+
+    @Override
+    public YamlSequenceBuilder add(final YamlNode node) {
+        this.nodes.add(node);
+        return this;
+    }
+
+    @Override
+    public YamlSequence build(final String comment) {
+        YamlSequence sequence = new RtYamlSequence(this.nodes, comment);
+        if (this.nodes.isEmpty()) {
+            sequence = new EmptyYamlSequence(sequence);
+        }
+        return sequence;
+    }
 }

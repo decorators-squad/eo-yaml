@@ -74,12 +74,30 @@ public final class YamlTest {
     }
 
     /**
-     * Yaml can create a YamlSequenceBuilder.
+     * Yaml can create an immutable YamlSequenceBuilder.
      */
     @Test
     public void createsYamlSequenceBuilder() {
         MatcherAssert.assertThat(
-            Yaml.createYamlSequenceBuilder(), Matchers.notNullValue()
+            Yaml.createYamlSequenceBuilder(),
+            Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.instanceOf(RtYamlSequenceBuilder.class)
+            )
+        );
+    }
+
+    /**
+     * Yaml can create a mutable YamlSequenceBuilder.
+     */
+    @Test
+    public void createsMutablYamlSequenceBuilder() {
+        MatcherAssert.assertThat(
+            Yaml.createMutableYamlSequenceBuilder(),
+            Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.instanceOf(MutableYamlSequenceBuilder.class)
+            )
         );
     }
 
