@@ -27,15 +27,15 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Unit tests for {@link ReadYamlSequence}.
@@ -483,5 +483,19 @@ public final class ReadYamlSequenceTest {
             new AllYamlLines(new ArrayList<YamlLine>())
         );
         MatcherAssert.assertThat(sequence.toString(), Matchers.isEmptyString());
+    }
+
+    @Test
+    public void dontReturnMappingForScalarWithColon() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- scalar:with-colon", 0));
+        final YamlSequence sequence = new ReadYamlSequence(
+                new AllYamlLines(lines)
+        );
+
+        MatcherAssert.assertThat(sequence.values(), Matchers.hasSize(1));
+        YamlNode sequenceItem = sequence.values().iterator().next();
+        MatcherAssert.assertThat(sequenceItem.type(), Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(sequenceItem.asScalar().value(), Matchers.equalTo("scalar:with-colon"));
     }
 }

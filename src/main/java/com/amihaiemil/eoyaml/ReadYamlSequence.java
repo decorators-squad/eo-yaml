@@ -237,8 +237,8 @@ final class ReadYamlSequence extends BaseYamlSequence {
      */
     private boolean mappingStartsAtDash(final YamlLine dashLine) {
         final String trimmed = dashLine.trimmed();
-        final boolean escapedScalar = trimmed.matches("^[ ]*\\-[ ]*\".*\"$")
-            || trimmed.matches("^[ ]*\\-[ ]*\'.*\'$");
-        return trimmed.matches("^.*\\-.*\\:.*$") && !escapedScalar;
+        final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
+            || trimmed.matches("^\\s*-\\s*'.*'$");
+        return trimmed.matches("^.*-.+:(|\\s.*)$") && !escapedScalar;
     }
 }

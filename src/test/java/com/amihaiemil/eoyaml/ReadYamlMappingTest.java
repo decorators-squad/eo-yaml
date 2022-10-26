@@ -27,17 +27,17 @@
  */
 package com.amihaiemil.eoyaml;
 
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.junit.Ignore;
-import org.junit.Test;
 
 /**
  * Unit tests for {@link ReadYamlMapping}.
@@ -1169,5 +1169,15 @@ public final class ReadYamlMappingTest {
             .equalTo("Some value?"));
         MatcherAssert.assertThat(copy.string("key2"), Matchers
             .equalTo("Some other value."));
+    }
+
+    @Test
+    public void shouldReadKeyProperlyIfValueContainsColon() {
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("key: value:with-colon", 0));
+        ReadYamlMapping mapping = new ReadYamlMapping(new AllYamlLines(lines));
+
+        MatcherAssert.assertThat(mapping.keys(), Matchers.hasSize(1));
+        MatcherAssert.assertThat(mapping.keys().iterator().next().asScalar().value(), Matchers.equalTo("key"));
     }
 }

@@ -27,15 +27,19 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.io.*;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Unit tests for {@link RtYamlInput}.
@@ -971,6 +975,43 @@ public final class RtYamlInputTest {
         final String pretty = read.toString().trim();
 
         MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
+    }
+
+    @Test
+    public void shouldReadKeysProperly() throws IOException {
+        final String filename = "issue_517_values_with_colons.yml";
+
+        final YamlMapping read = new RtYamlInput(
+                new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                read.asMapping().keys(),
+                Matchers.hasSize(2));
+
+        final YamlNode topLevelMapping = read.asMapping().value("a_mapping");
+        MatcherAssert.assertThat(
+                topLevelMapping.type(),
+                Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                topLevelMapping.asMapping().value("a_scalar").type(),
+                Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+                topLevelMapping.asMapping().value("a_scalar").asScalar().value(),
+                Matchers.equalTo("value:with-colon"));
+
+        YamlNode topLevelSequence = read.asMapping().value("a_sequence");
+        MatcherAssert.assertThat(
+                topLevelSequence.type(),
+                Matchers.equalTo(Node.SEQUENCE));
+        MatcherAssert.assertThat(topLevelSequence.asSequence().values(),
+                                 Matchers.hasSize(1));
+        YamlNode sequenceItem = topLevelSequence.asSequence().values().iterator().next();
+        MatcherAssert.assertThat(sequenceItem.type(),
+                                 Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(sequenceItem.asScalar().value(),
+                                 Matchers.equalTo("value:with-colon"));
     }
 
     /**

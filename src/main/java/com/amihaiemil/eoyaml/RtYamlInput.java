@@ -193,8 +193,8 @@ final class RtYamlInput implements YamlInput {
     private boolean mappingStartsAtDash(final String line){
         //line without indentation.
         final String trimmed = line.trim();
-        final boolean escapedScalar = trimmed.matches("^[ ]*-[ ]*\".*\"$")
-            || trimmed.matches("^[ ]*-[ ]*'.*'$");
-        return trimmed.matches("^[ ]*-.*:.+$") && !escapedScalar;
+        final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
+            || trimmed.matches("^\\s*-\\s*'.*'$");
+        return trimmed.matches("^\\s*-.+:\\s.*$") && !escapedScalar;
     }
 }

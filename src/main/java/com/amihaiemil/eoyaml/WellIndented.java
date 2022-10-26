@@ -118,7 +118,7 @@ final class WellIndented implements YamlLines {
                 YamlLine line = iterator.next();
                 if(!(previous instanceof YamlLine.NullYamlLine)) {
                     int prevIndent = previous.indentation();
-                    if(previous.trimmed().matches("^[ ]*\\-.*\\:.*$")) {
+                    if(previous.trimmed().matches("^\\s*-.*:(|\\s.*)$")) {
                         prevIndent += 2;
                     }
                     int lineIndent = line.indentation();
