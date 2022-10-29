@@ -116,9 +116,9 @@ final class SameIndentationLevel implements YamlLines {
      */
     private boolean mappingStartsAtDash(final YamlLine dashLine) {
         final String trimmed = dashLine.trimmed();
-        final boolean escapedScalar = trimmed.matches("^[ ]*\\-[ ]*\".*\"$")
-            || trimmed.matches("^[ ]*\\-[ ]*\'.*\'$");
-        return trimmed.matches("^[ ]*\\-.*\\:.+$") && !escapedScalar;
+        final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
+            || trimmed.matches("^\\s*-\\s*'.*'$");
+        return trimmed.matches("^\\s*-.*:\\s.+$") && !escapedScalar;
     }
 
     /**
@@ -128,9 +128,9 @@ final class SameIndentationLevel implements YamlLines {
      */
     private boolean mapping(final YamlLine dashLine) {
         final String trimmed = dashLine.trimmed();
-        final boolean escapedScalar = trimmed.matches("^[ ]*\".*\"$")
-                || trimmed.matches("^[ ]*\'.*\'$");
-        return trimmed.matches("^[ ]*.*\\:.+$") && !escapedScalar;
+        final boolean escapedScalar = trimmed.matches("^\\s*\".*\"$")
+                || trimmed.matches("^\\s*'.*'$");
+        return trimmed.matches("^.*:\\s.+$") && !escapedScalar;
     }
 
 }

@@ -1,0 +1,5 @@
+a_mapping:
+  a_scalar: value:with-colon
+
+a_sequence:
+  - value:with-colon

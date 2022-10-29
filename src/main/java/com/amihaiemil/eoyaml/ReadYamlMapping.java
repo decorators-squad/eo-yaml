@@ -27,11 +27,15 @@
  */
 package com.amihaiemil.eoyaml;
 
-import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
-
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
-import java.util.*;
+
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
 
 /**
  * YamlMapping read from somewhere. YAML directives and
@@ -43,6 +47,8 @@ import java.util.regex.Pattern;
  * @since 1.0.0
  */
 final class ReadYamlMapping extends BaseYamlMapping {
+
+    private static final Pattern KEY_PATTERN = Pattern.compile("^-?\\s*(?<key>.+):(|\\s.*)$");
 
     /**
      * Yaml line just previous to the one where this mapping starts. E.g.
@@ -158,18 +164,12 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 if(!trimmed.contains(":")) {
                     continue;
                 }
-                final String key;
-                if(trimmed.startsWith("-")) {
-                    key = trimmed.substring(
-                        1, trimmed.lastIndexOf(":")
-                    ).trim();
-                } else {
-                    key = trimmed.substring(
-                        0, trimmed.lastIndexOf(":")
-                    ).trim();
-                }
-                if(!key.isEmpty()) {
-                    keys.add(new PlainStringScalar(key));
+                final Matcher matcher = KEY_PATTERN.matcher(trimmed);
+                if (matcher.matches()) {
+                    final String key = matcher.group("key");
+                    if (!key.isEmpty()) {
+                        keys.add(new PlainStringScalar(key));
+                    }
                 }
             }
             prev = line;
