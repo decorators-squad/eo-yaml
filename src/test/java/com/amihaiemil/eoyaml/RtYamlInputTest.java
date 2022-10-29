@@ -30,7 +30,6 @@ package com.amihaiemil.eoyaml;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -949,12 +948,9 @@ public final class RtYamlInputTest {
      * Unit test for
      * <a href="https://github.com/decorators-squad/eo-yaml/issues/518">#518</a>
      *
-     * @todo #518:60min Fix the bug reported in 518, so that this unit test
-     *  passes.
      * @throws IOException When there's a problem reading the sample files.
      */
     @Test
-    @Ignore
     public void supportsSpringPropertyRef() throws IOException {
         final String filename = "issue_518_spring_property_ref.yml";
         final String fileContents = readTestResource(filename).trim();
