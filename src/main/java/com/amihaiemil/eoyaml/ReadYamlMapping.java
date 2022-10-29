@@ -48,7 +48,12 @@ import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
  */
 final class ReadYamlMapping extends BaseYamlMapping {
 
-    private static final Pattern KEY_PATTERN = Pattern.compile("^-?\\s*(?<key>.+):(|\\s.*)$");
+    /**
+     * Regex for a key in a mapping.
+     */
+    private static final Pattern KEY_PATTERN = Pattern.compile(
+        "^-?\\s*(?<key>.+):(|\\s.*)$"
+    );
 
     /**
      * Yaml line just previous to the one where this mapping starts. E.g.

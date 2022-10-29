@@ -981,6 +981,10 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
     }
 
+    /**
+     * Unit test for issue 517.
+     * @throws IOException If something goes wrong.
+     */
     @Test
     public void shouldReadKeysProperly() throws IOException {
         final String filename = "issue_517_values_with_colons.yml";
@@ -1002,7 +1006,8 @@ public final class RtYamlInputTest {
                 topLevelMapping.asMapping().value("a_scalar").type(),
                 Matchers.equalTo(Node.SCALAR));
         MatcherAssert.assertThat(
-                topLevelMapping.asMapping().value("a_scalar").asScalar().value(),
+                topLevelMapping.asMapping().value("a_scalar")
+                    .asScalar().value(),
                 Matchers.equalTo("value:with-colon"));
 
         YamlNode topLevelSequence = read.asMapping().value("a_sequence");
@@ -1011,7 +1016,8 @@ public final class RtYamlInputTest {
                 Matchers.equalTo(Node.SEQUENCE));
         MatcherAssert.assertThat(topLevelSequence.asSequence().values(),
                                  Matchers.hasSize(1));
-        YamlNode sequenceItem = topLevelSequence.asSequence().values().iterator().next();
+        YamlNode sequenceItem = topLevelSequence.asSequence().values()
+            .iterator().next();
         MatcherAssert.assertThat(sequenceItem.type(),
                                  Matchers.equalTo(Node.SCALAR));
         MatcherAssert.assertThat(sequenceItem.asScalar().value(),

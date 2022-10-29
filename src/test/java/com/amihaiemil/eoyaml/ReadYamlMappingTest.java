@@ -1171,6 +1171,9 @@ public final class ReadYamlMappingTest {
             .equalTo("Some other value."));
     }
 
+    /**
+     * Reads mapping key properly if value has colon.
+     */
     @Test
     public void shouldReadKeyProperlyIfValueContainsColon() {
         final List<YamlLine> lines = new ArrayList<>();
@@ -1178,6 +1181,9 @@ public final class ReadYamlMappingTest {
         ReadYamlMapping mapping = new ReadYamlMapping(new AllYamlLines(lines));
 
         MatcherAssert.assertThat(mapping.keys(), Matchers.hasSize(1));
-        MatcherAssert.assertThat(mapping.keys().iterator().next().asScalar().value(), Matchers.equalTo("key"));
+        MatcherAssert.assertThat(
+            mapping.keys().iterator().next().asScalar().value(),
+            Matchers.equalTo("key")
+        );
     }
 }

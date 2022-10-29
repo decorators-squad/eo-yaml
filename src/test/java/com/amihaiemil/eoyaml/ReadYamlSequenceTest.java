@@ -485,6 +485,9 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(sequence.toString(), Matchers.isEmptyString());
     }
 
+    /**
+     * Reads scalar containing colon properly.
+     */
     @Test
     public void dontReturnMappingForScalarWithColon() {
         final List<YamlLine> lines = new ArrayList<>();
@@ -495,7 +498,13 @@ public final class ReadYamlSequenceTest {
 
         MatcherAssert.assertThat(sequence.values(), Matchers.hasSize(1));
         YamlNode sequenceItem = sequence.values().iterator().next();
-        MatcherAssert.assertThat(sequenceItem.type(), Matchers.equalTo(Node.SCALAR));
-        MatcherAssert.assertThat(sequenceItem.asScalar().value(), Matchers.equalTo("scalar:with-colon"));
+        MatcherAssert.assertThat(
+            sequenceItem.type(),
+            Matchers.equalTo(Node.SCALAR)
+        );
+        MatcherAssert.assertThat(
+            sequenceItem.asScalar().value(),
+            Matchers.equalTo("scalar:with-colon")
+        );
     }
 }

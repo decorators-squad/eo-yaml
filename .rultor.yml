@@ -6,7 +6,7 @@ env:
   MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
 merge:
   script: |-
-    mvn clean install -Pcheckstyle
+    mvn clean install -Pcheckstyle,itcases
 #decrypt:
 #  settings.xml: "repo/rcfg/settings.xml.asc"
 #  pubring.gpg: "repo/rcfg/pubring.gpg.asc"
