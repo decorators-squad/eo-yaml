@@ -1,0 +1,5 @@
+empty_literal_scalar: |
+empty_folded_scalar: >
+
+a_sequence:
+  - test

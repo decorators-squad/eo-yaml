@@ -1021,6 +1021,53 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test to ensure empty block scalars are read properly.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadEmptyBlockScalarProperly() throws IOException {
+        final String filename = "emptyLiteralScalar.yml";
+
+        final YamlMapping read = new RtYamlInput(
+                new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                read.asMapping().keys(),
+                Matchers.hasSize(3));
+
+        final YamlNode emptyLiteralScalar = read.asMapping().value("empty_literal_scalar");
+        MatcherAssert.assertThat(
+                emptyLiteralScalar.type(),
+                Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+                emptyLiteralScalar.asScalar().value(),
+                Matchers.equalTo(""));
+
+        final YamlNode emptyFoldedScalar = read.asMapping().value("empty_folded_scalar");
+        MatcherAssert.assertThat(
+                emptyFoldedScalar.type(),
+                Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+                emptyFoldedScalar.asScalar().value(),
+                Matchers.equalTo(""));
+
+        YamlNode topLevelSequence = read.asMapping().value("a_sequence");
+        MatcherAssert.assertThat(
+                topLevelSequence.type(),
+                Matchers.equalTo(Node.SEQUENCE));
+        MatcherAssert.assertThat(topLevelSequence.asSequence().values(),
+                                 Matchers.hasSize(1));
+        YamlNode sequenceItem = topLevelSequence.asSequence().values()
+                                                .iterator().next();
+        MatcherAssert.assertThat(sequenceItem.type(),
+                                 Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(sequenceItem.asScalar().value(),
+                                 Matchers.equalTo("test"));
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

@@ -124,17 +124,21 @@ final class WellIndented implements YamlLines {
                     int lineIndent = line.indentation();
                     if(previous.requireNestedIndentation()) {
                         if(lineIndent != prevIndent + 2) {
-                            if(this.guessIndentation) {
-                                line = new Indented(line, prevIndent + 2);
-                            } else {
-                                throw new YamlIndentationException(
-                                    "Indentation of line " + (line.number() + 1)
-                                  + " [" + line.trimmed() + "]"
-                                  + " is not ok. It should be greater than the one"
-                                  + " of line " + (previous.number() + 1)
-                                  + " [" + previous.trimmed() + "]"
-                                  + " by 2 spaces."
-                                );
+                            final CharSequence prevLineLastChar =
+                                    previous.trimmed().substring(previous.trimmed().length() - 1);
+                            if (!(">|".contains(prevLineLastChar) && lineIndent == prevIndent)) {
+                                if (this.guessIndentation) {
+                                    line = new Indented(line, prevIndent + 2);
+                                } else {
+                                    throw new YamlIndentationException(
+                                            "Indentation of line " + (line.number() + 1)
+                                            + " [" + line.trimmed() + "]"
+                                            + " is not ok. It should be greater than the one"
+                                            + " of line " + (previous.number() + 1)
+                                            + " [" + previous.trimmed() + "]"
+                                            + " by 2 spaces."
+                                    );
+                                }
                             }
                         }
                     } else {
