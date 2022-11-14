@@ -1037,7 +1037,8 @@ public final class RtYamlInputTest {
                 read.asMapping().keys(),
                 Matchers.hasSize(3));
 
-        final YamlNode emptyLiteralScalar = read.asMapping().value("empty_literal_scalar");
+        final YamlNode emptyLiteralScalar = read.asMapping()
+            .value("empty_literal_scalar");
         MatcherAssert.assertThat(
                 emptyLiteralScalar.type(),
                 Matchers.equalTo(Node.SCALAR));
@@ -1045,7 +1046,8 @@ public final class RtYamlInputTest {
                 emptyLiteralScalar.asScalar().value(),
                 Matchers.equalTo(""));
 
-        final YamlNode emptyFoldedScalar = read.asMapping().value("empty_folded_scalar");
+        final YamlNode emptyFoldedScalar = read.asMapping()
+            .value("empty_folded_scalar");
         MatcherAssert.assertThat(
                 emptyFoldedScalar.type(),
                 Matchers.equalTo(Node.SCALAR));
