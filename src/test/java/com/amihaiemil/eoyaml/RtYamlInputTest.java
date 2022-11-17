@@ -1070,6 +1070,79 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 525
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadEmptyItemsProperly() throws IOException {
+        final String filename = "issue_525_emptyEntries.yml";
+
+        final YamlMapping read = new RtYamlInput(
+                new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
+        MatcherAssert.assertThat(
+                read.asMapping().keys(),
+                Matchers.hasSize(1));
+
+        final YamlNode aSequence = read.asMapping()
+                                                .value("a_sequence");
+        MatcherAssert.assertThat(
+                aSequence.type(),
+                Matchers.equalTo(Node.SEQUENCE));
+        MatcherAssert.assertThat(
+                aSequence.asSequence().size(),
+                Matchers.equalTo(3));
+
+        final Iterator<YamlNode> iterator = aSequence.asSequence().values().iterator();
+
+        final YamlNode firstItem = iterator.next();
+        MatcherAssert.assertThat(
+                firstItem.type(),
+                Matchers.equalTo(Node.MAPPING));
+        YamlNode aMapping = firstItem.asMapping().value("a_mapping");
+        MatcherAssert.assertThat(
+                aMapping.type(),
+                Matchers.equalTo(Node.MAPPING));
+        final YamlNode emptyScalar = aMapping.asMapping().value("empty_scalar");
+        MatcherAssert.assertThat(
+                emptyScalar.type(),
+                Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+                emptyScalar.asScalar().value(),
+                Matchers.nullValue());
+
+        final YamlNode secondItem = iterator.next();
+        MatcherAssert.assertThat(
+                secondItem.type(),
+                Matchers.equalTo(Node.MAPPING));
+        final YamlNode emptyMapping = firstItem.asMapping().value("empty_mapping");
+        MatcherAssert.assertThat(
+                emptyMapping.type(),
+                Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+                emptyMapping.asScalar().value(),
+                Matchers.nullValue());
+
+        final YamlNode thirdItem = iterator.next();
+        MatcherAssert.assertThat(
+                thirdItem.type(),
+                Matchers.equalTo(Node.MAPPING));
+        YamlNode anotherMapping = thirdItem.asMapping().value("another_mapping");
+        MatcherAssert.assertThat(
+                anotherMapping.type(),
+                Matchers.equalTo(Node.MAPPING));
+        final YamlNode scalar = anotherMapping.asMapping().value("scalar");
+        MatcherAssert.assertThat(
+                scalar.type(),
+                Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+                scalar.asScalar().value(),
+                Matchers.equalTo(""));
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.

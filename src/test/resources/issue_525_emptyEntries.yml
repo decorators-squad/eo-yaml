@@ -1,0 +1,6 @@
+a_sequence:
+  - a_mapping:
+      empty_scalar: | 
+  - empty_mapping:
+  - another_mapping:
+      scalar: ''
