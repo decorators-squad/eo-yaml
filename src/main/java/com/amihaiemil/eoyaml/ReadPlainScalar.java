@@ -177,7 +177,7 @@ final class ReadPlainScalar extends BaseScalar {
      */
     private String unescape(final String value) {
         final String unescaped;
-        if(value == null || value.length()<=2) {
+        if(value == null) {
             unescaped = value;
         } else {
             if (value.startsWith("\"") && value.endsWith("\"")) {

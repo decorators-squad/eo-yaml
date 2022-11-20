@@ -126,7 +126,7 @@ final class WellIndented implements YamlLines {
                         if(lineIndent != prevIndent + 2) {
                             final CharSequence prevLineLastChar =
                                     previous.trimmed().substring(previous.trimmed().length() - 1);
-                            if (!(">|".contains(prevLineLastChar) && lineIndent == prevIndent)) {
+                            if (!">|".contains(prevLineLastChar)) {
                                 if (this.guessIndentation) {
                                     line = new Indented(line, prevIndent + 2);
                                 } else {

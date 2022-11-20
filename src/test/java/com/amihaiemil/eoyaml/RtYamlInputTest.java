@@ -46,7 +46,7 @@ import java.util.Set;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.1
- *
+ * @checkstyle ExecutableStatementCount (2000 lines)
  */
 public final class RtYamlInputTest {
 
@@ -1070,76 +1070,116 @@ public final class RtYamlInputTest {
     }
 
     /**
-     * Unit test for issue 525
+     * Unit test for issue 525 (empty scalars part).
      * @throws IOException If something goes wrong.
      */
     @Test
-    public void shouldReadEmptyItemsProperly() throws IOException {
+    public void shouldReadEmptyScalarsProperly() throws IOException {
         final String filename = "issue_525_emptyEntries.yml";
 
         final YamlMapping read = new RtYamlInput(
-                new FileInputStream("src/test/resources/" + filename)
+            new FileInputStream("src/test/resources/" + filename)
         ).readYamlMapping();
-
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
         MatcherAssert.assertThat(
-                read.asMapping().keys(),
-                Matchers.hasSize(1));
+            read.keys(),
+            Matchers.hasSize(1)
+        );
 
-        final YamlNode aSequence = read.asMapping()
-                                                .value("a_sequence");
+        final YamlSequence aSequence = read.yamlSequence("a_sequence");
         MatcherAssert.assertThat(
-                aSequence.type(),
-                Matchers.equalTo(Node.SEQUENCE));
+            aSequence.type(),
+            Matchers.equalTo(Node.SEQUENCE)
+        );
         MatcherAssert.assertThat(
-                aSequence.asSequence().size(),
-                Matchers.equalTo(3));
+            aSequence.size(),
+            Matchers.equalTo(3)
+        );
 
-        final Iterator<YamlNode> iterator = aSequence.asSequence().values().iterator();
+        final Iterator<YamlNode> iterator = aSequence.iterator();
 
         final YamlNode firstItem = iterator.next();
         MatcherAssert.assertThat(
-                firstItem.type(),
-                Matchers.equalTo(Node.MAPPING));
+            firstItem.type(),
+            Matchers.equalTo(Node.MAPPING)
+        );
         YamlNode aMapping = firstItem.asMapping().value("a_mapping");
         MatcherAssert.assertThat(
                 aMapping.type(),
-                Matchers.equalTo(Node.MAPPING));
-        final YamlNode emptyScalar = aMapping.asMapping().value("empty_scalar");
+                Matchers.equalTo(Node.MAPPING)
+        );
+        final YamlNode emptyBlockScalar = aMapping.asMapping()
+            .value("empty_block_scalar");
         MatcherAssert.assertThat(
-                emptyScalar.type(),
-                Matchers.equalTo(Node.SCALAR));
+            emptyBlockScalar.type(),
+            Matchers.equalTo(Node.SCALAR));
         MatcherAssert.assertThat(
-                emptyScalar.asScalar().value(),
-                Matchers.nullValue());
+            emptyBlockScalar.asScalar().value(),
+            Matchers.isEmptyString());
+        final YamlNode emptyFoldedScalar = aMapping.asMapping()
+            .value("empty_folded_scalar");
+        MatcherAssert.assertThat(
+            emptyFoldedScalar.type(),
+            Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+            emptyFoldedScalar.asScalar().value(),
+            Matchers.isEmptyString());
+        final YamlNode normalScalar = aMapping.asMapping()
+            .value("normal_scalar");
+        MatcherAssert.assertThat(
+            normalScalar.type(),
+            Matchers.equalTo(Node.SCALAR));
+        MatcherAssert.assertThat(
+            normalScalar.asScalar().value(),
+            Matchers.equalTo("example"));
 
         final YamlNode secondItem = iterator.next();
         MatcherAssert.assertThat(
                 secondItem.type(),
                 Matchers.equalTo(Node.MAPPING));
-        final YamlNode emptyMapping = firstItem.asMapping().value("empty_mapping");
+        final YamlNode value = secondItem.asMapping()
+            .value("key");
+        MatcherAssert.assertThat(value.type(), Matchers.equalTo(Node.SCALAR));
         MatcherAssert.assertThat(
-                emptyMapping.type(),
-                Matchers.equalTo(Node.SCALAR));
-        MatcherAssert.assertThat(
-                emptyMapping.asScalar().value(),
-                Matchers.nullValue());
+            value.asScalar().value(),
+            Matchers.equalTo("value"));
 
         final YamlNode thirdItem = iterator.next();
         MatcherAssert.assertThat(
                 thirdItem.type(),
                 Matchers.equalTo(Node.MAPPING));
-        YamlNode anotherMapping = thirdItem.asMapping().value("another_mapping");
+        YamlNode anotherMapping = thirdItem.asMapping()
+            .value("another_mapping");
         MatcherAssert.assertThat(
                 anotherMapping.type(),
                 Matchers.equalTo(Node.MAPPING));
-        final YamlNode scalar = anotherMapping.asMapping().value("scalar");
+        final YamlNode emptyScalarApp = anotherMapping.asMapping()
+            .value("empty_scalar_app");
         MatcherAssert.assertThat(
-                scalar.type(),
-                Matchers.equalTo(Node.SCALAR));
+            emptyScalarApp.type(),
+            Matchers.equalTo(Node.SCALAR)
+        );
         MatcherAssert.assertThat(
-                scalar.asScalar().value(),
-                Matchers.equalTo(""));
+            emptyScalarApp.asScalar().value(),
+            Matchers.isEmptyString());
+        final YamlNode emptyScalarQuotes = anotherMapping.asMapping()
+            .value("empty_scalar_quotes");
+        MatcherAssert.assertThat(
+            emptyScalarQuotes.type(),
+            Matchers.equalTo(Node.SCALAR)
+        );
+        MatcherAssert.assertThat(
+            emptyScalarQuotes.asScalar().value(),
+            Matchers.isEmptyString());
+        final YamlNode nullScalar = anotherMapping.asMapping()
+            .value("null_scalar");
+        MatcherAssert.assertThat(
+            nullScalar.type(),
+            Matchers.equalTo(Node.SCALAR)
+        );
+        MatcherAssert.assertThat(
+            nullScalar.asScalar().value(),
+            Matchers.nullValue());
     }
 
     /**

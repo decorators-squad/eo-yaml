@@ -1,6 +1,10 @@
 a_sequence:
   - a_mapping:
-      empty_scalar: | 
-  - empty_mapping:
+      empty_block_scalar: |
+      empty_folded_scalar: >
+      normal_scalar: example
+  - key: value
   - another_mapping:
-      scalar: ''
+      empty_scalar_app: ''
+      empty_scalar_quotes: ""
+      null_scalar: null
