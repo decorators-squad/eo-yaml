@@ -23,16 +23,16 @@ To get the latest release from Maven Central, simply add the following to your `
 <dependency>
     <groupId>com.amihaiemil.web</groupId>
     <artifactId>eo-yaml</artifactId>
-    <version>6.1.2</version>
+    <version>6.1.3</version>
 </dependency>
 ```
 
-or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/6.1.2/eo-yaml-6.1.2-jar-with-dependencies.jar">fat</a> jar.
+or download the <a href="https://oss.sonatype.org/service/local/repositories/releases/content/com/amihaiemil/web/eo-yaml/6.1.3/eo-yaml-6.1.3-jar-with-dependencies.jar">fat</a> jar.
 
 If you use Gradle, add this to your dependencies:
 
 ```gradle
-implementation group: 'com.amihaiemil.web', name: 'eo-yaml', version: '6.1.2'
+implementation group: 'com.amihaiemil.web', name: 'eo-yaml', version: '6.1.3'
 ```
 
 The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages)!
