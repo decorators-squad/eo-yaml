@@ -134,9 +134,6 @@ final class AllYamlLines implements YamlLines {
      * after the given line.
      * @param prev YamlLine just previous to the node we're trying to find.
      * @return Found YamlNode.
-     * @todo #529:60min Implement, test and use Edited YamlLine here.
-     *  A YamlLine to which we append some text and it keeps the indentation,
-     *  number etc of the original line.
      */
     private YamlNode mappingSequenceOrPlainScalar(final YamlLine prev) {
         YamlNode node = null;
@@ -161,8 +158,8 @@ final class AllYamlLines implements YamlLines {
         ) {
             node = new ReadPlainScalar(
                 this,
-                new RtYamlLine(prev.trimmed()
-                    + " null #" + prev.comment(), prev.number())
+                new Edited(prev.trimmed()
+                    + " null #" + prev.comment(), prev)
             );
         } else {
             Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());

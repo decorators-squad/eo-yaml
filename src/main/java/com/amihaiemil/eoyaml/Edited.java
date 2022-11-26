@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2020, Mihai Emil Andronache
+ * Copyright (c) 2016-2023, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,98 +28,45 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * Decorator class to cache values of trimmed() and indentation() method for
- * a YamlLine.
- * @author Sherif Waly (sherifwaly95@gmail.com)
+ * A YamlLine with contents edited by us.
+ * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 1.0.0
- *
+ * @since 7.0.0
  */
-final class CachedYamlLine implements YamlLine {
+final class Edited implements YamlLine {
+    /**
+     * New content of the YamlLine.
+     */
+    private final String newContent;
 
     /**
-     * Content line.
+     * Original YamlLine to preserve other suff besides the new content.
      */
-    private YamlLine line;
-
-    /**
-     * Cached trimmed line.
-     */
-    private String trimmed;
-
-    /**
-     * Cached contents line.
-     */
-    private String contents;
-
-    /**
-     * Cached indentation.
-     */
-    private int indentation = -1;
-
-    /**
-     * Cached value.
-     */
-    private Boolean hasNestedNode;
+    private final YamlLine original;
 
     /**
      * Ctor.
-     * @param line YamlLine
+     * @param newContent New content of the line.
+     * @param original Original line to preserveother stuff such as indentation
+     *  and line number.
      */
-    CachedYamlLine(final YamlLine line) {
-        this.line = line;
+    Edited(final String newContent, final YamlLine original) {
+        this.newContent = newContent;
+        this.original = original;
     }
 
     @Override
-    public int compareTo(final YamlLine other) {
-        return this.line.compareTo(other);
-    }
-
-    @Override
-    public String trimmed() {
-        if(this.trimmed == null) {
-            this.trimmed = this.line.trimmed();
-        }
-        return this.trimmed;
-    }
-
-    @Override
-    public String contents(final int previousIndent) {
-        if(this.contents == null) {
-            this.contents = this.line.contents(previousIndent);
-        }
-        return this.contents;
-    }
-
-    @Override
-    public String comment() {
-        return this.line.comment();
+    public String value() {
+        return this.newContent;
     }
 
     @Override
     public int number() {
-        return this.line.number();
+        return this.original.number();
     }
 
     @Override
     public int indentation() {
-        if(this.indentation == -1) {
-            this.indentation = this.line.indentation();
-        }
-        return this.indentation;
+        return this.original.indentation();
     }
-
-    @Override
-    public boolean requireNestedIndentation() {
-        if (this.hasNestedNode == null) {
-            this.hasNestedNode = this.line.requireNestedIndentation();
-        }
-        return this.hasNestedNode;
-    }
-
-    @Override
-    public String toString() {
-        return this.line.toString();
-    }
-
 }

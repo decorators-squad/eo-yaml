@@ -74,6 +74,21 @@ public final class RtYamlLineTest {
     }
 
     /**
+     * RtYamlLine can its untrimmed, original value.
+     */
+    @Test
+    public void returnsValue() {
+        YamlLine line = new RtYamlLine(
+            "   this: line # with comment  ", 10
+        );
+        MatcherAssert.assertThat(
+            line.value(), Matchers.equalTo(
+                "   this: line # with comment  "
+            )
+        );
+    }
+
+    /**
      * RtYamlLine can trim itself.
      */
     @Test
