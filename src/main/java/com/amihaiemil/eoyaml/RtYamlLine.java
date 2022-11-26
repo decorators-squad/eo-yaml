@@ -162,7 +162,7 @@ final class RtYamlLine implements YamlLine {
         if("---".equals(this.trimmed())) {
             result = false;
         } else {
-            final String specialCharacters = ":>|-?";
+            final String specialCharacters = "-?";
             final CharSequence prevLineLastChar =
                 this.trimmed().substring(this.trimmed().length() - 1);
             result = specialCharacters.contains(prevLineLastChar);

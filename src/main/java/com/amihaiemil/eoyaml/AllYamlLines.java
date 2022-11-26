@@ -141,13 +141,16 @@ final class AllYamlLines implements YamlLines {
      * @param guessIndentation If true, we will guess the correct indentation,
      *  if any YAML line is misplaced.
      * @return Found YamlNode.
+     * @todo #529:60min Implement, test and use Edited YamlLine here.
+     *  A YamlLine to which we append some text and it keeps the indentation,
+     *  number etc of the original line.
      */
     private YamlNode mappingSequenceOrPlainScalar(
         final YamlLine prev,
         final boolean guessIndentation
     ) {
         YamlNode node = null;
-        final YamlLine first = new Skip(
+        final Iterator<YamlLine> nodeLines = new Skip(
             this,
             line -> line.number() <= prev.number(),
             line -> line.trimmed().startsWith("#"),
@@ -155,17 +158,34 @@ final class AllYamlLines implements YamlLines {
             line -> line.trimmed().startsWith("..."),
             line -> line.trimmed().startsWith("%"),
             line -> line.trimmed().startsWith("!!")
-        ).iterator().next();
-        Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
-        if (matcher.matches()) {
-            if (matcher.group(2) != null) {
-                node = new ReadYamlSequence(prev, this, guessIndentation);
-            } else if (matcher.group(4) != null) {
-                node = new ReadYamlMapping(prev.number(),
+        ).iterator();
+        final YamlLine first;
+        if(nodeLines.hasNext()) {
+            first = nodeLines.next();
+        } else {
+            first = new YamlLine.NullYamlLine();
+        }
+        if(prev.trimmed().endsWith(":")
+            && first.indentation() <= prev.indentation()
+            && !first.trimmed().startsWith("-")
+        ) {
+            node = new ReadPlainScalar(
+                this,
+                new RtYamlLine(prev.trimmed()
+                    + " null #" + prev.comment(), prev.number())
+            );
+        } else {
+            Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
+            if (matcher.matches()) {
+                if (matcher.group(2) != null) {
+                    node = new ReadYamlSequence(prev, this, guessIndentation);
+                } else if (matcher.group(4) != null) {
+                    node = new ReadYamlMapping(prev.number(),
                         prev, this, guessIndentation);
+                }
+            } else if (this.original().size() == 1) {
+                node = new ReadPlainScalar(this, first);
             }
-        } else if (this.original().size() == 1) {
-            node = new ReadPlainScalar(this, first);
         }
         if (node == null) {
             throw new YamlReadingException(

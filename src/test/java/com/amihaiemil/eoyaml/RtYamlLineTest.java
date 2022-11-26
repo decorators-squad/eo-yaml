@@ -64,14 +64,6 @@ public final class RtYamlLineTest {
     @Test
     public void requiresNestedIndentation() {
         MatcherAssert.assertThat(
-            new RtYamlLine("this:", 12).requireNestedIndentation(),
-            Matchers.is(true)
-        );
-        MatcherAssert.assertThat(
-            new RtYamlLine("this: |> ", 12).requireNestedIndentation(),
-            Matchers.is(true)
-        );
-        MatcherAssert.assertThat(
             new RtYamlLine("this: |- ", 12).requireNestedIndentation(),
             Matchers.is(true)
         );
