@@ -67,9 +67,9 @@ public final class BackwardsTest {
         final YamlLines initial = Mockito.mock(YamlLines.class);
         final YamlLine prev = Mockito.mock(YamlLine.class);
         final YamlNode node = Mockito.mock(YamlNode.class);
-        Mockito.when(initial.toYamlNode(prev, false)).thenReturn(node);
+        Mockito.when(initial.toYamlNode(prev)).thenReturn(node);
         MatcherAssert.assertThat(
-            new Backwards(initial).toYamlNode(prev, false),
+            new Backwards(initial).toYamlNode(prev),
             Matchers.is(node)
         );
     }

@@ -66,9 +66,9 @@ public final class FirstCommentFoundTest {
         final YamlLines initial = Mockito.mock(YamlLines.class);
         final YamlLine prev = Mockito.mock(YamlLine.class);
         final YamlNode node = Mockito.mock(YamlNode.class);
-        Mockito.when(initial.toYamlNode(prev, false)).thenReturn(node);
+        Mockito.when(initial.toYamlNode(prev)).thenReturn(node);
         MatcherAssert.assertThat(
-            new FirstCommentFound(initial).toYamlNode(prev, false),
+            new FirstCommentFound(initial).toYamlNode(prev),
             Matchers.is(node)
         );
     }

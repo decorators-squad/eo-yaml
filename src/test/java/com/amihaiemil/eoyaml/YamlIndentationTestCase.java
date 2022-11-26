@@ -85,8 +85,7 @@ public final class YamlIndentationTestCase {
     @Test
     public void readsBadlyIndentedMappingWithEmptyKey() throws Exception {
         final YamlMapping map = Yaml.createYamlInput(
-            new File("src/test/resources/badMappingIndentation.yml"),
-            Boolean.FALSE
+            new File("src/test/resources/badMappingIndentation.yml")
         ).readYamlMapping();
         System.out.println(map);
         MatcherAssert.assertThat(
@@ -132,7 +131,7 @@ public final class YamlIndentationTestCase {
             lines.add(new RtYamlLine("value3", 3));
             final YamlLines yamlLines = new AllYamlLines(lines);
             final YamlNode seq = yamlLines.toYamlNode(
-                    new RtYamlLine("foldedSequence:|-", 0), false);
+                    new RtYamlLine("foldedSequence:|-", 0));
             final Collection<YamlNode> values = ((YamlSequence) seq).values();
             Assert.fail("badlyIntendedSequenceThrowsException "
                     + "should have thrown YamlIndentationException");

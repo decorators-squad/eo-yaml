@@ -80,8 +80,7 @@ public final class AllYamlLinesTest {
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
             yamlLines.toYamlNode(
-                new RtYamlLine("literalScalar:|", 0),
-                false
+                new RtYamlLine("literalScalar:|", 0)
             ),
             Matchers.instanceOf(ReadLiteralBlockScalar.class)
         );
@@ -100,8 +99,7 @@ public final class AllYamlLinesTest {
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
             yamlLines.toYamlNode(
-                new RtYamlLine("foldedScalar:>", 0),
-                false
+                new RtYamlLine("foldedScalar:>", 0)
             ),
             Matchers.instanceOf(ReadFoldedBlockScalar.class)
         );
@@ -119,7 +117,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("value3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
         final YamlNode seq =  yamlLines.toYamlNode(
-            new RtYamlLine("foldedSequence:|-", 0), false
+            new RtYamlLine("foldedSequence:|-", 0)
         );
         MatcherAssert.assertThat(
             seq, Matchers.instanceOf(ReadYamlSequence.class)
@@ -156,7 +154,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("value3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
         final YamlNode seq =  yamlLines.toYamlNode(
-            new RtYamlLine("foldedSequence:| -", 0), false
+            new RtYamlLine("foldedSequence:| -", 0)
         );
         MatcherAssert.assertThat(
             seq, Matchers.instanceOf(ReadYamlSequence.class)
@@ -189,7 +187,9 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("arn:something:something", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(
+            new RtYamlLine("---", 0)
+        );
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(Scalar.class)
@@ -209,7 +209,9 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("-foo", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(
+            new RtYamlLine("---", 0)
+        );
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(Scalar.class)
@@ -230,7 +232,9 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("some: mapping", 1));
         lines.add(new RtYamlLine("for: test", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(new RtYamlLine("---", 0), false);
+        YamlNode actual = yamlLines.toYamlNode(
+            new RtYamlLine("---", 0)
+        );
         MatcherAssert.assertThat(
                 actual,
                 Matchers.instanceOf(ReadYamlMapping.class)
@@ -248,7 +252,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("- sequence", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("?", 0), false),
+            yamlLines.toYamlNode(new RtYamlLine("?", 0)),
             Matchers.instanceOf(ReadYamlSequence.class)
         );
     }
@@ -263,7 +267,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("justAScalar", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("---", 0), false),
+            yamlLines.toYamlNode(new RtYamlLine("---", 0)),
             Matchers.instanceOf(ReadPlainScalar.class)
         );
     }
@@ -284,7 +288,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("a folded or literal scalar", 4));
         final YamlLines yamlLines = new AllYamlLines(lines);
         try {
-            yamlLines.toYamlNode(new RtYamlLine("---", -1), false);
+            yamlLines.toYamlNode(new RtYamlLine("---", -1));
             Assert.fail("Expected IllegalStateException!");
         } catch (final YamlReadingException ex) {
             final String message = ex.getMessage();

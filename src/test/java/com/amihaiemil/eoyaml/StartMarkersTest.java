@@ -68,9 +68,9 @@ public final class StartMarkersTest {
         final YamlLines lines = Mockito.mock(YamlLines.class);
         final YamlLine prev = Mockito.mock(YamlLine.class);
         final YamlNode result = Mockito.mock(YamlNode.class);
-        Mockito.when(lines.toYamlNode(prev, false)).thenReturn(result);
+        Mockito.when(lines.toYamlNode(prev)).thenReturn(result);
         MatcherAssert.assertThat(
-            new StartMarkers(lines).toYamlNode(prev, false),
+            new StartMarkers(lines).toYamlNode(prev),
             Matchers.is(result)
         );
     }

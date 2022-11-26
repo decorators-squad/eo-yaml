@@ -104,26 +104,21 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(
-        final YamlLine prev,
-        final boolean guessIndentation
-    ) {
+    public YamlNode toYamlNode(final YamlLine prev) {
         final YamlNode node;
         final String prevLine = prev.trimmed();
         if(prevLine.isEmpty()) {
-            node = this.mappingSequenceOrPlainScalar(prev, guessIndentation);
+            node = this.mappingSequenceOrPlainScalar(prev);
         } else {
             final String lastChar = prevLine.substring(prevLine.length() - 1);
             if (prevLine.matches(Follows.FOLDED_SEQUENCE)) {
-                node = new ReadYamlSequence(prev, this, guessIndentation);
+                node = new ReadYamlSequence(prev, this);
             } else if (lastChar.equals(Follows.LITERAL_BLOCK_SCALAR)) {
                 node = new ReadLiteralBlockScalar(prev, this);
             } else if (lastChar.equals(Follows.FOLDED_BLOCK_SCALAR)) {
                 node = new ReadFoldedBlockScalar(prev, this);
             } else {
-                node = this.mappingSequenceOrPlainScalar(
-                    prev, guessIndentation
-                );
+                node = this.mappingSequenceOrPlainScalar(prev);
             }
         }
         return node;
@@ -138,17 +133,12 @@ final class AllYamlLines implements YamlLines {
      * Try to figure out what YAML node (mapping, sequence or scalar) is found
      * after the given line.
      * @param prev YamlLine just previous to the node we're trying to find.
-     * @param guessIndentation If true, we will guess the correct indentation,
-     *  if any YAML line is misplaced.
      * @return Found YamlNode.
      * @todo #529:60min Implement, test and use Edited YamlLine here.
      *  A YamlLine to which we append some text and it keeps the indentation,
      *  number etc of the original line.
      */
-    private YamlNode mappingSequenceOrPlainScalar(
-        final YamlLine prev,
-        final boolean guessIndentation
-    ) {
+    private YamlNode mappingSequenceOrPlainScalar(final YamlLine prev) {
         YamlNode node = null;
         final Iterator<YamlLine> nodeLines = new Skip(
             this,
@@ -178,10 +168,9 @@ final class AllYamlLines implements YamlLines {
             Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
             if (matcher.matches()) {
                 if (matcher.group(2) != null) {
-                    node = new ReadYamlSequence(prev, this, guessIndentation);
+                    node = new ReadYamlSequence(prev, this);
                 } else if (matcher.group(4) != null) {
-                    node = new ReadYamlMapping(prev.number(),
-                        prev, this, guessIndentation);
+                    node = new ReadYamlMapping(prev.number(), prev, this);
                 }
             } else if (this.original().size() == 1) {
                 node = new ReadPlainScalar(this, first);

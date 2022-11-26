@@ -222,7 +222,7 @@ public final class ReadLiteralBlockScalarTest {
     public void printsLiteralBlockScalarFromString() throws IOException {
         final String input = readTestResource("issue_480_bug_printing.yml");
 
-        YamlMapping mapping = Yaml.createYamlInput(input, true)
+        YamlMapping mapping = Yaml.createYamlInput(input)
             .readYamlMapping();
         MatcherAssert.assertThat(
             mapping.string("test1"),

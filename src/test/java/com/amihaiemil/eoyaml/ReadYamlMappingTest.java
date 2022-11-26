@@ -1197,9 +1197,7 @@ public final class ReadYamlMappingTest {
         lines.add(new RtYamlLine("key: | ", 0));
         lines.add(new RtYamlLine("  line1", 1));
         lines.add(new RtYamlLine("    line2", 2));
-        final YamlMapping map = new ReadYamlMapping(
-            new AllYamlLines(lines), Boolean.TRUE
-        );
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         final Collection<String> literalLines = map.literalBlockScalar("key");
         MatcherAssert.assertThat(
             literalLines.size(),

@@ -94,11 +94,8 @@ final class FirstCommentFound implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(
-        final YamlLine prev,
-        final boolean guessIndentation
-    ) {
-        return this.lines.toYamlNode(prev, guessIndentation);
+    public YamlNode toYamlNode(final YamlLine prev) {
+        return this.lines.toYamlNode(prev);
     }
 
     /**
