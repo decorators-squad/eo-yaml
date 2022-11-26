@@ -1,6 +1,6 @@
 name: eo-yaml
-contributors:
+contributors: # empty key...
 developers:
-- amihaiemil # Elements of this sequence should be indented by 4 spaces.
+- amihaiemil # Elements of this sequence should be indented deeper.
 - sherif
 - rultor

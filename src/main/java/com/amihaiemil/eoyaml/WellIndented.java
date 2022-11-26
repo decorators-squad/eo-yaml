@@ -109,6 +109,8 @@ final class WellIndented implements YamlLines {
      * correct.
      * @checkstyle LineLength (50 lines)
      * @return Iterator over these yaml lines.
+     * @todo #529:60min Remove the guessIndentation logic. It doesn't make
+     *  sense anymore and it's too unpredictible.
      */
     @Override
     public Iterator<YamlLine> iterator() {
@@ -127,37 +129,37 @@ final class WellIndented implements YamlLines {
                     }
                     int lineIndent = line.indentation();
                     if(previous.requireNestedIndentation()) {
-                        if(lineIndent != prevIndent + 2) {
-                            final CharSequence prevLineLastChar =
-                                    previous.trimmed().substring(previous.trimmed().length() - 1);
-                            if (!">|".contains(prevLineLastChar)) {
-                                if (this.guessIndentation) {
-                                    line = new Indented(line, prevIndent + 2);
-                                } else {
-                                    throw new YamlIndentationException(
-                                            "Indentation of line " + (line.number() + 1)
-                                            + " [" + line.trimmed() + "]"
-                                            + " is not ok. It should be greater than the one"
-                                            + " of line " + (previous.number() + 1)
-                                            + " [" + previous.trimmed() + "]"
-                                            + " by 2 spaces."
-                                    );
-                                }
+                        if(lineIndent < prevIndent + 2) {
+                            if (this.guessIndentation) {
+                                line = new Indented(line, prevIndent + 2);
+                            } else {
+                                throw new YamlIndentationException(
+                                    "Indentation of line " + (line.number() + 1)
+                                    + " [" + line.trimmed() + "]"
+                                    + " is not ok. It should be greater than the one"
+                                    + " of line " + (previous.number() + 1)
+                                    + " [" + previous.trimmed() + "]"
+                                    + " by at least 2 spaces."
+                                );
                             }
                         }
                     } else {
                         if(!"---".equals(previous.trimmed()) && lineIndent > prevIndent) {
-                            if(this.guessIndentation) {
-                                line = new Indented(line, prevIndent);
-                            } else {
-                                throw new YamlIndentationException(
-                                    "Indentation of line " + (line.number() + 1)
-                                  + " [" + line.trimmed() + "]"
-                                  + " is greater than the one of line "
-                                  + (previous.number() + 1)
-                                  + " [" + previous.trimmed() + "]. "
-                                  + "It should be less or equal."
-                                );
+                            final CharSequence prevLineLastChar =
+                                previous.trimmed().substring(previous.trimmed().length() - 1);
+                            if (!">|:".contains(prevLineLastChar)) {
+                                if (this.guessIndentation) {
+                                    line = new Indented(line, prevIndent);
+                                } else {
+                                    throw new YamlIndentationException(
+                                        "Indentation of line " + (line.number() + 1)
+                                            + " [" + line.trimmed() + "]"
+                                            + " is greater than the one of line "
+                                            + (previous.number() + 1)
+                                            + " [" + previous.trimmed() + "]. "
+                                            + "It should be less or equal."
+                                    );
+                                }
                             }
                         }
                     }

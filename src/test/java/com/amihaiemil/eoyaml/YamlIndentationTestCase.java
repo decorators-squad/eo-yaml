@@ -40,27 +40,13 @@ import java.util.List;
 
 /**
  * Test cases regarding an input YAML's indentation, particularly
- * disabling validation of indentation and trying to guess the correct
- * one.
+ * cases in which the input is not indented properly, we have keys without
+ * values etc.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 5.1.0
  */
 public final class YamlIndentationTestCase {
-
-    /**
-     * A Yaml mapping containing an unindented sequence throws exception
-     * because of bad indentation.
-     * @throws Exception If something goes wrong.
-     */
-    @Test (expected = YamlIndentationException.class)
-    public void unintendedSequenceException() throws Exception {
-        final YamlMapping map = Yaml.createYamlInput(
-            new File("src/test/resources/badSequenceIndentationInMapping.yml"),
-            Boolean.FALSE
-        ).readYamlMapping();
-        System.out.println(map);
-    }
 
     /**
      * A Yaml mapping containing an unindented sequence can be read
@@ -70,8 +56,7 @@ public final class YamlIndentationTestCase {
     @Test
     public void readsUnintendedSequenceException() throws Exception {
         final YamlMapping map = Yaml.createYamlInput(
-            new File("src/test/resources/badSequenceIndentationInMapping.yml"),
-            Boolean.TRUE
+            new File("src/test/resources/badSequenceIndentationInMapping.yml")
         ).readYamlMapping();
         final YamlSequence developers = map.yamlSequence("developers");
         MatcherAssert.assertThat(
@@ -93,47 +78,31 @@ public final class YamlIndentationTestCase {
     }
 
     /**
-     * A badly indented YAML mapping throws an exception.
+     * A badly indented YAML mapping, which also has an empty key,
+     * is read properly.
      * @throws Exception If something goes wrong.
      */
-    @Test (expected = YamlIndentationException.class)
-    public void complainsOnBadlyIndentedMapping() throws Exception {
+    @Test
+    public void readsBadlyIndentedMappingWithEmptyKey() throws Exception {
         final YamlMapping map = Yaml.createYamlInput(
             new File("src/test/resources/badMappingIndentation.yml"),
             Boolean.FALSE
         ).readYamlMapping();
         System.out.println(map);
-    }
-
-    /**
-     * A badly indented YAML can be read if we try to guess the indentation.
-     * @throws Exception If something goes wrong.
-     */
-    @Test
-    public void readsBadlyIndentedMapping() throws Exception {
-        final YamlMapping map = Yaml.createYamlInput(
-            new File("src/test/resources/badMappingIndentation.yml"),
-            Boolean.TRUE
-        ).readYamlMapping();
-        System.out.println(map);
         MatcherAssert.assertThat(
-            map.string("name"),
-            Matchers.equalTo("eo-yaml")
+            map.string("name"), Matchers.equalTo("eo-yaml")
         );
         MatcherAssert.assertThat(
-            map.yamlSequence("developers"),
-            Matchers.nullValue()
+            map.string("contributors"), Matchers.nullValue()
         );
         MatcherAssert.assertThat(
-            map.yamlMapping("contributors"),
-            Matchers.notNullValue()
+            map.value("contributors").comment().value(),
+            Matchers.equalTo("empty key...")
         );
-        final YamlSequence developers = map
-            .yamlMapping("contributors")
-            .yamlSequence("developers");
+        final YamlSequence developers = map.yamlSequence("developers");
         MatcherAssert.assertThat(
-            developers,
-            Matchers.iterableWithSize(3)
+            developers.size(),
+            Matchers.equalTo(3)
         );
         MatcherAssert.assertThat(
             developers.string(0),
@@ -148,6 +117,7 @@ public final class YamlIndentationTestCase {
             Matchers.equalTo("rultor")
         );
     }
+
 
     /**
      * A badly indented YAML sequence throws an exception.
