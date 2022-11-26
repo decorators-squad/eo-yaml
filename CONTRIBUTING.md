@@ -9,6 +9,6 @@ Also, please make sure your PR is small: we usually reject any PR which is bigge
 
 Make sure the maven build
 
-``$ mvn clean install -Pcheckstyle``
+``$ mvn clean install -Pcheckstyle,itcases``
 
 passes before making a PR.
