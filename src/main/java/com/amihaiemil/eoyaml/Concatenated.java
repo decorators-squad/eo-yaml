@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016-2021, Mihai Emil Andronache
+ * Copyright (c) 2016-2023, Mihai Emil Andronache
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
