@@ -1186,4 +1186,33 @@ public final class ReadYamlMappingTest {
             Matchers.equalTo("key")
         );
     }
+
+    /**
+     * ReadYamlMapping returns a literal string mapped to a string key,
+     * by guessing the different lines' indentation (guessIndentation = true).
+     */
+    @Test
+    public void returnsLiteralStringWithStringKeyGuessIndentation(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("key: | ", 0));
+        lines.add(new RtYamlLine("  line1", 1));
+        lines.add(new RtYamlLine("    line2", 2));
+        final YamlMapping map = new ReadYamlMapping(
+            new AllYamlLines(lines), Boolean.TRUE
+        );
+        final Collection<String> literalLines = map.literalBlockScalar("key");
+        MatcherAssert.assertThat(
+            literalLines.size(),
+            Matchers.is(2)
+        );
+        final Iterator<String> linesIt = literalLines.iterator();
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("line1")
+        );
+        MatcherAssert.assertThat(
+            linesIt.next(),
+            Matchers.equalTo("  line2")
+        );
+    }
 }
