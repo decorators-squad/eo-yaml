@@ -32,7 +32,7 @@ package com.amihaiemil.eoyaml;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.2.0
- * @todo #538:60 Implement the toString() for all Comment implementations.
+ * @todo #538:60min Implement the toString() for all Comment implementations.
  *  It should return the String returned my methdo value().
  */
 public interface Comment {
