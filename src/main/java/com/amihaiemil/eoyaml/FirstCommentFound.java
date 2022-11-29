@@ -114,10 +114,8 @@ final class FirstCommentFound implements YamlLines {
             final YamlLine line = iterator.next();
             boolean hasComment = !line.comment().isEmpty();
             boolean notYamlStart = !"---".equals(line.trimmed());
-            if(notYamlStart && hasComment) {
-                if(line.trimmed().startsWith("#")) {
-                    comment.add(line);
-                }
+            if(notYamlStart && hasComment && line.trimmed().startsWith("#")) {
+                comment.add(line);
             } else {
                 break;
             }

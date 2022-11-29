@@ -1183,6 +1183,23 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 497 (ghost scalar comment).
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadScalarCommentsProperly() throws IOException {
+        final String filename = "issue_497_ghost_comment.yml";
+
+        final YamlMapping read = new RtYamlInput(
+            new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(this.readTestResource(filename))
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
