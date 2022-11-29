@@ -51,6 +51,9 @@ interface YamlLine extends Comparable<YamlLine> {
     /**
      * The line's trimmed contents with comments, aliases etc removed.
      * @return Trimmed string (leading and trailing spaces) contents.
+     * @todo #374:60min There's a missing condition in this method, removed
+     *  as a workaround in Pull Request 375. Debug, find the reason and
+     *  implement a better solution for ticket 374. This is rather low prio.
      */
     default String trimmed() {
         String trimmed = this.value().trim();
