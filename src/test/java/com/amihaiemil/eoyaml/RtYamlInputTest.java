@@ -1200,6 +1200,49 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 542:
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/542">#542</a>
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadSequenceOfFoldedBlockScalars() throws IOException {
+        final String filename = "issue_542_seq_folded_blocks.yml";
+        final YamlMapping list = new RtYamlInput(
+            new FileInputStream(
+                "src/test/resources/" + filename)
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            list,
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("list", Yaml.createYamlSequenceBuilder()
+                        .add(
+                            Yaml.createYamlScalarBuilder()
+                            .addLine("one")
+                            .addLine("two")
+                            .buildFoldedBlockScalar()
+                        )
+                        .add(
+                            Yaml.createYamlScalarBuilder()
+                            .addLine("three")
+                            .addLine("four")
+                            .buildFoldedBlockScalar()
+                        )
+                        .add(
+                            Yaml.createYamlScalarBuilder()
+                            .addLine("five")
+                            .addLine("six")
+                            .addLine("seven")
+                            .buildFoldedBlockScalar()
+                        )
+                        .build()
+                    )
+                .build()
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
