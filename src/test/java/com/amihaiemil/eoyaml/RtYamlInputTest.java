@@ -1200,6 +1200,43 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 546.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldIterateKeys_issue_546() throws IOException {
+        final String filename = "issue546.yml";
+
+        final YamlMapping read = new RtYamlInput(
+            new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        System.out.println(">>>>>>>");
+        System.out.println(read);
+        System.out.println("<<<<<<<");
+
+        final YamlMapping holders = read.yamlSequence("holders").iterator().next().asMapping();
+        MatcherAssert.assertThat(
+            holders.yamlSequence("array").string(0),
+            Matchers.equalTo("arr3")
+        );
+        MatcherAssert.assertThat(
+            holders.string("value"),
+            Matchers.equalTo("test1")
+        );
+
+        final YamlMapping holders2 = read.yamlSequence("holders2").iterator().next().asMapping();
+        MatcherAssert.assertThat(
+            holders2.string("value"),
+            Matchers.equalTo("test1")
+        );
+        MatcherAssert.assertThat(
+            holders2.yamlSequence("array").string(0),
+            Matchers.equalTo("arr3")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
