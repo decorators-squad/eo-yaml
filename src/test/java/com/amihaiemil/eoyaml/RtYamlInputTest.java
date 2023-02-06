@@ -757,7 +757,7 @@ public final class RtYamlInputTest {
         final String fileContents = readTestResource(filename).trim();
 
         final YamlMapping read = new RtYamlInput(
-                new FileInputStream("src/test/resources/" + filename)
+            new FileInputStream("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
