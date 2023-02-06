@@ -299,6 +299,22 @@ public final class ReadPlainScalarTest {
     }
 
     /**
+     * ReadPlainScalar can return correct value string even if it
+     * contains colons.
+     */
+    @Test
+    public void returnsQuotedStringContainingColonsFromMappingLine() {
+        final Scalar scalar = new ReadPlainScalar(
+            new AllYamlLines(new ArrayList<>()),
+            new RtYamlLine("key: \"value: with: colons:\"", 0)
+        );
+        MatcherAssert.assertThat(
+            scalar.value(),
+            Matchers.equalTo("value: with: colons:")
+        );
+    }
+
+    /**
      * Unit test for toString.
      */
     @Test

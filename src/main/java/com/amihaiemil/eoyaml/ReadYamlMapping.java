@@ -53,7 +53,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * Regex for a key in a mapping.
      */
     private static final Pattern KEY_PATTERN = Pattern.compile(
-        "^-?\\s*((?<key>[^:'\"]+)|(?<keyQ>\".+\")|(?<keySQ>'.+')):(|\\s.*)$"
+        "^-?\\s*((?<key>[^:'\"]+)|\"(?<keyQ>.+)\"|'(?<keySQ>.+)'):(|\\s.*)$"
     );
 
     /**

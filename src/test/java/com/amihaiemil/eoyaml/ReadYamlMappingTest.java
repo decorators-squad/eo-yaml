@@ -1213,4 +1213,31 @@ public final class ReadYamlMappingTest {
             Matchers.equalTo("  line2")
         );
     }
+
+    /**
+     * ReadYamlMapping can return the String mapped to a
+     * String key even if the key contains quoted colons.
+     */
+    @Test
+    public void returnsQuotedStringContainingColonsWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("'namespace:key': \"value:colon\"", 0));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final YamlNode key = map.keys().iterator().next();
+        MatcherAssert.assertThat(key, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            key.asScalar().value(), Matchers.equalTo("namespace:key")
+        );
+        final YamlNode value = map.values().iterator().next();
+        MatcherAssert.assertThat(value, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            value.asScalar().value(), Matchers.equalTo("value:colon")
+        );
+        MatcherAssert.assertThat(
+            map.value("namespace:key").asScalar().value(),
+            Matchers.equalTo("value:colon")
+        );
+
+    }
 }
