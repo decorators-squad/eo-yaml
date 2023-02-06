@@ -37,6 +37,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
@@ -1299,6 +1301,135 @@ public final class RtYamlInputTest {
             filter.string("output"),
             Matchers.equalTo(
                 "${ {vegetables: [.vegetables[] | select(.veggieLike == true)]} }"
+            )
+        );
+    }
+
+    /**
+     * Unit test for issue 542.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/542">#542</a>
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadSequenceOfFoldedBlockScalars() throws IOException {
+        final String filename = "issue_542_seq_folded_blocks.yml";
+        final YamlMapping mapping = new RtYamlInput(
+            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("list").foldedBlockScalar(0),
+            Matchers.equalTo(
+                "    one" + System.lineSeparator()
+                + "    two" + System.lineSeparator())
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("list").foldedBlockScalar(1),
+            Matchers.equalTo(
+                "    three" + System.lineSeparator()
+                + "    four" + System.lineSeparator())
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("list").foldedBlockScalar(2),
+            Matchers.equalTo(
+                "    five" + System.lineSeparator()
+                + "    six" + System.lineSeparator()
+                + "    seven" + System.lineSeparator()
+            )
+        );
+        MatcherAssert.assertThat(
+            mapping.toString(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add(
+                        "list",
+                        Yaml.createYamlSequenceBuilder()
+                            .add(
+                                Yaml.createYamlScalarBuilder()
+                                    .addLine("one")
+                                    .addLine("two")
+                                    .buildFoldedBlockScalar()
+                            )
+                            .add(
+                                Yaml.createYamlScalarBuilder()
+                                    .addLine("three")
+                                    .addLine("four")
+                                    .buildFoldedBlockScalar()
+                            )
+                            .add(
+                                Yaml.createYamlScalarBuilder()
+                                    .addLine("five")
+                                    .addLine("six")
+                                    .addLine("seven")
+                                    .buildFoldedBlockScalar()
+                            )
+                        .build()
+                    ).build().toString()
+            )
+        );
+    }
+
+    /**
+     * Unit test for issue 542.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/542">#542</a>
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadMappingWithMixOfFoldedAndLiteralsScalars()
+        throws IOException {
+        final String filename = "issue_542_seq_folded_blocks_mix.yml";
+        final YamlMapping mapping = new RtYamlInput(
+            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+        MatcherAssert.assertThat(
+            mapping.toString(),
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add(
+                        "list",
+                        Yaml.createYamlSequenceBuilder()
+                            .add(
+                                Yaml.createYamlScalarBuilder()
+                                    .addLine("one")
+                                    .addLine("two")
+                                    .buildFoldedBlockScalar()
+                            )
+                            .add(
+                                Yaml.createYamlScalarBuilder()
+                                    .addLine("three")
+                                    .addLine("four")
+                                    .buildFoldedBlockScalar()
+                            )
+                            .add(
+                                Yaml.createYamlScalarBuilder()
+                                    .addLine("five")
+                                    .addLine("six")
+                                    .addLine("seven")
+                                    .buildFoldedBlockScalar()
+                            )
+                            .build()
+                    ).add(
+                        "other",
+                        Yaml.createYamlScalarBuilder()
+                            .addLine("one")
+                            .addLine("two")
+                            .buildFoldedBlockScalar()
+
+                    ).add(
+                        "another",
+                        Yaml.createYamlScalarBuilder()
+                            .addLine("three")
+                            .addLine("four")
+                            .buildFoldedBlockScalar()
+
+                    ).add(
+                        "anotherBlock",
+                        Yaml.createYamlScalarBuilder()
+                            .addLine("five")
+                            .addLine("six")
+                            .addLine("seven")
+                            .buildLiteralBlockScalar()
+
+                    ).build().toString()
             )
         );
     }

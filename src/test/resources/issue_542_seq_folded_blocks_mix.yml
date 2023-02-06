@@ -1,0 +1,21 @@
+list:
+  - >
+    one
+    two
+  - >
+    three
+    four
+  - >
+    five
+    six
+    seven
+other: >
+  one
+  two
+another: >
+  three
+  four
+anotherBlock: |
+  five
+  six
+  seven
