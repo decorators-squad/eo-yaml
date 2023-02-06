@@ -115,7 +115,7 @@ final class SameIndentationLevel implements YamlLines {
         final String trimmed = dashLine.trimmed();
         final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
             || trimmed.matches("^\\s*-\\s*'.*'$");
-        return trimmed.matches("^\\s*-.*:\\s.+$") && !escapedScalar;
+        return trimmed.matches("^\\s*-.*:(\\s.*)?$") && !escapedScalar;
     }
 
     /**

@@ -3,6 +3,6 @@ holders:
       - arr3
     value: test1
 holders2:
-  - value: test1
-    array:
-      - arr3
+  - value2: test2
+    array2:
+      - arr4
