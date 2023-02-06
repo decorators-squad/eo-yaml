@@ -1236,6 +1236,36 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 547.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadEscapedScalarsProperly()
+        throws IOException {
+        final String filename = "issue_547_escaped_special_chars.yml";
+
+        final YamlMapping read = new RtYamlInput(
+            new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        System.out.println(">>>>>>>>>");
+        System.out.println(read);
+        System.out.println("<<<<<<<<<");
+
+        final YamlMapping filter = read.yamlMapping("filter");
+        MatcherAssert.assertThat(
+            filter.string("input"),
+            Matchers.equalTo("${ {vegetables: .vegetables} }")
+        );
+        MatcherAssert.assertThat(
+            filter.string("output"),
+            Matchers.equalTo(
+                "${ {vegetables: [.vegetables[] | select(.veggieLike == true)]} }"
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
