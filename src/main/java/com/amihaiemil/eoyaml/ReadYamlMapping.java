@@ -42,6 +42,7 @@ import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
  * document start/end markers are ignored. This is assumed
  * to be a plain YAML mapping.
  * @checkstyle CyclomaticComplexity (300 lines)
+ * @checkstyle ExecutableStatementCount (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -132,10 +133,10 @@ final class ReadYamlMapping extends BaseYamlMapping {
         YamlLine prev = new YamlLine.NullYamlLine();
         for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
-            if(trimmed.startsWith(":")
-                || (trimmed.startsWith("-")
-                        && !(prev instanceof YamlLine.NullYamlLine))
-            ) {
+            if(trimmed.startsWith("-")
+                && !(prev instanceof YamlLine.NullYamlLine)) {
+                break;
+            } else if(trimmed.startsWith(":")) {
                 continue;
             } else if ("?".equals(trimmed)) {
                 keys.add(this.significant.toYamlNode(line));

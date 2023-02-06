@@ -1,0 +1,6 @@
+holders:
+  - array:
+      - arr1
+  - array2:
+      - arr2
+    value: test1

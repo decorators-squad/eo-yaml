@@ -1236,6 +1236,45 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 546, second example with accidentally interpolated
+     * mapping in a sequence..
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldIterateKeysWhenMappingStartsAtDashNoInterpolation()
+        throws IOException {
+        final String filename = "issue_546_mapping_starts_at_dash_2.yml";
+
+        final YamlMapping read = new RtYamlInput(
+            new FileInputStream("src/test/resources/" + filename)
+        ).readYamlMapping();
+
+        System.out.println(read);
+
+        final YamlSequence holders = read.yamlSequence("holders");
+        MatcherAssert.assertThat(holders.size(), Matchers.equalTo(2));
+
+        final YamlMapping first = holders.yamlMapping(0);
+        MatcherAssert.assertThat(first.keys().size(), Matchers.equalTo(1));
+        MatcherAssert.assertThat(
+            first.yamlSequence("array").string(0),
+            Matchers.equalTo("arr1")
+        );
+
+        final YamlMapping second = holders.yamlMapping(1);
+        MatcherAssert.assertThat(second.keys().size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(
+            second.yamlSequence("array2").string(0),
+            Matchers.equalTo("arr2")
+        );
+        MatcherAssert.assertThat(
+            second.string("value"),
+            Matchers.equalTo("test1")
+        );
+
+    }
+
+    /**
      * Unit test for issue 547.
      * @throws IOException If something goes wrong.
      */
