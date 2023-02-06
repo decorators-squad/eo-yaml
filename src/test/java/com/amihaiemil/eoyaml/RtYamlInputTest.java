@@ -1248,15 +1248,14 @@ public final class RtYamlInputTest {
             new FileInputStream("src/test/resources/" + filename)
         ).readYamlMapping();
 
-        System.out.println(">>>>>>>>>");
         System.out.println(read);
-        System.out.println("<<<<<<<<<");
 
         final YamlMapping filter = read.yamlMapping("filter");
         MatcherAssert.assertThat(
             filter.string("input"),
             Matchers.equalTo("${ {vegetables: .vegetables} }")
         );
+        //@checkstyle LineLength (5 lines)
         MatcherAssert.assertThat(
             filter.string("output"),
             Matchers.equalTo(

@@ -52,7 +52,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * Regex for a key in a mapping.
      */
     private static final Pattern KEY_PATTERN = Pattern.compile(
-        "^-?\\s*(?<key>.+):(|\\s.*)$"
+        "^-?\\s*((?<key>[^:'\"]+)|(?<keyQ>\".+\")|(?<keySQ>'.+')):(|\\s.*)$"
     );
 
     /**
@@ -145,9 +145,20 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 }
                 final Matcher matcher = KEY_PATTERN.matcher(trimmed);
                 if (matcher.matches()) {
+                    //@checkstyle NestedIfDepth (50 lines)
                     final String key = matcher.group("key");
-                    if (!key.isEmpty()) {
+                    if (key != null && !key.isEmpty()) {
                         keys.add(new PlainStringScalar(key));
+                    } else {
+                        final String keyQ = matcher.group("keyQ");
+                        if (keyQ != null && !keyQ.isEmpty()) {
+                            keys.add(new PlainStringScalar(keyQ));
+                        } else {
+                            final String keySQ = matcher.group("keySQ");
+                            if (keySQ != null && !keySQ.isEmpty()) {
+                                keys.add(new PlainStringScalar(keySQ));
+                            }
+                        }
                     }
                 }
             }
@@ -226,13 +237,13 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     || trimmed.matches("^" + Pattern.quote(relaxedKey) + ":[ ]*\\|[+-]?$")
                 ) {
                     value = this.significant.toYamlNode(line);
-                } else if (trimmed.matches(relaxedKey + ":[ ]*\\{}")) {
+                } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":[ ]*\\{}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
                         line.number(),
                         this.all.line(line.number()),
                         this.all
                     ));
-                } else if (trimmed.matches(relaxedKey + ":[ ]*\\[]")) {
+                } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":[ ]*\\[]")) {
                     value = new EmptyYamlSequence(new ReadYamlSequence(
                             this.all.line(line.number()),
                             this.all
