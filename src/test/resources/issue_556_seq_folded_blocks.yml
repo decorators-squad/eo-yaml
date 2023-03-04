@@ -1,0 +1,19 @@
+id: roomreadings
+version: 1.0
+specVersion: 0.8
+name: Room Temp and Humidity Workflow
+start: ConsumeReading
+states:
+  - name: ConsumeReading
+    type: event
+    end: true
+    onEvents:
+      - eventDataFilter:
+          toStateData: "${ .readings }"
+        actions:
+          - functionRef:
+              refName: LogReading
+        eventRefs:
+          - TemperatureEvent
+          - HumidityEvent
+

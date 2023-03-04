@@ -1435,6 +1435,50 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for issue 556.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/556">#542</a>
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldIterateKeys_issue_556() throws IOException {
+        final String filename = "issue_556_seq_folded_blocks.yml";
+        final YamlMapping mapping = new RtYamlInput(
+                Files.newInputStream(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+
+        YamlSequence states = mapping.value("states").asSequence();
+        MatcherAssert.assertThat(states.size(), Matchers.equalTo(1));
+        YamlMapping state = states.iterator().next().asMapping();
+
+        MatcherAssert.assertThat(state.string("name"), Matchers.equalTo("ConsumeReading"));
+        MatcherAssert.assertThat(state.string("type"), Matchers.equalTo("event"));
+        MatcherAssert.assertThat(state.string("end"), Matchers.equalTo("true"));
+        YamlSequence onEvents = state.value("onEvents").asSequence();
+        MatcherAssert.assertThat(onEvents.size(), Matchers.equalTo(1));
+        YamlMapping event = onEvents.iterator().next().asMapping();
+
+        YamlMapping eventDataFilter = event.value("eventDataFilter").asMapping();
+        MatcherAssert.assertThat(event.keys().size(), Matchers.equalTo(3));
+
+        MatcherAssert.assertThat(eventDataFilter.string("toStateData"), Matchers.equalTo("${ .readings }"));
+        YamlSequence actions = event.value("actions").asSequence();
+        MatcherAssert.assertThat(actions.size(), Matchers.equalTo(1));
+        YamlMapping action = actions.iterator().next().asMapping();
+        YamlMapping functionRef = action.value("functionRef").asMapping();
+        MatcherAssert.assertThat(functionRef.string("refName"), Matchers.equalTo("LogReading"));
+
+        YamlSequence eventRefs = event.value("eventRefs").asSequence();
+        MatcherAssert.assertThat(eventRefs.size(), Matchers.equalTo(2));
+
+        String eventRef1 = eventRefs.iterator().next().asScalar().value();
+        MatcherAssert.assertThat(eventRef1, Matchers.equalTo("TemperatureEvent"));
+
+        String eventRef2 = eventRefs.iterator().next().asScalar().value();
+        MatcherAssert.assertThat(eventRef2, Matchers.equalTo("HumidityEvent"));
+
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
