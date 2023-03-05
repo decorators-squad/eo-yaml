@@ -1,3 +1,5 @@
+gen/
+*.tokens
 .DS_Store
 /.idea
 *.iml
