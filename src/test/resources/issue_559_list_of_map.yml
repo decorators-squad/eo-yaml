@@ -1,0 +1,14 @@
+Chat:
+  #This is a list of maps
+  Announcements:
+    - Sound: CAT_HISS
+      Permission: none
+      list:
+        - a. string
+  list: not actually a list
+  # -------------------------------------------------------------------------------------------------
+  # You can specify broadcasts (how many you want) and
+  # later you can send them to the game with a command.
+  # -------------------------------------------------------------------------------------------------
+  Broadcast:
+    enabled: true

@@ -1499,6 +1499,58 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * Unit test for Issue 559.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadListOfMapProperly()
+        throws IOException {
+        final String filename = "issue_559_list_of_map.yml";
+        final YamlMapping mapping = new RtYamlInput(
+            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+        System.out.println(mapping);
+
+        final YamlMapping chat = mapping.yamlMapping("Chat");
+        MatcherAssert.assertThat(
+            chat.keys(),
+            Matchers.iterableWithSize(3)
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements").size(),
+            Matchers.equalTo(1)
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements")
+                .yamlMapping(0)
+                .string("Sound"),
+            Matchers.equalTo("CAT_HISS")
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements")
+                .yamlMapping(0)
+                .string("Permission"),
+            Matchers.equalTo("none")
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements")
+                .yamlMapping(0)
+                .yamlSequence("list")
+                .string(0),
+            Matchers.equalTo("a. string")
+        );
+        MatcherAssert.assertThat(
+            chat.string("list"),
+            Matchers.equalTo("not actually a list")
+        );
+        MatcherAssert.assertThat(
+            chat.yamlMapping("Broadcast")
+                .string("enabled"),
+            Matchers.equalTo("true")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
