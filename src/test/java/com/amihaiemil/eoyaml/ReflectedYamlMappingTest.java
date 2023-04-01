@@ -81,7 +81,7 @@ public final class ReflectedYamlMappingTest {
      * A reflected mapping reflects the object's values (method returns).
      */
     @Test
-    public void reflectsValuess() {
+    public void reflectsValues() {
         final YamlMapping mapping = new ReflectedYamlMapping(
             new Student("Mihai", "Test", 20, 3.5)
         );
@@ -104,6 +104,46 @@ public final class ReflectedYamlMappingTest {
         MatcherAssert.assertThat(
             mapping.yamlMapping("grades"),
             Matchers.instanceOf(ReflectedYamlMapping.class)
+        );
+    }
+
+    /**
+     * Prints the YAML correctly.
+     */
+    @Test
+    public void printsReflectedYamlMapping() {
+        final YamlMapping mapping = new ReflectedYamlMapping(
+            new Student("Mihai", "Test", 20, 3.5)
+        );
+        final String mappingAsString = mapping.toString();
+        System.out.println(mapping.toString());
+        MatcherAssert.assertThat(
+            mappingAsString.contains("firstName: Mihai"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mappingAsString.contains("lastName: Test"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mappingAsString.contains("age: 20"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mappingAsString.contains("gpa: 3.5"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mappingAsString.contains("grades:"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mappingAsString.contains("  Math: 9"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mappingAsString.contains("  CS: 10"),
+            Matchers.is(true)
         );
     }
 

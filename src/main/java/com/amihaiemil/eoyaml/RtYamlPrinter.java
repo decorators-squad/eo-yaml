@@ -241,14 +241,14 @@ final class RtYamlPrinter implements YamlPrinter {
                     this.indent(scalar.value(), indentation + 2)
                 );
         } else {
+            this.writer.append(
+                this.indent(
+                    new Escaped(scalar).value(),
+                    0
+                )
+            );
             final Comment comment = scalar.comment();
             if(comment instanceof ScalarComment) {
-                this.writer.append(
-                    this.indent(
-                        new Escaped(scalar).value(),
-                        0
-                    )
-                );
                 final ScalarComment scalarComment = (ScalarComment) comment;
 
                 if(!scalarComment.inline().value().isEmpty()) {

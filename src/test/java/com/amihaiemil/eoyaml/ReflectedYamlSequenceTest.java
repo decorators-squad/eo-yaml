@@ -180,6 +180,24 @@ public final class ReflectedYamlSequenceTest {
     }
 
     /**
+     * Prints a reflected sequence of strings properly.
+     */
+    @Test
+    public void printsStringCollection() {
+        final YamlSequence sequence = new ReflectedYamlSequence(
+            Arrays.asList("one", "two", "three")
+        );
+        MatcherAssert.assertThat(
+            sequence.toString(),
+            Matchers.equalTo(
+                "- one" + System.lineSeparator()
+                + "- two" + System.lineSeparator()
+                + "- three"
+            )
+        );
+    }
+
+    /**
      * Use the wrong object to construct a sequence - non-collection or array.
      */
     @Test(expected = IllegalArgumentException.class)
