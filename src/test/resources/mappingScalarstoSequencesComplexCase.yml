@@ -1,0 +1,31 @@
+id: deliverorderworkflow
+name: Deliver Order Workflow
+version: '1.0.0'
+specVersion: '0.8'
+start: Dispatch Courier
+states:
+- name: Dispatch Courier
+  type: operation
+  actions:
+  - functionRef: Dispatch Courrier Function
+  transition: Wait for Order Pickup
+- name: Wait for Order Pickup
+  type: event
+  onEvents:
+  - eventRefs:
+    - Order Picked Up Event
+    eventDataFilter:
+      data: "${ .data.status }"
+      toStateData: "${ .status }"
+    actions:
+    - functionRef: Deliver Order Function
+  transition: Wait for Delivery Confirmation
+- name: Wait for Delivery Confirmation
+  type: event
+  onEvents:
+  - eventRefs:
+    - Order Delievered Event
+    eventDataFilter:
+      data: "${ .data.status }"
+      toStateData: "${ .status }"
+  end: true
