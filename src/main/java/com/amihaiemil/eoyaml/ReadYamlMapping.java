@@ -130,11 +130,10 @@ final class ReadYamlMapping extends BaseYamlMapping {
     @Override
     public Set<YamlNode> keys() {
         final Set<YamlNode> keys = new LinkedHashSet<>();
-        YamlLine prev = new YamlLine.NullYamlLine();
+        YamlLine dashKey = null;
         for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
-            if(trimmed.startsWith("-")
-                && !(prev instanceof YamlLine.NullYamlLine)) {
+            if(trimmed.startsWith("-") && dashKey != null) {
                 break;
             } else if(trimmed.startsWith(":")) {
                 continue;
@@ -146,6 +145,18 @@ final class ReadYamlMapping extends BaseYamlMapping {
                 }
                 final Matcher matcher = KEY_PATTERN.matcher(trimmed);
                 if (matcher.matches()) {
+                    if(trimmed.startsWith("-")) {
+                        dashKey = line;
+                        if(keys.size() > 0) {
+                            dashKey = null;
+                            continue;
+                        }
+                    }
+                    if(dashKey != null
+                        && line.indentation() == dashKey.indentation()
+                        && line.number() != dashKey.number()) {
+                        continue;
+                    }
                     //@checkstyle NestedIfDepth (50 lines)
                     final String key = matcher.group("key");
                     if (key != null && !key.isEmpty()) {
@@ -163,7 +174,6 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     }
                 }
             }
-            prev = line;
         }
         return keys;
     }

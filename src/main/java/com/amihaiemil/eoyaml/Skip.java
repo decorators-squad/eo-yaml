@@ -56,6 +56,7 @@ final class Skip implements YamlLines {
      * Ctor.
      * @param yamlLines The Yaml lines.
      * @param conditions Conditions.
+     *  If a YamlLine meets any of these conditions, it is skipped.
      */
     Skip(final YamlLines yamlLines, final Condition... conditions) {
         this.yamlLines = yamlLines;

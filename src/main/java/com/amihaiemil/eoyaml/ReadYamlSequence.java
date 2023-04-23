@@ -101,6 +101,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
     /**
      * Retrieve the values of this sequence.
      * @checkstyle CyclomaticComplexity (200 lines)
+     * @checkstyle ExecutableStatementCount (300 lines)
      */
     @Override
     public Collection<YamlNode> values() {
@@ -108,6 +109,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
         final boolean foldedSequence = this.previous.trimmed().matches(
             "^.*\\|.*\\-$"
         );
+        boolean innerValueStarted = false;
         for(final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
             if(foldedSequence || trimmed.startsWith("-")) {
@@ -115,6 +117,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     || trimmed.endsWith("|")
                     || trimmed.endsWith(">")
                 ) {
+                    innerValueStarted = true;
                     kids.add(this.significant.toYamlNode(line));
                 } else if (trimmed.matches("^-[ ]*\\{}")) {
                     kids.add(new EmptyYamlMapping(new ReadYamlMapping(
@@ -122,12 +125,15 @@ final class ReadYamlSequence extends BaseYamlSequence {
                         this.all.line(line.number()),
                         this.all
                     )));
+                    innerValueStarted = false;
                 } else if (trimmed.matches("^-[ ]*\\[]")) {
                     kids.add(new EmptyYamlSequence(new ReadYamlSequence(
                             this.all.line(line.number()),
                             this.all
                     )));
+                    innerValueStarted = false;
                 } else {
+                    innerValueStarted = false;
                     if(this.mappingStartsAtDash(line)) {
                         YamlLine dashMapPrevious;
                         if (line.number() == 0) {
@@ -145,6 +151,10 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     } else {
                         kids.add(new ReadPlainScalar(this.all, line));
                     }
+                }
+            } else {
+                if(!innerValueStarted) {
+                    break;
                 }
             }
         }

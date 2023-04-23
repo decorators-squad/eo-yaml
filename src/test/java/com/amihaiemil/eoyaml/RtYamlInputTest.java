@@ -43,8 +43,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Unit tests for {@link RtYamlInput}.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -1501,8 +1499,8 @@ public final class RtYamlInputTest {
     }
 
     /**
-     * Unit test for example 2.3 https://yaml.org/spec/1.2.2/#21-collections
-     * @throws IOException
+     * Unit test for example 2.3 https://yaml.org/spec/1.2.2/#21-collections.
+     * @throws IOException If something goes wrong.
      */
     @Test
     public void mappingScalarstoSequences() throws IOException {
@@ -1518,11 +1516,17 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(national.size(), Matchers.equalTo(3));
     }
 
+    /**
+     * More complex structure for example 2.3.
+     * @throws IOException If something goes wrong.
+     */
     @Test
     public void mappingScalarstoSequencesComplexCase() throws IOException {
         final String filename = "mappingScalarstoSequencesComplexCase.yml";
         final YamlMapping mapping = new RtYamlInput(
-                Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newInputStream(
+                Paths.get("src/test/resources/" + filename)
+            )
         ).readYamlMapping();
 
         MatcherAssert.assertThat(mapping.keys().size(), Matchers.equalTo(6));
@@ -1530,51 +1534,159 @@ public final class RtYamlInputTest {
         MatcherAssert.assertThat(states.size(), Matchers.equalTo(3));
 
         YamlMapping state = states.yamlMapping(0);
-        MatcherAssert.assertThat(state.string("name"), Matchers.equalTo("Dispatch Courier"));
-        MatcherAssert.assertThat(state.string("type"), Matchers.equalTo("operation"));
+        MatcherAssert.assertThat(
+            state.string("name"), Matchers.equalTo("Dispatch Courier")
+        );
+        MatcherAssert.assertThat(
+            state.string("type"), Matchers.equalTo("operation")
+        );
         YamlSequence actions = state.value("actions").asSequence();
         MatcherAssert.assertThat(actions.size(), Matchers.equalTo(1));
         YamlMapping action = actions.iterator().next().asMapping();
         MatcherAssert.assertThat(action.keys().size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(action.string("functionRef"), Matchers.equalTo("Dispatch Courrier Function"));
-        MatcherAssert.assertThat(state.string("transition"), Matchers.equalTo("Wait for Order Pickup"));
+        MatcherAssert.assertThat(
+            action.string("functionRef"),
+            Matchers.equalTo("Dispatch Courrier Function")
+        );
+        MatcherAssert.assertThat(
+            state.string("transition"),
+            Matchers.equalTo("Wait for Order Pickup")
+        );
 
         state = states.yamlMapping(1);
         MatcherAssert.assertThat(state.keys().size(), Matchers.equalTo(4));
-        MatcherAssert.assertThat(state.string("name"), Matchers.equalTo("Wait for Order Pickup"));
-        MatcherAssert.assertThat(state.string("type"), Matchers.equalTo("event"));
+        MatcherAssert.assertThat(
+            state.string("name"),
+            Matchers.equalTo("Wait for Order Pickup")
+        );
+        MatcherAssert.assertThat(
+            state.string("type"),
+            Matchers.equalTo("event")
+        );
         YamlSequence onEvents = state.yamlSequence("onEvents");
         MatcherAssert.assertThat(onEvents.size(), Matchers.equalTo(1));
         YamlMapping onEvent = onEvents.iterator().next().asMapping();
         YamlSequence eventRefs = onEvent.value("eventRefs").asSequence();
         MatcherAssert.assertThat(eventRefs.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(eventRefs.iterator().next().asScalar().value(), Matchers.equalTo("Order Picked Up Event"));
-        YamlMapping eventDataFilter = onEvent.value("eventDataFilter").asMapping();
-        MatcherAssert.assertThat(eventDataFilter.keys().size(), Matchers.equalTo(2));
-        MatcherAssert.assertThat(eventDataFilter.string("data"), Matchers.equalTo("${ .data.status }"));
-        MatcherAssert.assertThat(eventDataFilter.string("toStateData"), Matchers.equalTo("${ .status }"));
-        YamlMapping actions2 = onEvent.value("actions").asSequence().iterator().next().asMapping();
-        MatcherAssert.assertThat(actions2.string("functionRef"), Matchers.equalTo("Deliver Order Function"));
-        MatcherAssert.assertThat(state.string("transition"), Matchers.equalTo("Wait for Delivery Confirmation"));
+        MatcherAssert.assertThat(
+            eventRefs.iterator().next().asScalar().value(),
+            Matchers.equalTo("Order Picked Up Event")
+        );
+        YamlMapping eventDataFilter = onEvent.value("eventDataFilter")
+            .asMapping();
+        MatcherAssert.assertThat(
+            eventDataFilter.keys().size(), Matchers.equalTo(2)
+        );
+        MatcherAssert.assertThat(
+            eventDataFilter.string("data"),
+            Matchers.equalTo("${ .data.status }")
+        );
+        MatcherAssert.assertThat(
+            eventDataFilter.string("toStateData"),
+            Matchers.equalTo("${ .status }")
+        );
+        YamlMapping actionsTwo = onEvent.value("actions").asSequence()
+            .iterator().next().asMapping();
+        MatcherAssert.assertThat(
+            actionsTwo.string("functionRef"),
+            Matchers.equalTo("Deliver Order Function")
+        );
+        MatcherAssert.assertThat(
+            state.string("transition"),
+            Matchers.equalTo("Wait for Delivery Confirmation")
+        );
 
         state = states.yamlMapping(2);
-        MatcherAssert.assertThat(state.string("name"), Matchers.equalTo("Wait for Delivery Confirmation"));
-        MatcherAssert.assertThat(state.string("type"), Matchers.equalTo("event"));
-        YamlSequence onEvents2 = state.yamlSequence("onEvents");
-        MatcherAssert.assertThat(onEvents2.size(), Matchers.equalTo(1));
-        YamlMapping onEvent2 = onEvents2.iterator().next().asMapping();
-        YamlSequence eventRefs2 = onEvent2.value("eventRefs").asSequence();
-        MatcherAssert.assertThat(eventRefs2.size(), Matchers.equalTo(1));
-        MatcherAssert.assertThat(eventRefs2.iterator().next().asScalar().value(), Matchers.equalTo("Order Delievered Event"));
-        YamlMapping eventDataFilter2 = onEvent2.value("eventDataFilter").asMapping();
-        MatcherAssert.assertThat(eventDataFilter2.keys().size(), Matchers.equalTo(2));
-        MatcherAssert.assertThat(eventDataFilter2.string("data"), Matchers.equalTo("${ .data.status }"));
-        MatcherAssert.assertThat(eventDataFilter2.string("toStateData"), Matchers.equalTo("${ .status }"));
-        MatcherAssert.assertThat(state.string("end"), Matchers.equalTo("true"));
+        MatcherAssert.assertThat(
+            state.string("name"),
+            Matchers.equalTo("Wait for Delivery Confirmation")
+        );
+        MatcherAssert.assertThat(
+            state.string("type"),
+            Matchers.equalTo("event")
+        );
+        YamlSequence onEventsTwo = state.yamlSequence("onEvents");
+        MatcherAssert.assertThat(onEventsTwo.size(), Matchers.equalTo(1));
+        YamlMapping onEventTwo = onEventsTwo.iterator().next().asMapping();
+        YamlSequence eventRefsTwo = onEventTwo.value("eventRefs").asSequence();
+        MatcherAssert.assertThat(eventRefsTwo.size(), Matchers.equalTo(1));
+        MatcherAssert.assertThat(
+            eventRefsTwo.iterator().next().asScalar().value(),
+            Matchers.equalTo("Order Delievered Event")
+        );
+        YamlMapping eventDataFilterTwo = onEventTwo.value("eventDataFilter")
+            .asMapping();
+        MatcherAssert.assertThat(
+            eventDataFilterTwo.keys().size(),
+            Matchers.equalTo(2)
+        );
+        MatcherAssert.assertThat(
+            eventDataFilterTwo.string("data"),
+            Matchers.equalTo("${ .data.status }")
+        );
+        MatcherAssert.assertThat(
+            eventDataFilterTwo.string("toStateData"),
+            Matchers.equalTo("${ .status }")
+        );
+        MatcherAssert.assertThat(
+            state.string("end"), Matchers.equalTo("true")
+        );
     }
 
     /**
-     * Unit test for Issue 559.
+     * Unit test for Issue 559. Original ticket indentation.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void shouldReadListOfMapProperlyOriginalIndentation()
+        throws IOException {
+        final String filename = "issue_559_list_of_map_ticket_indentation.yml";
+        final YamlMapping mapping = new RtYamlInput(
+            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+        System.out.println(mapping);
+
+        final YamlMapping chat = mapping.yamlMapping("Chat");
+        MatcherAssert.assertThat(
+            chat.keys(),
+            Matchers.iterableWithSize(3)
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements").size(),
+            Matchers.equalTo(1)
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements")
+                .yamlMapping(0)
+                .string("Sound"),
+            Matchers.equalTo("CAT_HISS")
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements")
+                .yamlMapping(0)
+                .string("Permission"),
+            Matchers.equalTo("none")
+        );
+        MatcherAssert.assertThat(
+            chat.yamlSequence("Announcements")
+                .yamlMapping(0)
+                .yamlSequence("list")
+                .string(0),
+            Matchers.equalTo("a. string")
+        );
+        MatcherAssert.assertThat(
+            chat.string("list"),
+            Matchers.equalTo("not actually a list")
+        );
+        MatcherAssert.assertThat(
+            chat.yamlMapping("Broadcast")
+                .string("enabled"),
+            Matchers.equalTo("true")
+        );
+    }
+
+    /**
+     * Unit test for Issue 559. Properly Indented.
      * @throws IOException If something goes wrong.
      */
     @Test
