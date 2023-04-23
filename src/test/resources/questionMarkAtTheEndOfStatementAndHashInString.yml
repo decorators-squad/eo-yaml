@@ -1,0 +1,11 @@
+version: '1.0.0'
+specVersion: '0.8'
+start:
+  stateName: CheckInbox
+  schedule:
+    cron: 0 0/15 * * * ?
+functions:
+  - name: checkInboxFunction
+    operation: http://myapis.org/inboxapi.json#checkNewMessages
+  - name: sendTextFunction
+    operation: http://myapis.org/inboxapi.json#sendText

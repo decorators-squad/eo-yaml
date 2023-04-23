@@ -1633,6 +1633,38 @@ public final class RtYamlInputTest {
         );
     }
 
+    @Test
+    public void questionMarkAtTheEndOfStatementAndHashInString() throws IOException {
+        final String filename = "questionMarkAtTheEndOfStatementAndHashInString.yml";
+        final YamlMapping mapping = new RtYamlInput(
+                Files.newInputStream(
+                        Paths.get("src/test/resources/" + filename)
+                )
+        ).readYamlMapping();
+
+        MatcherAssert.assertThat(mapping.keys().size(), Matchers.equalTo(4));
+        YamlMapping start = mapping.value("start").asMapping();
+        MatcherAssert.assertThat(start.keys().size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(start.string("stateName"), Matchers.equalTo("CheckInbox"));
+        MatcherAssert.assertThat(start.yamlMapping("schedule").keys().size(), Matchers.equalTo(1));
+        MatcherAssert.assertThat(start.yamlMapping("schedule").string("cron"), Matchers.equalTo("0 0/15 * * * ?"));
+
+        YamlSequence functions = mapping.value("functions").asSequence();
+        MatcherAssert.assertThat(functions.size(), Matchers.equalTo(2));
+
+        YamlMapping function1 = functions.yamlMapping(0);
+        MatcherAssert.assertThat(function1.keys().size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(function1.string("name"), Matchers.equalTo("checkInboxFunction"));
+        MatcherAssert.assertThat(function1.string("operation"), Matchers.equalTo("http://myapis.org/inboxapi.json#checkNewMessages"));
+
+
+        YamlMapping function2 = functions.yamlMapping(1);
+        MatcherAssert.assertThat(function2.keys().size(), Matchers.equalTo(2));
+        MatcherAssert.assertThat(function2.string("name"), Matchers.equalTo("sendTextFunction"));
+        MatcherAssert.assertThat(function2.string("operation"), Matchers.equalTo("http://myapis.org/inboxapi.json#sendText"));
+
+    }
+
     /**
      * Unit test for Issue 559. Original ticket indentation.
      * @throws IOException If something goes wrong.
