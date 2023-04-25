@@ -54,13 +54,13 @@ interface YamlLine extends Comparable<YamlLine> {
      * @todo #374:60min There's a missing condition in this method, removed
      *  as a workaround in Pull Request 375. Debug, find the reason and
      *  implement a better solution for ticket 374. This is rather low prio.
+     * @checkstyle CyclomaticComplexity (100 lines)
      */
     default String trimmed() {
         String trimmed = this.value().trim();
         int i = 0;
         while(i < trimmed.length()) {
             if(i > 0 && trimmed.charAt(i) == '#') {
-                // Comments must be separated from other tokens by white space characters.
                 if(trimmed.charAt(i - 1) == ' ') {
                     trimmed = trimmed.substring(0, i);
                     break;
@@ -153,12 +153,15 @@ interface YamlLine extends Comparable<YamlLine> {
         if("---".equals(this.trimmed())) {
             result = false;
         } else {
-            final String specialCharacters = "-?";
-            final CharSequence prevLineLastChar =
-                this.trimmed().substring(this.trimmed().length() - 1);
-            result = specialCharacters.contains(prevLineLastChar);
-            if(result && prevLineLastChar.charAt(0)  == '?' && this.trimmed().length() > 1) {
-                return false;
+            final String trimmed = this.trimmed();
+            final CharSequence prevLineLastChar = trimmed.substring(
+                trimmed.length() - 1
+            );
+            if(prevLineLastChar.charAt(0)  == '?' && trimmed.length() == 1) {
+                result = true;
+            } else {
+                final String otherSpecialChars = "-";
+                result = otherSpecialChars.contains(prevLineLastChar);
             }
 
 
