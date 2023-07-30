@@ -6,7 +6,7 @@ list:
   -
     # On Map
     martin:
-      name: Martin D'vloper
+      name: "Martin D'vloper"
       job: Developer
       skills:
         - python

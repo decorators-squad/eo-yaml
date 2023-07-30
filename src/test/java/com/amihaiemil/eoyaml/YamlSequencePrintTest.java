@@ -270,6 +270,10 @@ public final class YamlSequencePrintTest {
                     .add("3% reads \"3 per cent\"")
                     .add("@usesReservedIndicator")
                     .add("`usesReservedIndicator")
+                    .add("uses*ReservedIndicator")
+                    .add("uses'ReservedIndicator")
+                    .add("uses\"ReservedIndicator")
+                    .add("usesReservedIndicator!")
                     .build()
             ).build();
         final StringBuilder expected = new StringBuilder();
@@ -283,7 +287,12 @@ public final class YamlSequencePrintTest {
             .append("- \"-15C\"").append(System.lineSeparator())
             .append("- '3% reads \"3 per cent\"'").append(System.lineSeparator())
             .append("- \"@usesReservedIndicator\"").append(System.lineSeparator())
-            .append("- \"`usesReservedIndicator\"");
+            .append("- \"`usesReservedIndicator\"").append(System.lineSeparator())
+            .append("- \"uses*ReservedIndicator\"").append(System.lineSeparator())
+            .append("- \"uses'ReservedIndicator\"").append(System.lineSeparator())
+            .append("- 'uses\"ReservedIndicator'").append(System.lineSeparator())
+            .append("- \"usesReservedIndicator!\"");
+
         MatcherAssert.assertThat(
             map.yamlSequence("sequence").toString(),
             Matchers.equalTo(expected.toString())

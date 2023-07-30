@@ -4,7 +4,7 @@ default_lang: de
 list:
   -
     martin:
-      name: Martin D'vloper
+      name: "Martin D'vloper"
       job: Developer
       skills:
         - python
