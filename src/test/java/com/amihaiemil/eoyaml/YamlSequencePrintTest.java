@@ -46,7 +46,7 @@ import java.io.IOException;
  * but it's better to also have a dedicated test class.
  * @checkstyle LineLength (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id: f0bd2108e5ff4883fcecd5f507ff6875eeee2f7e $
+ * @version $Id$
  * @since 4.0.0
  */
 public final class YamlSequencePrintTest {
