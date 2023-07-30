@@ -46,7 +46,7 @@ import java.io.IOException;
  * but it's better to also have a dedicated test class.
  * @checkstyle LineLength (300 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
- * @version $Id$
+ * @version $Id: f0bd2108e5ff4883fcecd5f507ff6875eeee2f7e $
  * @since 4.0.0
  */
 public final class YamlSequencePrintTest {
@@ -268,6 +268,8 @@ public final class YamlSequencePrintTest {
                     .add("a || b")
                     .add("-15C")
                     .add("3% reads \"3 per cent\"")
+                    .add("@usesReservedIndicator")
+                    .add("`usesReservedIndicator")
                     .build()
             ).build();
         final StringBuilder expected = new StringBuilder();
@@ -279,7 +281,9 @@ public final class YamlSequencePrintTest {
             .append("- \"a>b\"").append(System.lineSeparator())
             .append("- \"a || b\"").append(System.lineSeparator())
             .append("- \"-15C\"").append(System.lineSeparator())
-            .append("- '3% reads \"3 per cent\"'");
+            .append("- '3% reads \"3 per cent\"'").append(System.lineSeparator())
+            .append("- \"@usesReservedIndicator\"").append(System.lineSeparator())
+            .append("- \"`usesReservedIndicator\"");
         MatcherAssert.assertThat(
             map.yamlSequence("sequence").toString(),
             Matchers.equalTo(expected.toString())
