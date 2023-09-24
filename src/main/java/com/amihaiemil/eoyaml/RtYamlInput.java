@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,13 +48,13 @@ final class RtYamlInput implements YamlInput {
     /**
      * Source of the input.
      */
-    private final InputStream source;
+    private final Reader source;
 
     /**
      * Ctor.
      * @param source Given source.
      */
-    RtYamlInput(final InputStream source) {
+    RtYamlInput(final Reader source) {
         this.source = source;
     }
 
@@ -110,11 +111,7 @@ final class RtYamlInput implements YamlInput {
      */
     private AllYamlLines readInput() throws IOException {
         final List<YamlLine> lines = new ArrayList<>();
-        try (
-            BufferedReader reader = new BufferedReader(
-                new InputStreamReader(this.source)
-            )
-        ) {
+        try (BufferedReader reader = new BufferedReader(source)) {
             String line;
             int number = 0;
             while ((line = reader.readLine()) != null) {
