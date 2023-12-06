@@ -68,6 +68,23 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     }
 
     /**
+     * Get the Yaml node from the given index.
+     * @param index Integer index.
+     * @return Yaml node.
+     */
+    default YamlNode yamlNode(final int index) {
+        YamlNode result = null;
+        int count = 0;
+        for (final YamlNode node : this.values()) {
+            if (count == index) {
+                result = node;
+            }
+            count = count + 1;
+        }
+        return result;
+    }
+
+    /**
      * Get the Yaml mapping  from the given index.
      * @param index Integer index.
      * @return Yaml mapping.

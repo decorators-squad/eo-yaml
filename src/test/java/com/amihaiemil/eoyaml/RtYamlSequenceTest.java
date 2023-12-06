@@ -179,6 +179,21 @@ public final class RtYamlSequenceTest {
     }
 
     /**
+     * RtYamlSequence can return a YamlNode.
+     */
+    @Test
+    public void returnsYamlNode() {
+        List<YamlNode> nodes = new LinkedList<>();
+        nodes.add(new PlainStringScalar("test"));
+        nodes.add(Mockito.mock(YamlMapping.class));
+        nodes.add(new PlainStringScalar("mihai"));
+        YamlSequence seq = new RtYamlSequence(nodes);
+        MatcherAssert.assertThat(
+            seq.yamlNode(1), Matchers.notNullValue()
+        );
+    }
+
+    /**
      * RtYamlSequence can return a YamlMapping.
      */
     @Test
