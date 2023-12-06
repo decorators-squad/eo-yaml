@@ -78,8 +78,9 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         for (final YamlNode node : this.values()) {
             if (count == index) {
                 result = node;
+                break;
             }
-            count = count + 1;
+            count++;
         }
         return result;
     }
@@ -94,10 +95,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         YamlMapping mapping = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlMapping) {
-                mapping = (YamlMapping) node;
+            if (count == index) {
+                if (node instanceof YamlMapping) {
+                    mapping = (YamlMapping) node;
+                }
+                break;
             }
-            count = count + 1;
+            count++;
         }
         return mapping;
     }
@@ -110,10 +114,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         YamlSequence sequence = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if (count == index && node instanceof YamlSequence) {
-                sequence = (YamlSequence) node;
+            if (count == index) {
+                if (node instanceof YamlSequence) {
+                    sequence = (YamlSequence) node;
+                }
+                break;
             }
-            count = count + 1;
+            count++;
         }
         return sequence;
     }
@@ -128,8 +135,10 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         String value = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = ((Scalar) node).value();
+            if (count == index) {
+                if (node instanceof Scalar) {
+                    value = ((Scalar) node).value();
+                }
                 break;
             }
             count++;
@@ -146,8 +155,10 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         String value = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = ((Scalar) node).value();
+            if (count == index) {
+                if (node instanceof Scalar) {
+                    value = ((Scalar) node).value();
+                }
                 break;
             }
             count++;
@@ -164,11 +175,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         Collection<String> value = null;
         int count = 0;
         for (final YamlNode node : this.values()) {
-            if(count == index && (node instanceof Scalar)) {
-                value = Arrays.asList(
-                    ((Scalar) node)
-                        .value().split(System.lineSeparator())
-                );
+            if(count == index) {
+                if (node instanceof Scalar) {
+                    value = Arrays.asList(
+                        ((Scalar) node)
+                            .value().split(System.lineSeparator())
+                    );
+                }
                 break;
             }
             count++;
