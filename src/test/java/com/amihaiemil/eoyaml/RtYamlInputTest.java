@@ -27,12 +27,13 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.FileReader;
+import java.io.StringReader;
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -70,8 +71,8 @@ public final class RtYamlInputTest {
             .add("name", "eo-yaml")
             .build();
         YamlMapping read = new RtYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/commentedMapping.yml")
+            new FileReader(
+                "src/test/resources/commentedMapping.yml"
             )
         ).readYamlMapping();
         MatcherAssert.assertThat(
@@ -134,8 +135,8 @@ public final class RtYamlInputTest {
             .build();
         System.out.println(expected);
         YamlMapping actual = new RtYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/indentedComplexMapping.yml")
+            new FileReader(
+                "src/test/resources/indentedComplexMapping.yml"
             )
         ).readYamlMapping();
         MatcherAssert.assertThat(expected, Matchers.equalTo(actual));
@@ -166,8 +167,8 @@ public final class RtYamlInputTest {
             )
             .build();
         final YamlSequence actual = new RtYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/complexSequence.yml")
+            new FileReader(
+                "src/test/resources/complexSequence.yml"
             )
         ).readYamlSequence();
         MatcherAssert.assertThat(
@@ -183,8 +184,8 @@ public final class RtYamlInputTest {
     @Test
     public void readsMappingWithoutDirectivesAndMarkers() throws Exception {
         final YamlMapping mapping = new RtYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/mapping_ignore_directives.yml")
+            new FileReader(
+                "src/test/resources/mapping_ignore_directives.yml"
             )
         ).readYamlMapping();
         final Set<YamlNode> keys = mapping.keys();
@@ -239,8 +240,8 @@ public final class RtYamlInputTest {
     @Test
     public void readsSequenceWithoutDirectivesAndMarkers() throws Exception {
         final YamlSequence sequence = new RtYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/sequence_ignore_directives.yml")
+            new FileReader(
+                "src/test/resources/sequence_ignore_directives.yml"
             )
         ).readYamlSequence();
         final YamlMapping first = sequence.yamlMapping(0);
@@ -304,14 +305,13 @@ public final class RtYamlInputTest {
             .add("peaches")
             .build();
         YamlSequence read = new RtYamlInput(
-            new ByteArrayInputStream(
+            new StringReader(
                 new StringBuilder()
                     .append("---").append(System.lineSeparator())
                     .append("- apples").append(System.lineSeparator())
                     .append("- pears").append(System.lineSeparator())
                     .append("- peaches").append(System.lineSeparator())
                     .toString()
-                    .getBytes()
             )
         ).readYamlSequence();
 
@@ -325,8 +325,8 @@ public final class RtYamlInputTest {
     @Test
     public void readsStreamOfMappings() throws Exception {
         final YamlInput input = Yaml.createYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/streamOfMappings.yml")
+            new FileReader(
+                "src/test/resources/streamOfMappings.yml"
             )
         );
         final YamlStream read = input.readYamlStream();
@@ -344,8 +344,8 @@ public final class RtYamlInputTest {
     @Test
     public void readsStreamOfSequences() throws Exception {
         final YamlInput input = Yaml.createYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/streamOfSequences.yml")
+            new FileReader(
+                "src/test/resources/streamOfSequences.yml"
             )
         );
         final YamlStream read = input.readYamlStream();
@@ -363,8 +363,8 @@ public final class RtYamlInputTest {
     @Test
     public void readsMixedStream() throws Exception {
         final YamlInput input = Yaml.createYamlInput(
-            new FileInputStream(
-                new File("src/test/resources/streamMixed.yml")
+            new FileReader(
+                "src/test/resources/streamMixed.yml"
             )
         );
         final YamlStream read = input.readYamlStream();
@@ -383,10 +383,8 @@ public final class RtYamlInputTest {
     @Test
     public void readsStreamWithoutFirstStartMarker() throws Exception {
         final YamlInput input = Yaml.createYamlInput(
-            new FileInputStream(
-                new File(
-                    "src/test/resources/streamWithoutFirstStartMarker.yml"
-                )
+            new FileReader(
+                "src/test/resources/streamWithoutFirstStartMarker.yml"
             )
         );
         final YamlStream read = input.readYamlStream();
@@ -416,10 +414,8 @@ public final class RtYamlInputTest {
     public void readsStreamWithoutFirstStartMarkerAndComments()
         throws Exception {
         final YamlInput input = Yaml.createYamlInput(
-            new FileInputStream(
-                new File(
-                    "src/test/resources/streamWithComments.yml"
-                )
+            new FileReader(
+                "src/test/resources/streamWithComments.yml"
             )
         );
         final YamlStream read = input.readYamlStream();
@@ -726,7 +722,7 @@ public final class RtYamlInputTest {
         final String fileContents = readTestResource(filename).trim();
 
         final YamlMapping read = new RtYamlInput(
-                new FileInputStream("src/test/resources/" + filename)
+                new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
@@ -759,7 +755,7 @@ public final class RtYamlInputTest {
         final String fileContents = readTestResource(filename).trim();
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
@@ -922,7 +918,7 @@ public final class RtYamlInputTest {
         final String fileContents = readTestResource(filename).trim();
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
@@ -958,7 +954,7 @@ public final class RtYamlInputTest {
         final String fileContents = readTestResource(filename).trim();
 
         final YamlMapping read = new RtYamlInput(
-                new FileInputStream("src/test/resources/" + filename)
+                new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
@@ -988,7 +984,7 @@ public final class RtYamlInputTest {
         final String filename = "issue_517_values_with_colons.yml";
 
         final YamlMapping read = new RtYamlInput(
-                new FileInputStream("src/test/resources/" + filename)
+                new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
@@ -1031,7 +1027,7 @@ public final class RtYamlInputTest {
         final String filename = "emptyLiteralScalar.yml";
 
         final YamlMapping read = new RtYamlInput(
-                new FileInputStream("src/test/resources/" + filename)
+                new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
@@ -1080,7 +1076,7 @@ public final class RtYamlInputTest {
         final String filename = "issue_525_emptyEntries.yml";
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
         MatcherAssert.assertThat(
@@ -1193,7 +1189,7 @@ public final class RtYamlInputTest {
         final String filename = "issue_497_ghost_comment.yml";
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
         MatcherAssert.assertThat(
             read.toString(),
@@ -1211,7 +1207,7 @@ public final class RtYamlInputTest {
         final String filename = "issue_546_mapping_starts_at_dash.yml";
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         final YamlMapping holders = read.yamlSequence("holders")
@@ -1248,7 +1244,7 @@ public final class RtYamlInputTest {
         final String filename = "issue_546_mapping_starts_at_dash_2.yml";
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         System.out.println(read);
@@ -1286,7 +1282,7 @@ public final class RtYamlInputTest {
         final String filename = "issue_547_escaped_special_chars.yml";
 
         final YamlMapping read = new RtYamlInput(
-            new FileInputStream("src/test/resources/" + filename)
+            new FileReader("src/test/resources/" + filename)
         ).readYamlMapping();
 
         System.out.println(read);
@@ -1314,7 +1310,7 @@ public final class RtYamlInputTest {
     public void shouldReadSequenceOfFoldedBlockScalars() throws IOException {
         final String filename = "issue_542_seq_folded_blocks.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
         MatcherAssert.assertThat(
             mapping.yamlSequence("list").foldedBlockScalar(0),
@@ -1378,7 +1374,7 @@ public final class RtYamlInputTest {
         throws IOException {
         final String filename = "issue_542_seq_folded_blocks_mix.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
         MatcherAssert.assertThat(
             mapping.toString(),
@@ -1444,7 +1440,7 @@ public final class RtYamlInputTest {
         throws IOException {
         final String filename = "issue_556_seq_folded_blocks.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
         System.out.println(mapping);
 
@@ -1506,7 +1502,7 @@ public final class RtYamlInputTest {
     public void mappingScalarstoSequences() throws IOException {
         final String filename = "mappingScalarstoSequences.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
 
         MatcherAssert.assertThat(mapping.keys().size(), Matchers.equalTo(2));
@@ -1524,7 +1520,7 @@ public final class RtYamlInputTest {
     public void mappingScalarstoSequencesComplexCase() throws IOException {
         final String filename = "mappingScalarstoSequencesComplexCase.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(
+            Files.newBufferedReader(
                 Paths.get("src/test/resources/" + filename)
             )
         ).readYamlMapping();
@@ -1642,7 +1638,7 @@ public final class RtYamlInputTest {
     public void questionMarkAtTheEndOfStatementAndHash() throws IOException {
         final String filename = "questionMarkAtTheEndOfStatementAndHashInString.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(
+            Files.newBufferedReader(
                 Paths.get("src/test/resources/" + filename)
             )
         ).readYamlMapping();
@@ -1709,7 +1705,7 @@ public final class RtYamlInputTest {
         throws IOException {
         final String filename = "issue_559_list_of_map_ticket_indentation.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
         System.out.println(mapping);
 
@@ -1761,7 +1757,7 @@ public final class RtYamlInputTest {
         throws IOException {
         final String filename = "issue_559_list_of_map.yml";
         final YamlMapping mapping = new RtYamlInput(
-            Files.newInputStream(Paths.get("src/test/resources/" + filename))
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
         System.out.println(mapping);
 

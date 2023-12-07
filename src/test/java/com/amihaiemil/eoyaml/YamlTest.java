@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 
+import java.io.StringReader;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -143,6 +144,19 @@ public final class YamlTest {
         MatcherAssert.assertThat(
             Yaml.createYamlInput(
                 new ByteArrayInputStream("yaml: test".getBytes())
+            ),
+            Matchers.notNullValue()
+        );
+    }
+
+    /**
+     * Yaml can create a YamlInput from a Reader.
+     */
+    @Test
+    public void createsYamlInputFromReader() {
+        MatcherAssert.assertThat(
+            Yaml.createYamlInput(
+                new StringReader("yaml: test")
             ),
             Matchers.notNullValue()
         );

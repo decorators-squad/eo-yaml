@@ -103,7 +103,7 @@ public final class Yaml {
     public static YamlInput createYamlInput(
         final File input
     ) throws FileNotFoundException {
-        return Yaml.createYamlInput(new FileInputStream(input));
+        return Yaml.createYamlInput(new FileReader(input));
     }
 
     /**
@@ -112,7 +112,7 @@ public final class Yaml {
      * @return YamlInput, reader of Yaml.
      */
     public static YamlInput createYamlInput(final String input) {
-        return Yaml.createYamlInput(new ByteArrayInputStream(input.getBytes()));
+        return Yaml.createYamlInput(new StringReader(input));
     }
 
     /**
@@ -121,6 +121,15 @@ public final class Yaml {
      * @return YamlInput, reader of Yaml.
      */
     public static YamlInput createYamlInput(final InputStream input) {
+        return new RtYamlInput(new InputStreamReader(input));
+    }
+
+    /**
+     * Create a {@link YamlInput} from a Reader.
+     * @param input Reader to read from.
+     * @return YamlInput, reader of Yaml.
+     */
+    public static YamlInput createYamlInput(final Reader input) {
         return new RtYamlInput(input);
     }
 
