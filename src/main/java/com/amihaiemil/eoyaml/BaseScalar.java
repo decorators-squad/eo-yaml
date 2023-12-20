@@ -69,7 +69,14 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
      */
     @Override
     public int hashCode() {
-        return this.value().hashCode();
+        final int hashCode;
+        final String value = this.value();
+        if(value == null) {
+            hashCode = 0;
+        } else {
+            hashCode = value.hashCode();
+        }
+        return hashCode;
     }
 
     /**
@@ -98,10 +105,10 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
                 result = 0;
             } else if(value != null && otherVal == null) {
                 result = 1;
-            } else if (value == null && otherVal != null) {
+            } else if (value == null) {
                 result = -1;
             } else {
-                result = this.value().compareTo(otherVal);
+                result = value.compareTo(otherVal);
             }
         }
         return result;

@@ -1,7 +1,6 @@
 package com.amihaiemil.eoyaml;
 
 import javax.json.JsonObject;
-import javax.json.JsonValue;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -36,8 +35,14 @@ final class JsonYamlMapping extends BaseYamlMapping {
 
     @Override
     public YamlNode value(final YamlNode key) {
-        final JsonValue jsonValue = this.object.get(key.asScalar().value());
-        return new JsonYamlDump(jsonValue).dump();
+        final String scalar = key.asScalar().value();
+        final YamlNode value;
+        if(scalar == null) {
+            value = null;
+        } else {
+            value = new JsonYamlDump(this.object.get(scalar)).dump();
+        }
+        return value;
     }
 
     @Override

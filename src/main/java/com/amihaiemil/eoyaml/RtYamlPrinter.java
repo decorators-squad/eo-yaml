@@ -350,7 +350,12 @@ final class RtYamlPrinter implements YamlPrinter {
             alignment.append(" ");
             spaces--;
         }
-        String[] lines = value.split(System.lineSeparator());
+        String[] lines;
+        if(value == null) {
+            lines = new String[]{"null"};
+        } else {
+            lines = value.split(System.lineSeparator());
+        }
         StringBuilder printed = new StringBuilder();
         for(int idx = 0; idx < lines.length; idx++) {
             printed.append(alignment);
@@ -367,6 +372,7 @@ final class RtYamlPrinter implements YamlPrinter {
      * @author Mihai Andronache (amihaiemil@gmail.com)
      * @version $Id$
      * @since 4.3.1
+     * @checkstyle LineLength (100 lines)
      */
     static class Escaped extends BaseScalar {
 
@@ -384,22 +390,25 @@ final class RtYamlPrinter implements YamlPrinter {
         }
 
         @Override
-
-
         public String value() {
             final String value = this.original.value();
-            String escaped = value;
-            boolean quoted = (value.startsWith("'") && value.endsWith("'"))
-                    || (value.startsWith("\"") && value.endsWith("\""));
-            final String regex = ".*[?\\-#:>|$%&{}\\[\\]@`!*,'\"]+.*|[ ]+";
-            if (!quoted && value.matches(regex)) {
-                if(value.contains("\"")) {
-                    escaped = "'" + value + "'";
+            String toEscape;
+            if(value == null) {
+                toEscape = "null";
+            } else {
+                toEscape = value;
+            }
+            boolean alreadyEscaped = (toEscape.startsWith("'") && toEscape.endsWith("'"))
+                    || (toEscape.startsWith("\"") && toEscape.endsWith("\""));
+            final String needsEscaping = ".*[?\\-#:>|$%&{}\\[\\]@`!*,'\"]+.*|[ ]+|null";
+            if (!alreadyEscaped && toEscape.matches(needsEscaping)) {
+                if(toEscape.contains("\"")) {
+                    toEscape = "'" + toEscape + "'";
                 } else {
-                    escaped = "\"" + value + "\"";
+                    toEscape = "\"" + toEscape + "\"";
                 }
             }
-            return escaped;
+            return toEscape;
         }
 
         @Override
