@@ -41,11 +41,26 @@ final class ReflectedYamlScalar extends BaseScalar {
     private final Object scalar;
 
     /**
+     * Comment referring to this scalar.
+     */
+    private final String comment;
+
+    /**
      * Constructor.
      * @param scalar Scalar Object
      */
     ReflectedYamlScalar(final Object scalar) {
+        this(scalar, "");
+    }
+
+    /**
+     * Constructor.
+     * @param scalar Scalar Object
+     * @param comment String comment referring to this Scalar.
+     */
+    ReflectedYamlScalar(final Object scalar, final String comment) {
         this.scalar = scalar;
+        this.comment = comment;
     }
 
     @Override
@@ -69,7 +84,7 @@ final class ReflectedYamlScalar extends BaseScalar {
 
             @Override
             public String value() {
-                return "";
+                return ReflectedYamlScalar.this.comment;
             }
         };
     }

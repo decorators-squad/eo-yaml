@@ -33,6 +33,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Unit tests for {@link ReflectedYamlSequence}.
@@ -180,6 +181,49 @@ public final class ReflectedYamlSequenceTest {
     }
 
     /**
+     * A collection of complex objects can be reflected into a YamlSequence.
+     */
+    @Test
+    public void reflectsObjectCollection() {
+        final YamlSequence sequence = new ReflectedYamlSequence(
+            Arrays.asList(
+                new Student(
+                    "Mihai",
+                    "Test",
+                    20,
+                    3.5,
+                    Arrays.asList("Math", "CS")
+                )
+            )
+        );
+        final YamlMapping firstMapping = sequence.yamlNode(0).asMapping();
+        final List<String> keys = firstMapping.keys().stream().map(
+            key -> ((ReflectedYamlMapping.MethodKey) key).value()
+        ).collect(Collectors.toList());
+        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(6));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("firstName"));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("lastName"));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("age"));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("gpa"));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("grades"));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("classes"));
+
+        MatcherAssert.assertThat(
+            firstMapping.value("classes").comment().value(),
+            Matchers.equalTo("Classes the student is enrolled to.")
+        );
+        MatcherAssert.assertThat(
+            firstMapping.value("grades").comment().value(),
+            Matchers.equalTo("Some grades of the student.")
+        );
+        MatcherAssert.assertThat(
+            firstMapping.value("firstName").comment().value(),
+            Matchers.equalTo("First name of the Student.")
+        );
+        System.out.println(sequence);
+    }
+
+    /**
      * Prints a reflected sequence of strings properly.
      */
     @Test
@@ -203,5 +247,81 @@ public final class ReflectedYamlSequenceTest {
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenWrongObject() {
         new ReflectedYamlSequence("wrong");
+    }
+
+    /**
+     * Simple student pojo for test.
+     * @checkstyle JavadocVariable (100 lines)
+     * @checkstyle JavadocMethod (100 lines)
+     * @checkstyle HiddenField (100 lines)
+     * @checkstyle ParameterNumber (100 lines)
+     * @checkstyle FinalParameters (100 lines)
+     */
+    static final class Student {
+
+        private String firstName;
+        private String lastName;
+        private int age;
+        private double gpa;
+        private Map<String, Integer> grades = new LinkedHashMap<>();
+
+        private List<String> classes;
+
+        Student(
+            String firstName, String lastName,
+            int age, double gpa, List<String> classes
+        ) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.age = age;
+            this.gpa = gpa;
+            this.grades.put("Math", 9);
+            this.grades.put("CS", 10);
+            this.classes = classes;
+        }
+
+        @YamlComment("First name of the Student.")
+        public String getFirstName() {
+            return this.firstName;
+        }
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+        public String getLastName() {
+            return this.lastName;
+        }
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+        public int getAge() {
+            return this.age;
+        }
+        public void setAge(int age) {
+            this.age = age;
+        }
+        public double getGpa() {
+            return this.gpa;
+        }
+        public void setGpa(double gpa) {
+            this.gpa = gpa;
+        }
+
+        @YamlComment("Some grades of the student.")
+        public Map<String, Integer> getGrades() {
+            return this.grades;
+        }
+
+        public void setGrades(Map<String, Integer> grades) {
+            this.grades = grades;
+        }
+
+        @YamlComment("Classes the student is enrolled to.")
+        public List<String> getClasses() {
+            return this.classes;
+        }
+        public void setClasses(List<String> classes) {
+            this.classes = classes;
+        }
+
     }
 }

@@ -64,7 +64,8 @@ public final class ReflectedYamlMappingTest {
     @Test
     public void reflectsKeys() {
         final YamlMapping mapping = new ReflectedYamlMapping(
-            new Student("Mihai", "Test", 20, 3.5, Arrays.asList("Math, CS"))
+            new Student("Mihai", "Test", 20, 3.5, Arrays.asList("Math", "CS")),
+            "Information about a student"
         );
         final List<String> keys = mapping.keys().stream().map(
             key -> ((ReflectedYamlMapping.MethodKey) key).value()
@@ -76,7 +77,44 @@ public final class ReflectedYamlMappingTest {
         MatcherAssert.assertThat(keys, Matchers.hasItem("gpa"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("grades"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("classes"));
+    }
+
+    /**
+     * Comments in a reflected YamlMapping are accessible.
+     */
+    @Test
+    public void reflectsComments() {
+        final YamlMapping mapping = new ReflectedYamlMapping(
+            new Student(
+                "Mihai", "Test", 20, 3.5,
+                Arrays.asList("Math", "CS")
+            ),
+            "Information about a student"
+        );
+        final List<String> keys = mapping.keys().stream().map(
+            key -> ((ReflectedYamlMapping.MethodKey) key).value()
+        ).collect(Collectors.toList());
+        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(6));
         System.out.println(mapping);
+        MatcherAssert.assertThat(
+            mapping.comment().value(),
+            Matchers.equalTo("Information about a student")
+        );
+        mapping.keys().forEach(
+            k -> System.out.println(k.comment().value())
+        );
+        MatcherAssert.assertThat(
+            mapping.value("classes").comment().value(),
+            Matchers.equalTo("Classes the student is enrolled to.")
+        );
+        MatcherAssert.assertThat(
+            mapping.value("grades").comment().value(),
+            Matchers.equalTo("Some grades of the student.")
+        );
+        MatcherAssert.assertThat(
+            mapping.value("firstName").comment().value(),
+            Matchers.equalTo("First name of the Student.")
+        );
     }
 
     /**
@@ -188,6 +226,7 @@ public final class ReflectedYamlMappingTest {
             this.classes = classes;
         }
 
+        @YamlComment("First name of the Student.")
         public String getFirstName() {
             return this.firstName;
         }
@@ -213,6 +252,7 @@ public final class ReflectedYamlMappingTest {
             this.gpa = gpa;
         }
 
+        @YamlComment("Some grades of the student.")
         public Map<String, Integer> getGrades() {
             return this.grades;
         }
@@ -221,6 +261,7 @@ public final class ReflectedYamlMappingTest {
             this.grades = grades;
         }
 
+        @YamlComment("Classes the student is enrolled to.")
         public List<String> getClasses() {
             return this.classes;
         }

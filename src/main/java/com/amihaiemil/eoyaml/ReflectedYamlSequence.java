@@ -46,10 +46,24 @@ final class ReflectedYamlSequence extends BaseYamlSequence {
     private final Collection<Object> sequence;
 
     /**
+     * Comment referring to this sequence.
+     */
+    private final String comment;
+
+    /**
      * Constructor.
      * @param sequence Collection or array of Object.
      */
     ReflectedYamlSequence(final Object sequence) {
+        this(sequence, "");
+    }
+
+    /**
+     * Constructor.
+     * @param sequence Collection or array of Object.
+     * @param comment String comment referring to this sequence.
+     */
+    ReflectedYamlSequence(final Object sequence, final String comment) {
         if(sequence instanceof Collection) {
             this.sequence = (Collection<Object>) sequence;
         } else if(sequence.getClass().isArray()) {
@@ -58,9 +72,10 @@ final class ReflectedYamlSequence extends BaseYamlSequence {
         } else {
             throw new IllegalArgumentException(
                 "YamlSequence can only be reflected "
-              + "from a Collection or from an array."
+                    + "from a Collection or from an array."
             );
         }
+        this.comment = comment;
     }
 
     @Override
@@ -82,7 +97,7 @@ final class ReflectedYamlSequence extends BaseYamlSequence {
 
             @Override
             public String value() {
-                return "";
+                return ReflectedYamlSequence.this.comment;
             }
         };
     }

@@ -54,7 +54,7 @@ final class JsonYamlDump implements YamlDump {
     }
 
     @Override
-    public YamlNode dump() {
+    public YamlNode dump(final String comment) {
         final YamlNode node;
         final JsonValue safeValue;
         if (this.value == null) {

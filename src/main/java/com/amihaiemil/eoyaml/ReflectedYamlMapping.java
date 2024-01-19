@@ -47,10 +47,24 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
     private final Object bean;
 
     /**
+     * Comment of this mapping.
+     */
+    private final String comment;
+
+    /**
      * Constructor.
      * @param bean Serializable get/set Java Bean.
      */
     ReflectedYamlMapping(final Object bean) {
+        this(bean, "");
+    }
+
+    /**
+     * Constructor.
+     * @param bean Serializable get/set Java Bean.
+     * @param comment Comment of this mapping.
+     */
+    ReflectedYamlMapping(final Object bean, final String comment) {
         if(bean instanceof Collection || bean.getClass().isArray()) {
             throw new IllegalArgumentException(
                 "YamlMapping can only be reflected "
@@ -58,6 +72,7 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
             );
         }
         this.bean = bean;
+        this.comment = comment;
     }
 
     @Override
@@ -93,9 +108,17 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
             }
         } else {
             if (key instanceof Scalar) {
-                node = this.objectToYamlNode(
-                    this.invokeMethod(((Scalar) key).value())
-                );
+                final YamlNode reflectedKey = this.keys().stream().filter(
+                    k -> k.asScalar().value().equals(((Scalar) key).value())
+                ).findFirst().orElse(null);
+                if(reflectedKey == null) {
+                    node = null;
+                } else {
+                    node = this.objectToYamlNode(
+                        this.invokeMethod(reflectedKey.asScalar().value()),
+                        reflectedKey.asScalar().comment().value()
+                    );
+                }
             } else {
                 throw new IllegalArgumentException(
                     "Reflected YamlMapping can only have string keys "
@@ -116,7 +139,7 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
 
             @Override
             public String value() {
-                return "";
+                return ReflectedYamlMapping.this.comment;
             }
         };
     }
@@ -155,7 +178,17 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
      * @return YamlNode.
      */
     private YamlNode objectToYamlNode(final Object value) {
-        return Yaml.createYamlDump(value).dump();
+        return this.objectToYamlNode(value, "");
+    }
+
+    /**
+     * Turn a Java Object to an appropriate YAML Node, adding a comment.
+     * @param value Object value.
+     * @param comm String comment.
+     * @return YamlNode.
+     */
+    private YamlNode objectToYamlNode(final Object value, final String comm) {
+        return Yaml.createYamlDump(value).dump(comm);
     }
 
     /**
@@ -207,7 +240,15 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
 
                 @Override
                 public String value() {
-                    return "";
+                    final YamlComment yamlComment = MethodKey.this.method
+                        .getAnnotation(YamlComment.class);
+                    final String value;
+                    if(yamlComment == null) {
+                        value = "";
+                    } else {
+                        value = yamlComment.value();
+                    }
+                    return value;
                 }
             };
         }

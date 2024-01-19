@@ -62,14 +62,14 @@ final class ReflectedYamlDump implements YamlDump {
     }
 
     @Override
-    public YamlNode dump() {
+    public YamlNode dump(final String comment) {
         final YamlNode node;
         if(this.object == null || SCALAR_TYPES.contains(this.object.getClass())) {
-            node = new ReflectedYamlScalar(this.object);
+            node = new ReflectedYamlScalar(this.object, comment);
         } else if(this.object instanceof Collection || this.object.getClass().isArray()){
-            node = new ReflectedYamlSequence(this.object);
+            node = new ReflectedYamlSequence(this.object, comment);
         } else {
-            node = new ReflectedYamlMapping(this.object);
+            node = new ReflectedYamlMapping(this.object, comment);
         }
         return node;
     }

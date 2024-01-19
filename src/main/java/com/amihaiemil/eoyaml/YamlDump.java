@@ -36,7 +36,19 @@ package com.amihaiemil.eoyaml;
 public interface YamlDump {
 
     /**
-     *
+     * Dump an Object, represent it as YAML.
+     * Generally, if the Object is a Collection or on Array, the resulting
+     * YamlNode will be a YamlSequence.<br><br>
+     * If the Object is a Map or other kind of Object, the resulting
+     * YamlNode will be a YamlSequence.<br><br>
+     * If the Object is a String, LocalDate, LocaDateTime or a primitive,
+     * the resulting YamlNode will be a plain Scalar.
+     * @param comment String comment.
+     * @return YAML Representation.
+     */
+    YamlNode dump(final String comment);
+
+    /**
      * Dump an Object, represent it as YAML.
      * Generally, if the Object is a Collection or on Array, the resulting
      * YamlNode will be a YamlSequence.<br><br>
@@ -46,7 +58,9 @@ public interface YamlDump {
      * the resulting YamlNode will be a plain Scalar.
      * @return YAML Representation.
      */
-    YamlNode dump();
+    default YamlNode dump() {
+        return this.dump("");
+    }
 
     /**
      * Convenience method, equivalent to calling the
@@ -54,7 +68,7 @@ public interface YamlDump {
      * @return YamlMapping.
      */
     default YamlMapping dumpMapping() {
-        return (YamlMapping) this.dump();
+        return this.dumpMapping("");
     }
 
     /**
@@ -63,7 +77,7 @@ public interface YamlDump {
      * @return YamlSequence.
      */
     default YamlSequence dumpSequence() {
-        return (YamlSequence) this.dump();
+        return this.dumpSequence("");
     }
 
     /**
@@ -72,7 +86,37 @@ public interface YamlDump {
      * @return Scalar.
      */
     default Scalar dumpScalar() {
-        return (Scalar) this.dump();
+        return this.dumpScalar("");
+    }
+
+    /**
+     * Convenience method, equivalent to calling the
+     * dump(...) method and casting the YamlNode to YamlMapping.
+     * @param comment String comment referring to the mapping.
+     * @return YamlMapping.
+     */
+    default YamlMapping dumpMapping(final String comment) {
+        return (YamlMapping) this.dump(comment);
+    }
+
+    /**
+     * Convenience method, equivalent to calling the
+     * dump(...) method and casting the YamlNode to YamlSequence.
+     * @param comment String comment referring to the sequence.
+     * @return YamlSequence.
+     */
+    default YamlSequence dumpSequence(final String comment) {
+        return (YamlSequence) this.dump(comment);
+    }
+
+    /**
+     * Convenience method, equivalent to calling the
+     * dump(...) method and casting the YamlNode to Scalar.
+     * @param comment String comment referring to the scalar.
+     * @return Scalar.
+     */
+    default Scalar dumpScalar(final String comment) {
+        return (Scalar) this.dump(comment);
     }
 
 }
