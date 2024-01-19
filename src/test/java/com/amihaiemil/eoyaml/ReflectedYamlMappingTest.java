@@ -64,17 +64,19 @@ public final class ReflectedYamlMappingTest {
     @Test
     public void reflectsKeys() {
         final YamlMapping mapping = new ReflectedYamlMapping(
-            new Student("Mihai", "Test", 20, 3.5)
+            new Student("Mihai", "Test", 20, 3.5, Arrays.asList("Math, CS"))
         );
         final List<String> keys = mapping.keys().stream().map(
             key -> ((ReflectedYamlMapping.MethodKey) key).value()
         ).collect(Collectors.toList());
-        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(5));
+        MatcherAssert.assertThat(keys.size(), Matchers.equalTo(6));
         MatcherAssert.assertThat(keys, Matchers.hasItem("firstName"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("lastName"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("age"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("gpa"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("grades"));
+        MatcherAssert.assertThat(keys, Matchers.hasItem("classes"));
+        System.out.println(mapping);
     }
 
     /**
@@ -83,7 +85,7 @@ public final class ReflectedYamlMappingTest {
     @Test
     public void reflectsValues() {
         final YamlMapping mapping = new ReflectedYamlMapping(
-            new Student("Mihai", "Test", 20, 3.5)
+            new Student("Mihai", "Test", 20, 3.5, Arrays.asList("Math, CS"))
         );
         MatcherAssert.assertThat(
             mapping.string("firstName"),
@@ -113,7 +115,7 @@ public final class ReflectedYamlMappingTest {
     @Test
     public void printsReflectedYamlMapping() {
         final YamlMapping mapping = new ReflectedYamlMapping(
-            new Student("Mihai", "Test", 20, 3.5)
+            new Student("Mihai", "Test", 20, 3.5, Arrays.asList("Math, CS"))
         );
         final String mappingAsString = mapping.toString();
         System.out.println(mapping.toString());
@@ -171,9 +173,11 @@ public final class ReflectedYamlMappingTest {
         private double gpa;
         private Map<String, Integer> grades = new LinkedHashMap<>();
 
+        private List<String> classes;
+
         Student(
             String firstName, String lastName,
-            int age, double gpa
+            int age, double gpa, List<String> classes
         ) {
             this.firstName = firstName;
             this.lastName = lastName;
@@ -181,6 +185,7 @@ public final class ReflectedYamlMappingTest {
             this.gpa = gpa;
             this.grades.put("Math", 9);
             this.grades.put("CS", 10);
+            this.classes = classes;
         }
 
         public String getFirstName() {
@@ -214,6 +219,13 @@ public final class ReflectedYamlMappingTest {
 
         public void setGrades(Map<String, Integer> grades) {
             this.grades = grades;
+        }
+
+        public List<String> getClasses() {
+            return this.classes;
+        }
+        public void setClasses(List<String> classes) {
+            this.classes = classes;
         }
 
     }
