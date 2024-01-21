@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.io.IOException;
 import java.io.StringWriter;
 
 /**
@@ -83,7 +84,10 @@ public class YamlPrintVisitor implements YamlVisitor<String>{
     @Override
     public String visitYamlMapping(final YamlMapping node) {
         final StringWriter writer = new StringWriter();
+        writer.append(this.printPossibleComment(node));
         for (final YamlNode key : node.keys()) {
+            final YamlNode value = node.value(key);
+            writer.append(this.printPossibleComment(value));
             if(key.type().equals(Node.SCALAR)) {
                 writer.append(this.visitYamlNode(key));
             } else {
@@ -93,7 +97,6 @@ public class YamlPrintVisitor implements YamlVisitor<String>{
                 writer.append(this.lineSeparator);
             }
             writer.append(": ");
-            final YamlNode value = node.value(key);
             if(value.type().equals(Node.SCALAR)) {
                 writer.append(this.visitYamlNode(value));
             } else {
@@ -111,6 +114,7 @@ public class YamlPrintVisitor implements YamlVisitor<String>{
     public String visitYamlSequence(final YamlSequence node) {
         final StringWriter writer = new StringWriter();
         for(final YamlNode value : node.values()) {
+            writer.append(this.printPossibleComment(value));
             writer.append("- ");
             if(value.type().equals(Node.SCALAR)) {
                 writer.append(this.visitYamlNode(value));
@@ -127,7 +131,18 @@ public class YamlPrintVisitor implements YamlVisitor<String>{
 
     @Override
     public String visitScalar(final Scalar node) {
-        return new Escaped(node).value();
+        final StringWriter writer = new StringWriter();
+        writer.append(new Escaped(node).value());
+        final Comment comment = node.comment();
+        if(comment instanceof ScalarComment) {
+            final ScalarComment scalarComment = (ScalarComment) comment;
+            if(!scalarComment.inline().value().isEmpty()) {
+                writer.append(" # ").append(
+                    scalarComment.inline().value()
+                );
+            }
+        }
+        return writer.toString();
     }
 
     @Override
@@ -196,6 +211,37 @@ public class YamlPrintVisitor implements YamlVisitor<String>{
         }
         final String str = indented.toString();
         return str.substring(0, str.length() - 1);
+    }
+
+    /**
+     * Print a comment. Make sure to split the lines if there are more
+     * lines separated by NewLine and also add a '# ' in front of each
+     * line.
+     * @param node Node containing the Comment.
+     * @return Printed comment.
+     * @throws IOException If any I/O problem occurs.
+     */
+    private String printPossibleComment(final YamlNode node) {
+        final StringWriter writer = new StringWriter();
+        if(node != null && node.comment() != null) {
+            final Comment tmpComment;
+            if(node.comment() instanceof ScalarComment) {
+                tmpComment = ((ScalarComment) node.comment()).above();
+            } else {
+                tmpComment = node.comment();
+            }
+            final String com = tmpComment.value();
+            if (com.trim().length() != 0) {
+                String[] lines = com.split(this.lineSeparator);
+                for (final String line : lines) {
+                    writer
+                        .append("# ")
+                        .append(line)
+                        .append(this.lineSeparator);
+                }
+            }
+        }
+        return writer.toString();
     }
 
     /**

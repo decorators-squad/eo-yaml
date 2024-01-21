@@ -71,12 +71,18 @@ public final class YamlMappingCommentsPrintTest {
                     .buildPlainScalar("name of the project")
             ).build("Comment of the whole document");
         System.out.println(commented);
+        System.out.println("***************");
         MatcherAssert.assertThat(
             commented.toString(),
             Matchers.equalTo(
                 this.readExpected("commentedMapping.yml")
             )
         );
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = commented.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
     }
 
     /**
