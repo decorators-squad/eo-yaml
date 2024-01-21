@@ -455,12 +455,11 @@ public final class RtYamlMappingTest {
 
     /**
      * An empty RtYamlMapping can be printed.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void printsEmptyYaml() throws Exception {
+    public void printsEmptyYaml() {
         YamlMapping yaml = Yaml.createYamlMappingBuilder().build();
-        MatcherAssert.assertThat(yaml.toString(), Matchers.isEmptyString());
+        MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo("{}"));
     }
 
     /**

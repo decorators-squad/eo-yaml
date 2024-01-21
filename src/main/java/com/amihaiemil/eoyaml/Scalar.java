@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Yaml Scalar.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -46,4 +49,9 @@ public interface Scalar extends YamlNode {
      *  supposed to be.
      */
     String value();
+
+    @Override
+    default List<YamlNode> children() {
+        return new ArrayList<>();
+    }
 }

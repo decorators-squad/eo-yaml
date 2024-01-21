@@ -461,4 +461,14 @@ public interface YamlMapping extends YamlNode {
         }
         return null;
     }
+
+    @Override
+    default List<YamlNode> children() {
+        final List<YamlNode> children = new ArrayList<>();
+        for (final YamlNode key : this.keys()) {
+            children.add(key);
+            children.add(this.value(key));
+        }
+        return children;
+    }
 }

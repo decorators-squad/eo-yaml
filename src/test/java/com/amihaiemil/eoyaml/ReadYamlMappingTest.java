@@ -856,11 +856,11 @@ public final class ReadYamlMappingTest {
      * @throws Exception if something goes wrong
      */
     @Test
-    public void printsEmptyYaml() throws Exception {
+    public void printsEmptyYaml() {
         final YamlMapping map = new ReadYamlMapping(
-            new AllYamlLines(new ArrayList<YamlLine>())
+            new AllYamlLines(new ArrayList<>())
         );
-        MatcherAssert.assertThat(map.toString(), Matchers.isEmptyString());
+        MatcherAssert.assertThat(map.toString(), Matchers.equalTo("{}"));
     }
 
     /**

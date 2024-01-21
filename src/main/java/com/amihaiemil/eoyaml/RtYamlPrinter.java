@@ -39,6 +39,7 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.3.1
+ * @todo #594:30min Refactor this class to use {@link YamlPrintVisitor}.
  */
 final class RtYamlPrinter implements YamlPrinter {
 

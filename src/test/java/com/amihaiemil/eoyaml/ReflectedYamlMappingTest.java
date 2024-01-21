@@ -100,9 +100,6 @@ public final class ReflectedYamlMappingTest {
             mapping.comment().value(),
             Matchers.equalTo("Information about a student")
         );
-        mapping.keys().forEach(
-            k -> System.out.println(k.comment().value())
-        );
         MatcherAssert.assertThat(
             mapping.value("classes").comment().value(),
             Matchers.equalTo("Classes the student is enrolled to.")

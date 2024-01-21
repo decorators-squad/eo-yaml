@@ -30,9 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * A Yaml sequence.
@@ -48,6 +46,11 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * @return Collection of {@link YamlNode}
      */
     Collection<YamlNode> values();
+
+    @Override
+    default List<YamlNode> children() {
+        return new ArrayList<>(this.values());
+    }
 
     /**
      * Returns this YamlSequence's children Iterator.<br><br>

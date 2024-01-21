@@ -366,10 +366,9 @@ public final class BuiltYamlStreamTest {
 
     /**
      * BuiltYamlStreams can hold an empty stream.
-     * @throws Exception If something goes wrong.
      */
     @Test
-    public void builtEmptyStream() throws Exception {
+    public void builtEmptyStream() {
         final YamlStream mappings = Yaml.createYamlStreamBuilder().build();
         MatcherAssert.assertThat(mappings, Matchers.notNullValue());
         MatcherAssert.assertThat(mappings, Matchers.instanceOf(Stream.class));
@@ -378,7 +377,7 @@ public final class BuiltYamlStreamTest {
         );
         MatcherAssert.assertThat(
             mappings.toString(),
-            Matchers.isEmptyString()
+            Matchers.equalTo("---" + System.lineSeparator() + "...")
         );
     }
 

@@ -303,12 +303,11 @@ public final class RtYamlSequenceTest {
 
     /**
      * An empty YamlSequecne can be printed.
-     * @throws Exception if something goes wrong
      */
     @Test
-    public void printsEmptyYamlSequence() throws Exception {
+    public void printsEmptyYamlSequence() {
         YamlSequence seq = Yaml.createYamlSequenceBuilder().build();
-        MatcherAssert.assertThat(seq.toString(), Matchers.isEmptyString());
+        MatcherAssert.assertThat(seq.toString(), Matchers.equalTo("[]"));
     }
 
     /**

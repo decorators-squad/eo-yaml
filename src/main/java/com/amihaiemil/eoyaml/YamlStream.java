@@ -54,6 +54,11 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
      */
     Collection<YamlNode> values();
 
+    @Override
+    default List<YamlNode> children() {
+        return new ArrayList<>(this.values());
+    }
+
     default Comment comment() {
         return new BuiltComment(this, "");
     }
@@ -218,6 +223,4 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
     default Optional<YamlNode> findAny() {
         return this.values().stream().findAny();
     }
-
-
 }

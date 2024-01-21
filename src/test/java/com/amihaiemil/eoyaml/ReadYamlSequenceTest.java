@@ -478,11 +478,11 @@ public final class ReadYamlSequenceTest {
      * @throws Exception if something goes wrong
      */
     @Test
-    public void printsEmptyYaml() throws Exception {
+    public void printsEmptyYaml() {
         final YamlSequence sequence = new ReadYamlSequence(
-            new AllYamlLines(new ArrayList<YamlLine>())
+            new AllYamlLines(new ArrayList<>())
         );
-        MatcherAssert.assertThat(sequence.toString(), Matchers.isEmptyString());
+        MatcherAssert.assertThat(sequence.toString(), Matchers.equalTo("[]"));
     }
 
     /**
