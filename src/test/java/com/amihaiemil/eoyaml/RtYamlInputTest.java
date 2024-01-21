@@ -1433,6 +1433,11 @@ public final class RtYamlInputTest {
                     ).build().toString()
             )
         );
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = mapping.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
     }
 
     /**

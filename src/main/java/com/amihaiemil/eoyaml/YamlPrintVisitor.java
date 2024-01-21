@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 /**
  * Visitor which prints the YAML in block format.
@@ -132,14 +133,47 @@ public class YamlPrintVisitor implements YamlVisitor<String>{
     @Override
     public String visitScalar(final Scalar node) {
         final StringWriter writer = new StringWriter();
-        writer.append(new Escaped(node).value());
-        final Comment comment = node.comment();
-        if(comment instanceof ScalarComment) {
-            final ScalarComment scalarComment = (ScalarComment) comment;
-            if(!scalarComment.inline().value().isEmpty()) {
-                writer.append(" # ").append(
-                    scalarComment.inline().value()
+        if (node instanceof BaseFoldedScalar) {
+            final BaseFoldedScalar foldedScalar = (BaseFoldedScalar) node;
+            writer.append(">");
+            if(!node.comment().value().isEmpty()) {
+                writer.append(" # ").append(node.comment().value());
+            }
+            writer.append(this.lineSeparator);
+            final List<String> unfolded = foldedScalar.unfolded();
+            for(int idx = 0; idx < unfolded.size(); idx++) {
+                writer.append(
+                    this.indent(
+                        unfolded.get(idx).trim(),
+                        indentation
+                    )
                 );
+                if(idx < unfolded.size() - 1) {
+                    writer.append(this.lineSeparator);
+                }
+            }
+        } else if (node instanceof RtYamlScalarBuilder.BuiltLiteralBlockScalar
+            || node instanceof ReadLiteralBlockScalar
+        ) {
+            writer.append("|");
+            if(!node.comment().value().isEmpty()) {
+                writer.append(" # ").append(node.comment().value());
+            }
+            writer
+                .append(this.lineSeparator)
+                .append(
+                    this.indent(node.value(), indentation)
+                );
+        } else {
+            writer.append(new Escaped(node).value());
+            final Comment comment = node.comment();
+            if (comment instanceof ScalarComment) {
+                final ScalarComment scalarComment = (ScalarComment) comment;
+                if (!scalarComment.inline().value().isEmpty()) {
+                    writer.append(" # ").append(
+                        scalarComment.inline().value()
+                    );
+                }
             }
         }
         return writer.toString();
