@@ -27,8 +27,10 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Base YamlStream which all implementations should extend.
@@ -128,5 +130,10 @@ abstract class BaseYamlStream extends BaseYamlNode implements YamlStream {
     @Override
     public final boolean isEmpty() {
         return this.values().isEmpty();
+    }
+
+    @Override
+    public final List<YamlNode> children() {
+        return new ArrayList<>(this.values());
     }
 }

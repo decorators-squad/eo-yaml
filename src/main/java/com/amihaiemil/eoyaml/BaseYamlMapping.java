@@ -142,4 +142,14 @@ public abstract class BaseYamlMapping
     public final boolean isEmpty() {
         return this.keys().isEmpty();
     }
+
+    @Override
+    public final List<YamlNode> children() {
+        final List<YamlNode> children = new ArrayList<>();
+        for (final YamlNode key : this.keys()) {
+            children.add(key);
+            children.add(this.value(key));
+        }
+        return children;
+    }
 }

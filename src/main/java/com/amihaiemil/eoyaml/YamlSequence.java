@@ -271,4 +271,9 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
         }
         return datetime;
     }
+
+    @Override
+    default <T> T accept(YamlVisitor<? extends T> visitor) {
+        return visitor.visitYamlSequence(this);
+    }
 }

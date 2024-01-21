@@ -95,14 +95,14 @@ public final class ReflectedYamlMappingTest {
             key -> ((ReflectedYamlMapping.MethodKey) key).value()
         ).collect(Collectors.toList());
         MatcherAssert.assertThat(keys.size(), Matchers.equalTo(6));
-        System.out.println(mapping);
+//        System.out.println(mapping);
         MatcherAssert.assertThat(
             mapping.comment().value(),
             Matchers.equalTo("Information about a student")
         );
-        mapping.keys().forEach(
-            k -> System.out.println(k.comment().value())
-        );
+//        mapping.keys().forEach(
+//            k -> System.out.println(k.comment().value())
+//        );
         MatcherAssert.assertThat(
             mapping.value("classes").comment().value(),
             Matchers.equalTo("Classes the student is enrolled to.")
@@ -115,6 +115,14 @@ public final class ReflectedYamlMappingTest {
             mapping.value("firstName").comment().value(),
             Matchers.equalTo("First name of the Student.")
         );
+
+//        System.out.println("OLD PRINTER: ");
+//        System.out.println(mapping);
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = mapping.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
     }
 
     /**

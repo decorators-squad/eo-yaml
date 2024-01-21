@@ -368,11 +368,16 @@ public final class RtYamlInputTest {
             )
         );
         final YamlStream read = input.readYamlStream();
-        System.out.print(read);
+//        System.out.print(read);
         MatcherAssert.assertThat(
             read.toString(),
             Matchers.equalTo(this.readTestResource("streamMixed.yml"))
         );
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = read.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
     }
 
     /**
@@ -1442,7 +1447,12 @@ public final class RtYamlInputTest {
         final YamlMapping mapping = new RtYamlInput(
             Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
         ).readYamlMapping();
-        System.out.println(mapping);
+//        System.out.println(mapping);
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = mapping.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
 
         YamlSequence states = mapping.value("states").asSequence();
         MatcherAssert.assertThat(states.size(), Matchers.equalTo(1));

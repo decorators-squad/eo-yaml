@@ -46,4 +46,9 @@ public interface Scalar extends YamlNode {
      *  supposed to be.
      */
     String value();
+
+    @Override
+    default <T> T accept(YamlVisitor<? extends T> visitor) {
+        return visitor.visitScalar(this);
+    }
 }

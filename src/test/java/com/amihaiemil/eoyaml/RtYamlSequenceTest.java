@@ -336,6 +336,11 @@ public final class RtYamlSequenceTest {
             .build();
         String expected = this.readTestResource("complexSequence.yml");
         MatcherAssert.assertThat(seq.toString(), Matchers.equalTo(expected));
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = seq.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
     }
 
     /**

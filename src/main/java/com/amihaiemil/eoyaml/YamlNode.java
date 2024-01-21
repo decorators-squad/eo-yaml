@@ -29,6 +29,8 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 
+import java.util.List;
+
 /**
  * YAML node.
  * @author Mihai Andronache (amihaiemil@gmail.com)
@@ -109,5 +111,22 @@ public interface YamlNode extends Comparable<YamlNode> {
      */
     <T extends YamlNode> T asClass(Class<T> clazz, Node type)
         throws YamlReadingException, ClassCastException;
+
+    /**
+     * Return the children of this node. If the list is empty, it means it's a
+     * terminal node.
+     * @return List of children, never null.
+     */
+    List<YamlNode> children();
+
+    /**
+     * Accept a YamlVisitor.
+     * @param visitor Visitor.
+     * @return Result of the visit.
+     * @param <T> Type of the result.
+     */
+    default <T> T accept(YamlVisitor<? extends T> visitor) {
+        return visitor.visitYamlNode(this);
+    }
 
 }

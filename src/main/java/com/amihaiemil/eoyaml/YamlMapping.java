@@ -461,4 +461,9 @@ public interface YamlMapping extends YamlNode {
         }
         return null;
     }
+
+    @Override
+    default <T> T accept(YamlVisitor<? extends T> visitor) {
+        return visitor.visitYamlMapping(this);
+    }
 }

@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Base Yaml Scalar which all implementations of Scalar should extend.
  * It implementing toString(), equals, hashcode and compareTo methods.
@@ -117,5 +120,10 @@ abstract class BaseScalar extends BaseYamlNode implements Scalar {
     @Override
     public final boolean isEmpty() {
         return this.value() == null || this.value().isEmpty();
+    }
+
+    @Override
+    public final List<YamlNode> children() {
+        return new ArrayList<>();
     }
 }

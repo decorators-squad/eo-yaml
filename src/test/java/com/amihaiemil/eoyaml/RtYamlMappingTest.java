@@ -449,6 +449,11 @@ public final class RtYamlMappingTest {
                     .build()
             )
             .build();
+        System.out.println("-------------- VISITOR PRING ----------------");
+        final YamlVisitor<String> visitor = new YamlPrintVisitor();
+        String print = yaml.accept(visitor);
+        System.out.println(print);
+        System.out.println("-------------- END VISITOR PRING -------------");
         String expected = this.readTestResource("complexMapping.yml");
         MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
     }

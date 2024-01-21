@@ -128,4 +128,9 @@ public abstract class BaseYamlSequence
     public final boolean isEmpty() {
         return this.values().isEmpty();
     }
+
+    @Override
+    public final List<YamlNode> children() {
+        return new ArrayList<>(this.values());
+    }
 }

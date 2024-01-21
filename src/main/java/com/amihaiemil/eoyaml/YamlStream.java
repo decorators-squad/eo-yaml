@@ -219,5 +219,8 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
         return this.values().stream().findAny();
     }
 
-
+    @Override
+    default <T> T accept(YamlVisitor<? extends T> visitor) {
+        return visitor.visitYamlStream(this);
+    }
 }
