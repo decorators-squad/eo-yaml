@@ -37,7 +37,7 @@ import java.util.List;
  * @checkstyle ExecutableStatementCount (1000 lines)
  * @since 7.2.0
  */
-public final class YamlPrintVisitor implements YamlVisitor<String> {
+final class YamlPrintVisitor implements YamlVisitor<String> {
 
     /**
      * How many indentation spaces to use?
@@ -52,7 +52,7 @@ public final class YamlPrintVisitor implements YamlVisitor<String> {
     /**
      * Ctor. Defaults to indentation 2 and the System line separator.
      */
-    public YamlPrintVisitor() {
+    YamlPrintVisitor() {
         this(2, System.lineSeparator());
     }
 
@@ -60,7 +60,7 @@ public final class YamlPrintVisitor implements YamlVisitor<String> {
      * Ctor.
      * @param indentation Number of indentation spaces.
      */
-    public YamlPrintVisitor(final int indentation) {
+    YamlPrintVisitor(final int indentation) {
         this(indentation, System.lineSeparator());
     }
 
@@ -68,7 +68,7 @@ public final class YamlPrintVisitor implements YamlVisitor<String> {
      * Ctor.
      * @param lineSeparator Line separator.
      */
-    public YamlPrintVisitor(final String lineSeparator) {
+    YamlPrintVisitor(final String lineSeparator) {
         this(2, lineSeparator);
     }
 
@@ -77,7 +77,7 @@ public final class YamlPrintVisitor implements YamlVisitor<String> {
      * @param indentation Number of spaces to use for indentation.
      * @param lineSeparator Line separator.
      */
-    public YamlPrintVisitor(final int indentation, final String lineSeparator) {
+    YamlPrintVisitor(final int indentation, final String lineSeparator) {
         this.indentation = indentation;
         this.lineSeparator = lineSeparator;
     }

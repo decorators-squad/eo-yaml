@@ -147,7 +147,27 @@ public final class Yaml {
      * @return YamlPrinter.
      */
     public static YamlPrinter createYamlPrinter(final Writer destination) {
-        return new RtYamlPrinter(destination);
+        return Yaml.createYamlPrinter(destination, System.lineSeparator());
+    }
+
+    /**
+     * Create a YamlPrinter to write a YamlNode somewhere, with the specified
+     * line separator. If you want to print a YamlNode to String, just use
+     * YamlNode.toString() -- it is a convenience equivalent to:
+     * <pre>
+     *   final YamlNode yaml = ...;
+     *   final StringWriter stgWriter = new StringWriter();
+     *   Yaml.createYamlPrinter(stgWriter).print(yaml);
+     *   System.out.println(stgWriter.toString());
+     * </pre>
+     * @param destination Writer where the YamlNode will be printed.
+     * @param lineSeparator Line separator.
+     * @return YamlPrinter.
+     */
+    public static YamlPrinter createYamlPrinter(
+        final Writer destination, final String lineSeparator
+    ) {
+        return new RtYamlPrinter(destination, lineSeparator);
     }
 
     /**

@@ -30,7 +30,7 @@ package com.amihaiemil.eoyaml;
 /**
  * YAML Visitor. Use this interface to implement your own YamlVisitor, to visit
  * all the nodes of a given YamlNode (sequence, mapping, stream etc). See class
- * {@link YamlPrintVisitor} for an example.
+ * {@link com.amihaiemil.eoyaml.YamlPrintVisitor} for an example.
  * @param <T> The return type of each visit.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$

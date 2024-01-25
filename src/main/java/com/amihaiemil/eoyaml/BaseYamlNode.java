@@ -29,6 +29,8 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlPrintException;
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
+
+import java.io.IOException;
 import java.io.StringWriter;
 
 /**
@@ -90,55 +92,15 @@ abstract class BaseYamlNode implements YamlNode {
      */
     @Override
     public final String toString() {
-        final String lineSeparator = System.lineSeparator();
-        final YamlVisitor<String> visitor = new YamlPrintVisitor(lineSeparator);
-        String toString = "";
-        if(this.type().equals(Node.SCALAR)) {
-            toString += "---" + lineSeparator;
-            toString += printPossibleComment(this, lineSeparator);
-            toString += this.accept(visitor);
-            toString += lineSeparator + "...";
-        } else {
-            toString += printPossibleComment(this, lineSeparator);
-            if(!toString.isEmpty()) {
-                toString += "---" + lineSeparator;
-            }
-            toString += this.accept(visitor);
-        }
-        return toString;
-    }
-
-    /**
-     * Print a comment. Make sure to split the lines if there are more
-     * lines separated by NewLine and also add a '# ' in front of each
-     * line.
-     * @param node Node containing the Comment.
-     * @param lineSeparator Line separator.
-     * @return Printed comment.
-     */
-    private String printPossibleComment(
-        final YamlNode node, final String lineSeparator
-    ) {
         final StringWriter writer = new StringWriter();
-        if(node != null && node.comment() != null) {
-            final Comment tmpComment;
-            if(node.comment() instanceof ScalarComment) {
-                tmpComment = ((ScalarComment) node.comment()).above();
-            } else {
-                tmpComment = node.comment();
-            }
-            final String com = tmpComment.value();
-            if (com.trim().length() != 0) {
-                String[] lines = com.split(lineSeparator);
-                for (final String line : lines) {
-                    writer
-                        .append("# ")
-                        .append(line)
-                        .append(lineSeparator);
-                }
-            }
+        final YamlPrinter printer = new RtYamlPrinter(writer);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new YamlPrintException(
+                "IOException when printing YAML", ex
+            );
         }
-        return writer.toString();
     }
-
 }
