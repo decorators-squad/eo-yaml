@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #529:30min Consider implementing reading of YAML with ANTLR.
  */
 final class AllYamlLines implements YamlLines {
 
