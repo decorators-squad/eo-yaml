@@ -35,7 +35,7 @@ If you use Gradle, add this to your dependencies:
 implementation group: 'com.amihaiemil.web', name: 'eo-yaml', version: '7.2.0'
 ```
 
-The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages).
+The releases are also available on [Github Packages](https://github.com/decorators-squad/eo-yaml/packages)!
 
 ## Usage
 
