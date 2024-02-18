@@ -58,6 +58,14 @@ final class ReadFlowMapping extends BaseYamlMapping {
 
     /**
      * Ctor.
+     * @param lines All lines of the YAML document.
+     */
+    ReadFlowMapping(final AllYamlLines lines) {
+        this(new YamlLine.NullYamlLine(), lines);
+    }
+
+    /**
+     * Ctor.
      * @param start Line where this flow sequence starts.
      * @param lines All lines of the YAML document.
      */

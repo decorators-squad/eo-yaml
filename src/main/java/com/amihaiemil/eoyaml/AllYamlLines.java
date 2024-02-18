@@ -49,7 +49,7 @@ final class AllYamlLines implements YamlLines {
      * There are 3 types of nodes: scalar, sequence and mapping.  This matches
      * either a sequence or map - no match indicates it's a scalar.
      *
-     * Does not handle '?' mapping key or flow mapping
+     * Does not handle flow mapping
      * (https://yaml.org/spec/1.2/spec.html#id2790832).
      *
      * A sequence (group 2) is:

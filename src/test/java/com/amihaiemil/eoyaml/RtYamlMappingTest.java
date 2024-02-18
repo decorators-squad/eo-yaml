@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 
 import org.apache.commons.io.IOUtils;
@@ -427,7 +428,7 @@ public final class RtYamlMappingTest {
      */
     @Test
     public void prettyPrintsComplexYaml() throws Exception {
-        YamlMapping yaml = Yaml.createYamlMappingBuilder()
+        YamlMapping built = Yaml.createYamlMappingBuilder()
             .add(
                 Yaml.createYamlSequenceBuilder()
                     .add("Atlanta Braves")
@@ -449,8 +450,13 @@ public final class RtYamlMappingTest {
                     .build()
             )
             .build();
+        YamlMapping read = Yaml.createYamlInput(
+            Files.newInputStream(
+                new File("src/test/resources/complexMapping.yml").toPath())
+        ).readYamlMapping();
         String expected = this.readTestResource("complexMapping.yml");
-        MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
+        MatcherAssert.assertThat(built.toString(), Matchers.equalTo(expected));
+        MatcherAssert.assertThat(read.toString(), Matchers.equalTo(expected));
     }
 
     /**

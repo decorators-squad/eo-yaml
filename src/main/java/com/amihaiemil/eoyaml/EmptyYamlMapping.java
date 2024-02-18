@@ -45,6 +45,13 @@ public class EmptyYamlMapping extends BaseYamlMapping {
     private final YamlMapping mapping;
 
     /**
+     * Ctor.
+     */
+    public EmptyYamlMapping() {
+        this(null);
+    }
+
+    /**
      * Wrap an existing mapping - expects comments() to be implemented.
      * @param mapping The mapping to wrap.
      */
@@ -64,6 +71,22 @@ public class EmptyYamlMapping extends BaseYamlMapping {
 
     @Override
     public final Comment comment() {
-        return this.mapping.comment();
+        final Comment comment;
+        if(this.mapping != null) {
+            comment = this.mapping.comment();
+        } else {
+            comment = new Comment() {
+                @Override
+                public YamlNode yamlNode() {
+                    return EmptyYamlMapping.this;
+                }
+
+                @Override
+                public String value() {
+                    return "";
+                }
+            };
+        }
+        return comment;
     }
 }
