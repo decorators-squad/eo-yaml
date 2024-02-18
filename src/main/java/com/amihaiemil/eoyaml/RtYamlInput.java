@@ -58,12 +58,50 @@ final class RtYamlInput implements YamlInput {
 
     @Override
     public YamlMapping readYamlMapping() throws IOException {
-        return new ReadYamlMapping(this.readInput());
+        final AllYamlLines all = this.readInput();
+        final Iterator<YamlLine> iterator = new Skip(
+            all,
+            line -> line.trimmed().startsWith("#"),
+            line -> line.trimmed().startsWith("---"),
+            line -> line.trimmed().startsWith("..."),
+            line -> line.trimmed().startsWith("%"),
+            line -> line.trimmed().startsWith("!!")
+        ).iterator();
+        final YamlMapping read;
+        if(iterator.hasNext()) {
+            if ("{".equals(iterator.next().trimmed())) {
+                read = new ReadFlowMapping(all);
+            } else {
+                read = new ReadYamlMapping(all);
+            }
+        } else {
+            read = new EmptyYamlMapping();
+        }
+        return read;
     }
 
     @Override
     public YamlSequence readYamlSequence() throws IOException {
-        return new ReadYamlSequence(this.readInput());
+        final AllYamlLines all = this.readInput();
+        final Iterator<YamlLine> iterator = new Skip(
+            all,
+            line -> line.trimmed().startsWith("#"),
+            line -> line.trimmed().startsWith("---"),
+            line -> line.trimmed().startsWith("..."),
+            line -> line.trimmed().startsWith("%"),
+            line -> line.trimmed().startsWith("!!")
+        ).iterator();
+        final YamlSequence read;
+        if(iterator.hasNext()) {
+            if ("[".equals(iterator.next().trimmed())) {
+                read = new ReadFlowSequence(all);
+            } else {
+                read = new ReadYamlSequence(all);
+            }
+        } else {
+            read = new EmptyYamlSequence();
+        }
+        return read;
     }
 
     @Override

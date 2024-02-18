@@ -45,6 +45,13 @@ public class EmptyYamlSequence extends BaseYamlSequence {
     private final YamlSequence sequence;
 
     /**
+     * Ctor.
+     */
+    public EmptyYamlSequence() {
+        this(null);
+    }
+
+    /**
      * Wrap an existing sequence - expects comments() to be implemented.
      * @param sequence The sequence to wrap.
      */
@@ -59,6 +66,22 @@ public class EmptyYamlSequence extends BaseYamlSequence {
 
     @Override
     public final Comment comment() {
-        return sequence.comment();
+        final Comment comment;
+        if(this.sequence != null) {
+            comment = this.sequence.comment();
+        } else {
+            comment = new Comment() {
+                @Override
+                public YamlNode yamlNode() {
+                    return EmptyYamlSequence.this;
+                }
+
+                @Override
+                public String value() {
+                    return "";
+                }
+            };
+        }
+        return comment;
     }
 }
