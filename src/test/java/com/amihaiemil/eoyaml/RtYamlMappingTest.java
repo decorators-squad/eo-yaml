@@ -51,7 +51,7 @@ import org.mockito.Mockito;
 public final class RtYamlMappingTest {
 
     /**
-     * RtYamlMapping can fetch its values.
+     * RtYamlMapping can fetch its values correctly.
      */
     @Test
     public void fetchesValues() {
