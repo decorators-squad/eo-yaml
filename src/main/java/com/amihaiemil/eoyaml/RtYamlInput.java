@@ -49,7 +49,7 @@ final class RtYamlInput implements YamlInput {
     private final Reader source;
 
     /**
-     * Ctor. Another comment.
+     * Ctor.
      * @param source Given source.
      */
     RtYamlInput(final Reader source) {
