@@ -41,8 +41,8 @@ import java.util.Set;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 6.0.0
- * @todo #368:60min Unit test this class and make sure it is wired in
- *  with the others, when reading a Yaml input.
+ * @todo #601:30min Modify the yaml printing visitor, so it prints the flow
+ *  nodes in Flow style instead of block.
  */
 final class ReadFlowMapping extends BaseYamlMapping {
 
