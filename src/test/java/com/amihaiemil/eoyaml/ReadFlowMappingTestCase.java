@@ -33,6 +33,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -83,13 +85,227 @@ public final class ReadFlowMappingTestCase {
             )
         );
         final Set<YamlNode> keys = map.keys();
-        keys.stream().forEach(
-            k -> {
-                System.out.println("KEY: " + k);
-                System.out.println("VALUE: " + map.value(k));
-            }
-        );
         MatcherAssert.assertThat(keys.size(), Matchers.equalTo(7));
+        final Iterator<YamlNode> iterator = keys.iterator();
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo("- 'a'")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo("- c" + System.lineSeparator() + "- g")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "e"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo("y: r")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "k"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "o"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "t"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
     }
 
+    /**
+     * ReadFlowMapping can return all the values.
+     */
+    @Test
+    public void returnsAllValues() {
+        final YamlMapping map = new ReadFlowMapping(
+            new YamlLine.NullYamlLine(),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("{['a']: 'b',", 0),
+                    new RtYamlLine(" [c,g]: d,", 1),
+                    new RtYamlLine(" e: f,", 2),
+                    new RtYamlLine("     {y:r}: {h: i},", 3),
+                    new RtYamlLine("k: 4,"
+                        + "o: [a, '0,3', \"2, 3, 4\", {ii: \"5,6,7\"}, b, c],",
+                        4
+                    ),
+                    new RtYamlLine("t: \"0,3\"}", 5)
+                )
+            )
+        );
+        final Collection<YamlNode> values = map.values();
+        MatcherAssert.assertThat(values.size(), Matchers.equalTo(7));
+        final Iterator<YamlNode> iterator = values.iterator();
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "'b'"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "d"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "f"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo("h: i")
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "4"
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "- a"
+                + System.lineSeparator()
+                + "- '0,3'"
+                + System.lineSeparator()
+                + "- \"2, 3, 4\""
+                + System.lineSeparator()
+                + "-"
+                + System.lineSeparator()
+                + "  ii: \"5,6,7\""
+                + System.lineSeparator()
+                + "- b"
+                + System.lineSeparator()
+                + "- c"
+            )
+        );
+        MatcherAssert.assertThat(
+            iterator.next().toString(),
+            Matchers.equalTo(
+                "---"
+                + System.lineSeparator()
+                + "\"0,3\""
+                + System.lineSeparator()
+                + "..."
+            )
+        );
+    }
+
+    /**
+     * It can return values mapped to string keys.
+     */
+    @Test
+    public void returnsValuesOfStringKeys() {
+        final YamlMapping map = new ReadFlowMapping(
+            new YamlLine.NullYamlLine(),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("{a:b,c:d,e:f,g:h}", 0)
+                )
+            )
+        );
+        MatcherAssert.assertThat(
+            map.string("a"),
+            Matchers.equalTo("b")
+        );
+        MatcherAssert.assertThat(
+            map.string("c"),
+            Matchers.equalTo("d")
+        );
+        MatcherAssert.assertThat(
+            map.string("e"),
+            Matchers.equalTo("f")
+        );
+        MatcherAssert.assertThat(
+            map.string("g"),
+            Matchers.equalTo("h")
+        );
+    }
+
+    /**
+     * It can return values mapped to node keys.
+     */
+    @Test
+    public void returnsValuesOfNodeKeys() {
+        final YamlMapping map = new ReadFlowMapping(
+            new YamlLine.NullYamlLine(),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("{a:b,[c]:d,{o:i}:f,g:h}", 0)
+                )
+            )
+        );
+        MatcherAssert.assertThat(
+            map.string("a"),
+            Matchers.equalTo("b")
+        );
+        MatcherAssert.assertThat(
+            map.value(
+                Yaml.createYamlSequenceBuilder()
+                    .add("c")
+                    .build()
+            ).asScalar().value(),
+            Matchers.equalTo("d")
+        );
+        MatcherAssert.assertThat(
+            map.value(
+                Yaml.createYamlMappingBuilder()
+                    .add("o", "i")
+                    .build()
+            ).asScalar().value(),
+            Matchers.equalTo("f")
+        );
+        MatcherAssert.assertThat(
+            map.string("g"),
+            Matchers.equalTo("h")
+        );
+    }
 }
