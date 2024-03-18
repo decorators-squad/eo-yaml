@@ -226,6 +226,34 @@ public final class ReadYamlSequenceTest {
     }
 
     /**
+     * ReadYamlSequence can return the inline YamlSequence (in flow style)
+     * from a given index.
+     */
+    @Test
+    public void returnsInlineFlowYamlSequenceFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("- [a, b, c]", 3));
+        lines.add(new RtYamlLine("- otherScalar", 4));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlSequence flow = sequence.yamlSequence(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(flow.size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(flow.string(0), Matchers.equalTo("a"));
+        MatcherAssert.assertThat(flow.string(1), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string(2), Matchers.equalTo("c"));
+
+    }
+
+    /**
      * ReadYamlSequence can return the plain scalar string from a given index.
      */
     @Test
@@ -445,31 +473,29 @@ public final class ReadYamlSequenceTest {
     @Test
     public void dontTurnEmptyMapsAndArraysIntoStrings() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("# A", 0));
-        lines.add(new RtYamlLine("- {}", 1));
-        lines.add(new RtYamlLine("# B", 2));
-        lines.add(new RtYamlLine("- []", 3));
+        lines.add(new RtYamlLine("- {}", 0));
+        lines.add(new RtYamlLine("- []", 1));
         final YamlSequence seq = new ReadYamlSequence(new AllYamlLines(lines));
         Iterator<YamlNode> iterator = seq.values().iterator();
         YamlMapping actualMap = iterator.next().asMapping();
-        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build("A");
+        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build();
         MatcherAssert.assertThat(
-                actualMap,
-                Matchers.equalTo(expectedMap)
+            actualMap,
+            Matchers.equalTo(expectedMap)
         );
         MatcherAssert.assertThat(
-                actualMap.comment().value(),
-                Matchers.equalTo(expectedMap.comment().value())
+            actualMap.comment().value(),
+            Matchers.equalTo(expectedMap.comment().value())
         );
         YamlSequence actualSeq = iterator.next().asSequence();
-        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build("B");
+        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build();
         MatcherAssert.assertThat(
-                actualSeq,
-                Matchers.equalTo(expectedSeq)
+            actualSeq,
+            Matchers.equalTo(expectedSeq)
         );
         MatcherAssert.assertThat(
-                actualSeq.comment().value(),
-                Matchers.equalTo(expectedSeq.comment().value())
+            actualSeq.comment().value(),
+            Matchers.equalTo(expectedSeq.comment().value())
         );
     }
 

@@ -66,15 +66,15 @@ final class ReadFlowMapping extends BaseYamlMapping {
 
     /**
      * Ctor.
-     * @param start Line where this flow sequence starts.
+     * @param previous Line just before the start of this flow mapping.
      * @param lines All lines of the YAML document.
      */
-    ReadFlowMapping(final YamlLine start, final AllYamlLines lines) {
+    ReadFlowMapping(final YamlLine previous, final AllYamlLines lines) {
         this(
             new FoldedFlowLines(
                 new Skip(
                     lines,
-                    line -> line.number() < start.number(),
+                    line -> line.number() <= previous.number(),
                     line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("---"),
                     line -> line.trimmed().startsWith("..."),
