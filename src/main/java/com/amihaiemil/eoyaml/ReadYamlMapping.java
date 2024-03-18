@@ -46,6 +46,8 @@ import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #600:60min Make sure to also read flow-style YamlNodes as such from
+ *  a read block YamlMapping.
  */
 final class ReadYamlMapping extends BaseYamlMapping {
 

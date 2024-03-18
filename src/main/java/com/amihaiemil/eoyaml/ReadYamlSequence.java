@@ -36,6 +36,9 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
+ * @todo #600:120min At the moment we are only able to read inline flow
+ *  nodes (flow-nodes starting at the dash). Make sure we also can read
+ *  flow-style nodes spanning multiple lines and starting as an inner node.
  */
 final class ReadYamlSequence extends BaseYamlSequence {
 
@@ -119,32 +122,27 @@ final class ReadYamlSequence extends BaseYamlSequence {
                 ) {
                     innerValueStarted = true;
                     kids.add(this.significant.toYamlNode(line));
-                } else if (trimmed.matches("^-[ ]*\\{}")) {
-                    kids.add(new EmptyYamlMapping(new ReadYamlMapping(
-                        line.number(),
-                        this.all.line(line.number()),
-                        this.all
-                    )));
-                    innerValueStarted = false;
-                } else if (trimmed.matches("^-[ ]*\\[]")) {
-                    kids.add(new EmptyYamlSequence(new ReadYamlSequence(
-                            this.all.line(line.number()),
-                            this.all
-                    )));
-                    innerValueStarted = false;
                 } else {
                     innerValueStarted = false;
-                    if(this.mappingStartsAtDash(line)) {
-                        YamlLine dashMapPrevious;
-                        if (line.number() == 0) {
-                            dashMapPrevious = new YamlLine.NullYamlLine();
-                        } else {
-                            dashMapPrevious = this.all.line(line.number() - 1);
-                        }
+                    if(this.blockMappingStartsAtDash(line)) {
                         kids.add(
                             new ReadYamlMapping(
                                 line.number() + 1,
-                                dashMapPrevious,
+                                this.getPreviousLine(line),
+                                this.all
+                            )
+                        );
+                    } else if(this.flowSequenceStartsAtDash(line)) {
+                        kids.add(
+                            new ReadFlowSequence(
+                                this.getPreviousLine(line),
+                                this.all
+                            )
+                        );
+                    } else if(this.flowMappingStartsAtDash(line)) {
+                        kids.add(
+                            new ReadFlowMapping(
+                                this.getPreviousLine(line),
                                 this.all
                             )
                         );
@@ -203,10 +201,48 @@ final class ReadYamlSequence extends BaseYamlSequence {
      * @param dashLine Line.
      * @return True of false.
      */
-    private boolean mappingStartsAtDash(final YamlLine dashLine) {
+    private boolean blockMappingStartsAtDash(final YamlLine dashLine) {
         final String trimmed = dashLine.trimmed();
         final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
             || trimmed.matches("^\\s*-\\s*'.*'$");
         return trimmed.matches("^.*-.+:(|\\s.*)$") && !escapedScalar;
+    }
+
+    /**
+     * Returns true if there's a flow-style YamlSequence starting right after
+     * the dash, on the same line.
+     * @param dashLine Line.
+     * @return True of false.
+     */
+    private boolean flowSequenceStartsAtDash(final YamlLine dashLine) {
+        final String trimmed = dashLine.trimmed();
+        return trimmed.matches("^\\s*-\\s*\\[.*$");
+    }
+
+    /**
+     * Returns true if there's a flow-style YamlMapping starting right after
+     * the dash, on the same line.
+     * @param dashLine Line.
+     * @return True of false.
+     */
+    private boolean flowMappingStartsAtDash(final YamlLine dashLine) {
+        final String trimmed = dashLine.trimmed();
+        return trimmed.matches("^\\s*-\\s*\\{.*$");
+    }
+
+    /**
+     * Get the line previous to the given one or NullYamlLine if the
+     * given line is the first one.
+     * @param line Given YamlLine.
+     * @return YamlLine previous to it.
+     */
+    private YamlLine getPreviousLine(final YamlLine line) {
+        YamlLine prev;
+        if (line.number() == 0) {
+            prev = new YamlLine.NullYamlLine();
+        } else {
+            prev = this.all.line(line.number() - 1);
+        }
+        return prev;
     }
 }

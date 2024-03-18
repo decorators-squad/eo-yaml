@@ -37,9 +37,6 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 6.0.0
- * @todo #368:60min Use this class to read flow YamlSequences which are
- *  children of other read nodes, and also when reading a flow/json-like
- *  YamlSequence directly from the YamlInput.
  */
 final class ReadFlowSequence extends BaseYamlSequence {
 
@@ -63,15 +60,15 @@ final class ReadFlowSequence extends BaseYamlSequence {
 
     /**
      * Ctor.
-     * @param start Line where this flow sequence starts.
+     * @param previous Line just before the start of this flow sequence.
      * @param lines All lines of the YAML document.
      */
-    ReadFlowSequence(final YamlLine start, final AllYamlLines lines) {
+    ReadFlowSequence(final YamlLine previous, final AllYamlLines lines) {
         this(
             new FoldedFlowLines(
                 new Skip(
                     lines,
-                    line -> line.number() < start.number(),
+                    line -> line.number() <= previous.number(),
                     line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("---"),
                     line -> line.trimmed().startsWith("..."),
