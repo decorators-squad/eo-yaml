@@ -134,6 +134,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                             )
                         );
                     } else if(this.flowSequenceStartsAtDash(line)) {
+                        innerValueStarted = true;
                         kids.add(
                             new ReadFlowSequence(
                                 this.getPreviousLine(line),
@@ -141,6 +142,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                             )
                         );
                     } else if(this.flowMappingStartsAtDash(line)) {
+                        innerValueStarted = true;
                         kids.add(
                             new ReadFlowMapping(
                                 this.getPreviousLine(line),
