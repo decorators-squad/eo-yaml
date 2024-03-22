@@ -121,7 +121,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     || trimmed.endsWith(">")
                 ) {
                     innerValueStarted = true;
-                    kids.add(this.significant.toYamlNode(line));
+                    kids.add(this.significant.nextYamlNode(line));
                 } else {
                     innerValueStarted = false;
                     if(this.blockMappingStartsAtDash(line)) {

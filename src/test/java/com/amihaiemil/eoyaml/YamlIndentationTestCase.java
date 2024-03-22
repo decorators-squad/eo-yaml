@@ -130,7 +130,7 @@ public final class YamlIndentationTestCase {
             lines.add(new RtYamlLine(" lGvSz", 2));
             lines.add(new RtYamlLine("value3", 3));
             final YamlLines yamlLines = new AllYamlLines(lines);
-            final YamlNode seq = yamlLines.toYamlNode(
+            final YamlNode seq = yamlLines.nextYamlNode(
                     new RtYamlLine("foldedSequence:|-", 0));
             final Collection<YamlNode> values = ((YamlSequence) seq).values();
             Assert.fail("badlyIntendedSequenceThrowsException "

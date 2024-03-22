@@ -76,7 +76,7 @@ final class ReadYamlStream extends BaseYamlStream {
             final YamlLines document = this.readDocument(startDoc);
             if(!document.original().isEmpty()) {
                 values.add(
-                    document.toYamlNode(startDoc)
+                    document.nextYamlNode(startDoc)
                 );
             }
         }

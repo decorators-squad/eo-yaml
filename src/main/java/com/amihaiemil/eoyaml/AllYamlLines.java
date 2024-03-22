@@ -104,7 +104,7 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(final YamlLine prev) {
+    public YamlNode nextYamlNode(final YamlLine prev) {
         final YamlNode node;
         final String prevLine = prev.trimmed();
         if(prevLine.isEmpty()) {

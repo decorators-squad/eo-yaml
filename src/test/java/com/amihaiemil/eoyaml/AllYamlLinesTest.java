@@ -79,7 +79,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("line3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(
+            yamlLines.nextYamlNode(
                 new RtYamlLine("literalScalar:|", 0)
             ),
             Matchers.instanceOf(ReadLiteralBlockScalar.class)
@@ -98,7 +98,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("of text", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(
+            yamlLines.nextYamlNode(
                 new RtYamlLine("foldedScalar:>", 0)
             ),
             Matchers.instanceOf(ReadFoldedBlockScalar.class)
@@ -116,7 +116,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("value2", 2));
         lines.add(new RtYamlLine("value3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        final YamlNode seq =  yamlLines.toYamlNode(
+        final YamlNode seq =  yamlLines.nextYamlNode(
             new RtYamlLine("foldedSequence:|-", 0)
         );
         MatcherAssert.assertThat(
@@ -153,7 +153,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("value2", 2));
         lines.add(new RtYamlLine("value3", 3));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        final YamlNode seq =  yamlLines.toYamlNode(
+        final YamlNode seq =  yamlLines.nextYamlNode(
             new RtYamlLine("foldedSequence:| -", 0)
         );
         MatcherAssert.assertThat(
@@ -187,7 +187,7 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("arn:something:something", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(
+        YamlNode actual = yamlLines.nextYamlNode(
             new RtYamlLine("---", 0)
         );
         MatcherAssert.assertThat(
@@ -209,7 +209,7 @@ public final class AllYamlLinesTest {
         final List<YamlLine> lines = new ArrayList<>();
         lines.add(new RtYamlLine("-foo", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(
+        YamlNode actual = yamlLines.nextYamlNode(
             new RtYamlLine("---", 0)
         );
         MatcherAssert.assertThat(
@@ -232,7 +232,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("some: mapping", 1));
         lines.add(new RtYamlLine("for: test", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
-        YamlNode actual = yamlLines.toYamlNode(
+        YamlNode actual = yamlLines.nextYamlNode(
             new RtYamlLine("---", 0)
         );
         MatcherAssert.assertThat(
@@ -252,7 +252,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("- sequence", 2));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("?", 0)),
+            yamlLines.nextYamlNode(new RtYamlLine("?", 0)),
             Matchers.instanceOf(ReadYamlSequence.class)
         );
     }
@@ -267,7 +267,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("justAScalar", 1));
         final YamlLines yamlLines = new AllYamlLines(lines);
         MatcherAssert.assertThat(
-            yamlLines.toYamlNode(new RtYamlLine("---", 0)),
+            yamlLines.nextYamlNode(new RtYamlLine("---", 0)),
             Matchers.instanceOf(ReadPlainScalar.class)
         );
     }
@@ -288,7 +288,7 @@ public final class AllYamlLinesTest {
         lines.add(new RtYamlLine("a folded or literal scalar", 4));
         final YamlLines yamlLines = new AllYamlLines(lines);
         try {
-            yamlLines.toYamlNode(new RtYamlLine("---", -1));
+            yamlLines.nextYamlNode(new RtYamlLine("---", -1));
             Assert.fail("Expected IllegalStateException!");
         } catch (final YamlReadingException ex) {
             final String message = ex.getMessage();

@@ -48,11 +48,11 @@ interface YamlLines extends Iterable<YamlLine> {
     Collection<YamlLine> original();
 
     /**
-     * Turn these lines into a YamlNode.
-     * @param prev Previous YamlLine
+     * Fetch the next YamlNode.
+     * @param prev Previous YamlLine - line before the node start.
      * @return YamlNode
      */
-    YamlNode toYamlNode(final YamlLine prev);
+    YamlNode nextYamlNode(final YamlLine prev);
 
     /**
      * Default iterator which doesn't skip any line,

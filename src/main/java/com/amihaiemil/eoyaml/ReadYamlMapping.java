@@ -140,7 +140,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
             } else if(trimmed.startsWith(":")) {
                 continue;
             } else if ("?".equals(trimmed)) {
-                keys.add(this.significant.toYamlNode(line));
+                keys.add(this.significant.nextYamlNode(line));
             } else {
                 if(!trimmed.contains(":")) {
                     continue;
@@ -249,7 +249,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     || trimmed.matches("^" + Pattern.quote(relaxedKey) + ":[ ]*>$")
                     || trimmed.matches("^" + Pattern.quote(relaxedKey) + ":[ ]*\\|[+-]?$")
                 ) {
-                    value = this.significant.toYamlNode(line);
+                    value = this.significant.nextYamlNode(line);
                 } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":[ ]*\\{}")) {
                     value = new EmptyYamlMapping(new ReadYamlMapping(
                         line.number(),
@@ -310,14 +310,14 @@ final class ReadYamlMapping extends BaseYamlMapping {
             final YamlLine line = linesIt.next();
             final String trimmed = line.trimmed();
             if("?".equals(trimmed)) {
-                final YamlNode keyNode = this.significant.toYamlNode(line);
+                final YamlNode keyNode = this.significant.nextYamlNode(line);
                 if(keyNode.equals(key)) {
                     final YamlLine colonLine = linesIt.next();
                     if(":".equals(colonLine.trimmed())
                         || colonLine.trimmed().matches("^\\:[ ]*\\>$")
                         || colonLine.trimmed().matches("^\\:[ ]*\\|$")
                     ) {
-                        value = this.significant.toYamlNode(colonLine);
+                        value = this.significant.nextYamlNode(colonLine);
                     } else if(colonLine.trimmed().startsWith(":")
                         && (colonLine.trimmed().length() > 1)
                     ){

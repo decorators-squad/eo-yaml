@@ -103,7 +103,7 @@ final class StartMarkers implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(final YamlLine prev) {
-        return this.yamlLines.toYamlNode(prev);
+    public YamlNode nextYamlNode(final YamlLine prev) {
+        return this.yamlLines.nextYamlNode(prev);
     }
 }

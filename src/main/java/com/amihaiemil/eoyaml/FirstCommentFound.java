@@ -94,8 +94,8 @@ final class FirstCommentFound implements YamlLines {
     }
 
     @Override
-    public YamlNode toYamlNode(final YamlLine prev) {
-        return this.lines.toYamlNode(prev);
+    public YamlNode nextYamlNode(final YamlLine prev) {
+        return this.lines.nextYamlNode(prev);
     }
 
     /**
