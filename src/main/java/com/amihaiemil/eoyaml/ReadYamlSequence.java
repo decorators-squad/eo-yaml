@@ -36,9 +36,6 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #600:120min At the moment we are only able to read inline flow
- *  nodes (flow-nodes starting at the dash). Make sure we also can read
- *  flow-style nodes spanning multiple lines and starting as an inner node.
  */
 final class ReadYamlSequence extends BaseYamlSequence {
 
@@ -134,6 +131,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                             )
                         );
                     } else if(this.flowSequenceStartsAtDash(line)) {
+                        innerValueStarted = true;
                         kids.add(
                             new ReadFlowSequence(
                                 this.getPreviousLine(line),
@@ -141,6 +139,7 @@ final class ReadYamlSequence extends BaseYamlSequence {
                             )
                         );
                     } else if(this.flowMappingStartsAtDash(line)) {
+                        innerValueStarted = true;
                         kids.add(
                             new ReadFlowMapping(
                                 this.getPreviousLine(line),

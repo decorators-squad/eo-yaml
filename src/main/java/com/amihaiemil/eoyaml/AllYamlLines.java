@@ -49,7 +49,7 @@ final class AllYamlLines implements YamlLines {
      * There are 3 types of nodes: scalar, sequence and mapping.  This matches
      * either a sequence or map - no match indicates it's a scalar.
      *
-     * Does not handle flow mapping
+     * Does not handle flow-style YAML!
      * (https://yaml.org/spec/1.2/spec.html#id2790832).
      *
      * A sequence (group 2) is:
@@ -132,6 +132,7 @@ final class AllYamlLines implements YamlLines {
     /**
      * Try to figure out what YAML node (mapping, sequence or scalar) is found
      * after the given line.
+     * @checkstyle CyclomaticComplexity (200 lines)
      * @param prev YamlLine just previous to the node we're trying to find.
      * @return Found YamlNode.
      */
@@ -161,6 +162,10 @@ final class AllYamlLines implements YamlLines {
                 new Edited(prev.trimmed()
                     + " null #" + prev.comment(), prev)
             );
+        } else if(first.trimmed().matches("^\\s*-?\\s*\\[.*$")) {
+            node = new ReadFlowSequence(prev, this);
+        } else if(first.trimmed().matches("^\\s*-?\\s*\\{.*$")) {
+            node = new ReadFlowMapping(prev, this);
         } else {
             Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
             if (matcher.matches()) {

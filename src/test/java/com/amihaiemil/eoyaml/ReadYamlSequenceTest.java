@@ -250,7 +250,216 @@ public final class ReadYamlSequenceTest {
         MatcherAssert.assertThat(flow.string(0), Matchers.equalTo("a"));
         MatcherAssert.assertThat(flow.string(1), Matchers.equalTo("b"));
         MatcherAssert.assertThat(flow.string(2), Matchers.equalTo("c"));
+    }
 
+    /**
+     * ReadYamlSequence can return the inline YamlSequence (in flow style)
+     * from a given index.
+     */
+    @Test
+    public void returnsDashMultilineFlowYamlSequenceFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("- [a,", 3));
+        lines.add(new RtYamlLine("b,", 4));
+        lines.add(new RtYamlLine("c", 5));
+        lines.add(new RtYamlLine("]", 6));
+        lines.add(new RtYamlLine("- otherScalar", 8));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlSequence flow = sequence.yamlSequence(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(flow.size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(flow.string(0), Matchers.equalTo("a"));
+        MatcherAssert.assertThat(flow.string(1), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string(2), Matchers.equalTo("c"));
+    }
+
+
+    /**
+     * ReadYamlSequence can return the inline YamlSequence (in flow style)
+     * from a given index.
+     */
+    @Test
+    public void returnsAfterDashInlineFlowYamlSequenceFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("-", 3));
+        lines.add(new RtYamlLine("  [a, b, c]", 4));
+        lines.add(new RtYamlLine("- otherScalar", 5));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlSequence flow = sequence.yamlSequence(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(flow.size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(flow.string(0), Matchers.equalTo("a"));
+        MatcherAssert.assertThat(flow.string(1), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string(2), Matchers.equalTo("c"));
+    }
+
+    /**
+     * ReadYamlSequence can return the inline YamlSequence (in flow style)
+     * from a given index.
+     */
+    @Test
+    public void returnsAfterDashMultilineFlowYamlSequenceFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("-", 3));
+        lines.add(new RtYamlLine("  [a,", 4));
+        lines.add(new RtYamlLine(" b,", 5));
+        lines.add(new RtYamlLine(" c", 6));
+        lines.add(new RtYamlLine("]", 7));
+        lines.add(new RtYamlLine("- otherScalar", 8));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlSequence flow = sequence.yamlSequence(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(flow.size(), Matchers.equalTo(3));
+        MatcherAssert.assertThat(flow.string(0), Matchers.equalTo("a"));
+        MatcherAssert.assertThat(flow.string(1), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string(2), Matchers.equalTo("c"));
+    }
+
+    /**
+     * ReadYamlSequence can return the inline YamlMapping (in flow style)
+     * from a given index.
+     */
+    @Test
+    public void returnsInlineFlowYamlMappingFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("- {a:b, c:d, e:f}", 3));
+        lines.add(new RtYamlLine("- otherScalar", 4));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlMapping flow = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(flow.keys(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.values(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.string("a"), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string("c"), Matchers.equalTo("d"));
+        MatcherAssert.assertThat(flow.string("e"), Matchers.equalTo("f"));
+    }
+
+    /**
+     * ReadYamlSequence can return the inline YamlMapping (in flow style)
+     * from a given index, present after the dash.
+     */
+    @Test
+    public void returnsAfterDashInlineFlowYamlMappingFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("-", 3));
+        lines.add(new RtYamlLine("  {a:b, c:d, e:f}", 4));
+        lines.add(new RtYamlLine("- otherScalar", 5));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlMapping flow = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(flow.keys(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.values(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.string("a"), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string("c"), Matchers.equalTo("d"));
+        MatcherAssert.assertThat(flow.string("e"), Matchers.equalTo("f"));
+    }
+
+    /**
+     * ReadYamlSequence can return the multiline YamlMapping (in flow style)
+     * from a given index, starting at the dash.
+     */
+    @Test
+    public void returnsDashMultilineFlowYamlMappingFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("- {a:b,", 3));
+        lines.add(new RtYamlLine("c:d,", 4));
+        lines.add(new RtYamlLine("e:f", 5));
+        lines.add(new RtYamlLine("}", 6));
+        lines.add(new RtYamlLine("- otherScalar", 8));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlMapping flow = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(flow.keys(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.values(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.string("a"), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string("c"), Matchers.equalTo("d"));
+        MatcherAssert.assertThat(flow.string("e"), Matchers.equalTo("f"));
+    }
+
+    /**
+     * ReadYamlSequence can return the multiline YamlMapping (in flow style)
+     * from a given index, starting at after the dash.
+     */
+    @Test
+    public void returnsAfterDashMultilineFlowYamlMappingFromIndex(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("- ", 0));
+        lines.add(new RtYamlLine("  - rultor", 1));
+        lines.add(new RtYamlLine("  - 0pdd", 2));
+        lines.add(new RtYamlLine("- ", 3));
+        lines.add(new RtYamlLine("  {a:b,", 4));
+        lines.add(new RtYamlLine("  c:d,", 5));
+        lines.add(new RtYamlLine(" e:f", 6));
+        lines.add(new RtYamlLine("}", 7));
+        lines.add(new RtYamlLine("- otherScalar", 8));
+        final YamlSequence sequence = new ReadYamlSequence(
+            new AllYamlLines(lines)
+        );
+        System.out.println(sequence);
+        final YamlMapping flow = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(flow, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            flow, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(flow.keys(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.values(), Matchers.hasSize(3));
+        MatcherAssert.assertThat(flow.string("a"), Matchers.equalTo("b"));
+        MatcherAssert.assertThat(flow.string("c"), Matchers.equalTo("d"));
+        MatcherAssert.assertThat(flow.string("e"), Matchers.equalTo("f"));
     }
 
     /**
