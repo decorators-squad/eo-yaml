@@ -162,7 +162,7 @@ final class AllYamlLines implements YamlLines {
                 new Edited(prev.trimmed()
                     + " null #" + prev.comment(), prev)
             );
-        } else if(first.trimmed().startsWith("[")) {
+        } else if(first.trimmed().matches("^.*\\[.*$")) {
             node = new ReadFlowSequence(prev, this);
         } else {
             Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());
