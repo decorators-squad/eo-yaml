@@ -97,7 +97,8 @@ final class ReadYamlSequence extends BaseYamlSequence {
                     line -> line.trimmed().startsWith("!!")
                 ),
                 Boolean.FALSE
-            )
+            ),
+            false
         );
     }
 

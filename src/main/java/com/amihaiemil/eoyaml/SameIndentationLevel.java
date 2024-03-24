@@ -45,6 +45,8 @@ import java.util.List;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 3.0.2
+ * @todo #566:60min Continue refactoring so this class will no longer contain
+ *  any logic as to whether the lines are a mapping or a sequence.
  */
 final class SameIndentationLevel implements YamlLines {
 
@@ -54,11 +56,26 @@ final class SameIndentationLevel implements YamlLines {
     private final YamlLines yamlLines;
 
     /**
+     * Are these the lines of a mapping?
+     */
+    private final boolean mapping;
+
+    /**
      * Ctor.
      * @param yamlLines The Yaml lines.
      */
     SameIndentationLevel(final YamlLines yamlLines) {
+        this(yamlLines, true);
+    }
+
+    /**
+     * Ctor.
+     * @param yamlLines The Yaml lines.
+     * @param mapping Are these lines a mapping?
+     */
+    SameIndentationLevel(final YamlLines yamlLines, final boolean mapping) {
         this.yamlLines = yamlLines;
+        this.mapping = mapping;
     }
 
     /**
@@ -80,9 +97,8 @@ final class SameIndentationLevel implements YamlLines {
             boolean firstIsDashMap = this.mappingStartsAtDash(first);
             while (iterator.hasNext()) {
                 YamlLine current = iterator.next();
-                if (firstIsDashMap
-                        && this.isMappingEntry(current)
-                        && current.indentation() == firstIndentation + 2) {
+                if (this.mapping && firstIsDashMap
+                    && current.indentation() == firstIndentation + 2) {
                     sameIndentation.add(current);
                 } else if(current.indentation() == firstIndentation) {
                     sameIndentation.add(current);
@@ -116,18 +132,6 @@ final class SameIndentationLevel implements YamlLines {
         final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
             || trimmed.matches("^\\s*-\\s*'.*'$");
         return trimmed.matches("^\\s*-.*:(\\s.*)?$") && !escapedScalar;
-    }
-
-    /**
-     * Returns true if the line is a mapping entry.
-     * @param dashLine Line.
-     * @return True of false.
-     */
-    private boolean isMappingEntry(final YamlLine dashLine) {
-        final String trimmed = dashLine.trimmed();
-        final boolean escapedScalar = trimmed.matches("^\\s*\".*\"$")
-                || trimmed.matches("^\\s*'.*'$");
-        return trimmed.matches("^.*:(\\s.*)?$") && !escapedScalar;
     }
 
 }

@@ -1526,6 +1526,42 @@ public final class RtYamlInputTest {
      * @throws IOException If something goes wrong.
      */
     @Test
+    public void sequenceScalarstoSequencesSimplerComplexCase()
+        throws IOException {
+        final String filename = "sequenceScalarstoSequencesComplexCase.yml";
+        final YamlSequence sequence = new RtYamlInput(
+            Files.newBufferedReader(
+                Paths.get("src/test/resources/" + filename)
+            )
+        ).readYamlSequence();
+        System.out.println(sequence);
+        MatcherAssert.assertThat(sequence.size(), Matchers.is(1));
+        final YamlMapping first = sequence.yamlMapping(0);
+        MatcherAssert.assertThat(first.keys().size(), Matchers.is(3));
+        MatcherAssert.assertThat(first.values().size(), Matchers.is(3));
+        MatcherAssert.assertThat(
+            first.yamlSequence("eventRefs").string(0),
+            Matchers.equalTo("Some event")
+        );
+        MatcherAssert.assertThat(
+            first.yamlMapping("eventDataFilter").string("data"),
+            Matchers.equalTo("${ .data.status }")
+        );
+        MatcherAssert.assertThat(
+            first.yamlMapping("eventDataFilter").string("toStateData"),
+            Matchers.equalTo("${ .status }")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("actions").yamlMapping(0).string("functionRef"),
+            Matchers.equalTo("Deliver Order Function")
+        );
+    }
+
+    /**
+     * More complex structure for example 2.3.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
     public void mappingScalarstoSequencesComplexCase() throws IOException {
         final String filename = "mappingScalarstoSequencesComplexCase.yml";
         final YamlMapping mapping = new RtYamlInput(
@@ -1533,7 +1569,6 @@ public final class RtYamlInputTest {
                 Paths.get("src/test/resources/" + filename)
             )
         ).readYamlMapping();
-
         MatcherAssert.assertThat(mapping.keys().size(), Matchers.equalTo(6));
         YamlSequence states = mapping.value("states").asSequence();
         MatcherAssert.assertThat(states.size(), Matchers.equalTo(3));

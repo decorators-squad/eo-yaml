@@ -1,0 +1,7 @@
+- eventRefs:
+  - Some event
+  eventDataFilter:
+    data: "${ .data.status }"
+    toStateData: "${ .status }"
+  actions:
+    - functionRef: Deliver Order Function

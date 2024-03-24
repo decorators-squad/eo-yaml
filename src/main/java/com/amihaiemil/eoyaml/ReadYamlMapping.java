@@ -125,7 +125,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     line -> line.trimmed().startsWith("!!")
                 ),
                 Boolean.FALSE
-            )
+            ),
+            true
         );
     }
 
@@ -135,16 +136,11 @@ final class ReadYamlMapping extends BaseYamlMapping {
         YamlLine dashKey = null;
         for (final YamlLine line : this.significant) {
             final String trimmed = line.trimmed();
-            if(trimmed.startsWith("-") && dashKey != null) {
+            if(dashKey != null && this.isDashMappingEntry(line)) {
                 break;
-            } else if(trimmed.startsWith(":")) {
-                continue;
             } else if ("?".equals(trimmed)) {
                 keys.add(this.significant.nextYamlNode(line));
-            } else {
-                if(!trimmed.contains(":")) {
-                    continue;
-                }
+            } else if(trimmed.indexOf(":") > 0){
                 final Matcher matcher = KEY_PATTERN.matcher(trimmed);
                 if (matcher.matches()) {
                     if(trimmed.startsWith("-")) {
@@ -334,5 +330,15 @@ final class ReadYamlMapping extends BaseYamlMapping {
             }
         }
         return value;
+    }
+
+    /**
+     * Returns true if the line is a dash mapping entry.
+     * @param line Line.
+     * @return True of false.
+     */
+    private boolean isDashMappingEntry(final YamlLine line) {
+        final String trim = line.trimmed();
+        return trim.startsWith("-") && KEY_PATTERN.matcher(trim).matches();
     }
 }
