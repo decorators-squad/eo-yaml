@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
 
 /**
- * YamlMapping read from somewhere. YAML directives and
+ * Block-style YamlMapping read from somewhere. YAML directives and
  * document start/end markers are ignored. This is assumed
  * to be a plain YAML mapping.
  * @checkstyle CyclomaticComplexity (300 lines)
@@ -46,8 +46,6 @@ import static com.amihaiemil.eoyaml.YamlLine.UNKNOWN_LINE_NUMBER;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
- * @todo #600:60min Make sure to also read flow-style YamlNodes as such from
- *  a read block YamlMapping.
  */
 final class ReadYamlMapping extends BaseYamlMapping {
 
@@ -55,7 +53,8 @@ final class ReadYamlMapping extends BaseYamlMapping {
      * Regex for a key in a mapping.
      */
     private static final Pattern KEY_PATTERN = Pattern.compile(
-        "^-?\\s*((?<key>[^:'\"]+)|\"(?<keyQ>.+)\"|'(?<keySQ>.+)'):(|\\s.*)$"
+        "^-?\\s*((?<key>[^:',\"}{\\]\\[]+)|\"(?<keyQ>.+)\"|'(?<keySQ>.+)')"
+            + ":(|\\s.*)$"
     );
 
     /**
@@ -115,14 +114,18 @@ final class ReadYamlMapping extends BaseYamlMapping {
         this.all = lines;
         this.significant = new SameIndentationLevel(
             new WellIndented(
-                new Skip(
-                    lines,
-                    line -> line.number() <= previous.number(),
-                    line -> line.trimmed().startsWith("#"),
-                    line -> line.trimmed().startsWith("---"),
-                    line -> line.trimmed().startsWith("..."),
-                    line -> line.trimmed().startsWith("%"),
-                    line -> line.trimmed().startsWith("!!")
+                new CollapsedFlowLines(
+                    new CollapsedFlowLines(
+                        new Skip(
+                            lines,
+                            line -> line.number() <= previous.number(),
+                            line -> line.trimmed().startsWith("#"),
+                            line -> line.trimmed().startsWith("---"),
+                            line -> line.trimmed().startsWith("..."),
+                            line -> line.trimmed().startsWith("%"),
+                            line -> line.trimmed().startsWith("!!")
+                        ), '{', '}'
+                    ), '[', ']'
                 )
             ),
             true
@@ -245,17 +248,16 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     || trimmed.matches("^" + Pattern.quote(relaxedKey) + ":[ ]*\\|[+-]?$")
                 ) {
                     value = this.significant.nextYamlNode(line);
-                } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":[ ]*\\{}")) {
-                    value = new EmptyYamlMapping(new ReadYamlMapping(
-                        line.number(),
-                        this.all.line(line.number()),
+                } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":\\s*\\{.*$")) {
+                    value = new ReadFlowMapping(
+                        this.getPreviousLine(line),
                         this.all
-                    ));
-                } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":[ ]*\\[]")) {
-                    value = new EmptyYamlSequence(new ReadYamlSequence(
-                            this.all.line(line.number()),
-                            this.all
-                    ));
+                    );
+                } else if(trimmed.matches(Pattern.quote(relaxedKey) + ":\\s*\\[.*$")) {
+                    value = new ReadFlowSequence(
+                        this.getPreviousLine(line),
+                        this.all
+                    );
                 } else if((trimmed.startsWith(tryKey + ":")
                         || trimmed.startsWith("- " + tryKey + ":"))
                         && trimmed.length() > 1
@@ -339,5 +341,21 @@ final class ReadYamlMapping extends BaseYamlMapping {
     private boolean isDashMappingEntry(final YamlLine line) {
         final String trim = line.trimmed();
         return trim.startsWith("-") && KEY_PATTERN.matcher(trim).matches();
+    }
+
+    /**
+     * Get the line previous to the given one or NullYamlLine if the
+     * given line is the first one.
+     * @param line Given YamlLine.
+     * @return YamlLine previous to it.
+     */
+    private YamlLine getPreviousLine(final YamlLine line) {
+        YamlLine prev;
+        if (line.number() == 0) {
+            prev = new YamlLine.NullYamlLine();
+        } else {
+            prev = this.all.line(line.number() - 1);
+        }
+        return prev;
     }
 }

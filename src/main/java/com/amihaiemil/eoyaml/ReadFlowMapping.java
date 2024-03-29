@@ -40,9 +40,13 @@ import java.util.Set;
  * between curly brackets, separated by a comma.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 6.0.0
+ * @since 8.0.0
  * @todo #601:30min Modify the yaml printing visitor, so it prints the flow
  *  nodes in Flow style instead of block.
+ * @todo #607:60min Refactor this class to not use FoldedFlowLines anymore.
+ *  FoldedFlowLines is deprecated and the collapsing/folding logic is now
+ *  implemented with {@link CollapsedFlowLines}. ReadFlowSequence needs the
+ *  same refactoring after that.
  */
 final class ReadFlowMapping extends BaseYamlMapping {
 
@@ -150,7 +154,7 @@ final class ReadFlowMapping extends BaseYamlMapping {
      * This mappings's entries in String format.
      * @author Mihai Andronache (amihaiemil@gmail.com)
      * @version $Id$
-     * @since 7.3.0
+     * @since 8.0.0
      * @checkstyle LineLength (100 lines)
      * @checkstyle ModifiedControlVariable (100 lines)
      * @checkstyle ParameterNumber (300 lines)

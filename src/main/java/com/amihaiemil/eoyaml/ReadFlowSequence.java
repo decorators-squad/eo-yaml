@@ -36,7 +36,7 @@ import java.util.List;
  * A read YamlSequence in flow format (elements between square brackets).
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
- * @since 6.0.0
+ * @since 8.0.0
  */
 final class ReadFlowSequence extends BaseYamlSequence {
 
@@ -125,7 +125,7 @@ final class ReadFlowSequence extends BaseYamlSequence {
      * This sequence's nodes in String format.
      * @author Mihai Andronache (amihaiemil@gmail.com)
      * @version $Id$
-     * @since 6.0.0
+     * @since 8.0.0
      * @checkstyle LineLength (100 lines)
      * @checkstyle ModifiedControlVariable (100 lines)
      * @checkstyle ParameterNumber (300 lines)

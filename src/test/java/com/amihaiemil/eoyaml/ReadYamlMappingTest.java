@@ -262,6 +262,237 @@ public final class ReadYamlMappingTest {
         MatcherAssert.assertThat(
             second, Matchers.instanceOf(YamlSequence.class)
         );
+        MatcherAssert.assertThat(
+            second.string(0), Matchers.equalTo("some")
+        );
+        MatcherAssert.assertThat(
+            second.string(1), Matchers.equalTo("sequence")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the flow inline YamlSequence mapped to a
+     * String key after the colon.
+     */
+    @Test
+    public void returnsAfterColonInlineFlowYamlSequenceWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: ", 1));
+        lines.add(new RtYamlLine("  [some, sequence]", 2));
+        lines.add(new RtYamlLine("third: something", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        final YamlSequence second = map.yamlSequence("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(
+            second.string(0), Matchers.equalTo("some")
+        );
+        MatcherAssert.assertThat(
+            second.string(1), Matchers.equalTo("sequence")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the flow inline YamlSequence mapped to a
+     * String key at the colon.
+     */
+    @Test
+    public void returnsColonInlineFlowYamlSequenceWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: [some, sequence]", 1));
+        lines.add(new RtYamlLine("third: something", 2));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final YamlSequence second = map.yamlSequence("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(
+            second.string(0), Matchers.equalTo("some")
+        );
+        MatcherAssert.assertThat(
+            second.string(1), Matchers.equalTo("sequence")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the flow multiline YamlSequence mapped to a
+     * String key at the colon.
+     */
+    @Test
+    public void returnsColonMultilineFlowYamlSequenceWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: [some,", 1));
+        lines.add(new RtYamlLine("other, {a: b},", 2));
+        lines.add(new RtYamlLine("{c:", 3));
+        lines.add(new RtYamlLine("d},[inner, sequence]],", 4));
+        lines.add(new RtYamlLine("third: something", 5));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+
+        MatcherAssert.assertThat(map.keys().size(), Matchers.is(3));
+        MatcherAssert.assertThat(map.values().size(), Matchers.is(3));
+
+        final YamlSequence second = map.yamlSequence("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(
+            second.string(0), Matchers.equalTo("some")
+        );
+        MatcherAssert.assertThat(
+            second.string(1), Matchers.equalTo("other")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping(2).string("a"), Matchers.equalTo("b")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping(3).string("c"), Matchers.equalTo("d")
+        );
+        MatcherAssert.assertThat(
+            second.yamlSequence(4).string(0), Matchers.equalTo("inner")
+        );
+        MatcherAssert.assertThat(
+            second.yamlSequence(4).string(1), Matchers.equalTo("sequence")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the flow multiline YamlSequence mapped to a
+     * String key at the colon.
+     */
+    @Test
+    public void returnsColonMultilineFlowYamlMappingWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: {some: mapping,", 1));
+        lines.add(new RtYamlLine("c: {a: [c,d]}}", 2));
+        lines.add(new RtYamlLine("third: something", 5));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+
+        MatcherAssert.assertThat(map.keys().size(), Matchers.is(3));
+        MatcherAssert.assertThat(map.values().size(), Matchers.is(3));
+
+        final YamlMapping second = map.yamlMapping("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(
+            second.string("some"), Matchers.equalTo("mapping")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping("c").yamlSequence("a").string(0),
+            Matchers.equalTo("c")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping("c").yamlSequence("a").string(1),
+            Matchers.equalTo("d")
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the empty flow YamlSequence mapped to a
+     * String key at the colon.
+     */
+    @Test
+    public void returnsColonEmptyFlowYamlSequenceWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: []", 1));
+        lines.add(new RtYamlLine("third: something", 2));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final YamlSequence second = map.yamlSequence("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(
+            second.size(), Matchers.is(0)
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the empty flow YamlSequence mapped to a
+     * String key after the colon.
+     */
+    @Test
+    public void returnsAfterColonEmptyFlowYamlSequenceWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  []", 2));
+        lines.add(new RtYamlLine("third: something", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final YamlSequence second = map.yamlSequence("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlSequence.class)
+        );
+        MatcherAssert.assertThat(
+            second.size(), Matchers.is(0)
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the empty flow YamlMapping mapped to a
+     * String key at the colon.
+     */
+    @Test
+    public void returnsColonEmptyFlowYamlMappingWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second: {}", 1));
+        lines.add(new RtYamlLine("third: something", 2));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final YamlMapping second = map.yamlMapping("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(
+            second.keys().size(), Matchers.is(0)
+        );
+        MatcherAssert.assertThat(
+            second.values().size(), Matchers.is(0)
+        );
+    }
+
+    /**
+     * ReadYamlMapping can return the empty flow YamlMapping mapped to a
+     * String key after the colon.
+     */
+    @Test
+    public void returnsAfterColonEmptyFlowYamlMappingWithStringKey(){
+        final List<YamlLine> lines = new ArrayList<>();
+        lines.add(new RtYamlLine("first: somethingElse", 0));
+        lines.add(new RtYamlLine("second:", 1));
+        lines.add(new RtYamlLine("  {}", 2));
+        lines.add(new RtYamlLine("third: something", 3));
+        final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
+        System.out.println(map);
+        final YamlMapping second = map.yamlMapping("second");
+        MatcherAssert.assertThat(second, Matchers.notNullValue());
+        MatcherAssert.assertThat(
+            second, Matchers.instanceOf(YamlMapping.class)
+        );
+        MatcherAssert.assertThat(
+            second.keys().size(), Matchers.is(0)
+        );
+        MatcherAssert.assertThat(
+            second.values().size(), Matchers.is(0)
+        );
     }
 
     /**
@@ -1125,30 +1356,28 @@ public final class ReadYamlMappingTest {
     @Test
     public void dontTurnEmptyMapsAndArraysIntoStrings() {
         final List<YamlLine> lines = new ArrayList<>();
-        lines.add(new RtYamlLine("# A", 0));
-        lines.add(new RtYamlLine("def: {}", 1));
-        lines.add(new RtYamlLine("# B", 2));
-        lines.add(new RtYamlLine("ghi: []", 3));
+        lines.add(new RtYamlLine("def: {}", 0));
+        lines.add(new RtYamlLine("ghi: []", 1));
         final YamlMapping map = new ReadYamlMapping(new AllYamlLines(lines));
         YamlMapping actualMap = map.value("def").asMapping();
-        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build("A");
+        YamlMapping expectedMap = Yaml.createYamlMappingBuilder().build();
         MatcherAssert.assertThat(
-                actualMap,
-                Matchers.equalTo(expectedMap)
+            actualMap,
+            Matchers.equalTo(expectedMap)
         );
         MatcherAssert.assertThat(
-                actualMap.comment().value(),
-                Matchers.equalTo(expectedMap.comment().value())
+            actualMap.comment().value(),
+            Matchers.equalTo(expectedMap.comment().value())
         );
         YamlSequence actualSeq = map.value("ghi").asSequence();
-        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build("B");
+        YamlSequence expectedSeq = Yaml.createYamlSequenceBuilder().build();
         MatcherAssert.assertThat(
-                actualSeq,
-                Matchers.equalTo(expectedSeq)
+            actualSeq,
+            Matchers.equalTo(expectedSeq)
         );
         MatcherAssert.assertThat(
-                actualSeq.comment().value(),
-                Matchers.equalTo(expectedSeq.comment().value())
+            actualSeq.comment().value(),
+            Matchers.equalTo(expectedSeq.comment().value())
         );
     }
 

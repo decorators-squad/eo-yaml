@@ -32,7 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * YamlSequence read from somewhere.
+ * Block-style YamlSequence which has been read from somewhere.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -84,14 +84,18 @@ final class ReadYamlSequence extends BaseYamlSequence {
         this.all = lines;
         this.significant = new SameIndentationLevel(
             new WellIndented(
-                new Skip(
-                    lines,
-                    line -> line.number() <= previous.number(),
-                    line -> line.trimmed().startsWith("#"),
-                    line -> line.trimmed().startsWith("---"),
-                    line -> line.trimmed().startsWith("..."),
-                    line -> line.trimmed().startsWith("%"),
-                    line -> line.trimmed().startsWith("!!")
+                new CollapsedFlowLines(
+                    new CollapsedFlowLines(
+                        new Skip(
+                            lines,
+                            line -> line.number() <= previous.number(),
+                            line -> line.trimmed().startsWith("#"),
+                            line -> line.trimmed().startsWith("---"),
+                            line -> line.trimmed().startsWith("..."),
+                            line -> line.trimmed().startsWith("%"),
+                            line -> line.trimmed().startsWith("!!")
+                        ), '{', '}'
+                    ), '[', ']'
                 )
             ),
             false
