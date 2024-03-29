@@ -71,30 +71,11 @@ final class WellIndented implements YamlLines {
     private final YamlLines yamlLines;
 
     /**
-     * If this is true, then we will try to adjust a wrong indentation,
-     * instead of throwin an exception. This mechanism is not safe becuase
-     * the resulting YAML might not be the expected one.
-     */
-    private final boolean guessIndentation;
-
-    /**
      * Ctor.
      * @param yamlLines The Yaml lines.
      */
     WellIndented(final YamlLines yamlLines) {
-        this(yamlLines, false);
-    }
-
-    /**
-     * Ctor.
-     * @param yamlLines The Yaml lines.
-     * @param guessIndentation If indentation is not correct, try to
-     *  adjust it instead of throwing an exception. This mechanism is not
-     *  safe because the resulting YAML might not be the expected one.
-     */
-    WellIndented(final YamlLines yamlLines, final boolean guessIndentation) {
         this.yamlLines = yamlLines;
-        this.guessIndentation = guessIndentation;
     }
 
     /**

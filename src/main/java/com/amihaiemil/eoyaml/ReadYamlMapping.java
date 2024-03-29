@@ -123,8 +123,7 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     line -> line.trimmed().startsWith("..."),
                     line -> line.trimmed().startsWith("%"),
                     line -> line.trimmed().startsWith("!!")
-                ),
-                Boolean.FALSE
+                )
             ),
             true
         );
