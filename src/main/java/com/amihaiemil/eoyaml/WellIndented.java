@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -142,11 +141,6 @@ final class WellIndented implements YamlLines {
             }
         }
         return wellIndented.iterator();
-    }
-
-    @Override
-    public Collection<YamlLine> original() {
-        return this.yamlLines.original();
     }
 
     @Override

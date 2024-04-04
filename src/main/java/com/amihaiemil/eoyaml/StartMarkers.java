@@ -28,7 +28,6 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -95,11 +94,6 @@ final class StartMarkers implements YamlLines {
             iterator = docsStart.iterator();
         }
         return iterator;
-    }
-
-    @Override
-    public Collection<YamlLine> original() {
-        return this.yamlLines.original();
     }
 
     @Override

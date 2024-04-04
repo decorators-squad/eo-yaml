@@ -29,7 +29,6 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlIndentationException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.hamcrest.MatcherAssert;
@@ -47,21 +46,6 @@ import org.junit.Assert;
  */
 public final class WellIndentedTest {
 
-    /**
-     * WellIndented can return the encapsulated lines.
-     */
-    @Test
-    @SuppressWarnings("unchecked")
-    public void returnsLines() {
-        final YamlLines lines = Mockito.mock(YamlLines.class);
-        final Collection<YamlLine> collection = Mockito.mock(Collection.class);
-        Mockito.when(lines.original()).thenReturn(collection);
-        MatcherAssert.assertThat(
-            new WellIndented(lines).original(),
-            Matchers.is(collection)
-        );
-    }
-    
     /**
      * WellIndented can turn itself into YamlNode.
      */

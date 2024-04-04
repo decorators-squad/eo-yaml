@@ -99,11 +99,6 @@ final class AllYamlLines implements YamlLines {
     }
 
     @Override
-    public Collection<YamlLine> original() {
-        return this.lines;
-    }
-
-    @Override
     public YamlNode nextYamlNode(final YamlLine prev) {
         final YamlNode node;
         final String prevLine = prev.trimmed();

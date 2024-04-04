@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,20 +43,6 @@ import java.util.List;
  * @since 4.2.0
  */
 public final class BackwardsTest {
-
-    /**
-     * Backwards delegates the call to originals().
-     */
-    @Test
-    public void delegatesOriginals() {
-        final YamlLines initial = Mockito.mock(YamlLines.class);
-        final Collection<YamlLine> lines = Mockito.mock(Collection.class);
-        Mockito.when(initial.original()).thenReturn(lines);
-        MatcherAssert.assertThat(
-            new Backwards(initial).original(),
-            Matchers.is(lines)
-        );
-    }
 
     /**
      * Backwards delegates the call to toYamlNode().

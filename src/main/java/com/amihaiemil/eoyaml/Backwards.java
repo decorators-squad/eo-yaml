@@ -51,11 +51,6 @@ final class Backwards implements YamlLines {
     }
 
     @Override
-    public Collection<YamlLine> original() {
-        return this.lines.original();
-    }
-
-    @Override
     public YamlNode nextYamlNode(final YamlLine prev) {
         return this.lines.nextYamlNode(prev);
     }

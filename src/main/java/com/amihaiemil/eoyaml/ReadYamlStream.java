@@ -74,7 +74,7 @@ final class ReadYamlStream extends BaseYamlStream {
         final List<YamlNode> values = new ArrayList<>();
         for(final YamlLine startDoc : this.startMarkers) {
             final YamlLines document = this.readDocument(startDoc);
-            if(!document.original().isEmpty()) {
+            if(document.iterator().hasNext()) {
                 values.add(
                     document.nextYamlNode(startDoc)
                 );

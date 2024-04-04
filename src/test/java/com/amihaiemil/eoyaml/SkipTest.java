@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -142,20 +141,6 @@ public final class SkipTest {
         MatcherAssert.assertThat(
             notSkipped.next().trimmed(),
             Matchers.equalTo("nextTemp: 15C")
-        );
-    }
-
-    /**
-     * Skip delegates the call to originals().
-     */
-    @Test
-    public void delegatesOriginals() {
-        final YamlLines initial = Mockito.mock(YamlLines.class);
-        final Collection<YamlLine> lines = Mockito.mock(Collection.class);
-        Mockito.when(initial.original()).thenReturn(lines);
-        MatcherAssert.assertThat(
-            new Skip(initial).original(),
-            Matchers.is(lines)
         );
     }
 

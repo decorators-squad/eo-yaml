@@ -33,7 +33,6 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,21 +43,6 @@ import java.util.List;
  * @since 3.1.4
  */
 public final class StartMarkersTest {
-
-    /**
-     * StartMarkers can return the encapsulated lines.
-     */
-    @Test
-    @SuppressWarnings("unchecked")
-    public void returnsLines() {
-        final YamlLines lines = Mockito.mock(YamlLines.class);
-        final Collection<YamlLine> collection = Mockito.mock(Collection.class);
-        Mockito.when(lines.original()).thenReturn(collection);
-        MatcherAssert.assertThat(
-            new StartMarkers(lines).original(),
-            Matchers.is(collection)
-        );
-    }
 
     /**
      * StartMarkers can turn itself into YamlNode.

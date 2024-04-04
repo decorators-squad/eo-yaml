@@ -28,7 +28,6 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -94,11 +93,6 @@ final class CollapsedFlowLines implements YamlLines {
         this.lines = lines;
         this.openingBracket = openingBracket;
         this.closingBracket = closingBracket;
-    }
-
-    @Override
-    public Collection<YamlLine> original() {
-        return this.lines.original();
     }
 
     @Override

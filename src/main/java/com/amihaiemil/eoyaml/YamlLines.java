@@ -27,7 +27,6 @@
  */
 package com.amihaiemil.eoyaml;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 /**
@@ -37,17 +36,6 @@ import java.util.Iterator;
  * @since 1.0.0
  */
 interface YamlLines extends Iterable<YamlLine> {
-
-    /**
-     * Return all the original underlying lines. No matter what
-     * decorators are added on top of the base YamlLines implementation,
-     * the call to this method should always be delegated down to the
-     * base method, with no changes.
-     * @return The original YamlLines as a Collection.
-     * @todo #615:30min Remove this method, it is not needed anymore.
-     */
-    @Deprecated
-    Collection<YamlLine> original();
 
     /**
      * Fetch the next YamlNode.

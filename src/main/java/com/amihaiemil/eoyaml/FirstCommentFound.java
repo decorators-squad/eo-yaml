@@ -28,7 +28,6 @@
 package com.amihaiemil.eoyaml;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -86,11 +85,6 @@ final class FirstCommentFound implements YamlLines {
             iterator = this.nodeComment();
         }
         return iterator;
-    }
-
-    @Override
-    public Collection<YamlLine> original() {
-        return this.lines.original();
     }
 
     @Override
