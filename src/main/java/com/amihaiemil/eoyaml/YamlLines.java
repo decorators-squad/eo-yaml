@@ -68,19 +68,21 @@ interface YamlLines extends Iterable<YamlLine> {
      * @return YamlLine or throws {@link IndexOutOfBoundsException}.
      */
     default YamlLine line(final int number) {
-        final Collection<YamlLine> lines = this.original();
-        if(number < 0 && lines.size() > 0) {
-            return lines.iterator().next();
+        int linesNr = 0;
+        final Iterator<YamlLine> iterator = this.iterator();
+        if(number < 0 && iterator.hasNext()) {
+            return iterator.next();
         }
-        for(final YamlLine line : lines){
+        for(final YamlLine line : this){
             if(line.number() == number) {
                 return line;
             }
+            linesNr++;
         }
         throw new IllegalArgumentException(
             "Couldn't find line " + number
           + ". Pay attention, there are "
-          + this.original().size() + " lines!");
+          + linesNr + " lines!");
     }
 
 }

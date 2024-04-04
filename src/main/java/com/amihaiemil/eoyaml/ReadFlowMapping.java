@@ -43,10 +43,8 @@ import java.util.Set;
  * @since 8.0.0
  * @todo #601:30min Modify the yaml printing visitor, so it prints the flow
  *  nodes in Flow style instead of block.
- * @todo #607:60min Refactor this class to not use FoldedFlowLines anymore.
- *  FoldedFlowLines is deprecated and the collapsing/folding logic is now
- *  implemented with {@link CollapsedFlowLines}. ReadFlowSequence needs the
- *  same refactoring after that.
+ * @todo #615:60min Implement the comment() method properly (at the moment
+ *  it always assumes there is no comment).
  */
 final class ReadFlowMapping extends BaseYamlMapping {
 
@@ -72,10 +70,11 @@ final class ReadFlowMapping extends BaseYamlMapping {
      * Ctor.
      * @param previous Line just before the start of this flow mapping.
      * @param lines All lines of the YAML document.
+     * @checkstyle AvoidInlineConditionals (30 lines)
      */
     ReadFlowMapping(final YamlLine previous, final AllYamlLines lines) {
         this(
-            new FoldedFlowLines(
+            new CollapsedFlowLines(
                 new Skip(
                     lines,
                     line -> line.number() <= previous.number(),
@@ -87,7 +86,7 @@ final class ReadFlowMapping extends BaseYamlMapping {
                 ),
                 '{',
                 '}'
-            ).iterator().next()
+            ).line(previous.number() < 0 ? 0 : previous.number() + 1)
         );
     }
 
@@ -98,6 +97,7 @@ final class ReadFlowMapping extends BaseYamlMapping {
      */
     ReadFlowMapping(final YamlLine folded) {
         this.entries = new StringEntries(folded);
+        System.out.println("FLOW LINE: " + folded.value());
         this.folded = folded;
     }
 
