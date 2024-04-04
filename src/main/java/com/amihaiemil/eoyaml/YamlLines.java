@@ -44,7 +44,9 @@ interface YamlLines extends Iterable<YamlLine> {
      * the call to this method should always be delegated down to the
      * base method, with no changes.
      * @return The original YamlLines as a Collection.
+     * @todo #615:30min Remove this method, it is not needed anymore.
      */
+    @Deprecated
     Collection<YamlLine> original();
 
     /**
@@ -68,19 +70,21 @@ interface YamlLines extends Iterable<YamlLine> {
      * @return YamlLine or throws {@link IndexOutOfBoundsException}.
      */
     default YamlLine line(final int number) {
-        final Collection<YamlLine> lines = this.original();
-        if(number < 0 && lines.size() > 0) {
-            return lines.iterator().next();
+        int linesNr = 0;
+        final Iterator<YamlLine> iterator = this.iterator();
+        if(number < 0 && iterator.hasNext()) {
+            return iterator.next();
         }
-        for(final YamlLine line : lines){
+        for(final YamlLine line : this){
             if(line.number() == number) {
                 return line;
             }
+            linesNr++;
         }
         throw new IllegalArgumentException(
             "Couldn't find line " + number
           + ". Pay attention, there are "
-          + this.original().size() + " lines!");
+          + linesNr + " lines!");
     }
 
 }

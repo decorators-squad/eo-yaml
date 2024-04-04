@@ -62,10 +62,11 @@ final class ReadFlowSequence extends BaseYamlSequence {
      * Ctor.
      * @param previous Line just before the start of this flow sequence.
      * @param lines All lines of the YAML document.
+     * @checkstyle AvoidInlineConditionals (30 lines)
      */
     ReadFlowSequence(final YamlLine previous, final AllYamlLines lines) {
         this(
-            new FoldedFlowLines(
+            new CollapsedFlowLines(
                 new Skip(
                     lines,
                     line -> line.number() <= previous.number(),
@@ -77,7 +78,7 @@ final class ReadFlowSequence extends BaseYamlSequence {
                 ),
                 '[',
                 ']'
-            ).iterator().next()
+            ).line(previous.number() < 0 ? 0 : previous.number() + 1)
         );
     }
 

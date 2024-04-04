@@ -174,7 +174,7 @@ final class AllYamlLines implements YamlLines {
                 } else if (matcher.group(4) != null) {
                     node = new ReadYamlMapping(prev.number(), prev, this);
                 }
-            } else if (this.original().size() == 1) {
+            } else if (this.lines.size() == 1) {
                 node = new ReadPlainScalar(this, first);
             }
         }
