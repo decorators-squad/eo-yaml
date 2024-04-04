@@ -44,7 +44,9 @@ interface YamlLines extends Iterable<YamlLine> {
      * the call to this method should always be delegated down to the
      * base method, with no changes.
      * @return The original YamlLines as a Collection.
+     * @todo #615:30min Remove this method, it is not needed anymore.
      */
+    @Deprecated
     Collection<YamlLine> original();
 
     /**
