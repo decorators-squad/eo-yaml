@@ -28,12 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 /**
- * YAML Plain scalar from String. Use this class when dealing with
- * built YAML or in the unit tests.
- *
- * DO NOT use it when READING yaml. For reading use
- * {@link ReadPlainScalar}!
- *
+ * YAML Plain Scalar from String.
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.0
@@ -94,7 +89,13 @@ final class PlainStringScalar extends BaseScalar {
      */
     @Override
     public String value() {
-        return this.value;
+        final String unescaped;
+        if("null".equals(this.value)) {
+            unescaped = null;
+        } else {
+            unescaped = this.unescape(this.value);
+        }
+        return unescaped;
     }
 
     @Override
@@ -102,4 +103,25 @@ final class PlainStringScalar extends BaseScalar {
         return this.comment;
     }
 
+    /**
+     * Remove the possible escaping quotes or apostrophes surrounding the
+     * given value.
+     * @param escaped The value to unescape.
+     * @return The value without quotes or apostrophes.
+     */
+    private String unescape(final String escaped) {
+        final String unescaped;
+        if(escaped == null) {
+            unescaped = escaped;
+        } else {
+            if (escaped.startsWith("\"") && escaped.endsWith("\"")) {
+                unescaped = escaped.substring(1, escaped.length() - 1);
+            } else if (escaped.startsWith("'") && escaped.endsWith("'")) {
+                unescaped = escaped.substring(1, escaped.length() - 1);
+            } else {
+                unescaped = escaped;
+            }
+        }
+        return unescaped;
+    }
 }

@@ -107,10 +107,6 @@ public final class ReadFlowSequenceTestCase {
 
     /**
      * A ReadFlowSequence works if it has only sequences in it.
-     * @todo #368:30min Make sure the escaped scalars read from a
-     *  flow sequence are unescaped when they are returned to the user.
-     *  The bellow assertions, for [a] and b][ should work without being
-     *  surrounded by quotes/apostrophes.
      */
     @Test
     public void hasOnlySequences() {
@@ -141,11 +137,11 @@ public final class ReadFlowSequenceTestCase {
         );
         MatcherAssert.assertThat(
             second.string(1),
-            Matchers.equalTo("\"[a]\"")
+            Matchers.equalTo("[a]")
         );
         MatcherAssert.assertThat(
             second.string(2),
-            Matchers.equalTo("'b]['")
+            Matchers.equalTo("b][")
         );
 
         final YamlSequence third = seq.yamlSequence(2);
@@ -178,15 +174,15 @@ public final class ReadFlowSequenceTestCase {
         );
         MatcherAssert.assertThat(
             seq.string(1),
-            Matchers.equalTo("\"u][\"")
+            Matchers.equalTo("u][")
         );
         MatcherAssert.assertThat(
             seq.string(2),
-            Matchers.equalTo("'v}{'")
+            Matchers.equalTo("v}{")
         );
         MatcherAssert.assertThat(
             seq.string(3),
-            Matchers.equalTo("'escalar'")
+            Matchers.equalTo("escalar")
         );
         final YamlSequence firstSeq = seq.yamlSequence(4);
         MatcherAssert.assertThat(firstSeq, Matchers.iterableWithSize(2));
