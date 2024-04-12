@@ -97,7 +97,6 @@ final class ReadFlowMapping extends BaseYamlMapping {
      */
     ReadFlowMapping(final YamlLine folded) {
         this.entries = new StringEntries(folded);
-        System.out.println("FLOW LINE: " + folded.value());
         this.folded = folded;
     }
 

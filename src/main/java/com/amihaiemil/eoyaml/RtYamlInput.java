@@ -69,7 +69,7 @@ final class RtYamlInput implements YamlInput {
         ).iterator();
         final YamlMapping read;
         if(iterator.hasNext()) {
-            if ("{".equals(iterator.next().trimmed())) {
+            if (iterator.next().trimmed().startsWith("{")) {
                 read = new ReadFlowMapping(all);
             } else {
                 read = new ReadYamlMapping(all);
@@ -93,7 +93,7 @@ final class RtYamlInput implements YamlInput {
         ).iterator();
         final YamlSequence read;
         if(iterator.hasNext()) {
-            if ("[".equals(iterator.next().trimmed())) {
+            if (iterator.next().trimmed().startsWith("[")) {
                 read = new ReadFlowSequence(all);
             } else {
                 read = new ReadYamlSequence(all);

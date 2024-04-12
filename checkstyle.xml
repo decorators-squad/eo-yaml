@@ -49,7 +49,7 @@
     Maximum number of lines in any .java file is limited.
     -->
     <module name="FileLength">
-        <property name="max" value="2000"/>
+        <property name="max" value="4000"/>
         <property name="fileExtensions" value="java"/>
     </module>
 

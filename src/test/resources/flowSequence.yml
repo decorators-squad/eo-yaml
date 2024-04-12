@@ -1,0 +1,14 @@
+[
+  {
+    name: eo-yaml,
+    architect: amihaiemil,
+    developers: [ amihaiemil, sherif, rultor ],
+    tools: { devops: rultor, pm: self-xdsd }
+  },
+  {
+    name: queenlang,
+    architect: amihaiemil,
+    developers: [ amihaiemil],
+    tools: { devops: rultor, pm: self-xdsd }
+  },
+]

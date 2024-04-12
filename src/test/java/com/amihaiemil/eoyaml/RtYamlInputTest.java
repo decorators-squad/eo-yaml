@@ -35,7 +35,6 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -1845,6 +1844,240 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * We should be able to read a file containing only a flow mapping.
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void readsFlowMapping() throws IOException {
+        final String filename = "flowMapping.yml";
+        final YamlMapping mapping = new RtYamlInput(
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+        System.out.println(mapping);
+        MatcherAssert.assertThat(
+            mapping.keys().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            mapping.values().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            mapping.string("name"), Matchers.equalTo("eo-yaml")
+        );
+        MatcherAssert.assertThat(
+            mapping.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("developers").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("developers").string(1),
+            Matchers.equalTo("sherif")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("developers").string(2),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlMapping("tools").string("devops"),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlMapping("tools").string("pm"),
+            Matchers.equalTo("self-xdsd")
+        );
+    }
+
+    /**
+     * We should be able to read a file containing only a flow mapping
+     * on one line.
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void readsFlowMappingOneLine() throws IOException {
+        final String filename = "flowMapping_one_line.yml";
+        final YamlMapping mapping = new RtYamlInput(
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
+        ).readYamlMapping();
+        System.out.println(mapping);
+        MatcherAssert.assertThat(
+            mapping.keys().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            mapping.values().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            mapping.string("name"), Matchers.equalTo("eo-yaml")
+        );
+        MatcherAssert.assertThat(
+            mapping.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("developers").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("developers").string(1),
+            Matchers.equalTo("sherif")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("developers").string(2),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlMapping("tools").string("devops"),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlMapping("tools").string("pm"),
+            Matchers.equalTo("self-xdsd")
+        );
+    }
+
+    /**
+     * We should be able to read a file containing only a flow sequence.
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void readsFlowSequence() throws IOException {
+        final String filename = "flowSequence.yml";
+        final YamlSequence sequence = new RtYamlInput(
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
+        ).readYamlSequence();
+        System.out.println(sequence);
+        final YamlMapping first = sequence.yamlMapping(0);
+        MatcherAssert.assertThat(
+            first.keys().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            first.values().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            first.string("name"), Matchers.equalTo("eo-yaml")
+        );
+        MatcherAssert.assertThat(
+            first.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("developers").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("developers").string(1),
+            Matchers.equalTo("sherif")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("developers").string(2),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            first.yamlMapping("tools").string("devops"),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            first.yamlMapping("tools").string("pm"),
+            Matchers.equalTo("self-xdsd")
+        );
+        final YamlMapping second = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(
+            second.keys().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            second.values().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            second.string("name"), Matchers.equalTo("queenlang")
+        );
+        MatcherAssert.assertThat(
+            second.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            second.yamlSequence("developers").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping("tools").string("devops"),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping("tools").string("pm"),
+            Matchers.equalTo("self-xdsd")
+        );
+    }
+
+    /**
+     * We should be able to read a file containing only a flow sequence on one
+     * line.
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void readsFlowSequenceOneLine() throws IOException {
+        final String filename = "flowSequence_one_line.yml";
+        final YamlSequence sequence = new RtYamlInput(
+            Files.newBufferedReader(Paths.get("src/test/resources/" + filename))
+        ).readYamlSequence();
+        System.out.println(sequence);
+        final YamlMapping first = sequence.yamlMapping(0);
+        MatcherAssert.assertThat(
+            first.keys().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            first.values().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            first.string("name"), Matchers.equalTo("eo-yaml")
+        );
+        MatcherAssert.assertThat(
+            first.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("developers").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("developers").string(1),
+            Matchers.equalTo("sherif")
+        );
+        MatcherAssert.assertThat(
+            first.yamlSequence("developers").string(2),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            first.yamlMapping("tools").string("devops"),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            first.yamlMapping("tools").string("pm"),
+            Matchers.equalTo("self-xdsd")
+        );
+        final YamlMapping second = sequence.yamlMapping(1);
+        MatcherAssert.assertThat(
+            second.keys().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            second.values().size(), Matchers.equalTo(4)
+        );
+        MatcherAssert.assertThat(
+            second.string("name"), Matchers.equalTo("queenlang")
+        );
+        MatcherAssert.assertThat(
+            second.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            second.yamlSequence("developers").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping("tools").string("devops"),
+            Matchers.equalTo("rultor")
+        );
+        MatcherAssert.assertThat(
+            second.yamlMapping("tools").string("pm"),
+            Matchers.equalTo("self-xdsd")
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
@@ -1852,11 +2085,11 @@ public final class RtYamlInputTest {
      * @throws IOException If something is wrong.
      */
     private String readTestResource(final String fileName)
-        throws FileNotFoundException, IOException {
+        throws IOException {
         return new String(
             IOUtils.toByteArray(
-                new FileInputStream(
-                    new File("src/test/resources/" + fileName)
+                Files.newInputStream(
+                    new File("src/test/resources/" + fileName).toPath()
                 )
             )
         );
