@@ -1,6 +1,6 @@
 {
   name: eo-yaml,
-  architect: amihaiemil,
+  "architect": amihaiemil,
   developers: [amihaiemil, sherif, rultor],
-  tools: {devops: rultor, pm: self-xdsd}
+  tools: {"devops": rultor, pm: "self-xdsd"}
 }
