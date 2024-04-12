@@ -1,0 +1,32 @@
+logging:
+  level:
+    com:
+      selfxdsd: DEBUG
+  file:
+    name: "${self_logging_path}self-web-xdsd.log"
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            "client-id": "${gh_client_id}"
+            "client-secret": "${gh_client_secret}"
+            scope: repo
+          gitlab:
+            "client-id": "${gl_client_id}"
+            "client-secret": "${gl_client_secret}"
+            "authorization-grant-type": authorization_code
+            "redirect-uri": "${self_xdsd_base_url}/login/oauth2/code/gitlab"
+            "client-authentication-method": basic
+            scope:
+              - api
+              - read_user
+  mail:
+    host: mailhog.keycloak.svc.cluster.local
+    port: 1025
+  cloud:
+    kubernetes:
+      enabled: true
+      leader:
+        "config-map-name": "self-leader-election"

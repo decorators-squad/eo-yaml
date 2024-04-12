@@ -2078,6 +2078,28 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * We can read a typical application.yml from Spring.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalSpringApplicationProperties() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typicalSpringApplicationProperties.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readTestResource(
+                    "typicalSpringApplicationProperties_printed.yml"
+                )
+            )
+        );
+    }
+
+    /**
      * Read a test resource file's contents.
      * @param fileName File to read.
      * @return File's contents as String.
