@@ -399,6 +399,7 @@ public final class RtYamlMappingTest {
                     .build()
             )
             .add("name", "eo-yaml")
+            .add("conditions", "- none")
             .build();
         System.out.print(yaml.toString());
         String expected = this.readTestResource("simpleMapping.yml");

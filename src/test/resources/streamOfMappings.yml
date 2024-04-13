@@ -4,13 +4,13 @@
     - rultor
     - salikjan
     - sherif
-  name: "eo-yaml"
+  name: eo-yaml
 ---
   architect: vlad
   developers:
     - andrei
-  name: "eo-json-impl"
+  name: eo-json-impl
 ---
   architect: felicia
   developer: sara
-  name: "docker-java-api"
+  name: docker-java-api

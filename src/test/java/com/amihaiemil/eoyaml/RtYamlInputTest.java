@@ -735,20 +735,20 @@ public final class RtYamlInputTest {
 
         MatcherAssert.assertThat(read.type(), Matchers.equalTo(Node.MAPPING));
         MatcherAssert.assertThat(
-                read.asMapping().keys().size(),
-                Matchers.equalTo(1));
+            read.asMapping().keys().size(),
+            Matchers.equalTo(1));
 
         final YamlNode topLevelMapping = read.asMapping().value("a_mapping");
         MatcherAssert.assertThat(
-                topLevelMapping.type(),
-                Matchers.equalTo(Node.MAPPING));
+            topLevelMapping.type(),
+            Matchers.equalTo(Node.MAPPING));
         MatcherAssert.assertThat(
-                topLevelMapping.asMapping().keys().size(),
-                Matchers.equalTo(1));
-
-        final String pretty = read.toString().trim();
-
-        MatcherAssert.assertThat(pretty, Matchers.equalTo(fileContents));
+            topLevelMapping.asMapping().keys().size(),
+            Matchers.equalTo(1));
+        MatcherAssert.assertThat(
+            topLevelMapping.asMapping().string("quoted-key"),
+            Matchers.equalTo("val0")
+        );
     }
 
 

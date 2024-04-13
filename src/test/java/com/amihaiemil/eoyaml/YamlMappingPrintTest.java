@@ -312,7 +312,7 @@ public final class YamlMappingPrintTest {
             .append("time: \"15:00\"").append(System.lineSeparator())
             .append("color: \"#314132\"").append(System.lineSeparator())
             .append("gt: \"&gt;\"").append(System.lineSeparator())
-            .append("cash: \"$15\"").append(System.lineSeparator())
+            .append("cash: $15").append(System.lineSeparator())
             .append("compare: \"a>b\"").append(System.lineSeparator())
             .append("xor: \"a || b\"").append(System.lineSeparator())
             .append("degrees: \"-15C\"").append(System.lineSeparator())

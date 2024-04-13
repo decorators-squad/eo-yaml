@@ -3,22 +3,26 @@ logging:
     com:
       selfxdsd: DEBUG
   file:
-    name: "${self_logging_path}self-web-xdsd.log"
+    name: ${self_logging_path}self-web-xdsd.log
 spring:
   security:
     oauth2:
       client:
         registration:
           github:
-            "client-id": "${gh_client_id}"
-            "client-secret": "${gh_client_secret}"
+            client-id: ${gh_client_id}
+            client-secret: ${gh_client_secret}
             scope: repo
           gitlab:
-            "client-id": "${gl_client_id}"
-            "client-secret": "${gl_client_secret}"
-            "authorization-grant-type": authorization_code
-            "redirect-uri": "${self_xdsd_base_url}/login/oauth2/code/gitlab"
-            "client-authentication-method": basic
+            client-id: ${gl_client_id}
+            client-secret: ${gl_client_secret}
+            authorization-grant-type: authorization_code
+            redirect-uri: ${self_xdsd_base_url}/login/oauth2/code/gitlab
+            client-authentication-method: basic
+            array-remains-string: "[config1, config2, config3]"
+            map-mains-string: "{a:b, c:d, e:f}"
+            null-string: "null"
+            other: null
             scope:
               - api
               - read_user
@@ -29,4 +33,4 @@ spring:
     kubernetes:
       enabled: true
       leader:
-        "config-map-name": "self-leader-election"
+        config-map-name: self-leader-election

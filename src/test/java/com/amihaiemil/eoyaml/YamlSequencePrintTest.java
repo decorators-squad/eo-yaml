@@ -281,7 +281,7 @@ public final class YamlSequencePrintTest {
             .append("- \"15:00\"").append(System.lineSeparator())
             .append("- \"#314132\"").append(System.lineSeparator())
             .append("- \"&gt;\"").append(System.lineSeparator())
-            .append("- \"$15\"").append(System.lineSeparator())
+            .append("- $15").append(System.lineSeparator())
             .append("- \"a>b\"").append(System.lineSeparator())
             .append("- \"a || b\"").append(System.lineSeparator())
             .append("- \"-15C\"").append(System.lineSeparator())

@@ -1,10 +1,10 @@
 a_mapping:
-  "of-quoted": val0
-  "also-quoted": val1
+  of-quoted: val0
+  also-quoted: val1
   and_unquoted: val2
-  "to-introduce-leading-spaces":
+  to-introduce-leading-spaces:
     key0: 1.0
-  "and-quotes":
+  and-quotes:
     key1: 2.0
   and_unquoted2:
     key2: 3.0

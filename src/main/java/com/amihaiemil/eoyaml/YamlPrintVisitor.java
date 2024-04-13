@@ -28,6 +28,7 @@
 package com.amihaiemil.eoyaml;
 
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -358,8 +359,7 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
             }
             boolean alreadyEscaped = (toEscape.startsWith("'") && toEscape.endsWith("'"))
                 || (toEscape.startsWith("\"") && toEscape.endsWith("\""));
-            final String needsEscaping = ".*[?\\-#:>|$%&{}\\[\\]@`!*,'\"]+.*|[ ]+|null";
-            if (!alreadyEscaped && toEscape.matches(needsEscaping)) {
+            if (!alreadyEscaped && this.needsEscaping(toEscape)) {
                 if(toEscape.contains("\"")) {
                     toEscape = "'" + toEscape + "'";
                 } else {
@@ -372,6 +372,31 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
         @Override
         public Comment comment() {
             return this.original.comment();
+        }
+
+        /**
+         * Checks if a value (String scalar) needs escaping or not.
+         * @param value Value to check.
+         * @return True if it needs to be escaped, false otherwise.
+         * @checkstyle ReturnCount (100 lines)
+         */
+        public boolean needsEscaping(final String value) {
+            final String flowMap = "^\\{.*\\}$";
+            final String flowSequence = "^\\[.*\\]$";
+            final String blockSequence = "[ ]*\\-+.*";
+            final String isNullRef = "null";
+            final String justSpaces = "[ ]+";
+            final String otherSpecialChars = ".*[?#:>|%&@`!*,'\"]+.*";
+            final List<String> cases = Arrays.asList(
+                flowMap, flowSequence, blockSequence,
+                isNullRef, justSpaces, otherSpecialChars
+            );
+            for(final String regex : cases) {
+                if(value.matches(regex)) {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
