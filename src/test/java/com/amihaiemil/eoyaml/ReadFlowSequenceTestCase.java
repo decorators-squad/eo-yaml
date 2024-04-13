@@ -46,18 +46,50 @@ import java.util.Iterator;
 public final class ReadFlowSequenceTestCase {
 
     /**
-     * Sequences in flow/json style have no comment.
+     * ReadFlowSequence can return the document comment.
      */
     @Test
-    public void hasNoComment() {
+    public void hasDocumentComment() {
         final YamlSequence seq = new ReadFlowSequence(
-            Mockito.mock(YamlLine.class),
-            Mockito.mock(YamlLine.class),
-            new AllYamlLines(new ArrayList<>())
+            new RtYamlLine("[{a: b}, {c: d}, {e: f}]", 2),
+            new RtYamlLine("---", 1),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("# this is a flow sequence document", 0),
+                    new RtYamlLine("---", 1),
+                    new RtYamlLine("[{a: b}, {c: d}, {e: f}]", 2)
+                )
+            )
         );
         MatcherAssert.assertThat(
             seq.comment().value(),
-            Matchers.isEmptyString()
+            Matchers.equalTo("this is a flow sequence document")
+        );
+        MatcherAssert.assertThat(
+            seq.comment().yamlNode(),
+            Matchers.is(seq)
+        );
+    }
+
+    /**
+     * ReadFlowMapping can return the comment referring to it.
+     */
+    @Test
+    public void hasOwnNodeComment() {
+        final YamlSequence seq = new ReadFlowSequence(
+            new RtYamlLine("[{a: b}, {c: d}, {e: f}]", 2),
+            new RtYamlLine("flow_seq:", 1),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("# this comment about the 'flow' seq", 0),
+                    new RtYamlLine("flow:", 1),
+                    new RtYamlLine("  [{a: b}, {c: d}, {e: f}]", 2)
+                )
+            )
+        );
+        MatcherAssert.assertThat(
+            seq.comment().value(),
+            Matchers.equalTo("this comment about the 'flow' seq")
         );
         MatcherAssert.assertThat(
             seq.comment().yamlNode(),

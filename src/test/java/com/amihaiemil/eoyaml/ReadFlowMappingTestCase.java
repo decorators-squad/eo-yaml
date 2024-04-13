@@ -44,7 +44,7 @@ import java.util.Set;
 public final class ReadFlowMappingTestCase {
 
     /**
-     * YamlMapping in flow format can return the document comment.
+     * ReadFlowMapping can return the document comment.
      */
     @Test
     public void hasDocumentComment() {
@@ -70,7 +70,7 @@ public final class ReadFlowMappingTestCase {
     }
 
     /**
-     * YamlMapping in flow format can return the comment referring to it.
+     * ReadFlowMapping can return the comment referring to it.
      */
     @Test
     public void hasOwnNodeComment() {

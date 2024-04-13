@@ -141,7 +141,33 @@ final class ReadFlowSequence extends BaseYamlSequence {
 
     @Override
     public Comment comment() {
-        return new BuiltComment(this, "");
+        boolean documentComment = this.previous.number() < 0;
+        //@checkstyle LineLength (50 lines)
+        return new ReadComment(
+            new Backwards(
+                new FirstCommentFound(
+                    new Backwards(
+                        new Skip(
+                            this.all,
+                            line -> {
+                                final boolean skip;
+                                if(documentComment) {
+                                    skip = line.number() >= this.folded.number();
+                                } else {
+                                    skip = line.number() >= this.previous.number();
+                                }
+                                return skip;
+                            },
+                            line -> line.trimmed().startsWith("..."),
+                            line -> line.trimmed().startsWith("%"),
+                            line -> line.trimmed().startsWith("!!")
+                        )
+                    ),
+                    documentComment
+                )
+            ),
+            this
+        );
     }
 
     /**
