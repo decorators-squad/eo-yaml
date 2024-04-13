@@ -30,8 +30,6 @@ package com.amihaiemil.eoyaml;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import org.mockito.Mockito;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -46,16 +44,50 @@ import java.util.Set;
 public final class ReadFlowMappingTestCase {
 
     /**
-     * YamlMapping in flow format has no comment.
+     * YamlMapping in flow format can return the document comment.
      */
     @Test
-    public void hasNoComment() {
+    public void hasDocumentComment() {
         final YamlMapping map = new ReadFlowMapping(
-            Mockito.mock(YamlLine.class)
+            new RtYamlLine("{a: b, c: d, e: f}", 2),
+            new RtYamlLine("---", 1),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("# this is a flow mapping document", 0),
+                    new RtYamlLine("---", 1),
+                    new RtYamlLine("{a: b, c: d, e: f}", 2)
+                )
+            )
         );
         MatcherAssert.assertThat(
             map.comment().value(),
-            Matchers.isEmptyString()
+            Matchers.equalTo("this is a flow mapping document")
+        );
+        MatcherAssert.assertThat(
+            map.comment().yamlNode(),
+            Matchers.is(map)
+        );
+    }
+
+    /**
+     * YamlMapping in flow format can return the comment referring to it.
+     */
+    @Test
+    public void hasOwnNodeComment() {
+        final YamlMapping map = new ReadFlowMapping(
+            new RtYamlLine("{a: {i: j}, c: d, e: f}", 2),
+            new RtYamlLine("flow:", 1),
+            new AllYamlLines(
+                Arrays.asList(
+                    new RtYamlLine("# this comment about the 'flow' map", 0),
+                    new RtYamlLine("flow:", 1),
+                    new RtYamlLine("  {a: {i: j}, c: d, e: f}", 2)
+                )
+            )
+        );
+        MatcherAssert.assertThat(
+            map.comment().value(),
+            Matchers.equalTo("this comment about the 'flow' map")
         );
         MatcherAssert.assertThat(
             map.comment().yamlNode(),

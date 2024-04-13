@@ -41,10 +41,18 @@ import java.util.Set;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 8.0.0
- * @todo #615:60min Implement the comment() method properly (at the moment
- *  it always assumes there is no comment).
  */
 final class ReadFlowMapping extends BaseYamlMapping {
+
+    /**
+     * All the lines of the YAML document.
+     */
+    private final AllYamlLines all;
+
+    /**
+     * Previous line just before the one where this flow sequence starts.
+     */
+    private final YamlLine previous;
 
     /**
      * The entries of this flow mapping as String.
@@ -84,7 +92,9 @@ final class ReadFlowMapping extends BaseYamlMapping {
                 ),
                 '{',
                 '}'
-            ).line(previous.number() < 0 ? 0 : previous.number() + 1)
+            ).line(previous.number() < 0 ? 0 : previous.number() + 1),
+            previous,
+            lines
         );
     }
 
@@ -92,8 +102,14 @@ final class ReadFlowMapping extends BaseYamlMapping {
      * Constructor.
      * @param folded All the YAML lines of this flow mapping,
      *  folded into a single one.
+     * @param previous Line previous to where this flow mapping starts.
+     * @param all All the lines of the YAML document.
      */
-    ReadFlowMapping(final YamlLine folded) {
+    ReadFlowMapping(
+        final YamlLine folded, final YamlLine previous, final AllYamlLines all
+    ) {
+        this.previous = previous;
+        this.all = all;
         this.entries = new StringEntries(folded);
         this.folded = folded;
     }
@@ -123,7 +139,33 @@ final class ReadFlowMapping extends BaseYamlMapping {
 
     @Override
     public Comment comment() {
-        return new BuiltComment(this, "");
+        boolean documentComment = this.previous.number() < 0;
+        //@checkstyle LineLength (50 lines)
+        return new ReadComment(
+            new Backwards(
+                new FirstCommentFound(
+                    new Backwards(
+                        new Skip(
+                            this.all,
+                            line -> {
+                                final boolean skip;
+                                if(documentComment) {
+                                    skip = line.number() >= this.folded.number();
+                                } else {
+                                    skip = line.number() >= this.previous.number();
+                                }
+                                return skip;
+                            },
+                            line -> line.trimmed().startsWith("..."),
+                            line -> line.trimmed().startsWith("%"),
+                            line -> line.trimmed().startsWith("!!")
+                        )
+                    ),
+                    documentComment
+                )
+            ),
+            this
+        );
     }
 
     /**
@@ -135,11 +177,15 @@ final class ReadFlowMapping extends BaseYamlMapping {
         final YamlNode yaml;
         if (node.startsWith("[")) {
             yaml = new ReadFlowSequence(
-                new RtYamlLine(node, this.folded.number())
+                new RtYamlLine(node, this.folded.number()),
+                this.previous,
+                this.all
             );
         } else if (node.startsWith("{")) {
             yaml = new ReadFlowMapping(
-                new RtYamlLine(node, this.folded.number())
+                new RtYamlLine(node, this.folded.number()),
+                this.previous,
+                this.all
             );
         } else {
             yaml = new PlainStringScalar(node.trim());

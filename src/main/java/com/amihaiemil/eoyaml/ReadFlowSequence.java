@@ -41,6 +41,16 @@ import java.util.List;
 final class ReadFlowSequence extends BaseYamlSequence {
 
     /**
+     * All the lines of the document.
+     */
+    private final AllYamlLines all;
+
+    /**
+     * Previous line just before the one where this flow sequence starts.
+     */
+    private final YamlLine previous;
+
+    /**
      * The entries of this flow sequence as String.
      */
     private final StringNodes entries;
@@ -61,14 +71,14 @@ final class ReadFlowSequence extends BaseYamlSequence {
     /**
      * Ctor.
      * @param previous Line just before the start of this flow sequence.
-     * @param lines All lines of the YAML document.
+     * @param all All lines of the YAML document.
      * @checkstyle AvoidInlineConditionals (30 lines)
      */
-    ReadFlowSequence(final YamlLine previous, final AllYamlLines lines) {
+    ReadFlowSequence(final YamlLine previous, final AllYamlLines all) {
         this(
             new CollapsedFlowLines(
                 new Skip(
-                    lines,
+                    all,
                     line -> line.number() <= previous.number(),
                     line -> line.trimmed().startsWith("#"),
                     line -> line.trimmed().startsWith("---"),
@@ -78,7 +88,9 @@ final class ReadFlowSequence extends BaseYamlSequence {
                 ),
                 '[',
                 ']'
-            ).line(previous.number() < 0 ? 0 : previous.number() + 1)
+            ).line(previous.number() < 0 ? 0 : previous.number() + 1),
+            previous,
+            all
         );
     }
 
@@ -86,8 +98,14 @@ final class ReadFlowSequence extends BaseYamlSequence {
      * Constructor.
      * @param folded All the YAML lines of this flow sequence,
      *  folded into a single one.
+     * @param previous Line previous to where this flow mapping starts.
+     * @param all All the lines of the YAML document.
      */
-    ReadFlowSequence(final YamlLine folded) {
+    ReadFlowSequence(
+        final YamlLine folded, final YamlLine previous, final AllYamlLines all
+    ) {
+        this.previous = previous;
+        this.all = all;
         this.entries = new StringNodes(folded);
         this.folded = folded;
     }
@@ -99,13 +117,17 @@ final class ReadFlowSequence extends BaseYamlSequence {
             if (node.startsWith("[")) {
                 kids.add(
                     new ReadFlowSequence(
-                        new RtYamlLine(node, this.folded.number())
+                        new RtYamlLine(node, this.folded.number()),
+                        this.previous,
+                        this.all
                     )
                 );
             } else if(node.startsWith("{")) {
                 kids.add(
                     new ReadFlowMapping(
-                        new RtYamlLine(node, this.folded.number())
+                        new RtYamlLine(node, this.folded.number()),
+                        this.previous,
+                        this.all
                     )
                 );
             } else {

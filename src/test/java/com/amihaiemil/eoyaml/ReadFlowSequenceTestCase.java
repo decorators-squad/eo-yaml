@@ -32,6 +32,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -50,7 +51,9 @@ public final class ReadFlowSequenceTestCase {
     @Test
     public void hasNoComment() {
         final YamlSequence seq = new ReadFlowSequence(
-            Mockito.mock(YamlLine.class)
+            Mockito.mock(YamlLine.class),
+            Mockito.mock(YamlLine.class),
+            new AllYamlLines(new ArrayList<>())
         );
         MatcherAssert.assertThat(
             seq.comment().value(),
@@ -68,7 +71,9 @@ public final class ReadFlowSequenceTestCase {
     @Test
     public void hasNoValues() {
         final YamlSequence seq = new ReadFlowSequence(
-            new RtYamlLine("[]", 0)
+            new RtYamlLine("[]", 0),
+            Mockito.mock(YamlLine.class),
+            new AllYamlLines(new ArrayList<>())
         );
         MatcherAssert.assertThat(
             seq.values(),
@@ -82,7 +87,9 @@ public final class ReadFlowSequenceTestCase {
     @Test
     public void hasOnlyScalars() {
         final YamlSequence seq = new ReadFlowSequence(
-            new RtYamlLine("[a, b, c, d:e]", 0)
+            new RtYamlLine("[a, b, c, d:e]", 0),
+            Mockito.mock(YamlLine.class),
+            new AllYamlLines(new ArrayList<>())
         );
         final Collection<YamlNode> values = seq.values();
         MatcherAssert.assertThat(values, Matchers.iterableWithSize(4));
@@ -111,7 +118,9 @@ public final class ReadFlowSequenceTestCase {
     @Test
     public void hasOnlySequences() {
         final YamlSequence seq = new ReadFlowSequence(
-            new RtYamlLine("[[a, b], [c,\"[a]\",'b]['], [d]]", 0)
+            new RtYamlLine("[[a, b], [c,\"[a]\",'b]['], [d]]", 0),
+            Mockito.mock(YamlLine.class),
+            new AllYamlLines(new ArrayList<>())
         );
         System.out.println(seq);
         MatcherAssert.assertThat(
@@ -161,7 +170,9 @@ public final class ReadFlowSequenceTestCase {
         final YamlSequence seq = new ReadFlowSequence(
             new RtYamlLine(
                 "[scalar, \"u][\", 'v}{', 'escalar', [a, b], other, [d]]", 0
-            )
+            ),
+            Mockito.mock(YamlLine.class),
+            new AllYamlLines(new ArrayList<>())
         );
         System.out.println(seq);
         MatcherAssert.assertThat(
