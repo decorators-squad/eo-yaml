@@ -30,6 +30,7 @@ package com.amihaiemil.eoyaml;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Visitor which prints the YAML in block format.
@@ -84,44 +85,23 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     }
     @Override
     public String visitYamlMapping(final YamlMapping node) {
-        final StringWriter writer = new StringWriter();
-        for (final YamlNode key : node.keys()) {
-            final YamlNode value = node.value(key);
-            writer.append(this.printPossibleComment(value));
-            if(key.type().equals(Node.SCALAR)) {
-                writer.append(this.visitYamlNode(key));
-            } else {
-                writer.append("?").append(this.lineSeparator);
-                final String printedValue = this.visitYamlNode(key);
-                writer.append(this.indent(printedValue, this.indentation));
-                writer.append(this.lineSeparator);
-            }
-            if(value == null || value.type().equals(Node.SCALAR)) {
-                writer.append(": ");
-                writer.append(this.visitYamlNode(value));
-            } else {
-                final String printedValue = this.visitYamlNode(value);
-                if("null".equals(printedValue) || "[]".equals(printedValue)
-                    || "{}".equals(printedValue)
-                ) {
-                    writer.append(": ");
-                    writer.append(printedValue);
-                } else {
-                    writer.append(":");
-                    writer.append(this.lineSeparator);
-                    writer.append(this.indent(printedValue, this.indentation));
-                }
-            }
-            writer.append(this.lineSeparator);
-        }
-        final String printedMapping = writer.toString();
-        final String trimmed;
-        if (printedMapping.length() > 0)  {
-            trimmed = printedMapping.substring(0, printedMapping.length() - 1);
+        StringWriter writer = new StringWriter();
+        final String printed;
+        if(node instanceof ReadFlowMapping) {
+            writer = this.printFlowMapping(node, writer);
+            printed = writer.toString();
         } else {
-            trimmed = printedMapping;
+            writer = this.printBlockMapping(node, writer);
+            final String printedMapping = writer.toString();
+            if (printedMapping.length() > 0)  {
+                printed = printedMapping.substring(
+                    0, printedMapping.length() - 1
+                );
+            } else {
+                printed = printedMapping;
+            }
         }
-        return trimmed;
+        return printed;
     }
 
     @Override
@@ -324,6 +304,73 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
             }
         }
         return writer.toString();
+    }
+
+    /**
+     * Write a block mapping to the given StringWriter.
+     * @param node Block YamlMapping to print.
+     * @param writer String writer.
+     * @return String writer.
+     */
+    private StringWriter printBlockMapping(
+        final YamlMapping node, final StringWriter writer
+    ) {
+        for (final YamlNode key : node.keys()) {
+            final YamlNode value = node.value(key);
+            writer.append(this.printPossibleComment(value));
+            if(key.type().equals(Node.SCALAR)) {
+                writer.append(this.visitYamlNode(key));
+            } else {
+                writer.append("?").append(this.lineSeparator);
+                final String printedValue = this.visitYamlNode(key);
+                writer.append(this.indent(printedValue, this.indentation));
+                writer.append(this.lineSeparator);
+            }
+            if(value == null || value.type().equals(Node.SCALAR)) {
+                writer.append(": ");
+                writer.append(this.visitYamlNode(value));
+            } else {
+                final String printedValue = this.visitYamlNode(value);
+                if("null".equals(printedValue) || "[]".equals(printedValue)
+                    || "{}".equals(printedValue)
+                ) {
+                    writer.append(": ");
+                    writer.append(printedValue);
+                } else {
+                    writer.append(":");
+                    writer.append(this.lineSeparator);
+                    writer.append(this.indent(printedValue, this.indentation));
+                }
+            }
+            writer.append(this.lineSeparator);
+        }
+        return writer;
+    }
+
+    /**
+     * Write a flow mapping to the given StringWriter.
+     * @param node Flow YamlMapping to print.
+     * @param writer String writer.
+     * @return String writer.
+     */
+    private StringWriter printFlowMapping(
+        final YamlMapping node, final StringWriter writer
+    ) {
+        writer.append("{");
+        int i=0;
+        final Set<YamlNode> keys = node.keys();
+        for (final YamlNode key : keys) {
+            final YamlNode value = node.value(key);
+            writer.append(this.visitYamlNode(key));
+            writer.append(": ");
+            writer.append(this.visitYamlNode(value));
+            i++;
+            if(i<keys.size()) {
+                writer.append(", ");
+            }
+        }
+        writer.append("}");
+        return writer;
     }
 
     /**

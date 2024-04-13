@@ -107,7 +107,7 @@ public final class ReadFlowMappingTestCase {
         );
         MatcherAssert.assertThat(
             iterator.next().toString(),
-            Matchers.equalTo("y: r")
+            Matchers.equalTo("{y: r}")
         );
         MatcherAssert.assertThat(
             iterator.next().toString(),
@@ -197,7 +197,7 @@ public final class ReadFlowMappingTestCase {
         );
         MatcherAssert.assertThat(
             iterator.next().toString(),
-            Matchers.equalTo("h: i")
+            Matchers.equalTo("{h: i}")
         );
         MatcherAssert.assertThat(
             iterator.next().toString(),
@@ -220,7 +220,7 @@ public final class ReadFlowMappingTestCase {
                 + System.lineSeparator()
                 + "-"
                 + System.lineSeparator()
-                + "  ii: \"5,6,7\""
+                + "  {ii: \"5,6,7\"}"
                 + System.lineSeparator()
                 + "- b"
                 + System.lineSeparator()
