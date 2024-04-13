@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -85,13 +86,13 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     }
     @Override
     public String visitYamlMapping(final YamlMapping node) {
-        StringWriter writer = new StringWriter();
+        final StringWriter writer = new StringWriter();
         final String printed;
         if(node instanceof ReadFlowMapping) {
-            writer = this.printFlowMapping(node, writer);
+            this.printFlowMapping(node, writer);
             printed = writer.toString();
         } else {
-            writer = this.printBlockMapping(node, writer);
+            this.printBlockMapping(node, writer);
             final String printedMapping = writer.toString();
             if (printedMapping.length() > 0)  {
                 printed = printedMapping.substring(
@@ -107,36 +108,22 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     @Override
     public String visitYamlSequence(final YamlSequence node) {
         final StringWriter writer = new StringWriter();
-        for(final YamlNode value : node.values()) {
-            writer.append(this.printPossibleComment(value));
-            if(value == null || value.type().equals(Node.SCALAR)) {
-                writer.append("- ");
-                writer.append(this.visitYamlNode(value));
-            } else {
-                final String printedValue = this.visitYamlNode(value);
-                if("null".equals(printedValue) || "[]".equals(printedValue)
-                    || "{}".equals(printedValue)
-                ) {
-                    writer.append("- ");
-                    writer.append(printedValue);
-                } else {
-                    writer.append("-");
-                    writer.append(this.lineSeparator);
-                    writer.append(this.indent(printedValue, this.indentation));
-                }
-            }
-            writer.append(this.lineSeparator);
-        }
-        final String printedSequence = writer.toString();
-        final String trimmed;
-        if (printedSequence.length() > 0)  {
-            trimmed = printedSequence.substring(
-                0, printedSequence.length() - 1
-            );
+        final String printed;
+        if(node instanceof ReadFlowSequence) {
+            this.printFlowSequence(node, writer);
+            printed = writer.toString();
         } else {
-            trimmed = printedSequence;
+            this.printBlockSequence(node, writer);
+            final String printedSequence = writer.toString();
+            if (printedSequence.length() > 0)  {
+                printed = printedSequence.substring(
+                    0, printedSequence.length() - 1
+                );
+            } else {
+                printed = printedSequence;
+            }
         }
-        return trimmed;
+        return printed;
     }
 
     @Override
@@ -310,9 +297,8 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
      * Write a block mapping to the given StringWriter.
      * @param node Block YamlMapping to print.
      * @param writer String writer.
-     * @return String writer.
      */
-    private StringWriter printBlockMapping(
+    private void printBlockMapping(
         final YamlMapping node, final StringWriter writer
     ) {
         for (final YamlNode key : node.keys()) {
@@ -331,8 +317,8 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
                 writer.append(this.visitYamlNode(value));
             } else {
                 final String printedValue = this.visitYamlNode(value);
-                if("null".equals(printedValue) || "[]".equals(printedValue)
-                    || "{}".equals(printedValue)
+                if("null".equals(printedValue) || printedValue.startsWith("[")
+                    || printedValue.startsWith("{")
                 ) {
                     writer.append(": ");
                     writer.append(printedValue);
@@ -344,16 +330,14 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
             }
             writer.append(this.lineSeparator);
         }
-        return writer;
     }
 
     /**
      * Write a flow mapping to the given StringWriter.
      * @param node Flow YamlMapping to print.
      * @param writer String writer.
-     * @return String writer.
      */
-    private StringWriter printFlowMapping(
+    private void printFlowMapping(
         final YamlMapping node, final StringWriter writer
     ) {
         writer.append("{");
@@ -370,7 +354,57 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
             }
         }
         writer.append("}");
-        return writer;
+    }
+
+    /**
+     * Write a block sequence to the given StringWriter.
+     * @param node Block YamlSequence to print.
+     * @param writer String writer.
+     */
+    private void printBlockSequence(
+        final YamlSequence node, final StringWriter writer
+    ) {
+        for(final YamlNode value : node.values()) {
+            writer.append(this.printPossibleComment(value));
+            if(value == null || value.type().equals(Node.SCALAR)) {
+                writer.append("- ");
+                writer.append(this.visitYamlNode(value));
+            } else {
+                final String printedValue = this.visitYamlNode(value);
+                if("null".equals(printedValue) || printedValue.startsWith("[")
+                    || printedValue.startsWith("{")
+                ) {
+                    writer.append("- ");
+                    writer.append(printedValue);
+                } else {
+                    writer.append("-");
+                    writer.append(this.lineSeparator);
+                    writer.append(this.indent(printedValue, this.indentation));
+                }
+            }
+            writer.append(this.lineSeparator);
+        }
+    }
+
+    /**
+     * Write a flow sequence to the given StringWriter.
+     * @param node Flow YamlSequence to print.
+     * @param writer String writer.
+     */
+    private void printFlowSequence(
+        final YamlSequence node, final StringWriter writer
+    ) {
+        writer.append("[");
+        int i=0;
+        final Collection<YamlNode> values = node.values();
+        for (final YamlNode value : values) {
+            writer.append(this.visitYamlNode(value));
+            i++;
+            if(i<values.size()) {
+                writer.append(", ");
+            }
+        }
+        writer.append("]");
     }
 
     /**

@@ -41,8 +41,6 @@ import java.util.Set;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 8.0.0
- * @todo #601:30min Modify the yaml printing visitor, so it prints the flow
- *  nodes in Flow style instead of block.
  * @todo #615:60min Implement the comment() method properly (at the moment
  *  it always assumes there is no comment).
  */

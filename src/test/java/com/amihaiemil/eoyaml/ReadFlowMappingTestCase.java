@@ -89,11 +89,11 @@ public final class ReadFlowMappingTestCase {
         final Iterator<YamlNode> iterator = keys.iterator();
         MatcherAssert.assertThat(
             iterator.next().toString(),
-            Matchers.equalTo("- a")
+            Matchers.equalTo("[a]")
         );
         MatcherAssert.assertThat(
             iterator.next().toString(),
-            Matchers.equalTo("- c" + System.lineSeparator() + "- g")
+            Matchers.equalTo("[c, g]")
         );
         MatcherAssert.assertThat(
             iterator.next().toString(),
@@ -212,19 +212,7 @@ public final class ReadFlowMappingTestCase {
         MatcherAssert.assertThat(
             iterator.next().toString(),
             Matchers.equalTo(
-                "- a"
-                + System.lineSeparator()
-                + "- \"0,3\""
-                + System.lineSeparator()
-                + "- \"2, 3, 4\""
-                + System.lineSeparator()
-                + "-"
-                + System.lineSeparator()
-                + "  {ii: \"5,6,7\"}"
-                + System.lineSeparator()
-                + "- b"
-                + System.lineSeparator()
-                + "- c"
+                "[a, \"0,3\", \"2, 3, 4\", {ii: \"5,6,7\"}, b, c]"
             )
         );
         MatcherAssert.assertThat(

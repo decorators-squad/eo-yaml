@@ -27,6 +27,10 @@ spring:
   mail:
     host: mailhog.keycloak.svc.cluster.local
     port: 1025
+    users: {
+      admin: mihai,
+      other: vlad
+    }
   cloud:
     kubernetes:
       enabled: true

@@ -23,12 +23,11 @@ spring:
             map-mains-string: "{a:b, c:d, e:f}"
             null-string: "null"
             other: null
-            scope:
-              - api
-              - read_user
+            scope: [api, read_user]
   mail:
     host: mailhog.keycloak.svc.cluster.local
     port: 1025
+    users: {admin: mihai, other: vlad}
   cloud:
     kubernetes:
       enabled: true
