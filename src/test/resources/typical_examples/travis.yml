@@ -1,0 +1,45 @@
+os:
+  - linux
+language: java
+jdk:
+  - openjdk8
+  - openjdk11
+  - openjdk14
+# Get the shell script for installing Early Access versions of the JDK.
+before_install:
+  - "wget https://github.com/sormuras/bach/raw/master/install-jdk.sh -O ~/install-ea-jdk.sh && chmod +x ~/install-ea-jdk.sh"
+script:
+  - set -e
+  - "mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report"
+stages:
+  - test # the default Travis stage.
+  - testEarlyAccessJDK
+jobs:
+  include:
+    -
+      stage: testEarlyAccessJDK
+      name: Build with OpenJDK 15 EA
+      script:
+        - '~/install-ea-jdk.sh --target "/home/travis/openjdk15" --workspace "/home/travis/.cache/install-jdk" --feature "15" --license "GPL" --cacerts'
+        - export JAVA_HOME=~/openjdk15
+        - 'export PATH="$JAVA_HOME/bin:$PATH"'
+        - set -e
+        - "mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report"
+    -
+      stage: testEarlyAccessJDK
+      name: Build with OpenJDK 16 EA
+      script:
+        - '~/install-ea-jdk.sh --target "/home/travis/openjdk16" --workspace "/home/travis/.cache/install-jdk" --feature "16" --license "GPL" --cacerts'
+        - export JAVA_HOME=~/openjdk16
+        - 'export PATH="$JAVA_HOME/bin:$PATH"'
+        - set -e
+        - "mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report"
+    -
+      stage: testEarlyAccessJDK
+      name: Build with OpenJDK 17 EA
+      script:
+        - '~/install-ea-jdk.sh --target "/home/travis/openjdk17" --workspace "/home/travis/.cache/install-jdk" --feature "17" --license "GPL" --cacerts'
+        - export JAVA_HOME=~/openjdk17
+        - 'export PATH="$JAVA_HOME/bin:$PATH"'
+        - set -e
+        - "mvn clean install -Pcheckstyle,itcases -PtestCoverage jacoco:report coveralls:report"

@@ -467,10 +467,11 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
             final String blockSequence = "[ ]*\\-+.*";
             final String isNullRef = "null";
             final String justSpaces = "[ ]+";
-            final String otherSpecialChars = ".*[?#:>|%&@`!*,'\"]+.*";
+            final String spaceAfterColon = "(.*:[\\s]+.*)|(^:.*$)";
+            final String otherSpecialChars = ".*[?#>|%&@`!*,'\"]+.*";
             final List<String> cases = Arrays.asList(
                 flowMap, flowSequence, blockSequence,
-                isNullRef, justSpaces, otherSpecialChars
+                isNullRef, justSpaces, spaceAfterColon, otherSpecialChars
             );
             for(final String regex : cases) {
                 if(value.matches(regex)) {

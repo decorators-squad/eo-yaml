@@ -261,6 +261,8 @@ public final class YamlSequencePrintTest {
                 "sequence",
                 Yaml.createYamlSequenceBuilder()
                     .add("15:00")
+                    .add("8080: 8080")
+                    .add(":1234")
                     .add("#314132")
                     .add("&gt;")
                     .add("$15")
@@ -278,7 +280,9 @@ public final class YamlSequencePrintTest {
             ).build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("- \"15:00\"").append(System.lineSeparator())
+            .append("- 15:00").append(System.lineSeparator())
+            .append("- \"8080: 8080\"").append(System.lineSeparator())
+            .append("- \":1234\"").append(System.lineSeparator())
             .append("- \"#314132\"").append(System.lineSeparator())
             .append("- \"&gt;\"").append(System.lineSeparator())
             .append("- $15").append(System.lineSeparator())

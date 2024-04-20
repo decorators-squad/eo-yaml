@@ -976,7 +976,15 @@ public final class RtYamlInputTest {
                 Matchers.equalTo(Node.MAPPING));
         MatcherAssert.assertThat(
                 topLevelMapping.asMapping().keys().size(),
-                Matchers.equalTo(1));
+                Matchers.equalTo(2));
+        MatcherAssert.assertThat(
+            topLevelMapping.asMapping().string("a_scalar"),
+            Matchers.equalTo("${ENV_PROP:theDefault}")
+        );
+        MatcherAssert.assertThat(
+            topLevelMapping.asMapping().string("other"),
+            Matchers.equalTo(":value")
+        );
 
         final String pretty = read.toString().trim();
 
@@ -2116,6 +2124,28 @@ public final class RtYamlInputTest {
             Matchers.equalTo(
                 this.readTestResource(
                     "typical_examples/docker-compose.yml"
+                )
+            )
+        );
+    }
+
+    /**
+     * We can read a typical travis.yml file.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalTravisFile() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typical_examples/travis.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readTestResource(
+                    "typical_examples/travis.yml"
                 )
             )
         );

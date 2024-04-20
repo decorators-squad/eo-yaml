@@ -1,2 +1,3 @@
 a_mapping:
-  a_scalar: "${ENV_PROP:theDefault}"
+  a_scalar: ${ENV_PROP:theDefault}
+  other: ":value"

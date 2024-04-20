@@ -309,7 +309,7 @@ public final class YamlMappingPrintTest {
             .build();
         final StringBuilder expected = new StringBuilder();
         expected
-            .append("time: \"15:00\"").append(System.lineSeparator())
+            .append("time: 15:00").append(System.lineSeparator())
             .append("color: \"#314132\"").append(System.lineSeparator())
             .append("gt: \"&gt;\"").append(System.lineSeparator())
             .append("cash: $15").append(System.lineSeparator())
