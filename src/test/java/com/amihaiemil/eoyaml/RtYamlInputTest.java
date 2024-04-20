@@ -2085,7 +2085,7 @@ public final class RtYamlInputTest {
     public void readsTypicalSpringApplicationProperties() throws IOException {
         final YamlInput input = Yaml.createYamlInput(
             new FileReader(
-                "src/test/resources/typicalSpringApplicationProperties.yml"
+                "src/test/resources/typical_examples/application.yml"
             )
         );
         final YamlMapping read = input.readYamlMapping();
@@ -2093,7 +2093,29 @@ public final class RtYamlInputTest {
             read.toString(),
             Matchers.equalTo(
                 this.readTestResource(
-                    "typicalSpringApplicationProperties_printed.yml"
+                    "typical_examples/application.yml"
+                )
+            )
+        );
+    }
+
+    /**
+     * We can read a typical docker-compose.yml file.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalDockerComposeFile() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typical_examples/docker-compose.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readTestResource(
+                    "typical_examples/docker-compose.yml"
                 )
             )
         );

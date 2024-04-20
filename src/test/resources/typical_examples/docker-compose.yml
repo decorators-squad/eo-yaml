@@ -1,0 +1,56 @@
+version: 3.8
+name: docker-compose-dependencies
+services:
+  mongo:
+    image: "mongo:5.0.0"
+    ports:
+      - "27017:27017"
+    command: "--bind_ip_all --replSet rs0"
+    healthcheck:
+      test: |
+        test $$(mongosh --quiet --eval "try { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo' }] }).ok } catch (_) { rs.status().ok }") -eq 1
+      interval: 10s
+      start_period: 5s
+  kafka:
+    image: "redpandadata/redpanda:v23.2.12"
+    ports:
+      - "9092:9092"
+  spicedb:
+    image: "authzed/spicedb:v1.25.0"
+    ports:
+      - "50051:50051"
+    environment:
+      SPICEDB_DATASTORE_ENGINE: memory
+    command:
+      - serve-testing
+      - "--load-configs"
+      - /spicedb.yml
+    volumes:
+      - "./spicedb.yml:/spicedb.yml"
+  keycloak:
+    image: "quay.io/keycloak/keycloak:latest"
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+      - "--import-realm"
+    volumes:
+      - "./keycloak/test-realm.json:/opt/keycloak/data/import/realm.json"
+  jsreport:
+    image: "jsreport/jsreport:4.2.0"
+    ports:
+      - "5488:5488"
+    volumes:
+      - "../../root/jsreportapp/data:/app/data"
+  # SMTP Server for e-mailing.
+  devSmtp:
+    image: "jcalonso/mailhog:v1.0.1"
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    expose:
+      - 1025
+      - 8025

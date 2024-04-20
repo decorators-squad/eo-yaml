@@ -1,3 +1,4 @@
+# This is a typical application.yml file from Spring Framework.
 logging:
   level:
     com:
@@ -18,7 +19,7 @@ spring:
             client-secret: ${gl_client_secret}
             authorization-grant-type: authorization_code
             redirect-uri: ${self_xdsd_base_url}/login/oauth2/code/gitlab
-            client-authentication-method: 'basic'
+            client-authentication-method: basic
             array-remains-string: "[config1, config2, config3]"
             map-mains-string: "{a:b, c:d, e:f}"
             null-string: "null"
@@ -27,13 +28,9 @@ spring:
   mail:
     host: mailhog.keycloak.svc.cluster.local
     port: 1025
-    users: {
-      admin: mihai,
-      other: vlad
-    }
+    users: {admin: mihai, other: vlad}
   cloud:
     kubernetes:
       enabled: true
       leader:
         config-map-name: self-leader-election
-
