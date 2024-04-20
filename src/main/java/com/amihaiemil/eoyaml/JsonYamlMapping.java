@@ -27,11 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
-import com.amihaiemil.eoyaml.exceptions.YamlPrintException;
-
 import javax.json.JsonObject;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -53,6 +49,7 @@ final class JsonYamlMapping extends BaseYamlMapping {
      * @param object Json object being mapped.
      */
     JsonYamlMapping(final JsonObject object) {
+        super(true);
         this.object = object;
     }
 
@@ -89,19 +86,5 @@ final class JsonYamlMapping extends BaseYamlMapping {
                 return "";
             }
         };
-    }
-
-    @Override
-    public String toString() {
-        final StringWriter writer = new StringWriter();
-        final YamlPrinter printer = new RtYamlPrinter(writer, true);
-        try {
-            printer.print(this);
-            return writer.toString();
-        } catch (final IOException ex) {
-            throw new YamlPrintException(
-                "IOException when printing YAML", ex
-            );
-        }
     }
 }

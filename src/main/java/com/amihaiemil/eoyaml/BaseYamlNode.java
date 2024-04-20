@@ -47,6 +47,28 @@ import java.io.StringWriter;
  */
 abstract class BaseYamlNode implements YamlNode {
 
+    /**
+     * Print it as block with disregard to whether it came
+     * from JSON/Flow-Style or not.
+     */
+    private final boolean alwaysPrintBlock;
+
+    /**
+     * Ctor.
+     */
+    BaseYamlNode() {
+        this(false);
+    }
+
+    /**
+     * Ctor.
+     * @param alwaysPrintBlock Print it as block with disregard to whether it
+     *  came from JSON/Flow-Style or not.
+     */
+    BaseYamlNode(final boolean alwaysPrintBlock) {
+        this.alwaysPrintBlock = alwaysPrintBlock;
+    }
+
     @Override
     public final Scalar asScalar()
         throws YamlReadingException, ClassCastException {
@@ -91,9 +113,11 @@ abstract class BaseYamlNode implements YamlNode {
      *
      */
     @Override
-    public String toString() {
+    public final String toString() {
         final StringWriter writer = new StringWriter();
-        final YamlPrinter printer = new RtYamlPrinter(writer);
+        final YamlPrinter printer = new RtYamlPrinter(
+            writer, this.alwaysPrintBlock
+        );
         try {
             printer.print(this);
             return writer.toString();

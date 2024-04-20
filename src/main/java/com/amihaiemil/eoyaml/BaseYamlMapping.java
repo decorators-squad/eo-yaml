@@ -44,6 +44,22 @@ import java.util.*;
 public abstract class BaseYamlMapping
     extends BaseYamlNode implements YamlMapping {
 
+    /**
+     * Ctor.
+     */
+    protected BaseYamlMapping() {
+        this(false);
+    }
+
+    /**
+     * Ctor.
+     * @param alwaysPrintBlock Print it as block with disregard to whether it
+     *  came from JSON/Flow-Style or not.
+     */
+    protected BaseYamlMapping(final boolean alwaysPrintBlock) {
+        super(alwaysPrintBlock);
+    }
+
     @Override
     public final Node type() {
         return Node.MAPPING;
