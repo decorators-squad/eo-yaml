@@ -132,6 +132,7 @@ public final class JsonYamlMappingTest {
         MatcherAssert.assertThat(
             jsonMapping, Matchers.equalTo(expected)
         );
+        System.out.println(jsonMapping);
     }
 
     /**

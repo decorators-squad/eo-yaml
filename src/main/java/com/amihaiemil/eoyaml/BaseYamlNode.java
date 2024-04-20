@@ -91,7 +91,7 @@ abstract class BaseYamlNode implements YamlNode {
      *
      */
     @Override
-    public final String toString() {
+    public String toString() {
         final StringWriter writer = new StringWriter();
         final YamlPrinter printer = new RtYamlPrinter(writer);
         try {

@@ -27,7 +27,11 @@
  */
 package com.amihaiemil.eoyaml;
 
+import com.amihaiemil.eoyaml.exceptions.YamlPrintException;
+
 import javax.json.JsonArray;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -72,5 +76,19 @@ final class JsonYamlSequence extends BaseYamlSequence {
                 return "";
             }
         };
+    }
+
+    @Override
+    public String toString() {
+        final StringWriter writer = new StringWriter();
+        final YamlPrinter printer = new RtYamlPrinter(writer, true);
+        try {
+            printer.print(this);
+            return writer.toString();
+        } catch (final IOException ex) {
+            throw new YamlPrintException(
+                "IOException when printing YAML", ex
+            );
+        }
     }
 }

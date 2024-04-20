@@ -50,11 +50,25 @@ final class RtYamlPrinter implements YamlPrinter {
     private final String lineSeparator;
 
     /**
+     * Print all the nodes in block-style.
+     */
+    private final boolean alwaysBlock;
+
+    /**
      * Constructor.
      * @param writer Destination writer.
      */
     RtYamlPrinter(final Writer writer) {
-        this(writer, System.lineSeparator());
+        this(writer, false);
+    }
+
+    /**
+     * Constructor.
+     * @param writer Destination writer.
+     * @param alwaysBlock Print all the nodes in block-style.
+     */
+    RtYamlPrinter(final Writer writer, final boolean alwaysBlock) {
+        this(writer, System.lineSeparator(), alwaysBlock);
     }
 
     /**
@@ -63,15 +77,30 @@ final class RtYamlPrinter implements YamlPrinter {
      * @param lineSeparator Line separator.
      */
     RtYamlPrinter(final Writer writer, final String lineSeparator) {
+        this(writer, lineSeparator, false);
+    }
+
+    /**
+     * Constructor.
+     * @param writer Destination writer.
+     * @param lineSeparator Line separator.
+     * @param alwaysBlock Print all the nodes in block-style.
+     */
+    RtYamlPrinter(
+        final Writer writer,
+        final String lineSeparator,
+        final boolean alwaysBlock
+    ) {
         this.writer = writer;
         this.lineSeparator = lineSeparator;
+        this.alwaysBlock = alwaysBlock;
     }
 
     @Override
     public void print(final YamlNode node) throws IOException  {
         try {
             final YamlVisitor<String> visitor = new YamlPrintVisitor(
-                this.lineSeparator
+                this.lineSeparator, this.alwaysBlock
             );
             if (node.type().equals(Node.SCALAR)) {
                 this.writer.append("---")

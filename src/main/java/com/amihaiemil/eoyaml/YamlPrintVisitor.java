@@ -53,43 +53,41 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     private final String lineSeparator;
 
     /**
-     * Ctor. Defaults to indentation 2 and the System line separator.
+     * Print each node as block-style always.
      */
-    YamlPrintVisitor() {
-        this(2, System.lineSeparator());
-    }
-
-    /**
-     * Ctor.
-     * @param indentation Number of indentation spaces.
-     */
-    YamlPrintVisitor(final int indentation) {
-        this(indentation, System.lineSeparator());
-    }
+    private final boolean alwaysBlock;
 
     /**
      * Ctor.
      * @param lineSeparator Line separator.
+     * @param alwaysBlock Print each node as block-style always.
      */
-    YamlPrintVisitor(final String lineSeparator) {
-        this(2, lineSeparator);
+    YamlPrintVisitor(final String lineSeparator, final boolean alwaysBlock) {
+        this(2, lineSeparator, alwaysBlock);
     }
 
     /**
      * Ctor.
      * @param indentation Number of spaces to use for indentation.
      * @param lineSeparator Line separator.
+     * @param alwaysBlock Print each node as block-style always.
      */
-    YamlPrintVisitor(final int indentation, final String lineSeparator) {
+    YamlPrintVisitor(
+        final int indentation,
+        final String lineSeparator,
+        final boolean alwaysBlock
+    ) {
         this.indentation = indentation;
         this.lineSeparator = lineSeparator;
+        this.alwaysBlock = alwaysBlock;
     }
     @Override
     public String visitYamlMapping(final YamlMapping node) {
         final StringWriter writer = new StringWriter();
         final String printed;
-        if(node instanceof ReadFlowMapping
-            || node instanceof JsonYamlMapping) {
+        if((node instanceof ReadFlowMapping
+            || node instanceof JsonYamlMapping)
+            && !this.alwaysBlock) {
             this.printFlowMapping(node, writer);
             printed = writer.toString();
         } else {
@@ -110,8 +108,9 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     public String visitYamlSequence(final YamlSequence node) {
         final StringWriter writer = new StringWriter();
         final String printed;
-        if(node instanceof ReadFlowSequence
-            || node instanceof JsonYamlSequence) {
+        if((node instanceof ReadFlowSequence
+            || node instanceof JsonYamlSequence)
+            && !this.alwaysBlock) {
             this.printFlowSequence(node, writer);
             printed = writer.toString();
         } else {
