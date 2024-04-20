@@ -32,6 +32,7 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import javax.json.Json;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,7 +45,7 @@ import java.io.IOException;
  *
  * Assertions on printed YAML are done in other tests as well,
  * but it's better to also have a dedicated test class.
- * @checkstyle LineLength (300 lines)
+ * @checkstyle LineLength (1000 lines)
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 4.0.0
@@ -137,6 +138,23 @@ public final class YamlMappingPrintTest {
                     .build()
             )
             .add(
+                "key8",
+                Json.createArrayBuilder()
+                    .add("a")
+                    .add("b")
+                    .add("c")
+                    .add("d")
+                    .build()
+            )
+            .add(
+                "key10",
+                Json.createObjectBuilder()
+                    .add("a", "b")
+                    .add("c", "d")
+                    .add("e", "f")
+                    .build()
+            )
+            .add(
                 Yaml.createYamlSequenceBuilder()
                     .add("Atlanta Braves")
                     .add("New York Yankees")
@@ -152,6 +170,14 @@ public final class YamlMappingPrintTest {
                     .add("map", "asKey")
                     .build(),
                 "scalar"
+            )
+            .add(
+                Yaml.createYamlInput("{a: b}").readYamlMapping(),
+                "scalarToFlowMapping"
+            )
+            .add(
+                Yaml.createYamlInput("[a, b, c]").readYamlSequence(),
+                "scalarToFlowSequence"
             )
             .build();
         MatcherAssert.assertThat(

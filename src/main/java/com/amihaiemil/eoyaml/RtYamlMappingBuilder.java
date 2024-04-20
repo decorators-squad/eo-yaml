@@ -93,11 +93,7 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
 
     @Override
     public YamlMapping build(final String comment) {
-        YamlMapping mapping = new RtYamlMapping(this.pairs, comment);
-        if (pairs.isEmpty()) {
-            mapping = new EmptyYamlMapping(mapping);
-        }
-        return mapping;
+        return new RtYamlMapping(this.pairs, comment);
     }
 
 }

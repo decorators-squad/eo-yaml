@@ -88,7 +88,8 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     public String visitYamlMapping(final YamlMapping node) {
         final StringWriter writer = new StringWriter();
         final String printed;
-        if(node instanceof ReadFlowMapping) {
+        if(node instanceof ReadFlowMapping
+            || node instanceof JsonYamlMapping) {
             this.printFlowMapping(node, writer);
             printed = writer.toString();
         } else {
@@ -109,7 +110,8 @@ final class YamlPrintVisitor implements YamlVisitor<String> {
     public String visitYamlSequence(final YamlSequence node) {
         final StringWriter writer = new StringWriter();
         final String printed;
-        if(node instanceof ReadFlowSequence) {
+        if(node instanceof ReadFlowSequence
+            || node instanceof JsonYamlSequence) {
             this.printFlowSequence(node, writer);
             printed = writer.toString();
         } else {

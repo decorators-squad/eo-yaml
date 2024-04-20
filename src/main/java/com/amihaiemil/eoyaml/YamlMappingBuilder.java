@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonStructure;
 import java.util.Collection;
 
 /**
@@ -67,6 +70,44 @@ public interface YamlMappingBuilder {
      * @return Builder
      */
     YamlMappingBuilder add(final String key, final YamlNode value);
+
+    /**
+     * Add a pair to the mapping.
+     * @param key YamlNode (sequence or mapping)
+     * @param value JsonStructure ({@link javax.json.JsonObject}
+     *              or {@link javax.json.JsonArray})
+     * @return Builder
+     */
+    default YamlMappingBuilder add(
+        final YamlNode key, final JsonStructure value
+    ) {
+        final YamlNode node;
+        if(value instanceof JsonObject) {
+            node = new JsonYamlMapping((JsonObject) value);
+        } else {
+            node = new JsonYamlSequence((JsonArray) value);
+        }
+        return this.add(key, node);
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value JsonStructure ({@link javax.json.JsonObject}
+     *              or {@link javax.json.JsonArray})
+     * @return Builder
+     */
+    default YamlMappingBuilder add(
+        final String key, final JsonStructure value
+    ) {
+        final YamlNode node;
+        if(value instanceof JsonObject) {
+            node = new JsonYamlMapping((JsonObject) value);
+        } else {
+            node = new JsonYamlSequence((JsonArray) value);
+        }
+        return this.add(key, node);
+    }
 
     /**
      * Build the YamlMapping.

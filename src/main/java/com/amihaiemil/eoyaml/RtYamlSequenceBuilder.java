@@ -73,10 +73,6 @@ final class RtYamlSequenceBuilder implements YamlSequenceBuilder {
 
     @Override
     public YamlSequence build(final String comment) {
-        YamlSequence sequence = new RtYamlSequence(this.nodes, comment);
-        if (this.nodes.isEmpty()) {
-            sequence = new EmptyYamlSequence(sequence);
-        }
-        return sequence;
+        return new RtYamlSequence(this.nodes, comment);
     }
 }

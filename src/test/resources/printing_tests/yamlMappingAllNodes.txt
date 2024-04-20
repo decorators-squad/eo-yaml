@@ -15,6 +15,8 @@ key5:
   - as value
 key6: {}
 key7: []
+key8: [a, b, c, d]
+key10: {a: b, c: d, e: f}
 ?
   - Atlanta Braves
   - New York Yankees
@@ -25,3 +27,9 @@ key7: []
 ?
   map: asKey
 : scalar
+?
+  {a: b}
+: scalarToFlowMapping
+?
+  [a, b, c]
+: scalarToFlowSequence
