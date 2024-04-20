@@ -1863,16 +1863,19 @@ public final class RtYamlInputTest {
         ).readYamlMapping();
         System.out.println(mapping);
         MatcherAssert.assertThat(
-            mapping.keys().size(), Matchers.equalTo(4)
+            mapping.keys().size(), Matchers.equalTo(5)
         );
         MatcherAssert.assertThat(
-            mapping.values().size(), Matchers.equalTo(4)
+            mapping.values().size(), Matchers.equalTo(5)
         );
         MatcherAssert.assertThat(
             mapping.string("name"), Matchers.equalTo("eo-yaml")
         );
         MatcherAssert.assertThat(
             mapping.string("architect"), Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            mapping.string("other"), Matchers.equalTo("D'silva")
         );
         MatcherAssert.assertThat(
             mapping.yamlSequence("developers").string(0),

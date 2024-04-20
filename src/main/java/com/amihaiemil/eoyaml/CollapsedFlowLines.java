@@ -137,6 +137,15 @@ final class CollapsedFlowLines implements YamlLines {
                 collapsed.add(line);
             }
         }
+        
+        if(bracketCount != 0) {
+            throw new IllegalStateException(
+                "Flow YamlNode starting at line "
+                + this.lines.line(0).number()
+                + " not closed. "
+                +"Closing bracket " + this.closingBracket + " not found."
+            );
+        }
         return collapsed.iterator();
     }
 
