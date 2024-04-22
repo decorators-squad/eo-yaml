@@ -49,6 +49,7 @@ See the [Block Style Yaml](https://github.com/decorators-squad/eo-yaml/wiki/Bloc
 Here is what we have so far:
 
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
+* Flow-style/JSON-Like representation;
 * Support for Folded and Literal Block Scalars ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Folded-and-Literal-Block-Scalars));
 * Convenience Type-Casting Methods ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Convenience-Type-Casting-Methods));
 * Editing of YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Easy-Extension-Via-Interfaces#edit-yaml));
@@ -58,7 +59,6 @@ Here is what we have so far:
 * Building and Reading YAML Streams, integrated with Java 8's Stream API ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
 * YAML Visitor ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Visitor));
-* Flow-style/JSON-Like representation;
 * Others:
     - Clear and detailed Exceptions. For instance, in the case of bad indentation, it will tell you exactly which line is problematic and why.
     - Fully encapsulated. The user works only with a few Java Interfaces.
