@@ -2111,6 +2111,138 @@ public final class RtYamlInputTest {
     }
 
     /**
+     * We can read a typical kustomization.yml for k8s.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalKustomizationYaml() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typical_examples/kustomization.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readTestResource(
+                    "typical_examples/kustomization.yml"
+                )
+            )
+        );
+    }
+
+    /**
+     * We can read a typical deployment.yml for k8s.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalDeploymentYaml() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typical_examples/deployment.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readTestResource(
+                    "typical_examples/deployment.yml"
+                )
+            )
+        );
+    }
+
+    /**
+     * We can read a typical azure-pipeline.yml for k8s.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalAzurePipelineYaml() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typical_examples/azure-pipeline.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.toString(),
+            Matchers.equalTo(
+                this.readTestResource(
+                    "typical_examples/azure-pipeline.yml"
+                )
+            )
+        );
+    }
+
+    /**
+     * We can read a typical rultor.yml for k8s.
+     * @throws IOException If something goes wrong.
+     */
+    @Test
+    public void readsTypicalRultorYaml() throws IOException {
+        final YamlInput input = Yaml.createYamlInput(
+            new FileReader(
+                "src/test/resources/typical_examples/rultor.yml"
+            )
+        );
+        final YamlMapping read = input.readYamlMapping();
+        MatcherAssert.assertThat(
+            read.yamlMapping("docker").string("image"),
+            Matchers.equalTo("g4s8/rultor-jdk11:alpine3.10")
+        );
+        MatcherAssert.assertThat(
+            read.yamlSequence("architect").size(),
+            Matchers.equalTo(1)
+        );
+        MatcherAssert.assertThat(
+            read.yamlSequence("architect").string(0),
+            Matchers.equalTo("amihaiemil")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("env").string("MAVEN_OPTS"),
+            Matchers.equalTo("-XX:MaxPermSize=256m -Xmx1g")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("assets").string("settings.xml"),
+            Matchers.equalTo("amihaiemil/maven#settings.xml")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("assets").string("pubring.gpg"),
+            Matchers.equalTo("amihaiemil/maven#pubring.gpg")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("assets").string("secring.gpg"),
+            Matchers.equalTo("amihaiemil/maven#secring.gpg")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("merge").yamlSequence("script").size(),
+            Matchers.equalTo(1)
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("merge").yamlSequence("script").string(0),
+            Matchers.equalTo("mvn clean install -Pcheckstyle,itcases")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("release").yamlSequence("script").size(),
+            Matchers.equalTo(3)
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("release").yamlSequence("script").string(0),
+            Matchers.equalTo("export JAVA_HOME=/usr/lib/jvm/java-11-openjdk")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("release").yamlSequence("script").string(1),
+            Matchers.equalTo("chmod +x ./rrv.sh")
+        );
+        MatcherAssert.assertThat(
+            read.yamlMapping("release").yamlSequence("script").string(2),
+            Matchers.equalTo("./rrv.sh")
+        );
+    }
+
+    /**
      * We can read a typical docker-compose.yml file.
      * @throws IOException If something goes wrong.
      */

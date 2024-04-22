@@ -1,0 +1,18 @@
+docker:
+  image: g4s8/rultor-jdk11:alpine3.10
+architect:
+  - amihaiemil
+env:
+  MAVEN_OPTS: "-XX:MaxPermSize=256m -Xmx1g"
+merge:
+  script: |-
+    mvn clean install -Pcheckstyle,itcases
+assets:
+  settings.xml: "amihaiemil/maven#settings.xml"
+  pubring.gpg: "amihaiemil/maven#pubring.gpg"
+  secring.gpg: "amihaiemil/maven#secring.gpg"
+release:
+  script: |-
+    export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+    chmod +x ./rrv.sh
+    ./rrv.sh

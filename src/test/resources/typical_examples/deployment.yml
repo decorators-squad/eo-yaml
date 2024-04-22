@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-backend
+  annotations:
+    reloader.stakater.com/auto: true
+spec:
+  replicas: 1
+  template:
+    spec:
+      securityContext:
+        fsGroup: 0
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+      containers:
+        -
+          name: app-backend
+          image: localhost:5000/app-backend:dev
+          imagePullPolicy: Always
+          env:
+            -
+              name: SPRING_DATA_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: CONNECTION_STRING
+            -
+              name: SPRING_DATA_MONGODB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DATABASE_NAME
+            -
+              name: APP_TENANTID
+              valueFrom:
+                configMapKeyRef:
+                  name: local-dev-config
+                  key: app-tenant-id
+            -
+              name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: local-dev-config
+                  key: keycloak-issuer-uri
+            -
+              name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: local-dev-config
+                  key: keycloak-jwk-set-uri
+            # Enable remote debugging: uncomment these lines and forward 5005 to localhost in Tiltfile
+            -
+              name: JAVA_TOOL_OPTIONS
+              value: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=localhost:5005"

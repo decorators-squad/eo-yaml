@@ -1,0 +1,67 @@
+parameters:
+  -
+    name: withFrontendSonarAnalysis
+    displayName: Analyse Monorepo-Frontend (app and libs) with Sonar
+    type: boolean
+    default: false
+  -
+    name: withBackendSonarAnalysis
+    displayName: Analyse Backend with Sonar
+    type: boolean
+    default: true
+  -
+    name: gitCommitId
+    displayName: Git Commit Id
+    type: string
+    default: null
+stages:
+  -
+    stage: Build_App
+    displayName: Build app
+    dependsOn: SetupAndChecks
+    condition: >
+      and(
+      succeeded('SetupAndChecks'),
+      and(
+      containsValue(split(stageDependencies.SetupAndChecks.outputs['SetupBranchPrPipeline.CheckBoundedContextChanges.buildBoundedContext'],' '), 'dokument'),
+      and(
+      ne(stageDependencies.SetupAndChecks.outputs['SetupBranchPrPipeline.CheckBoundedContextChanges.skipRun'], 'true'),
+      ne(stageDependencies.SetupAndChecks.outputs['SetupBranchPrPipeline.GetPullRequestInfos.skipRun'], 'true')
+      )
+      )
+      )
+    jobs:
+      -
+        template: ../cd-scripts/build-monorepo-template.yaml
+        parameters:
+          containerRegistryConnection: $(container-registry-connection)
+          boundedContext: app
+          withSonar: ${{ parameters.withFrontendSonarAnalysis }}
+          gitCommitId: ${{ parameters.gitCommitId }}
+      -
+        template: ../cd-scripts/java-build-template.yaml
+        parameters:
+          containerRegistryConnection: $(container-registry-connection)
+          containerRegistryUrl: $(container-registry-url)
+          boundedContext: app
+          microService: backend
+          withSonar: ${{ parameters.withBackendSonarAnalysis }}
+          gitCommitId: ${{ parameters.gitCommitId }}
+      -
+        template: ../cd-scripts/java-build-template.yaml
+        parameters:
+          containerRegistryConnection: $(container-registry-connection)
+          containerRegistryUrl: $(container-registry-url)
+          boundedContext: dokument
+          microService: authzhook
+          withSonar: ${{ parameters.withBackendSonarAnalysis }}
+          gitCommitId: ${{ parameters.gitCommitId }}
+      -
+        template: ../cd-scripts/java-build-template.yaml
+        parameters:
+          containerRegistryConnection: $(container-registry-connection)
+          containerRegistryUrl: $(container-registry-url)
+          boundedContext: dokument
+          microService: authzhookmock
+          withSonar: ${{ parameters.withBackendSonarAnalysis }}
+          gitCommitId: ${{ parameters.gitCommitId }}
