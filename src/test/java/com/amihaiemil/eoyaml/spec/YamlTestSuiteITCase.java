@@ -79,6 +79,7 @@ public final class YamlTestSuiteITCase {
                 failedTests.add(file.getName());
             }
         }
-        System.out.println("FAILED TESTS READ COUNT " + failedTests.size() + " OUT OF TOTAL " + (i-j));
+        System.out.println((i - j - failedTests.size()) + " TESTS PASSED OUT OF A TOTAL OF " + (i-j) + " TESTS.");
+        System.out.println(failedTests.size() + " FAILED TESTS");
     }
 }
