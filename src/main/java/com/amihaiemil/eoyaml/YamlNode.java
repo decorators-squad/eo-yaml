@@ -129,4 +129,37 @@ public interface YamlNode extends Comparable<YamlNode> {
         return visitor.visitYamlNode(this);
     }
 
+    /**
+     * Get this YamlNode's token tree as String.<br><br>
+     * The following YAML:
+     * <pre>
+     * name: eo-yaml
+     * architect: mihai
+     * developers:
+     *   - rultor
+     *   - salikjan
+     *   - sherif
+     * </pre>
+     * Would have the following token tree:
+     * <pre>
+     * +MAP
+     *   =VAL name
+     *   =VAL eo-yaml
+     *   =VAL architect
+     *   =VAL mihai
+     *   =VAL developers
+     *   +SEQ
+     *     =VAL rultor
+     *     =VAL salikjan
+     *     =VAL sherif
+     *   -SEQ
+     * -MAP
+     * </pre>
+     * @return String token tree.
+     */
+    default String tokenTree() {
+        return this.accept(
+            new YamlTokenTreeVisitor(System.lineSeparator())
+        );
+    }
 }
