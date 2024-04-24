@@ -99,4 +99,20 @@ public interface YamlInput {
      * @throws IOException if the input cannot be read for some reason
      */
     Scalar readLiteralBlockScalar() throws IOException;
+
+    /**
+     * Read the given input as a generic YamlNode.
+     * @return YamlNode.
+     * @throws IOException If something goes wrong.
+     */
+    default YamlNode readYamlNode() throws IOException {
+        final YamlNode document;
+        final YamlStream stream = this.readYamlStream();
+        if(stream.values().size() == 1) {
+            document = stream.iterator().next();
+        } else {
+            document = stream;
+        }
+        return document;
+    }
 }
