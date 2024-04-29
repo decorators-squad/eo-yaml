@@ -49,7 +49,7 @@ See the [Block Style Yaml](https://github.com/decorators-squad/eo-yaml/wiki/Bloc
 Here is what we have so far:
 
 * Building and Reading Block YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Block-Style-YAML));
-* Flow-style/JSON-Like representation;
+* Flow-style/JSON-Like representation ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Flow-Style-(JSON%E2%80%90like)-YAML);
 * Support for Folded and Literal Block Scalars ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Folded-and-Literal-Block-Scalars));
 * Convenience Type-Casting Methods ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Convenience-Type-Casting-Methods));
 * Editing of YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Easy-Extension-Via-Interfaces#edit-yaml));
