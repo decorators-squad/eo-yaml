@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonArray;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -273,5 +274,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
             datetime = LocalDateTime.parse(value);
         }
         return datetime;
+    }
+
+    /**
+     * Turn this YamlSequence to a JsonArray.
+     * @return JsonArray.
+     */
+    default JsonArray toJsonArray() {
+        return (JsonArray) this.accept(new YamlToJsonVisitor());
     }
 }

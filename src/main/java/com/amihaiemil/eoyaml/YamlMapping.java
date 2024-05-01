@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonObject;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -470,5 +471,13 @@ public interface YamlMapping extends YamlNode {
             children.add(this.value(key));
         }
         return children;
+    }
+
+    /**
+     * Turn this YamlMapping to a JsonObject.
+     * @return JsonObject.
+     */
+    default JsonObject toJsonObject() {
+        return (JsonObject) this.accept(new YamlToJsonVisitor());
     }
 }

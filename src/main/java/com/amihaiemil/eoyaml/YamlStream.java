@@ -27,6 +27,7 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonArray;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
@@ -222,5 +223,13 @@ public interface YamlStream extends YamlNode, Stream<YamlNode> {
 
     default Optional<YamlNode> findAny() {
         return this.values().stream().findAny();
+    }
+
+    /**
+     * Turn this YamlSequence to a JsonArray.
+     * @return JsonArray.
+     */
+    default JsonArray toJsonArray() {
+        return (JsonArray) this.accept(new YamlToJsonVisitor());
     }
 }

@@ -29,6 +29,7 @@ package com.amihaiemil.eoyaml;
 
 import com.amihaiemil.eoyaml.exceptions.YamlReadingException;
 
+import javax.json.JsonValue;
 import java.util.List;
 
 /**
@@ -129,4 +130,11 @@ public interface YamlNode extends Comparable<YamlNode> {
         return visitor.visitYamlNode(this);
     }
 
+    /**
+     * Turn this YamlNode to JsonValue.
+     * @return JsonValue.
+     */
+    default JsonValue toJsonValue() {
+        return this.accept(new YamlToJsonVisitor());
+    }
 }

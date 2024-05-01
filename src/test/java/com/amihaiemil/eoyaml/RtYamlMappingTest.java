@@ -401,9 +401,16 @@ public final class RtYamlMappingTest {
             .add("name", "eo-yaml")
             .add("conditions", "- none")
             .build();
-        System.out.print(yaml.toString());
+        System.out.println(yaml.toString());
+        System.out.println(yaml.toJsonObject());
         String expected = this.readTestResource("simpleMapping.yml");
         MatcherAssert.assertThat(yaml.toString(), Matchers.equalTo(expected));
+        MatcherAssert.assertThat(
+            yaml.toJsonObject().toString(),
+            Matchers.equalTo(
+                "{\"architect\":\"mihai\",\"developers\":[\"rultor\",\"salikjan\",\"sherif\"],\"name\":\"eo-yaml\",\"conditions\":\"- none\"}"
+            )
+        );
     }
 
     /**
