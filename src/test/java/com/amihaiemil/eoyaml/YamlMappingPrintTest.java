@@ -80,6 +80,7 @@ public final class YamlMappingPrintTest {
         final YamlMapping read = Yaml.createYamlInput(
             new File("src/test/resources/printing_tests/yamlMappingAllNodes.txt")
         ).readYamlMapping();
+        System.out.println(read);
         MatcherAssert.assertThat(
             read.toString(),
             Matchers.equalTo(
@@ -189,6 +190,12 @@ public final class YamlMappingPrintTest {
                             .add("c")
                             .build()
                     )
+                    .build()
+            )
+            .add(
+                "someFlowMap",
+                Yaml.createYamlSequenceBuilder()
+                    .add(Json.createObjectBuilder().add("a", "b").build())
                     .build()
             )
             .build();

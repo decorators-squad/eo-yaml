@@ -157,9 +157,9 @@ final class AllYamlLines implements YamlLines {
                 new Edited(prev.trimmed()
                     + " null #" + prev.comment(), prev)
             );
-        } else if(first.trimmed().matches("^\\s*-?\\s*\\[.*$")) {
+        } else if(first.trimmed().matches("^\\s*\\[.*$")) {
             node = new ReadFlowSequence(prev, this);
-        } else if(first.trimmed().matches("^\\s*-?\\s*\\{.*$")) {
+        } else if(first.trimmed().matches("^\\s*\\{.*$")) {
             node = new ReadFlowMapping(prev, this);
         } else {
             Matcher matcher = SEQUENCE_OR_MAP.matcher(first.trimmed());

@@ -35,3 +35,5 @@ key10: {a: b, c: d, e: f}
 : scalarToFlowSequence
 someFlowSeq:
   - [a, b, c]
+someFlowMap:
+  - {a: b}
