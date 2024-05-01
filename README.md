@@ -57,7 +57,7 @@ Here is what we have so far:
 * Easy Extension Thanks to Interfaces ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Easy-Extension-Via-Interfaces));
 * Building and Reading YAML Streams, integrated with Java 8's Stream API ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Streams));
 * Java Beans to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/Java-Bean-To-YAML));
-* JSON to YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/JSON-to-YAML));
+* JSON to/from YAML ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/JSON-to-YAML));
 * YAML Visitor ([wiki](https://github.com/decorators-squad/eo-yaml/wiki/YAML-Visitor));
 * Others:
     - Clear and detailed Exceptions. For instance, in the case of bad indentation, it will tell you exactly which line is problematic and why.
