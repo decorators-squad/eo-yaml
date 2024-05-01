@@ -179,6 +179,18 @@ public final class YamlMappingPrintTest {
                 Yaml.createYamlInput("[a, b, c]").readYamlSequence(),
                 "scalarToFlowSequence"
             )
+            .add(
+                "someFlowSeq",
+                Yaml.createYamlSequenceBuilder()
+                    .add(
+                        Json.createArrayBuilder()
+                            .add("a")
+                            .add("b")
+                            .add("c")
+                            .build()
+                    )
+                    .build()
+            )
             .build();
         MatcherAssert.assertThat(
             built.toString(),

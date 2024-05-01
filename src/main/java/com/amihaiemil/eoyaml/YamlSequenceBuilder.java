@@ -27,6 +27,9 @@
  */
 package com.amihaiemil.eoyaml;
 
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonStructure;
 import java.util.Collection;
 
 /**
@@ -50,6 +53,23 @@ public interface YamlSequenceBuilder {
      * @return Builder
      */
     YamlSequenceBuilder add(final YamlNode node);
+
+    /**
+     * Add a value to the sequence - this will be printed in Flow style
+     * (JSON-like).
+     * @param value JsonStructure ({@link javax.json.JsonObject}
+     *              or {@link javax.json.JsonArray})
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final JsonStructure value) {
+        final YamlNode node;
+        if(value instanceof JsonObject) {
+            node = new JsonYamlMapping((JsonObject) value);
+        } else {
+            node = new JsonYamlSequence((JsonArray) value);
+        }
+        return this.add(node);
+    }
 
     /**
      * Build the YamlSequence.
