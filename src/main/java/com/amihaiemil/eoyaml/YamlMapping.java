@@ -488,7 +488,7 @@ public interface YamlMapping extends YamlNode {
      * It is equivalent to:
      * <pre>
      *     YamlMapping map = ...;
-     *     boolean value = Boolean.valueOf(map.string(...));
+     *     boolean value = Boolean.parseBoolean(map.string(...));
      * </pre>
      * @param key The key of the value.
      * @return Boolean.
@@ -496,7 +496,7 @@ public interface YamlMapping extends YamlNode {
     default boolean bool(final YamlNode key) {
         final YamlNode value = this.value(key);
         if(value instanceof Scalar) {
-            return Boolean.valueOf(((Scalar) value).value());
+            return Boolean.parseBoolean(((Scalar) value).value());
         }
         return false;
     }

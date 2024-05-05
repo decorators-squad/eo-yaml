@@ -282,13 +282,13 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
      * ignoring case, to the string "true".It is equivalent to:
      * <pre>
      *     YamlSequence sequence = ...;
-     *     boolean value = Boolean.valueOf(sequence.string(...));
+     *     boolean value = Boolean.parseBoolean(sequence.string(...));
      * </pre>
      * @param index The index of the value.
      * @return Boolean.
      */
     default boolean bool(final int index) {
-        return Boolean.valueOf(this.string(index));
+        return Boolean.parseBoolean(this.string(index));
     }
 
     /**
