@@ -121,7 +121,28 @@ public final class YamlMappingTypeCastingTestCase {
             Matchers.nullValue()
         );
     }
-    
+
+    @Test
+    public void returnsBoolean() {
+        final YamlMapping mapping = this.mapping();
+        MatcherAssert.assertThat(
+            mapping.bool("trueValue"),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            mapping.bool("falseValue"),
+            Matchers.is(false)
+        );
+        MatcherAssert.assertThat(
+            mapping.bool("integer"),
+            Matchers.is(false)
+        );
+        MatcherAssert.assertThat(
+            mapping.bool("missing"),
+            Matchers.is(false)
+        );
+    }
+
     /**
      * Get a YamlMapping for test.
      * @return YamlMapping.
@@ -134,6 +155,8 @@ public final class YamlMappingTypeCastingTestCase {
             .add("long", "32165498")
             .add("localDate", "2007-12-03")
             .add("localDateTime", "2007-12-03T10:15:30")
+            .add("trueValue", "true")
+            .add("falseValue", "false")
             .build();
         return mapping;
     }

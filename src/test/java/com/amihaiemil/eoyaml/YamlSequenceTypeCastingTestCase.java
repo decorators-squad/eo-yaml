@@ -91,6 +91,23 @@ public final class YamlSequenceTypeCastingTestCase {
             Matchers.is(LocalDateTime.parse("2007-12-03T10:15:30"))
         );
     }
+
+    @Test
+    public void returnsBoolean() {
+        final YamlSequence sequence = this.sequence();
+        MatcherAssert.assertThat(
+            sequence.bool(5),
+            Matchers.is(false)
+        );
+        MatcherAssert.assertThat(
+            sequence.bool(6),
+            Matchers.is(true)
+        );
+        MatcherAssert.assertThat(
+            sequence.bool(7),
+            Matchers.is(false)
+        );
+    }
     
     /**
      * Get a YamlSequence for test.
@@ -104,6 +121,8 @@ public final class YamlSequenceTypeCastingTestCase {
             .add("32165498")
             .add("2007-12-03")
             .add("2007-12-03T10:15:30")
+            .add("true")
+            .add("false")
             .build();
         return sequence;
     }

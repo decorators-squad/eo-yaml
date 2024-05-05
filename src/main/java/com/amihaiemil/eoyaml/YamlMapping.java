@@ -463,6 +463,44 @@ public interface YamlMapping extends YamlNode {
         return null;
     }
 
+    /**
+     * Convenience method to directly read a boolean value
+     * from this map. Returns true if the value is not null and is equal,
+     * ignoring case, to the string "true".
+     * It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     boolean value = Boolean.valueOf(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Boolean.
+     */
+    default boolean bool(final String key) {
+        return this.bool(
+            Yaml.createYamlScalarBuilder().addLine(key).buildPlainScalar()
+        );
+    }
+
+    /**
+     * Convenience method to directly read a boolean value
+     * from this map. Returns true if the value is not null and is equal,
+     * ignoring case, to the string "true".
+     * It is equivalent to:
+     * <pre>
+     *     YamlMapping map = ...;
+     *     boolean value = Boolean.valueOf(map.string(...));
+     * </pre>
+     * @param key The key of the value.
+     * @return Boolean.
+     */
+    default boolean bool(final YamlNode key) {
+        final YamlNode value = this.value(key);
+        if(value instanceof Scalar) {
+            return Boolean.valueOf(((Scalar) value).value());
+        }
+        return false;
+    }
+
     @Override
     default List<YamlNode> children() {
         final List<YamlNode> children = new ArrayList<>();

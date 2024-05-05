@@ -277,6 +277,21 @@ public interface YamlSequence extends YamlNode, Iterable<YamlNode> {
     }
 
     /**
+     * Convenience method to directly read a boolean value
+     * from this sequence. Returns true if the value is not null and is equal,
+     * ignoring case, to the string "true".It is equivalent to:
+     * <pre>
+     *     YamlSequence sequence = ...;
+     *     boolean value = Boolean.valueOf(sequence.string(...));
+     * </pre>
+     * @param index The index of the value.
+     * @return Boolean.
+     */
+    default boolean bool(final int index) {
+        return Boolean.valueOf(this.string(index));
+    }
+
+    /**
      * Turn this YamlSequence to a JsonArray.
      * @return JsonArray.
      */
