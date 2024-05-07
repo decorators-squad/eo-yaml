@@ -115,14 +115,14 @@ public final class YamlSequenceTypeCastingTestCase {
      */
     private YamlSequence sequence() {
         YamlSequence sequence = Yaml.createYamlSequenceBuilder()
-            .add("123")
-            .add("3.54")
-            .add("2.05")
-            .add("32165498")
-            .add("2007-12-03")
-            .add("2007-12-03T10:15:30")
-            .add("true")
-            .add("false")
+            .add(123)
+            .add(3.54)
+            .add(2.05)
+            .add(32165498L)
+            .add(LocalDate.of(2007, 12, 3))
+            .add(LocalDateTime.of(2007, 12, 3, 10, 15, 30))
+            .add(true)
+            .add(false)
             .build();
         return sequence;
     }

@@ -30,6 +30,8 @@ package com.amihaiemil.eoyaml;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonStructure;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -69,6 +71,87 @@ public interface YamlSequenceBuilder {
             node = new JsonYamlSequence((JsonArray) value);
         }
         return this.add(node);
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Char.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final char value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Char[].
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final char[] value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Int.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final int value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Double.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final double value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Float.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final float value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Long.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final long value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value Boolean.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final boolean value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value LocalDate.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final LocalDate value) {
+        return this.add(String.valueOf(value));
+    }
+
+    /**
+     * Add a value to the sequence.
+     * @param value LocalDateTime.
+     * @return Builder
+     */
+    default YamlSequenceBuilder add(final LocalDateTime value) {
+        return this.add(String.valueOf(value));
     }
 
     /**
