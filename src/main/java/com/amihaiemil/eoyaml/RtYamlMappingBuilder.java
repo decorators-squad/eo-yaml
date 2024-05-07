@@ -61,24 +61,6 @@ final class RtYamlMappingBuilder implements YamlMappingBuilder {
     }
 
     @Override
-    public YamlMappingBuilder add(final String key, final String value) {
-        return this.add(
-            new PlainStringScalar(key),
-            new PlainStringScalar(value)
-        );
-    }
-
-    @Override
-    public YamlMappingBuilder add(final YamlNode key, final String value) {
-        return this.add(key, new PlainStringScalar(value));
-    }
-
-    @Override
-    public YamlMappingBuilder add(final String key, final YamlNode value) {
-        return this.add(new PlainStringScalar(key), value);
-    }
-
-    @Override
     public YamlMappingBuilder add(final YamlNode key, final YamlNode value) {
         if(key == null || key.isEmpty()) {
             throw new IllegalArgumentException(

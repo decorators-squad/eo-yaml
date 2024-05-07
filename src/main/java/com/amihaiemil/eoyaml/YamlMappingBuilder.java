@@ -39,21 +39,6 @@ import java.util.Collection;
  * @since 1.0.0
  */
 public interface YamlMappingBuilder {
-    /**
-     * Add a pair to the mapping.
-     * @param key String
-     * @param value String
-     * @return Builder
-     */
-    YamlMappingBuilder add(final String key, final String value);
-
-    /**
-     * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
-     * @param value String
-     * @return Builder
-     */
-    YamlMappingBuilder add(final YamlNode key, final String value);
 
     /**
      * Add a pair to the mapping.
@@ -66,20 +51,35 @@ public interface YamlMappingBuilder {
     /**
      * Add a pair to the mapping.
      * @param key String
-     * @param value YamlNode (sequence or mapping)
+     * @param value String
      * @return Builder
      */
-    YamlMappingBuilder add(final String key, final YamlNode value);
+    default YamlMappingBuilder add(final String key, final String value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(value)
+        );
+    }
 
     /**
      * Add a pair to the mapping.
-     * @param key YamlNode (sequence or mapping)
+     * @param key String
+     * @param value YamlNode (sequence or mapping)
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final YamlNode value) {
+        return this.add(new PlainStringScalar(key), value);
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
      * @param value JsonStructure ({@link javax.json.JsonObject}
      *              or {@link javax.json.JsonArray})
      * @return Builder
      */
     default YamlMappingBuilder add(
-        final YamlNode key, final JsonStructure value
+        final String key, final JsonStructure value
     ) {
         final YamlNode node;
         if(value instanceof JsonObject) {
@@ -92,13 +92,23 @@ public interface YamlMappingBuilder {
 
     /**
      * Add a pair to the mapping.
-     * @param key String
+     * @param key YamlNode (sequence or mapping)
+     * @param value String
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final YamlNode key, final String value) {
+        return this.add(key, new PlainStringScalar(value));
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key YamlNode (sequence or mapping)
      * @param value JsonStructure ({@link javax.json.JsonObject}
      *              or {@link javax.json.JsonArray})
      * @return Builder
      */
     default YamlMappingBuilder add(
-        final String key, final JsonStructure value
+        final YamlNode key, final JsonStructure value
     ) {
         final YamlNode node;
         if(value instanceof JsonObject) {
