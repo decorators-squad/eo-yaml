@@ -30,6 +30,8 @@ package com.amihaiemil.eoyaml;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonStructure;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 /**
@@ -58,6 +60,125 @@ public interface YamlMappingBuilder {
         return this.add(
             new PlainStringScalar(key),
             new PlainStringScalar(value)
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Char[]
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final char[] value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Char
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final char value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Int
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final int value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Double
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final double value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Float
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final float value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Long
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final long value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value LocalDate
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final LocalDate value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value LocalDateTime
+     * @return Builder
+     */
+    default YamlMappingBuilder add(
+        final String key, final LocalDateTime value
+    ) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
+        );
+    }
+
+    /**
+     * Add a pair to the mapping.
+     * @param key String
+     * @param value Boolean
+     * @return Builder
+     */
+    default YamlMappingBuilder add(final String key, final boolean value) {
+        return this.add(
+            new PlainStringScalar(key),
+            new PlainStringScalar(String.valueOf(value))
         );
     }
 

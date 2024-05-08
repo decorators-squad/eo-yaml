@@ -149,14 +149,14 @@ public final class YamlMappingTypeCastingTestCase {
      */
     private YamlMapping mapping() {
         YamlMapping mapping = Yaml.createYamlMappingBuilder()
-            .add("integer", "123")
-            .add("float", "3.54")
-            .add("double", "2.05")
-            .add("long", "32165498")
-            .add("localDate", "2007-12-03")
-            .add("localDateTime", "2007-12-03T10:15:30")
-            .add("trueValue", "true")
-            .add("falseValue", "false")
+            .add("integer", 123)
+            .add("float", 3.54)
+            .add("double", 2.05)
+            .add("long", 32165498L)
+            .add("localDate", LocalDate.of(2007, 12, 3))
+            .add("localDateTime", LocalDateTime.of(2007, 12, 3, 10, 15, 30))
+            .add("trueValue", true)
+            .add("falseValue", false)
             .build();
         return mapping;
     }
