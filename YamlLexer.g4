@@ -235,6 +235,8 @@ SingleCharacter
 
 StringLiteral
 	:	'"' StringCharacters? '"'
+	| 	'\'' StringCharacters? '\''
+	| 	StringCharacters
 	;
 
 fragment
@@ -945,6 +947,7 @@ fragment IdentifierPart
 
 DOCUMENT_START: '---';
 DASH : '-';
+COLON: ':';
 
 //
 // Whitespace and comments

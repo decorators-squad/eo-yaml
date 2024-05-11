@@ -2272,15 +2272,15 @@ public final class RtYamlInputTest {
     public void readsTypicalTravisFile() throws IOException {
         final YamlInput input = Yaml.createYamlInput(
             new FileReader(
-                "src/test/resources/typical_examples/travis.yml"
+                "src/test/resources/examples/team.yml"
             )
         );
-        final YamlMapping read = input.readYamlMapping();
+        final YamlNode read = input.readYamlMapping();
         MatcherAssert.assertThat(
             read.toString(),
             Matchers.equalTo(
                 this.readTestResource(
-                    "typical_examples/travis.yml"
+                    "examples/team.yml"
                 )
             )
         );

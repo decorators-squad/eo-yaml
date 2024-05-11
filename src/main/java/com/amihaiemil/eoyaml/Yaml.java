@@ -121,7 +121,9 @@ public final class Yaml {
      * @return YamlInput, reader of Yaml.
      */
     public static YamlInput createYamlInput(final InputStream input) {
-        return new RtYamlInput(new InputStreamReader(input));
+        return Yaml.createYamlInput(
+            new InputStreamReader(input)
+        );
     }
 
     /**
@@ -130,7 +132,11 @@ public final class Yaml {
      * @return YamlInput, reader of Yaml.
      */
     public static YamlInput createYamlInput(final Reader input) {
-        return new RtYamlInput(input);
+        try {
+            return new AntlrYamlInput(input);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
