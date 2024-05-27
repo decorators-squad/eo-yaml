@@ -160,15 +160,17 @@ final class ReadYamlMapping extends BaseYamlMapping {
                     //@checkstyle NestedIfDepth (50 lines)
                     final String key = matcher.group("key");
                     if (key != null && !key.isEmpty()) {
-                        keys.add(new PlainStringScalar(key));
+                        keys.add(new ReadScalarKey(key, this.all, line));
                     } else {
                         final String keyQ = matcher.group("keyQ");
                         if (keyQ != null && !keyQ.isEmpty()) {
-                            keys.add(new PlainStringScalar(keyQ));
+                            keys.add(new ReadScalarKey(keyQ, this.all, line));
                         } else {
                             final String keySQ = matcher.group("keySQ");
                             if (keySQ != null && !keySQ.isEmpty()) {
-                                keys.add(new PlainStringScalar(keySQ));
+                                keys.add(new ReadScalarKey(
+                                    keySQ, this.all, line)
+                                );
                             }
                         }
                     }
@@ -357,5 +359,85 @@ final class ReadYamlMapping extends BaseYamlMapping {
             prev = this.all.line(line.number() - 1);
         }
         return prev;
+    }
+
+    /**
+     * A plain scalar mapping key.
+     * @author Mihai Andronace (amihaiemil@gmail.com)
+     * @version $Id$
+     * @since 3.1.3
+     */
+    private static class ReadScalarKey extends BaseScalar {
+
+        /**
+         * String key.
+         */
+        private final String key;
+
+        /**
+         * All YAML Lines of the document.
+         */
+        private final AllYamlLines all;
+
+        /**
+         * Line where the plain scalar key is found.
+         */
+        private final YamlLine scalarLine;
+
+        /**
+         * Constructor.
+         *
+         * @param key String key.
+         * @param all All lines of the document.
+         * @param scalarLine YamlLine containing the scalar.
+         */
+        ReadScalarKey(
+            final String key, final AllYamlLines all, final YamlLine scalarLine
+        ) {
+            this.key = key;
+            this.all = all;
+            this.scalarLine = scalarLine;
+        }
+
+        /**
+         * Unescaped String value of this scalar. Pay attention, if the
+         * scalar's value is the "null" String, then we return null, because
+         * "null" is a reserved keyword in YAML, indicating a null Scalar.
+         *
+         * @return String or null if the Strings value is "null".
+         * @checkstyle ReturnCount (50 lines)
+         */
+        @Override
+        public String value() {
+            return this.key;
+        }
+
+        @Override
+        public Comment comment() {
+            final Comment comment;
+            if (this.scalarLine instanceof YamlLine.NullYamlLine) {
+                comment = new BuiltComment(this, "");
+            } else {
+                final int lineNumber = this.scalarLine.number();
+                comment = new ReadComment(
+                    new Backwards(
+                        new FirstCommentFound(
+                            new Backwards(
+                                new Skip(
+                                    this.all,
+                                    line -> line.number() >= lineNumber,
+                                    line -> line.trimmed().startsWith("..."),
+                                    line -> line.trimmed().startsWith("%"),
+                                    line -> line.trimmed().startsWith("!!")
+                                )
+                            ),
+                            false
+                        )
+                    ),
+                    this
+                );
+            }
+            return comment;
+        }
     }
 }
