@@ -68,7 +68,7 @@ public final class YamlMappingCommentsPrintTest {
                 "name",
                 Yaml.createYamlScalarBuilder()
                     .addLine("eo-yaml")
-                    .buildPlainScalar("name of the project")
+                    .buildPlainScalar("Name", "Elegant objects YAML")
             ).build("Comment of the whole document");
         System.out.println(commented);
         MatcherAssert.assertThat(
@@ -113,12 +113,30 @@ public final class YamlMappingCommentsPrintTest {
             Matchers.equalTo("Comment of the whole document")
         );
         MatcherAssert.assertThat(
+            read.keys().stream()
+                .filter(k -> k.asScalar().value().equals("developers"))
+                .findFirst()
+                .get()
+                .comment().value(),
+            Matchers.equalTo("all the contributors here")
+        );
+        MatcherAssert.assertThat(
             read.yamlSequence("developers").comment().value(),
             Matchers.equalTo("all the contributors here")
         );
         MatcherAssert.assertThat(
+            read.keys().stream()
+                .filter(k -> k.asScalar().value().equals("name"))
+                .findFirst()
+                .get()
+                .comment().value(),
+            Matchers.equalTo("Name")
+        );
+        MatcherAssert.assertThat(
             read.value("name").comment().value(),
-            Matchers.equalTo("name of the project")
+            Matchers.equalTo(
+                "Name" + System.lineSeparator() + "Elegant objects YAML"
+            )
         );
     }
 
