@@ -1,0 +1,9 @@
+key: value
+seqMap:
+  - alfa: b
+  - this:
+      - - sequence
+        - starting
+        - at
+        - dash
+key2: value

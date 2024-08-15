@@ -152,7 +152,7 @@ final class RtYamlInput implements YamlInput {
             int number = 0;
             while ((line = reader.readLine()) != null) {
 
-                if (this.mappingStartsAtDash(line)) {
+                if (this.mappingOrSequenceStartsAtDash(line)) {
 
                     // if line starts with a sequence ("-") and the first
                     // key:value is unescaped and on the same line with the
@@ -206,11 +206,13 @@ final class RtYamlInput implements YamlInput {
      * @param line Line.
      * @return Boolean.
      */
-    private boolean mappingStartsAtDash(final String line){
+    private boolean mappingOrSequenceStartsAtDash(final String line){
         //line without indentation.
         final String trimmed = line.trim();
         final boolean escapedScalar = trimmed.matches("^\\s*-\\s*\".*\"$")
             || trimmed.matches("^\\s*-\\s*'.*'$");
-        return trimmed.matches("^\\s*-.+:\\s.*$") && !escapedScalar;
+        return (trimmed.matches("^\\s*-.+:\\s.*$")
+            || trimmed.matches("^\\s*-.+-\\s.*$"))
+            && !escapedScalar;
     }
 }

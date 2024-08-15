@@ -48,7 +48,7 @@ import java.util.Set;
  * @author Mihai Andronache (amihaiemil@gmail.com)
  * @version $Id$
  * @since 1.0.1
- * @checkstyle ExecutableStatementCount (2000 lines)
+ * @checkstyle ExecutableStatementCount (3000 lines)
  */
 public final class RtYamlInputTest {
 
@@ -881,6 +881,47 @@ public final class RtYamlInputTest {
                             .build())
                         .add(Yaml.createYamlMappingBuilder()
                             .add("this", "isSkiped")
+                            .build())
+                        .build())
+                    .add("key2", "value")
+                    .build()
+            )
+        );
+    }
+
+    /**
+     * Corner case when key:value is on the same with sequence marker.
+     * <a href="https://github.com/decorators-squad/eo-yaml/issues/447">#447</a>
+     * and based on
+     * <a href="https://github.com/decorators-squad/eo-yaml/pull/416">PR</a>
+     * @throws IOException If something is wrong.
+     */
+    @Test
+    public void shouldReadSequenceWhenFirstNodeIsOnTheSameLine()
+        throws IOException {
+        final String fileName = "src/test/resources/issue_447_bug_mapping"
+            + "_case_5.yml";
+        final YamlMapping root = Yaml.createYamlInput(new File(fileName))
+            .readYamlMapping();
+        MatcherAssert.assertThat(
+            root,
+            Matchers.equalTo(
+                Yaml.createYamlMappingBuilder()
+                    .add("key", "value")
+                    .add("seqMap", Yaml.createYamlSequenceBuilder()
+                        .add(Yaml.createYamlMappingBuilder()
+                            .add("alfa", "b")
+                            .build())
+                        .add(Yaml.createYamlMappingBuilder()
+                            .add("this",
+                                Yaml.createYamlSequenceBuilder().add(
+                                    Yaml.createYamlSequenceBuilder()
+                                        .add("sequence")
+                                        .add("starting")
+                                        .add("at")
+                                        .add("dash")
+                                        .build()
+                                ).build())
                             .build())
                         .build())
                     .add("key2", "value")

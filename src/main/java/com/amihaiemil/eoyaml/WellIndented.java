@@ -103,7 +103,8 @@ final class WellIndented implements YamlLines {
                         withinBlockScalar = true;
                     }
                     int prevIndent = previous.indentation();
-                    if(previous.trimmed().matches("^\\s*-.*:(|\\s.*)$")) {
+                    if(previous.trimmed().matches("^\\s*-.*:(|\\s.*)$")
+                        || previous.trimmed().matches("^\\s*-.*-(|\\s.*)$")) {
                         withinBlockScalar = false;
                         prevIndent += 2;
                     }
