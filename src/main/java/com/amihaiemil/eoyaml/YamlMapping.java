@@ -518,4 +518,17 @@ public interface YamlMapping extends YamlNode {
     default JsonObject toJsonObject() {
         return (JsonObject) this.accept(new YamlToJsonVisitor());
     }
+
+    /**
+     * Turn this YamlMapping to a given Object type ("loading").
+     * @param clazz Class type of the Object into which this YamlMapping should
+     *  be loaded.
+     * @param <T> Type of the Object,
+     * @return Object into which this YamlMapping is loaded.
+     * @todo #323:60min Implement this method similarly to toJsonObject(),
+     *  using a visitor.
+     */
+    default <T> T toObject(final Class<T> clazz) {
+        return null;
+    }
 }
