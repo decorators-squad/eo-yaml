@@ -1,6 +1,10 @@
 package com.amihaiemil.eoyaml;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +38,25 @@ final class YamlToObjectVisitor implements YamlVisitor<Object>{
         } else if(loaded instanceof Collection) {
             throw new IllegalArgumentException("Cannot load a YamlMapping into a Collection!");
         } else {
-            //loaded is a POJO; call setters with reflection.
+            final Method[] methods = loaded.getClass().getDeclaredMethods();
+            for (final Method method : methods) {
+                if (Modifier.isPublic(method.getModifiers())
+                    && method.getParameterCount() == 1
+                    && method.getName().startsWith("set")
+                ) {
+                    final String keyName = method.getName().substring(3).toLowerCase();
+                    try {
+                        final Object param =  node.value(keyName).accept(
+                            new YamlToObjectVisitor(method.getParameters()[0].getType())
+                        );
+                        method.invoke(param);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    } catch (InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
         return loaded;
     }
@@ -59,6 +81,20 @@ final class YamlToObjectVisitor implements YamlVisitor<Object>{
 
     @Override
     public Object visitScalar(final Scalar node) {
+        try {
+            System.out.println(
+                "Clazz " + clazz.newInstance().getClass() + " contains " +
+                    Arrays.asList(
+                        Integer.class, Long.class, Float.class, Double.class, Short.class,
+                        String.class, Boolean.class, Character.class, Byte.class, int.class, long.class, float.class, double.class, short.class, char.class
+                    ).contains(this.clazz)
+            );
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
         return node.value();
     }
 

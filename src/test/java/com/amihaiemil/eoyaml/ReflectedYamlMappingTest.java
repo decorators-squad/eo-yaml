@@ -77,6 +77,9 @@ public final class ReflectedYamlMappingTest {
         MatcherAssert.assertThat(keys, Matchers.hasItem("gpa"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("grades"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("classes"));
+
+        final Student student = mapping.toObject(Student.class);
+        System.out.println("LOADED: " + student);
     }
 
     /**
@@ -223,6 +226,10 @@ public final class ReflectedYamlMappingTest {
             this.classes = classes;
         }
 
+        Student() {
+            this(null, null, 0, 0.0, null);
+        }
+
         @YamlComment("First name of the Student.")
         public String getFirstName() {
             return this.firstName;
@@ -266,5 +273,16 @@ public final class ReflectedYamlMappingTest {
             this.classes = classes;
         }
 
+        @Override
+        public String toString() {
+            return "Student{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", gpa=" + gpa +
+                ", grades=" + grades +
+                ", classes=" + classes +
+                '}';
+        }
     }
 }

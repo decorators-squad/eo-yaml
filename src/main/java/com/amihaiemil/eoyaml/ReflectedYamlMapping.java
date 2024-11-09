@@ -88,6 +88,9 @@ final class ReflectedYamlMapping extends BaseYamlMapping {
                 if (Modifier.isPublic(method.getModifiers())
                     && method.getParameterCount() == 0
                     && !method.getReturnType().equals(Void.TYPE)
+                    && !method.getName().equals("toString")
+                    && !method.getName().equals("equals")
+                    && !method.getName().equals("hashcode")
                 ) {
                     keys.add(new MethodKey(method));
                 }
