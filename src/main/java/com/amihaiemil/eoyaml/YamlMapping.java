@@ -529,8 +529,6 @@ public interface YamlMapping extends YamlNode {
      *  using a visitor.
      */
     default <T> T toObject(final Class<T> clazz) {
-        throw new UnsupportedOperationException(
-            "Not yet implemented. See decorators-squad/eo-yaml#631"
-        );
+        return (T) this.accept(new YamlToObjectVisitor(clazz));
     }
 }

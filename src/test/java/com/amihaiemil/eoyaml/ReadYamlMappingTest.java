@@ -35,8 +35,10 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -852,6 +854,20 @@ public final class ReadYamlMappingTest {
         System.out.print(map);
         System.out.println(">>>");
         MatcherAssert.assertThat(map.string(key), Matchers.nullValue());
+    }
+
+    @Test
+    public void test() {
+        final YamlMapping key = new RtYamlMappingBuilder()
+            .add("complex1", "mapping1")
+            .add("complex2", "mapping2")
+            .add("array", new RtYamlSequenceBuilder().add(1).add(2).add(3).add(
+                new RtYamlMappingBuilder().add("in", "two").build()
+            ).build())
+            .add("map", new RtYamlMappingBuilder().add("1", "2").build())
+            .build();
+        final Map<String, String> lmap = key.toObject(HashMap.class);
+        System.out.println("LOADED MAP: " + lmap);
     }
 
     /**
