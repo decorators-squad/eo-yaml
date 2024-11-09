@@ -1,5 +1,6 @@
 package com.amihaiemil.eoyaml;
 
+import java.lang.invoke.MethodType;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -82,6 +83,7 @@ final class YamlToObjectVisitor implements YamlVisitor<Object>{
     @Override
     public Object visitScalar(final Scalar node) {
         try {
+            MethodType.methodType(clazz).wrap().returnType();//get wrapper return type.
             System.out.println(
                 "Clazz " + clazz.newInstance().getClass() + " contains " +
                     Arrays.asList(
