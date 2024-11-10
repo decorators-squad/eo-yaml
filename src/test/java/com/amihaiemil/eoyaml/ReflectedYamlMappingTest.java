@@ -78,8 +78,10 @@ public final class ReflectedYamlMappingTest {
         MatcherAssert.assertThat(keys, Matchers.hasItem("grades"));
         MatcherAssert.assertThat(keys, Matchers.hasItem("classes"));
 
-        final Student student = mapping.toObject(Student.class);
-        System.out.println("LOADED: " + student);
+        final Student loaded = mapping.toObject(Student.class);
+        System.out.println("LOADED 2: " + loaded);
+        System.out.println("LOADED 3: " + mapping.toObject(Map.class));
+
     }
 
     /**

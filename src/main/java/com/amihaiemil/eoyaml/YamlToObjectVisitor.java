@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +16,16 @@ final class YamlToObjectVisitor implements YamlVisitor<Object>{
 
     YamlToObjectVisitor(final Class clazz) {
         if(clazz.isInterface()) {
-            throw new RuntimeException("Type " + clazz.getSimpleName() + ".class is an interface, it must be a class!");
+            if(clazz.getName().equals("java.util.List") || clazz.getName().equals("java.util.Collection")) {
+                this.clazz = ArrayList.class;
+            } else if(clazz.getName().equals("java.util.Map")) {
+                this.clazz = HashMap.class;
+            } else {
+                throw new RuntimeException("Type " + clazz.getSimpleName() + ".class is an interface, it must be a class!");
+            }
+        } else {
+            this.clazz = clazz;
         }
-        this.clazz = clazz;
     }
 
     @Override
@@ -45,16 +53,24 @@ final class YamlToObjectVisitor implements YamlVisitor<Object>{
                     && method.getParameterCount() == 1
                     && method.getName().startsWith("set")
                 ) {
-                    final String keyName = method.getName().substring(3).toLowerCase();
-                    try {
-                        final Object param =  node.value(keyName).accept(
-                            new YamlToObjectVisitor(method.getParameters()[0].getType())
-                        );
-                        method.invoke(param);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
-                    } catch (InvocationTargetException e) {
-                        throw new RuntimeException(e);
+                    final String withoutSet = method.getName().substring(3);
+                    final YamlNode value = node.value(
+                        withoutSet.substring(0, 1).toLowerCase() +
+                        withoutSet.substring(1)
+                    );
+                    if(value != null) {
+                        try {
+                            method.invoke(
+                                loaded,
+                                value.accept(
+                                    new YamlToObjectVisitor(method.getParameters()[0].getType())
+                                )
+                            );
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        } catch (InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -82,22 +98,29 @@ final class YamlToObjectVisitor implements YamlVisitor<Object>{
 
     @Override
     public Object visitScalar(final Scalar node) {
-        try {
-            MethodType.methodType(clazz).wrap().returnType();//get wrapper return type.
-            System.out.println(
-                "Clazz " + clazz.newInstance().getClass() + " contains " +
-                    Arrays.asList(
-                        Integer.class, Long.class, Float.class, Double.class, Short.class,
-                        String.class, Boolean.class, Character.class, Byte.class, int.class, long.class, float.class, double.class, short.class, char.class
-                    ).contains(this.clazz)
-            );
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        final List<Class> primitives = Arrays.asList(
+            Integer.class, Long.class, Float.class, Double.class,
+            Boolean.class, Character.class, Byte.class, Short.class,
+            int.class, long.class, float.class, double.class,
+            short.class, char.class, byte.class, boolean.class
+        );
+        final String scalar = node.value();
+        if(primitives.contains(this.clazz) && !this.clazz.isArray()) {
+            try {
+                final Method factory = MethodType.methodType(clazz).wrap().returnType().getMethod("valueOf", String.class);
+                return factory.invoke(factory, scalar);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        } else if(this.clazz.getSimpleName().equalsIgnoreCase("char") && this.clazz.isArray()) {
+            return scalar.toCharArray();
+        } else {
+            return scalar;
         }
-
-        return node.value();
     }
 
     @Override
