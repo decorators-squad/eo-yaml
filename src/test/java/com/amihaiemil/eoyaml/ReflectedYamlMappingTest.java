@@ -145,6 +145,34 @@ public final class ReflectedYamlMappingTest {
     }
 
     /**
+     * Unit test for Issue #633.
+     */
+    @Test
+    public void reflectsEntries() {
+        final Entries entries = new Entries();
+        entries.entries.add("Test1");
+        entries.entries.add("Test2");
+        entries.entries.add("Test3");
+        final YamlMapping mapping = Yaml.createYamlDump(entries).dumpMapping();
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("entries").size(),
+            Matchers.is(3)
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("entries").string(0),
+            Matchers.equalTo("Test1")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("entries").string(1),
+            Matchers.equalTo("Test2")
+        );
+        MatcherAssert.assertThat(
+            mapping.yamlSequence("entries").string(2),
+            Matchers.equalTo("Test3")
+        );
+    }
+
+    /**
      * Prints the YAML correctly.
      */
     @Test
@@ -267,4 +295,25 @@ public final class ReflectedYamlMappingTest {
         }
 
     }
+
+    /**
+     * Simple pojo for test.
+     * @checkstyle JavadocVariable (100 lines)
+     * @checkstyle JavadocMethod (100 lines)
+     * @checkstyle HiddenField (100 lines)
+     * @checkstyle ParameterNumber (100 lines)
+     * @checkstyle FinalParameters (100 lines)
+     */
+    static final class Entries {
+        private List<String> entries = new ArrayList<>();
+
+        public List<String> getEntries() {
+            return entries;
+        }
+
+        public void setEntries(List<String> entries) {
+            this.entries = entries;
+        }
+    }
+
 }
